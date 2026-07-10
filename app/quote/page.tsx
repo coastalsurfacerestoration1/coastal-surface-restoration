@@ -121,6 +121,13 @@ export default function QuotePage() {
                   type="tel"
                   className="w-full bg-[#0a1628] border border-[#0e7c7b]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#00d4d4] transition-colors"
                   placeholder="843-555-0100"
+                  onInput={(e) => {
+                    const input = e.currentTarget;
+                    const val = input.value.replace(/\D/g, '').slice(0, 10);
+                    input.value = val
+                      .replace(/^(\d{3})(\d)/, '$1-$2')
+                      .replace(/(\d{3})-(\d{3})(\d)/, '$1-$2-$3');
+                  }}
                 />
                 {errors.phone && (
                   <p className="text-red-400 text-sm mt-1">{errors.phone.message}</p>
