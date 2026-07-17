@@ -25,15 +25,10 @@ export default function Header() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <Image
-              src="/Small-removebg-preview.png"
-              alt="Coastal Surface Restoration"
-              width={52}
-              height={52}
-              priority
-            />
+            <span className="text-white font-bold text-lg tracking-wide">
+              COASTAL <span className="text-[#00d4d4]">SURFACE RESTORATION</span>
+            </span>
           </Link>
-
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
