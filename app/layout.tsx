@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import "./globals.css";
 
-const geistSans = Geist({
+const geistSans = Inter({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+const geistMono = Inter({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   title: "Coastal Surface Restoration | Mobile Laser Cleaning Charleston SC",
   description:
     "Charleston's mobile laser cleaning specialist for historic, marine, and property restoration. No chemicals, no damage, no mess.",
+  icons: {
+    icon: '/Small.svg',
+  },
 };
 
 export default function RootLayout({

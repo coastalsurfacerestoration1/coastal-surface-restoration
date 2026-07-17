@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 
@@ -23,10 +24,14 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3">
-            <span className="text-white font-bold text-lg tracking-wide">
-              COASTAL <span className="text-[#00d4d4]">SURFACE RESTORATION</span>
-            </span>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/Small.svg"
+              alt="Coastal Surface Restoration"
+              width={52}
+              height={52}
+              priority
+            />
           </Link>
 
           {/* Desktop Nav */}
