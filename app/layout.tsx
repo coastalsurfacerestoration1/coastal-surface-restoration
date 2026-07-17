@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   description:
     "Charleston's mobile laser cleaning specialist for historic, marine, and property restoration. No chemicals, no damage, no mess.",
   icons: {
-    icon: '/Small.svg',
+    icon: '/Small-removebg-preview.png',
   },
 };
 

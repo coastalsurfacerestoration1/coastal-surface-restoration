@@ -26,7 +26,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
-              src="/Small.svg"
+              src="/Small-removebg-preview.png"
               alt="Coastal Surface Restoration"
               width={52}
               height={52}
