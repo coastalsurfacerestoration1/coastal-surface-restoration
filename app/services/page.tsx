@@ -87,12 +87,6 @@ export default function ServicesPage() {
                 <p className="text-gray-400 text-sm leading-relaxed mb-4">
                   {service.desc}
                 </p>
-                <Link
-                  href={service.href}
-                  className="text-[#00d4d4] text-sm font-semibold hover:underline"
-                >
-                  Learn more →
-                </Link>
               </div>
             ))}
           </div>
