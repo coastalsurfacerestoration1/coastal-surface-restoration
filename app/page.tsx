@@ -45,19 +45,17 @@ export default function Home() {
               <div className="text-4xl mb-4">🏛️</div>
               <h3 className="text-white font-bold text-xl mb-3 group-hover:text-[#00d4d4] transition-colors">Historic Restoration</h3>
               <p className="text-gray-400 text-sm leading-relaxed mb-4">Iron gates, brick stoops, wrought iron railings, church gates, wood shutters. Preserve Charleston's historic character without damaging original materials.</p>
-              <Link href="/services/historic-restoration-charleston" className="text-[#00d4d4] text-sm font-semibold hover:underline">Learn more →</Link>
+              <Link href="/services/historic-ironwork-restoration-charleston" className="text-[#00d4d4] text-sm font-semibold hover:underline">Learn more →</Link>
             </div>
             <div className="bg-[#0a1628] border border-[#0e7c7b]/30 rounded-lg p-8 hover:border-[#00d4d4]/50 transition-colors group">
               <div className="text-4xl mb-4">⚓</div>
               <h3 className="text-white font-bold text-xl mb-3 group-hover:text-[#00d4d4] transition-colors">Marine Cleaning</h3>
               <p className="text-gray-400 text-sm leading-relaxed mb-4">Boat fittings, trailers, marine hardware, hulls, and dock equipment. Remove rust and marine growth without harsh chemicals near Charleston's waterways.</p>
-              <Link href="/services/marine-cleaning-charleston" className="text-[#00d4d4] text-sm font-semibold hover:underline">Learn more →</Link>
             </div>
             <div className="bg-[#0a1628] border border-[#0e7c7b]/30 rounded-lg p-8 hover:border-[#00d4d4]/50 transition-colors group">
               <div className="text-4xl mb-4">🏠</div>
               <h3 className="text-white font-bold text-xl mb-3 group-hover:text-[#00d4d4] transition-colors">Vacation Rental Restoration</h3>
               <p className="text-gray-400 text-sm leading-relaxed mb-4">Keep your Isle of Palms, Sullivan's Island, or Folly Beach property in top condition. Recurring maintenance contracts available for property managers.</p>
-              <Link href="/services/vacation-rental-cleaning-charleston" className="text-[#00d4d4] text-sm font-semibold hover:underline">Learn more →</Link>
             </div>
           </div>
         </div>
