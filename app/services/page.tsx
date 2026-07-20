@@ -28,14 +28,14 @@ const services: Service[] = [
     title: 'Marine Cleaning',
     desc: 'Boat fittings, trailers, marine hardware, hulls, and dock equipment. Remove rust and marine growth without harsh chemicals near Charleston\'s waterways.',
     href: '/services/marine-cleaning-charleston',
-    live: false,
+    live: true,
   },
   {
     icon: '🏠',
     title: 'Vacation Rental Restoration',
     desc: 'Keep your Isle of Palms, Sullivan\'s Island, or Folly Beach property in top condition. Recurring maintenance contracts available for property managers.',
     href: '/services/vacation-rental-cleaning-charleston',
-    live: false,
+    live: true,
   },
   {
     icon: '🔩',
@@ -49,7 +49,7 @@ const services: Service[] = [
     title: 'Brick & Masonry Cleaning',
     desc: 'Efflorescence, staining, and grime removal from brick, stone, and concrete without pressure washing damage.',
     href: '/services/brick-cleaning-charleston',
-    live: false,
+    live: true,
   },
   {
     icon: '🎨',
@@ -63,7 +63,7 @@ const services: Service[] = [
     title: 'Antique & Hardware Restoration',
     desc: 'Restore antique hardware, frames, tools, and decorative metal pieces to their original condition.',
     href: '/services/antique-restoration-charleston',
-    live: false,
+    live: true,
   },
 ];
 
