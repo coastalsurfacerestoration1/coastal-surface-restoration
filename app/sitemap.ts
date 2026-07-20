@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/gallery', priority: 0.6, changeFrequency: 'monthly' },
     { path: '/contact', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/quote', priority: 0.7, changeFrequency: 'monthly' },
+    { path: '/services/graffiti-removal-charleston', priority: 0.8, changeFrequency: 'monthly' },
   ];
 
   return routes.map((r) => ({

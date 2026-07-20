@@ -56,7 +56,7 @@ const services: Service[] = [
     title: 'Graffiti Removal',
     desc: 'Clean graffiti from brick, metal, and concrete surfaces without leaving ghost marks or surface damage.',
     href: '/services/graffiti-removal-charleston',
-    live: false,
+    live: true,
   },
   {
     icon: '🏺',
