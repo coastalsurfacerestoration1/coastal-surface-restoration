@@ -16,6 +16,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/contact', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/quote', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/services/graffiti-removal-charleston', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/services/marine-cleaning-charleston', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/services/brick-cleaning-charleston', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/services/vacation-rental-cleaning-charleston', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/services/antique-restoration-charleston', priority: 0.7, changeFrequency: 'monthly' },
   ];
 
   return routes.map((r) => ({
