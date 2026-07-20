@@ -48,7 +48,7 @@ export default function AboutPage() {
             <div className="space-y-4">
               {[
                 { number: '300W', label: 'JPT MOPA Pulsed Fiber Laser', desc: 'Industrial-grade laser source used by restoration professionals worldwide.' },
-                { number: '$0', label: 'Chemicals Used', desc: 'Every job is completed without chemical solvents, acids, or abrasive media.' },
+                { number: '0', label: 'Chemicals Used', desc: 'Every job is completed without chemical solvents, acids, or abrasive media.' },
                 { number: '100%', label: 'Mobile Service', desc: 'We come to your property. No transport required for antiques or fixtures.' },
               ].map((stat) => (
                 <div key={stat.label} className="bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6">
