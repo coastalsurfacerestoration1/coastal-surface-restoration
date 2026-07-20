@@ -20,6 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/services/brick-cleaning-charleston', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/services/vacation-rental-cleaning-charleston', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/services/antique-restoration-charleston', priority: 0.7, changeFrequency: 'monthly' },
+    { path: '/services/commercial-exterior-cleaning-charleston', priority: 0.7, changeFrequency: 'monthly' },
   ];
 
   return routes.map((r) => ({

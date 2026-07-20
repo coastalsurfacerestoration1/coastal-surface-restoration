@@ -65,10 +65,17 @@ const services: Service[] = [
     href: '/services/antique-restoration-charleston',
     live: true,
   },
+  {
+    icon: '🏢',
+    title: 'Commercial Exteriors',
+    desc: 'Storefronts, railings, gates, signage, and metal fixtures for retail, restaurants, and property managers. Low-disruption cleaning that works around your hours.',
+    href: '/services/commercial-exterior-cleaning-charleston',
+    live: true,
+  },
 ];
 
 const cardBase =
-  'block bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-8 hover:border-[#00d4d4]/50 transition-colors group';
+  'block w-full md:w-[calc(50%_-_0.75rem)] lg:w-[calc(33.333%_-_1rem)] bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-8 hover:border-[#00d4d4]/50 transition-colors group';
 
 export default function ServicesPage() {
   return (
@@ -92,7 +99,7 @@ export default function ServicesPage() {
       {/* Services Grid */}
       <section className="py-16 bg-[#0a1628]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex flex-wrap justify-center gap-6">
             {services.map((service) => {
               // Shared inner content for both live and non-live cards.
               const inner = (
