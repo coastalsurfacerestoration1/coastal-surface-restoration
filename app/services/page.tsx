@@ -7,50 +7,68 @@ export const metadata: Metadata = {
     'Mobile laser cleaning services in Charleston, SC. Rust removal, historic restoration, marine cleaning, brick cleaning, graffiti removal, and more.',
 };
 
-const services = [
+type Service = {
+  icon: string;
+  title: string;
+  desc: string;
+  href: string;
+  live: boolean;
+};
+
+const services: Service[] = [
   {
     icon: '🏛️',
     title: 'Historic Restoration',
     desc: 'Iron gates, brick stoops, wrought iron railings, church gates, wood shutters. Preserve Charleston\'s historic character without damaging original materials.',
-    href: '/services/historic-restoration-charleston',
+    href: '/services/historic-ironwork-restoration-charleston',
+    live: true,
   },
   {
     icon: '⚓',
     title: 'Marine Cleaning',
     desc: 'Boat fittings, trailers, marine hardware, hulls, and dock equipment. Remove rust and marine growth without harsh chemicals near Charleston\'s waterways.',
     href: '/services/marine-cleaning-charleston',
+    live: false,
   },
   {
     icon: '🏠',
     title: 'Vacation Rental Restoration',
     desc: 'Keep your Isle of Palms, Sullivan\'s Island, or Folly Beach property in top condition. Recurring maintenance contracts available for property managers.',
     href: '/services/vacation-rental-cleaning-charleston',
+    live: false,
   },
   {
     icon: '🔩',
     title: 'Rust & Paint Removal',
     desc: 'Remove rust, old paint, and coatings from iron, steel, and metal surfaces without abrasives or chemicals.',
     href: '/services/rust-removal-charleston',
+    live: true,
   },
   {
     icon: '🧱',
     title: 'Brick & Masonry Cleaning',
     desc: 'Efflorescence, staining, and grime removal from brick, stone, and concrete without pressure washing damage.',
     href: '/services/brick-cleaning-charleston',
+    live: false,
   },
   {
     icon: '🎨',
     title: 'Graffiti Removal',
     desc: 'Clean graffiti from brick, metal, and concrete surfaces without leaving ghost marks or surface damage.',
     href: '/services/graffiti-removal-charleston',
+    live: false,
   },
   {
     icon: '🏺',
     title: 'Antique & Hardware Restoration',
     desc: 'Restore antique hardware, frames, tools, and decorative metal pieces to their original condition.',
     href: '/services/antique-restoration-charleston',
+    live: false,
   },
 ];
+
+const cardBase =
+  'block bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-8 hover:border-[#00d4d4]/50 transition-colors group';
 
 export default function ServicesPage() {
   return (
@@ -75,20 +93,45 @@ export default function ServicesPage() {
       <section className="py-16 bg-[#0a1628]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service) => (
-              <div
-                key={service.title}
-                className="bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-8 hover:border-[#00d4d4]/50 transition-colors group"
-              >
-                <div className="text-4xl mb-4">{service.icon}</div>
-                <h3 className="text-white font-bold text-xl mb-3 group-hover:text-[#00d4d4] transition-colors">
-                  {service.title}
-                </h3>
-                <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                  {service.desc}
-                </p>
-              </div>
-            ))}
+            {services.map((service) => {
+              // Shared inner content for both live and non-live cards.
+              const inner = (
+                <>
+                  <div className="text-4xl mb-4">{service.icon}</div>
+                  <h3 className="text-white font-bold text-xl mb-3 group-hover:text-[#00d4d4] transition-colors">
+                    {service.title}
+                  </h3>
+                  <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                    {service.desc}
+                  </p>
+                  {service.live && (
+                    // NOTE: this is a <span>, not a <Link>. The whole card is
+                    // already the link, so a nested <Link>/<a> here would be
+                    // invalid HTML and can fail to render.
+                    <span className="inline-flex items-center gap-1 text-[#00d4d4] font-semibold text-sm group-hover:gap-2 transition-all">
+                      Learn more <span aria-hidden="true">→</span>
+                    </span>
+                  )}
+                </>
+              );
+
+              return service.live ? (
+                <Link
+                  key={service.title}
+                  href={service.href}
+                  className={`${cardBase} cursor-pointer`}
+                >
+                  {inner}
+                </Link>
+              ) : (
+                <div
+                  key={service.title}
+                  className={`${cardBase} cursor-default`}
+                >
+                  {inner}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
