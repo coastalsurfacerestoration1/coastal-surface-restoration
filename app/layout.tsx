@@ -20,9 +20,6 @@ export const metadata: Metadata = {
   title: "Coastal Surface Restoration | Mobile Laser Cleaning Charleston SC",
   description:
     "Charleston's mobile laser cleaning specialist for historic, marine, and property restoration. No chemicals, no damage, no mess.",
-  icons: {
-    icon: '/Small-removebg-preview.png',
-  },
 };
 
 export default function RootLayout({
