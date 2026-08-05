@@ -79,19 +79,20 @@ export function localBusinessSchema() {
         name: 'South Carolina',
       },
     })),
+    // Must match the Google Business Profile exactly. A mismatch between the
+    // two is a local ranking signal, not a cosmetic difference.
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',
-        dayOfWeek: [
-          'Monday',
-          'Tuesday',
-          'Wednesday',
-          'Thursday',
-          'Friday',
-          'Saturday',
-        ],
+        dayOfWeek: ['Saturday', 'Sunday'],
         opens: '08:00',
-        closes: '19:00',
+        closes: '21:00',
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '16:00',
+        closes: '21:00',
       },
     ],
     founder: {

@@ -43,7 +43,7 @@ export default function ContactPage() {
                 <div>
                   <div className="text-[#00d4d4] font-semibold text-sm uppercase tracking-wider mb-1">Phone</div>
                   <div className="text-white font-bold text-lg group-hover:text-[#00d4d4] transition-colors">854-222-7790</div>
-                  <div className="text-gray-400 text-sm mt-1">Available Mon-Sat, 8am-7pm</div>
+                  <div className="text-gray-400 text-sm mt-1">Weekends 8am-9pm, weekdays from 4pm</div>
                 </div>
               </a>
 
@@ -69,8 +69,10 @@ export default function ContactPage() {
                 <ClockIcon className="h-7 w-7 shrink-0 text-[#00d4d4]" />
                 <div>
                   <div className="text-[#00d4d4] font-semibold text-sm uppercase tracking-wider mb-1">Hours</div>
-                  <div className="text-white font-bold">Monday - Saturday</div>
-                  <div className="text-gray-400 text-sm mt-1">8:00 AM - 7:00 PM</div>
+                  <div className="text-white font-bold">Saturday &amp; Sunday</div>
+                  <div className="text-gray-400 text-sm mt-1 mb-3">8:00 AM - 9:00 PM</div>
+                  <div className="text-white font-bold">Monday - Friday</div>
+                  <div className="text-gray-400 text-sm mt-1">4:00 PM - 9:00 PM</div>
                 </div>
               </div>
             </div>
