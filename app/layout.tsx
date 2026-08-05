@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Barlow_Condensed } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
@@ -12,6 +12,15 @@ import "./globals.css";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+});
+
+// Condensed grotesque for headlines. The width contrast against Inter is what
+// makes the pairing read as deliberate — a second neo-grotesque would just
+// look like Inter at a different weight.
+const barlowCondensed = Barlow_Condensed({
+  variable: "--font-barlow-condensed",
+  subsets: ["latin"],
+  weight: ["600", "700"],
 });
 
 const DESCRIPTION =
@@ -48,7 +57,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} font-sans antialiased bg-[#0a1628]`}
+        className={`${inter.variable} ${barlowCondensed.variable} font-sans antialiased bg-[#0a1628]`}
       >
         <JsonLd data={localBusinessSchema()} />
         <JsonLd data={websiteSchema()} />

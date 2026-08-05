@@ -1,95 +1,163 @@
 import Link from 'next/link';
+import LaserReveal from './components/LaserReveal';
+import SurfaceCrossSection from './components/SurfaceCrossSection';
+import { CleatIcon, IronScrollIcon, RailingIcon } from './components/icons';
+
+const specialties = [
+  {
+    Icon: IronScrollIcon,
+    title: 'Historic Restoration',
+    desc: "Iron gates, brick stoops, wrought iron railings, church gates, and wood shutters. Preserve Charleston's historic character without damaging original materials.",
+    href: '/services/historic-ironwork-restoration-charleston',
+  },
+  {
+    Icon: CleatIcon,
+    title: 'Marine Cleaning',
+    desc: 'Boat fittings, trailers, marine hardware, hulls, and dock equipment. Rust and marine growth removed without harsh chemicals near the waterways.',
+    href: '/services/marine-cleaning-charleston',
+  },
+  {
+    Icon: RailingIcon,
+    title: 'Vacation Rental Restoration',
+    desc: "Keep your Isle of Palms, Sullivan's Island, or Folly Beach property in top condition. Recurring maintenance available for property managers.",
+    href: '/services/vacation-rental-cleaning-charleston',
+  },
+];
+
+const credentials = [
+  { label: 'ANSI Z136.1', detail: 'Certified Laser Safety Officer' },
+  { label: '$1M / $2M', detail: 'General liability coverage' },
+  { label: 'Fully mobile', detail: 'We work at your property' },
+  { label: 'Free estimates', detail: '$400 minimum job size' },
+];
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-[#0a1628]">
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0a1628] via-[#0d2040] to-[#0a1628]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00d4d4]/5 rounded-full blur-3xl" />
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-6">
-            Charleston, SC & Lowcountry
-          </p>
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-            Laser Precision.<br />
-            <span className="text-[#00d4d4]">Zero Damage.</span>
-          </h1>
-          <p className="text-gray-300 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-            Charleston&apos;s mobile laser cleaning specialist for historic properties, marine equipment, and vacation rental restoration. No chemicals. No abrasives. No mess.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/quote" className="bg-[#00d4d4] text-[#0a1628] px-8 py-4 rounded font-bold text-lg hover:bg-[#00b8b8] transition-colors">
-              Get a Free Quote
-            </Link>
-            <Link href="/services" className="border border-[#00d4d4]/50 text-[#00d4d4] px-8 py-4 rounded font-bold text-lg hover:border-[#00d4d4] hover:bg-[#00d4d4]/10 transition-colors">
-              See Our Services
-            </Link>
-          </div>
-          <div className="flex flex-wrap justify-center gap-6 mt-12 text-sm text-gray-400">
-            <span className="flex items-center gap-2"><span className="text-[#00d4d4]">✓</span> Licensed & Insured</span>
-            <span className="flex items-center gap-2"><span className="text-[#00d4d4]">✓</span> Mobile Service</span>
-            <span className="flex items-center gap-2"><span className="text-[#00d4d4]">✓</span> No Chemicals</span>
-            <span className="flex items-center gap-2"><span className="text-[#00d4d4]">✓</span> Free Estimates</span>
-          </div>
-        </div>
-      </section>
 
-      <section className="py-20 bg-[#0d1f3c]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-3">What We Do</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white">Three Specialties. One Laser.</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-[#0a1628] border border-[#0e7c7b]/30 rounded-lg p-8 hover:border-[#00d4d4]/50 transition-colors group">
-              <div className="text-4xl mb-4">🏛️</div>
-              <h3 className="text-white font-bold text-xl mb-3 group-hover:text-[#00d4d4] transition-colors">Historic Restoration</h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-4">Iron gates, brick stoops, wrought iron railings, church gates, wood shutters. Preserve Charleston&apos;s historic character without damaging original materials.</p>
-              <Link href="/services/historic-ironwork-restoration-charleston" className="text-[#00d4d4] text-sm font-semibold hover:underline">Learn more →</Link>
-            </div>
-            <div className="bg-[#0a1628] border border-[#0e7c7b]/30 rounded-lg p-8 hover:border-[#00d4d4]/50 transition-colors group">
-              <div className="text-4xl mb-4">⚓</div>
-              <h3 className="text-white font-bold text-xl mb-3 group-hover:text-[#00d4d4] transition-colors">Marine Cleaning</h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-4">Boat fittings, trailers, marine hardware, hulls, and dock equipment. Remove rust and marine growth without harsh chemicals near Charleston&apos;s waterways.</p>
-              <Link href="/services/marine-cleaning-charleston" className="text-[#00d4d4] text-sm font-semibold hover:underline">Learn more →</Link>
-            </div>
-            <div className="bg-[#0a1628] border border-[#0e7c7b]/30 rounded-lg p-8 hover:border-[#00d4d4]/50 transition-colors group">
-              <div className="text-4xl mb-4">🏠</div>
-              <h3 className="text-white font-bold text-xl mb-3 group-hover:text-[#00d4d4] transition-colors">Vacation Rental Restoration</h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-4">Keep your Isle of Palms, Sullivan&apos;s Island, or Folly Beach property in top condition. Recurring maintenance contracts available for property managers.</p>
-              <Link href="/services/vacation-rental-cleaning-charleston" className="text-[#00d4d4] text-sm font-semibold hover:underline">Learn more →</Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero */}
+      <section className="grain relative overflow-hidden border-b border-[#0e7c7b]/20 bg-gradient-to-br from-[#0a1628] via-[#0d2040] to-[#0a1628] py-16 lg:py-24">
+        <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
 
-      <section className="py-20 bg-[#0a1628]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-3">The Technology</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white">Why Laser Cleaning?</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { title: 'No Chemicals', desc: 'Safe for historic surfaces, waterways, and surrounding vegetation.' },
-              { title: 'No Abrasives', desc: 'Removes rust and coatings without scratching or damaging the substrate.' },
-              { title: 'No Mess', desc: 'Minimal residue. No blasting media to clean up after the job.' },
-              { title: 'Fully Mobile', desc: 'We come to you. No need to transport heavy equipment or antiques.' },
-            ].map((item) => (
-              <div key={item.title} className="bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6">
-                <h3 className="text-[#00d4d4] font-bold text-lg mb-2">{item.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
+            <div>
+              <p className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-[#00d4d4]">
+                Charleston, SC &amp; the Lowcountry
+              </p>
+              <h1 className="font-display text-6xl font-bold leading-[0.95] tracking-tight text-white sm:text-7xl lg:text-8xl">
+                Laser precision.
+                <br />
+                <span className="text-[#00d4d4]">Zero damage.</span>
+              </h1>
+              <p className="mt-7 max-w-xl text-lg leading-relaxed text-gray-300">
+                We remove rust, paint, and corrosion from historic ironwork,
+                marine hardware, and exterior metal without touching the
+                material underneath. No chemicals, no abrasives, no water.
+              </p>
+              <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+                <Link
+                  href="/quote"
+                  className="rounded bg-[#00d4d4] px-8 py-4 text-center text-lg font-bold text-[#0a1628] transition-colors hover:bg-[#00b8b8]"
+                >
+                  Get a Free Quote
+                </Link>
+                <Link
+                  href="/services"
+                  className="rounded border border-[#00d4d4]/50 px-8 py-4 text-center text-lg font-bold text-[#00d4d4] transition-colors hover:border-[#00d4d4] hover:bg-[#00d4d4]/10"
+                >
+                  See Our Services
+                </Link>
               </div>
+            </div>
+
+            <LaserReveal />
+          </div>
+        </div>
+      </section>
+
+      {/* Credentials */}
+      <section className="border-b border-[#0e7c7b]/20 bg-[#0d1f3c]">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <dl className="grid grid-cols-2 lg:grid-cols-4">
+            {credentials.map((c) => (
+              <div
+                key={c.label}
+                className="border-b border-[#0e7c7b]/20 px-2 py-6 lg:border-b-0 lg:border-l lg:px-6 lg:first:border-l-0"
+              >
+                <dt className="font-display text-xl font-bold tracking-wide text-white">
+                  {c.label}
+                </dt>
+                <dd className="mt-1 text-sm text-gray-400">{c.detail}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      {/* Specialties */}
+      <section className="bg-[#0a1628] py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#00d4d4]">
+            What we do
+          </p>
+          <h2 className="font-display mb-14 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            Three specialties. One laser.
+          </h2>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            {specialties.map(({ Icon, title, desc, href }) => (
+              <Link
+                key={title}
+                href={href}
+                className="group rounded-lg border border-[#0e7c7b]/30 bg-[#0d1f3c] p-8 transition-colors hover:border-[#00d4d4]/50"
+              >
+                <Icon className="mb-5 h-14 w-14 text-[#00d4d4]" />
+                <h3 className="font-display mb-3 text-2xl font-bold tracking-wide text-white transition-colors group-hover:text-[#00d4d4]">
+                  {title}
+                </h3>
+                <p className="mb-4 text-sm leading-relaxed text-gray-400">{desc}</p>
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#00d4d4] transition-all group-hover:gap-2">
+                  Learn more <span aria-hidden="true">&rarr;</span>
+                </span>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-[#0d1f3c] border-y border-[#0e7c7b]/20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Ready to restore your property?</h2>
-          <p className="text-gray-400 mb-8 max-w-xl mx-auto">Free estimates for all jobs. Minimum $400. Serving Charleston, Mt. Pleasant, Isle of Palms, Sullivan&apos;s Island, James Island, and Folly Beach.</p>
-          <Link href="/quote" className="bg-[#00d4d4] text-[#0a1628] px-10 py-4 rounded font-bold text-lg hover:bg-[#00b8b8] transition-colors">
+      {/* Where each method stops */}
+      <section className="border-y border-[#0e7c7b]/20 bg-[#0d1f3c] py-20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#00d4d4]">
+            The difference
+          </p>
+          <h2 className="font-display mb-5 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            Every method removes the rust. Only one stops there.
+          </h2>
+          <p className="mb-12 max-w-2xl leading-relaxed text-gray-400">
+            Rust sits on top of the metal you are trying to keep. The question
+            is not whether a method can take the corrosion off, it is what else
+            comes off with it.
+          </p>
+          <SurfaceCrossSection />
+        </div>
+      </section>
+
+      {/* Next step */}
+      <section className="bg-[#0a1628] py-20">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <h2 className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            Send a photo. Get a number.
+          </h2>
+          <p className="mx-auto mt-5 mb-10 max-w-xl leading-relaxed text-gray-400">
+            Tell us what needs work and we will tell you what laser cleaning can
+            do for it, usually within 24 hours. Free estimates on every job,
+            $400 minimum. Serving Charleston, Mount Pleasant, Isle of Palms,
+            Sullivan&apos;s Island, James Island, and Folly Beach.
+          </p>
+          <Link
+            href="/quote"
+            className="inline-block rounded bg-[#00d4d4] px-10 py-4 text-lg font-bold text-[#0a1628] transition-colors hover:bg-[#00b8b8]"
+          >
             Request a Free Quote
           </Link>
         </div>
