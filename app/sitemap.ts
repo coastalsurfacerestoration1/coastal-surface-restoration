@@ -1,6 +1,5 @@
 import type { MetadataRoute } from 'next';
-
-const BASE_URL = 'https://coastalsurfacerestoration.com';
+import { SITE_URL as BASE_URL } from '@/lib/seo';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
