@@ -25,6 +25,13 @@ const socials = [
   // },
 ];
 
+const locations = [
+  { label: 'Downtown Charleston', href: '/locations/downtown-charleston' },
+  { label: 'Mount Pleasant', href: '/locations/mount-pleasant' },
+  { label: "Isle of Palms & Sullivan's Island", href: '/locations/isle-of-palms-sullivans-island' },
+  { label: 'James Island & Folly Beach', href: '/locations/james-island-folly-beach' },
+];
+
 export default function Footer() {
   return (
     <footer className="bg-[#0a1628] border-t border-[#0e7c7b]/20">
@@ -94,6 +101,22 @@ export default function Footer() {
             >
               Get a Free Quote
             </Link>
+          </div>
+        </div>
+
+        {/* Service Areas */}
+        <div className="border-t border-[#0e7c7b]/20 mt-8 pt-8">
+          <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-4">Service Areas</h4>
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
+            {locations.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="text-gray-400 hover:text-[#00d4d4] text-sm transition-colors"
+              >
+                {l.label}
+              </Link>
+            ))}
           </div>
         </div>
 
