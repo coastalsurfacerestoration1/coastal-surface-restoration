@@ -1,11 +1,12 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Services | Coastal Surface Restoration',
+export const metadata = pageMetadata({
+  title: 'Services',
   description:
     'Mobile laser cleaning services in Charleston, SC. Rust removal, historic restoration, marine cleaning, brick cleaning, graffiti removal, and more.',
-};
+  path: '/services',
+});
 
 type Service = {
   icon: string;

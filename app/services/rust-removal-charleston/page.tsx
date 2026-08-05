@@ -1,15 +1,35 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
+import { serviceSchema } from '@/lib/schema';
+import Breadcrumbs from '@/app/components/Breadcrumbs';
+import JsonLd from '@/app/components/JsonLd';
+import Faq from '@/app/components/Faq';
 
-export const metadata: Metadata = {
-  title: 'Laser Rust & Paint Removal in Charleston, SC | Coastal Surface Restoration',
+export const metadata = pageMetadata({
+  title: 'Laser Rust & Paint Removal in Charleston, SC',
   description:
     'Laser rust and paint removal in Charleston, SC. Chemical-free, non-abrasive cleaning for iron, steel, marine hardware, and metal surfaces. No sandblasting, no chemicals, no substrate damage. Free estimates.',
-};
+  path: '/services/rust-removal-charleston',
+});
 
 export default function RustRemovalPage() {
   return (
     <div className="min-h-screen bg-[#0a1628]">
+      <Breadcrumbs
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Services', path: '/services' },
+          { name: 'Rust & Paint Removal', path: '/services/rust-removal-charleston' },
+        ]}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: 'Laser Rust and Paint Removal',
+          description: 'Laser rust and paint removal in Charleston, SC. Chemical-free, non-abrasive cleaning for iron, steel, marine hardware, and metal surfaces. No sandblasting, no chemicals, no substrate damage. Free estimates.',
+          path: '/services/rust-removal-charleston',
+          serviceType: 'Rust removal',
+        })}
+      />
 
       {/* Hero */}
       <section className="py-20 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
@@ -21,7 +41,7 @@ export default function RustRemovalPage() {
             Laser Rust and Paint Removal in Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Charleston's salt air and humidity are hard on metal. Rust, flaking paint, and oxidation show up fast on iron, steel, and marine hardware. Laser cleaning strips it all away without abrasives, chemicals, or damage to the metal underneath -- leaving a clean surface ready for coating or reuse.
+            Charleston&apos;s salt air and humidity are hard on metal. Rust, flaking paint, and oxidation show up fast on iron, steel, and marine hardware. Laser cleaning strips it all away without abrasives, chemicals, or damage to the metal underneath -- leaving a clean surface ready for coating or reuse.
           </p>
           <Link
             href="/quote"
@@ -216,6 +236,37 @@ export default function RustRemovalPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        path='/services/rust-removal-charleston'
+        items={[
+          {
+            q: 'How much does laser rust removal cost in Charleston?',
+            a:
+              'Pricing depends on the surface area, how heavy the corrosion is, and how accessible the piece is. Every job starts with a free estimate, and the minimum job size is $400, which covers mobilization and setup. Send photos of the piece and we will follow up with pricing, usually within 24 hours.',
+          },
+          {
+            q: 'Does laser cleaning remove the metal underneath the rust?',
+            a:
+              'No. The pulse is tuned so it lifts the oxide layer and leaves the base metal behind. That is the main difference from sandblasting, which cuts into sound metal along with the rust and thins the piece slightly every time it is done.',
+          },
+          {
+            q: 'Will the rust come back after cleaning?',
+            a:
+              'Bare steel in Charleston salt air will begin to flash rust if it is left uncoated, sometimes within days. For exterior and structural pieces we time the work so a protective coating can go on promptly, and we can refer you to a local painting contractor to handle it.',
+          },
+          {
+            q: 'Can you remove paint as well as rust?',
+            a:
+              'Yes. The same process lifts old coatings, and it can often be dialed in to take one layer at a time. That is useful when you want to remove a failed topcoat without stripping sound primer, or when you need to see what is under old paint before deciding how to proceed.',
+          },
+          {
+            q: 'Do you have to take the piece to a shop?',
+            a:
+              'No. The system is portable, so gates, railings, trailers, and hardware are cleaned where they sit. That matters most for anything mounted, structural, or too heavy to move without a crew.',
+          },
+        ]}
+      />
 
       {/* CTA */}
       <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">

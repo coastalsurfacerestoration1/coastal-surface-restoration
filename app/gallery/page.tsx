@@ -1,7 +1,12 @@
-'use client';
-
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
+
+export const metadata = pageMetadata({
+  title: 'Before & After Gallery',
+  description:
+    'Before and after results from mobile laser cleaning projects across Charleston, SC. Historic ironwork, marine hardware, brick, and masonry restored without chemicals or abrasives.',
+  path: '/gallery',
+});
 
 const categories = ['All', 'Historic / Iron', 'Marine', 'Brick & Masonry', 'Vacation Rental', 'Graffiti Removal'];
 

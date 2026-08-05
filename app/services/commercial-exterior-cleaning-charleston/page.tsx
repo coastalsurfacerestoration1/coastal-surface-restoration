@@ -1,15 +1,35 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
+import { serviceSchema } from '@/lib/schema';
+import Breadcrumbs from '@/app/components/Breadcrumbs';
+import JsonLd from '@/app/components/JsonLd';
+import Faq from '@/app/components/Faq';
 
-export const metadata: Metadata = {
-  title: 'Commercial Exterior Laser Cleaning in Charleston, SC | Coastal Surface Restoration',
+export const metadata = pageMetadata({
+  title: 'Commercial Exterior Laser Cleaning in Charleston, SC',
   description:
     'Laser cleaning for commercial exteriors in Charleston, SC. Restore storefronts, railings, gates, signage, and metal fixtures without chemicals, water, or downtime. Free estimates for businesses and property managers.',
-};
+  path: '/services/commercial-exterior-cleaning-charleston',
+});
 
 export default function CommercialExteriorPage() {
   return (
     <div className="min-h-screen bg-[#0a1628]">
+      <Breadcrumbs
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Services', path: '/services' },
+          { name: 'Commercial Exteriors', path: '/services/commercial-exterior-cleaning-charleston' },
+        ]}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: 'Commercial Exterior Laser Cleaning',
+          description: 'Laser cleaning for commercial exteriors in Charleston, SC. Restore storefronts, railings, gates, signage, and metal fixtures without chemicals, water, or downtime. Free estimates for businesses and property managers.',
+          path: '/services/commercial-exterior-cleaning-charleston',
+          serviceType: 'Commercial exterior cleaning',
+        })}
+      />
 
       {/* Hero */}
       <section className="py-20 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
@@ -39,7 +59,7 @@ export default function CommercialExteriorPage() {
             Curb Appeal, Without the Disruption
           </h2>
           <p className="text-gray-400 leading-relaxed mb-6">
-            Charleston's business districts run on appearances. King Street retail, downtown restaurants, hotels, and offices are judged the moment a customer walks up. In the Lowcountry's salt air, exterior metal rusts and fixtures corrode fast, and a tired-looking entrance sends the wrong message before anyone reaches the door.
+            Charleston&apos;s business districts run on appearances. King Street retail, downtown restaurants, hotels, and offices are judged the moment a customer walks up. In the Lowcountry&apos;s salt air, exterior metal rusts and fixtures corrode fast, and a tired-looking entrance sends the wrong message before anyone reaches the door.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
             The problem with maintaining a commercial exterior is usually the disruption. Pressure washing means water everywhere and closed-off walkways. Chemical cleaning means fumes, runoff, and warning signs during business hours. Neither is a good look while you are trying to serve customers.
@@ -197,6 +217,37 @@ export default function CommercialExteriorPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        path='/services/commercial-exterior-cleaning-charleston'
+        items={[
+          {
+            q: 'Can you work outside of business hours?',
+            a:
+              'Yes. Storefront and restaurant work is usually scheduled early morning, at night, or on a closed day. There is no wet surface, cure time, or chemical odor afterward, so the space is ready to open as soon as we finish.',
+          },
+          {
+            q: 'Do you need water or drainage access?',
+            a:
+              'No. The process is dry, which is the practical advantage on a sidewalk or a shared plaza. There is no runoff to contain, no wash water to route into a storm drain, and no wet walking surface left behind for customers.',
+          },
+          {
+            q: 'Can you handle multiple properties under one contract?',
+            a:
+              'Yes. For property managers and multi-site operators we can quote a portfolio and set a recurring schedule, so exterior metal and signage stay ahead of corrosion rather than being addressed once it is visible from the street.',
+          },
+          {
+            q: 'What commercial surfaces does this work on?',
+            a:
+              'Storefront metal and railings, roll-up shutters and gates, signage and fixtures, patio furniture, awning frames, and masonry facades. Anything on the exterior where corrosion or soiling affects how the property presents.',
+          },
+          {
+            q: 'Do you provide documentation for property records?',
+            a:
+              'Yes. We can supply before and after documentation for maintenance records, insurance, or ownership reporting.',
+          },
+        ]}
+      />
 
       {/* CTA */}
       <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">

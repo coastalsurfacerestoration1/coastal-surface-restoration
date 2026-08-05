@@ -1,11 +1,12 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'About | Coastal Surface Restoration',
+export const metadata = pageMetadata({
+  title: 'About',
   description:
     "Learn about Coastal Surface Restoration, Charleston's mobile laser cleaning specialist. Meet Tyler Scherzer, ANSI-certified Laser Safety Officer and founder.",
-};
+  path: '/about',
+});
 
 export default function AboutPage() {
   return (
@@ -35,10 +36,10 @@ export default function AboutPage() {
               <h2 className="text-3xl font-bold text-white mb-6">Why Laser Cleaning?</h2>
               <div className="space-y-4 text-gray-400 leading-relaxed">
                 <p>
-                  Charleston's historic architecture, coastal climate, and salt air create a perfect storm for rust, oxidation, and surface degradation. Traditional cleaning methods like sandblasting, chemical stripping, and pressure washing often cause more damage than they fix on the delicate ironwork, brick, and wood that define this city's character.
+                  Charleston&apos;s historic architecture, coastal climate, and salt air create a perfect storm for rust, oxidation, and surface degradation. Traditional cleaning methods like sandblasting, chemical stripping, and pressure washing often cause more damage than they fix on the delicate ironwork, brick, and wood that define this city&apos;s character.
                 </p>
                 <p>
-                  Laser cleaning changes that equation entirely. A pulsed fiber laser removes contaminants at the molecular level, leaving the substrate completely intact. No media to clean up. No chemicals near Charleston's waterways. No collateral damage to surrounding materials.
+                  Laser cleaning changes that equation entirely. A pulsed fiber laser removes contaminants at the molecular level, leaving the substrate completely intact. No media to clean up. No chemicals near Charleston&apos;s waterways. No collateral damage to surrounding materials.
                 </p>
                 <p>
                   We built Coastal Surface Restoration around this technology specifically because Charleston deserves better than the alternatives.

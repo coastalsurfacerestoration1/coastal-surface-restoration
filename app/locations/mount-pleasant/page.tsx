@@ -1,15 +1,36 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
+import { serviceSchema } from '@/lib/schema';
+import Breadcrumbs from '@/app/components/Breadcrumbs';
+import JsonLd from '@/app/components/JsonLd';
+import Faq from '@/app/components/Faq';
 
-export const metadata: Metadata = {
-  title: 'Laser Cleaning & Rust Removal in Mount Pleasant, SC | Coastal Surface Restoration',
+export const metadata = pageMetadata({
+  title: 'Laser Cleaning & Rust Removal in Mount Pleasant, SC',
   description:
     'Mobile laser rust removal and surface restoration in Mount Pleasant, SC. Boat trailers, dock hardware, gates, railings, and outdoor metal cleaned on site with no chemicals or abrasives. Free estimates.',
-};
+  path: '/locations/mount-pleasant',
+});
 
 export default function MountPleasantPage() {
   return (
     <div className="min-h-screen bg-[#0a1628]">
+      <Breadcrumbs
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Service Areas', path: '/locations' },
+          { name: 'Mount Pleasant', path: '/locations/mount-pleasant' },
+        ]}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: 'Laser Cleaning and Rust Removal in Mount Pleasant',
+          description: 'Mobile laser rust removal and surface restoration in Mount Pleasant, SC. Boat trailers, dock hardware, gates, railings, and outdoor metal cleaned on site with no chemicals or abrasives. Free estimates.',
+          path: '/locations/mount-pleasant',
+          serviceType: 'Laser cleaning',
+          areaServed: ['Mount Pleasant'],
+        })}
+      />
 
       {/* Hero */}
       <section className="py-20 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
@@ -219,6 +240,37 @@ export default function MountPleasantPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        path='/locations/mount-pleasant'
+        items={[
+          {
+            q: 'Do you come to Mount Pleasant, or do I bring the piece to you?',
+            a:
+              'We come to you. The system is fully mobile, so trailers, gates, railings, and dock hardware are cleaned in your driveway or at your dock anywhere in East Cooper.',
+          },
+          {
+            q: 'Can you clean a boat trailer at my house?',
+            a:
+              'Yes, and it is one of the more common requests here. The trailer stays assembled and no blasting media gets into the bearings, brakes, or threads, so it can go straight back into use.',
+          },
+          {
+            q: 'Do you work on historic homes in the Old Village?',
+            a:
+              'Yes. The Old Village and the streets around Shem Creek have original ironwork and antique hardware that need the same careful approach as anything on the peninsula, and the method suits it well.',
+          },
+          {
+            q: 'Will rust come back on my railings?',
+            a:
+              'Bare metal in this salt air will flash rust if it is left uncoated. For exterior pieces we plan the work so a coating can follow promptly, and we can refer you to a local painting contractor.',
+          },
+          {
+            q: 'What parts of Mount Pleasant do you cover?',
+            a:
+              "From the Old Village and Shem Creek out through I'On, Snee Farm, Belle Hall, Park West, Dunes West, and Carolina Park, plus Daniel Island and the Wando side.",
+          },
+        ]}
+      />
 
       {/* CTA */}
       <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">

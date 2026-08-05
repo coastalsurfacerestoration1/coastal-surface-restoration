@@ -1,15 +1,35 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
+import { serviceSchema } from '@/lib/schema';
+import Breadcrumbs from '@/app/components/Breadcrumbs';
+import JsonLd from '@/app/components/JsonLd';
+import Faq from '@/app/components/Faq';
 
-export const metadata: Metadata = {
-  title: 'Laser Marine Cleaning in Charleston, SC | Coastal Surface Restoration',
+export const metadata = pageMetadata({
+  title: 'Laser Marine Cleaning in Charleston, SC',
   description:
     'Laser cleaning for boats, trailers, and marine hardware in Charleston, SC. Remove rust, corrosion, and oxidation from fittings, hulls, and dock equipment without chemicals or abrasives. Free estimates.',
-};
+  path: '/services/marine-cleaning-charleston',
+});
 
 export default function MarineCleaningPage() {
   return (
     <div className="min-h-screen bg-[#0a1628]">
+      <Breadcrumbs
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Services', path: '/services' },
+          { name: 'Marine Cleaning', path: '/services/marine-cleaning-charleston' },
+        ]}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: 'Laser Marine Cleaning',
+          description: 'Laser cleaning for boats, trailers, and marine hardware in Charleston, SC. Remove rust, corrosion, and oxidation from fittings, hulls, and dock equipment without chemicals or abrasives. Free estimates.',
+          path: '/services/marine-cleaning-charleston',
+          serviceType: 'Marine cleaning',
+        })}
+      />
 
       {/* Hero */}
       <section className="py-20 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
@@ -216,6 +236,37 @@ export default function MarineCleaningPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        path='/services/marine-cleaning-charleston'
+        items={[
+          {
+            q: 'Can you clean a boat trailer without removing the wheels or bearings?',
+            a:
+              'Yes. There is no blasting media to work into bearings, brake hardware, or threads, which is the usual reason trailers get stripped down before cleaning. The trailer can be cleaned assembled, on site, and put straight back into service.',
+          },
+          {
+            q: 'Do you work dockside?',
+            a:
+              'Yes. The system runs off a portable generator, so we work at private docks and in marina slips throughout the area. Nothing is discharged into the water, which is what makes this practical over a creek or a marsh.',
+          },
+          {
+            q: 'Is it safe on aluminum and stainless?',
+            a:
+              'Yes, with settings adjusted for the metal. Aluminum and the lower stainless grades common on marine hardware both behave differently than steel, so we test a small area first and confirm the result with you before working through the piece.',
+          },
+          {
+            q: 'Can you remove bottom paint?',
+            a:
+              'The process removes coatings, but a full hull is a large surface area job and pricing reflects that. Send photos and dimensions and we will tell you honestly whether laser is the right tool for your hull or whether another method makes more sense.',
+          },
+          {
+            q: 'What about corrosion in hard to reach fittings?',
+            a:
+              'Detail work is where the method has an advantage. The beam can be directed into recesses, around fasteners, and along weld seams without masking or disassembling the surrounding area.',
+          },
+        ]}
+      />
 
       {/* CTA */}
       <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">

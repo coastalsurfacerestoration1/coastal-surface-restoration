@@ -1,15 +1,35 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
+import { serviceSchema } from '@/lib/schema';
+import Breadcrumbs from '@/app/components/Breadcrumbs';
+import JsonLd from '@/app/components/JsonLd';
+import Faq from '@/app/components/Faq';
 
-export const metadata: Metadata = {
-  title: 'Historic Ironwork Restoration in Charleston, SC | Coastal Surface Restoration',
+export const metadata = pageMetadata({
+  title: 'Historic Ironwork Restoration in Charleston, SC',
   description:
     'Laser cleaning for historic ironwork, wrought iron gates, and antique metalwork in Charleston, SC. Chemical-free, non-abrasive restoration safe for Philip Simmons gates and irreplaceable historic pieces. Free estimates.',
-};
+  path: '/services/historic-ironwork-restoration-charleston',
+});
 
 export default function HistoricIronworkPage() {
   return (
     <div className="min-h-screen bg-[#0a1628]">
+      <Breadcrumbs
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Services', path: '/services' },
+          { name: 'Historic Ironwork Restoration', path: '/services/historic-ironwork-restoration-charleston' },
+        ]}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: 'Historic Ironwork Restoration',
+          description: 'Laser cleaning for historic ironwork, wrought iron gates, and antique metalwork in Charleston, SC. Chemical-free, non-abrasive restoration safe for Philip Simmons gates and irreplaceable historic pieces. Free estimates.',
+          path: '/services/historic-ironwork-restoration-charleston',
+          serviceType: 'Historic restoration',
+        })}
+      />
 
       {/* Hero */}
       <section className="py-20 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
@@ -18,7 +38,7 @@ export default function HistoricIronworkPage() {
             Historic District & Beyond
           </p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">
-            Laser Restoration for Charleston's Historic Ironwork
+            Laser Restoration for Charleston&apos;s Historic Ironwork
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
             Charleston has one of the most significant collections of historic ironwork in the Southeast -- wrought iron gates, railings, and decorative metalwork that date back hundreds of years. Restoring these pieces requires a method that removes rust and oxidation without touching the original material underneath. Laser cleaning is the only method that does this.
@@ -36,10 +56,10 @@ export default function HistoricIronworkPage() {
       <section className="py-16 bg-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
-            Preserving Charleston's Irreplaceable Ironwork Legacy
+            Preserving Charleston&apos;s Irreplaceable Ironwork Legacy
           </h2>
           <p className="text-gray-400 leading-relaxed mb-6">
-            Charleston's historic district contains some of the most celebrated ironwork in North America. From the Sword Gates on Legare Street to the intricate pieces created by master blacksmith Philip Simmons, these works represent centuries of craftsmanship that cannot be replaced.
+            Charleston&apos;s historic district contains some of the most celebrated ironwork in North America. From the Sword Gates on Legare Street to the intricate pieces created by master blacksmith Philip Simmons, these works represent centuries of craftsmanship that cannot be replaced.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
             The challenge with restoring historic ironwork is that traditional cleaning methods -- sandblasting, chemical stripping, wire brushing -- all risk damaging or destroying the original surface. For pieces that are 100, 150, or 200 years old, that risk is simply too high.
@@ -216,6 +236,37 @@ export default function HistoricIronworkPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        path='/services/historic-ironwork-restoration-charleston'
+        items={[
+          {
+            q: 'Is laser cleaning safe for historic wrought iron?',
+            a:
+              "Yes, it is one of the gentler options available. Corrosion and coatings come off without mechanical contact, so tool marks, hand-forged texture, and maker's details survive the process. Nothing abrasive touches the surface and no chemical soaks into the metal.",
+          },
+          {
+            q: 'Will it damage the patina on antique ironwork?',
+            a:
+              'The process is adjustable, so we set it to the outcome you want. Some owners want corrosion removed and the aged surface kept, others want bare metal before recoating. We agree on that before starting and test a small area first.',
+          },
+          {
+            q: 'Do you work on properties under Board of Architectural Review oversight?',
+            a:
+              'We work throughout the historic district and are familiar with the constraints. Work on a designated property should be cleared with the BAR or your preservation consultant first, and we can provide a written description of the method for that submission.',
+          },
+          {
+            q: 'How does this compare to sandblasting historic iron?',
+            a:
+              'Sandblasting removes base metal along with rust, rounds off crisp forged edges, and drives media into joints and surrounding masonry. On irreplaceable ironwork that damage cannot be undone. Laser cleaning removes only the surface layer and leaves the original profile intact.',
+          },
+          {
+            q: 'Can you clean ironwork that is still mounted?',
+            a:
+              'Yes, and usually that is preferable. Gates, railings, balconies, and fence panels are cleaned in place, which avoids the risk of damage during removal and reinstallation and avoids disturbing the masonry the ironwork is set into.',
+          },
+        ]}
+      />
 
       {/* CTA */}
       <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">

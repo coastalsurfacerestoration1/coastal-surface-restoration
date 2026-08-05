@@ -1,15 +1,36 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
+import { serviceSchema } from '@/lib/schema';
+import Breadcrumbs from '@/app/components/Breadcrumbs';
+import JsonLd from '@/app/components/JsonLd';
+import Faq from '@/app/components/Faq';
 
-export const metadata: Metadata = {
-  title: "Laser Cleaning on Isle of Palms & Sullivan's Island, SC | Coastal Surface Restoration",
+export const metadata = pageMetadata({
+  title: "Laser Cleaning on Isle of Palms & Sullivan's Island, SC",
   description:
     "Mobile laser cleaning for Isle of Palms and Sullivan's Island properties. Salt corrosion removed from railings, outdoor showers, shutters, and hardware. Rental turnover scheduling available. Free estimates.",
-};
+  path: '/locations/isle-of-palms-sullivans-island',
+});
 
 export default function IsleOfPalmsSullivansPage() {
   return (
     <div className="min-h-screen bg-[#0a1628]">
+      <Breadcrumbs
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Service Areas', path: '/locations' },
+          { name: "Isle of Palms & Sullivan's Island", path: '/locations/isle-of-palms-sullivans-island' },
+        ]}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: "Laser Cleaning on Isle of Palms and Sullivan's Island",
+          description: "Mobile laser cleaning for Isle of Palms and Sullivan's Island properties. Salt corrosion removed from railings, outdoor showers, shutters, and hardware. Rental turnover scheduling available. Free estimates.",
+          path: '/locations/isle-of-palms-sullivans-island',
+          serviceType: 'Laser cleaning',
+          areaServed: ['Isle of Palms', "Sullivan's Island"],
+        })}
+      />
 
       {/* Hero */}
       <section className="py-20 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
@@ -196,6 +217,37 @@ export default function IsleOfPalmsSullivansPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        path='/locations/isle-of-palms-sullivans-island'
+        items={[
+          {
+            q: 'Why does hardware corrode so much faster on the islands?',
+            a:
+              'There is nothing between the property and the Atlantic to slow the salt down. Airborne chloride settles on exterior surfaces and holds moisture against the metal, so corrosion starts under coatings before anything is visible. Hardware that lasts fifteen years inland can show rust bleed in three or four here.',
+          },
+          {
+            q: 'Does stainless steel really rust out here?',
+            a:
+              'Yes. The lower stainless grades used on a lot of railing and marine hardware pit and tea-stain in front-line salt exposure. It is not a sign of a defective part, it is the grade meeting an environment it was not specified for.',
+          },
+          {
+            q: 'Can you schedule around rental turnovers?',
+            a:
+              'Yes. There is no cure time and no wet surface afterward, so an area is usable immediately. For rentals we work within turnover windows, and the off-season is usually the most efficient time for larger jobs.',
+          },
+          {
+            q: 'Do you work at the marina and on private docks?',
+            a:
+              'Yes. Lift frames, cleats, ladders, and fittings are cleaned at the dock. The process is dry, so nothing enters the water.',
+          },
+          {
+            q: 'What is the most common island job?',
+            a:
+              'Exterior stairs and railings. Beach access stairs and deck rails take the heaviest exposure on the property, and surface rust there turns into a structural conversation faster than anywhere else.',
+          },
+        ]}
+      />
 
       {/* CTA */}
       <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">

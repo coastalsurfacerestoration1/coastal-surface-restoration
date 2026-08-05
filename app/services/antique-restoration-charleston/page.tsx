@@ -1,15 +1,35 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
+import { serviceSchema } from '@/lib/schema';
+import Breadcrumbs from '@/app/components/Breadcrumbs';
+import JsonLd from '@/app/components/JsonLd';
+import Faq from '@/app/components/Faq';
 
-export const metadata: Metadata = {
-  title: 'Laser Antique & Hardware Restoration in Charleston, SC | Coastal Surface Restoration',
+export const metadata = pageMetadata({
+  title: 'Laser Antique & Hardware Restoration in Charleston, SC',
   description:
     'Laser cleaning for antiques, hardware, tools, and heirloom metalwork in Charleston, SC. Remove rust, tarnish, and old finishes without damaging the original surface or patina. Free estimates.',
-};
+  path: '/services/antique-restoration-charleston',
+});
 
 export default function AntiqueRestorationPage() {
   return (
     <div className="min-h-screen bg-[#0a1628]">
+      <Breadcrumbs
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Services', path: '/services' },
+          { name: 'Antique Restoration', path: '/services/antique-restoration-charleston' },
+        ]}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: 'Antique and Hardware Restoration',
+          description: 'Laser cleaning for antiques, hardware, tools, and heirloom metalwork in Charleston, SC. Remove rust, tarnish, and old finishes without damaging the original surface or patina. Free estimates.',
+          path: '/services/antique-restoration-charleston',
+          serviceType: 'Antique restoration',
+        })}
+      />
 
       {/* Hero */}
       <section className="py-20 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
@@ -21,7 +41,7 @@ export default function AntiqueRestorationPage() {
             Laser Restoration for Antiques and Heirloom Metalwork
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            With antiques, the surface is the value. Aggressive cleaning that removes rust also removes the detail, the maker's marks, and the patina that make a piece worth keeping. Laser cleaning lifts corrosion and old finishes with the precision to preserve exactly what should stay.
+            With antiques, the surface is the value. Aggressive cleaning that removes rust also removes the detail, the maker&apos;s marks, and the patina that make a piece worth keeping. Laser cleaning lifts corrosion and old finishes with the precision to preserve exactly what should stay.
           </p>
           <Link
             href="/quote"
@@ -211,6 +231,37 @@ export default function AntiqueRestorationPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        path='/services/antique-restoration-charleston'
+        items={[
+          {
+            q: 'Will laser cleaning devalue my antique?',
+            a:
+              "It should not, and preserving value is the reason to use it. Aggressive cleaning destroys the maker's marks, tool work, and patina that carry the value. The process is adjustable and we agree on how far to take it before starting. If a piece should not be cleaned at all, we will say so.",
+          },
+          {
+            q: 'Can you keep the patina and remove only the rust?',
+            a:
+              'Often yes. Active corrosion and stable patina respond differently, which makes it possible to lift the rust while leaving aged surface behind. It is decided piece by piece, and we test an inconspicuous area first.',
+          },
+          {
+            q: 'What kinds of pieces do you work on?',
+            a:
+              'Antique hardware, hinges and latches, vintage tools, cast iron, decorative metalwork, lamps and light fixtures, and family heirlooms. Anything where the surface itself is part of what makes the piece worth keeping.',
+          },
+          {
+            q: 'Do I need to bring the piece to you?',
+            a:
+              'For small items that is often easiest and we can arrange a handoff. For anything heavy, mounted, or fragile enough that transport is the real risk, we come to it.',
+          },
+          {
+            q: 'How do you approach a piece you have not seen before?',
+            a:
+              'We start with an inconspicuous test area, show you the result, and adjust before going further. On anything irreplaceable, that step is not optional.',
+          },
+        ]}
+      />
 
       {/* CTA */}
       <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">

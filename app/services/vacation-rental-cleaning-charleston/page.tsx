@@ -1,15 +1,35 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
+import { serviceSchema } from '@/lib/schema';
+import Breadcrumbs from '@/app/components/Breadcrumbs';
+import JsonLd from '@/app/components/JsonLd';
+import Faq from '@/app/components/Faq';
 
-export const metadata: Metadata = {
-  title: 'Laser Cleaning for Vacation Rentals in Charleston, SC | Coastal Surface Restoration',
+export const metadata = pageMetadata({
+  title: 'Laser Cleaning for Vacation Rentals in Charleston, SC',
   description:
     'Laser cleaning and surface restoration for vacation rentals and property managers in Charleston, Isle of Palms, Sullivan\'s Island, and Folly Beach. Rust, railings, and curb appeal on a maintenance schedule. Free estimates.',
-};
+  path: '/services/vacation-rental-cleaning-charleston',
+});
 
 export default function VacationRentalPage() {
   return (
     <div className="min-h-screen bg-[#0a1628]">
+      <Breadcrumbs
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Services', path: '/services' },
+          { name: 'Vacation Rental Restoration', path: '/services/vacation-rental-cleaning-charleston' },
+        ]}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: 'Vacation Rental Surface Restoration',
+          description: "Laser cleaning and surface restoration for vacation rentals and property managers in Charleston, Isle of Palms, Sullivan\'s Island, and Folly Beach. Rust, railings, and curb appeal on a maintenance schedule. Free estimates.",
+          path: '/services/vacation-rental-cleaning-charleston',
+          serviceType: 'Vacation rental maintenance',
+        })}
+      />
 
       {/* Hero */}
       <section className="py-20 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
@@ -21,7 +41,7 @@ export default function VacationRentalPage() {
             Laser Cleaning for Charleston Vacation Rentals
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            On the islands, salt air rusts railings, corrodes hardware, and dulls fixtures faster than anywhere inland. For a rental, that damage shows up in the photos and the reviews. We keep Isle of Palms, Sullivan's Island, and Folly Beach properties looking their best, on a schedule that fits your turnovers.
+            On the islands, salt air rusts railings, corrodes hardware, and dulls fixtures faster than anywhere inland. For a rental, that damage shows up in the photos and the reviews. We keep Isle of Palms, Sullivan&apos;s Island, and Folly Beach properties looking their best, on a schedule that fits your turnovers.
           </p>
           <Link
             href="/quote"
@@ -151,6 +171,37 @@ export default function VacationRentalPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        path='/services/vacation-rental-cleaning-charleston'
+        items={[
+          {
+            q: 'Can you work around guest turnovers?',
+            a:
+              'Yes, that is how most rental work is scheduled. The process is dry, with no cure time, no odor, and no wet surface afterward, so an area is usable again as soon as we finish. That makes a turnover window workable.',
+          },
+          {
+            q: 'Do you offer recurring maintenance for rental properties?',
+            a:
+              'Yes. Island properties corrode on a predictable cycle, so scheduled visits keep railings and hardware from reaching the point of replacement. We can quote a recurring schedule for a single property or a managed portfolio.',
+          },
+          {
+            q: 'Will guests notice any smell or residue?',
+            a:
+              'No. There are no chemicals involved and no blasting media to sweep up. The process leaves a small amount of fine residue that is wiped down before we leave, and nothing a guest would notice on arrival.',
+          },
+          {
+            q: 'What does this actually fix in listing photos?',
+            a:
+              'Rust streaks running down stucco and siding, corroded railings and stair hardware, stained entry steps, and dulled light fixtures. Those are the details that read as neglect in photos even when the interior is spotless.',
+          },
+          {
+            q: 'Do you work with property management companies?',
+            a:
+              'Yes. We can cover multiple properties on one schedule and coordinate access with your existing turnover crews, so the owner does not need to be present.',
+          },
+        ]}
+      />
 
       {/* CTA */}
       <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">

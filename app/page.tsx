@@ -15,7 +15,7 @@ export default function Home() {
             <span className="text-[#00d4d4]">Zero Damage.</span>
           </h1>
           <p className="text-gray-300 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-            Charleston's mobile laser cleaning specialist for historic properties, marine equipment, and vacation rental restoration. No chemicals. No abrasives. No mess.
+            Charleston&apos;s mobile laser cleaning specialist for historic properties, marine equipment, and vacation rental restoration. No chemicals. No abrasives. No mess.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/quote" className="bg-[#00d4d4] text-[#0a1628] px-8 py-4 rounded font-bold text-lg hover:bg-[#00b8b8] transition-colors">
@@ -44,19 +44,19 @@ export default function Home() {
             <div className="bg-[#0a1628] border border-[#0e7c7b]/30 rounded-lg p-8 hover:border-[#00d4d4]/50 transition-colors group">
               <div className="text-4xl mb-4">🏛️</div>
               <h3 className="text-white font-bold text-xl mb-3 group-hover:text-[#00d4d4] transition-colors">Historic Restoration</h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-4">Iron gates, brick stoops, wrought iron railings, church gates, wood shutters. Preserve Charleston's historic character without damaging original materials.</p>
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">Iron gates, brick stoops, wrought iron railings, church gates, wood shutters. Preserve Charleston&apos;s historic character without damaging original materials.</p>
               <Link href="/services/historic-ironwork-restoration-charleston" className="text-[#00d4d4] text-sm font-semibold hover:underline">Learn more →</Link>
             </div>
             <div className="bg-[#0a1628] border border-[#0e7c7b]/30 rounded-lg p-8 hover:border-[#00d4d4]/50 transition-colors group">
               <div className="text-4xl mb-4">⚓</div>
               <h3 className="text-white font-bold text-xl mb-3 group-hover:text-[#00d4d4] transition-colors">Marine Cleaning</h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-4">Boat fittings, trailers, marine hardware, hulls, and dock equipment. Remove rust and marine growth without harsh chemicals near Charleston's waterways.</p>
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">Boat fittings, trailers, marine hardware, hulls, and dock equipment. Remove rust and marine growth without harsh chemicals near Charleston&apos;s waterways.</p>
               <Link href="/services/marine-cleaning-charleston" className="text-[#00d4d4] text-sm font-semibold hover:underline">Learn more →</Link>
             </div>
             <div className="bg-[#0a1628] border border-[#0e7c7b]/30 rounded-lg p-8 hover:border-[#00d4d4]/50 transition-colors group">
               <div className="text-4xl mb-4">🏠</div>
               <h3 className="text-white font-bold text-xl mb-3 group-hover:text-[#00d4d4] transition-colors">Vacation Rental Restoration</h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-4">Keep your Isle of Palms, Sullivan's Island, or Folly Beach property in top condition. Recurring maintenance contracts available for property managers.</p>
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">Keep your Isle of Palms, Sullivan&apos;s Island, or Folly Beach property in top condition. Recurring maintenance contracts available for property managers.</p>
               <Link href="/services/vacation-rental-cleaning-charleston" className="text-[#00d4d4] text-sm font-semibold hover:underline">Learn more →</Link>
             </div>
           </div>
@@ -88,7 +88,7 @@ export default function Home() {
       <section className="py-16 bg-[#0d1f3c] border-y border-[#0e7c7b]/20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Ready to restore your property?</h2>
-          <p className="text-gray-400 mb-8 max-w-xl mx-auto">Free estimates for all jobs. Minimum $400. Serving Charleston, Mt. Pleasant, Isle of Palms, Sullivan's Island, James Island, and Folly Beach.</p>
+          <p className="text-gray-400 mb-8 max-w-xl mx-auto">Free estimates for all jobs. Minimum $400. Serving Charleston, Mt. Pleasant, Isle of Palms, Sullivan&apos;s Island, James Island, and Folly Beach.</p>
           <Link href="/quote" className="bg-[#00d4d4] text-[#0a1628] px-10 py-4 rounded font-bold text-lg hover:bg-[#00b8b8] transition-colors">
             Request a Free Quote
           </Link>

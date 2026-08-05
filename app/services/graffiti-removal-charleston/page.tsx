@@ -1,15 +1,35 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
+import { serviceSchema } from '@/lib/schema';
+import Breadcrumbs from '@/app/components/Breadcrumbs';
+import JsonLd from '@/app/components/JsonLd';
+import Faq from '@/app/components/Faq';
 
-export const metadata: Metadata = {
-  title: 'Laser Graffiti Removal in Charleston, SC | Coastal Surface Restoration',
+export const metadata = pageMetadata({
+  title: 'Laser Graffiti Removal in Charleston, SC',
   description:
     'Laser graffiti removal in Charleston, SC. Remove spray paint from historic brick, masonry, metal, and concrete without ghosting, chemicals, or pressure washing damage. Safe for historic surfaces. Free estimates.',
-};
+  path: '/services/graffiti-removal-charleston',
+});
 
 export default function GraffitiRemovalPage() {
   return (
     <div className="min-h-screen bg-[#0a1628]">
+      <Breadcrumbs
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Services', path: '/services' },
+          { name: 'Graffiti Removal', path: '/services/graffiti-removal-charleston' },
+        ]}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: 'Laser Graffiti Removal',
+          description: 'Laser graffiti removal in Charleston, SC. Remove spray paint from historic brick, masonry, metal, and concrete without ghosting, chemicals, or pressure washing damage. Safe for historic surfaces. Free estimates.',
+          path: '/services/graffiti-removal-charleston',
+          serviceType: 'Graffiti removal',
+        })}
+      />
 
       {/* Hero */}
       <section className="py-20 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
@@ -42,7 +62,7 @@ export default function GraffitiRemovalPage() {
             The hardest part of graffiti removal is not lifting the paint. It is doing it without leaving a mark. Pressure washing drives paint deeper into porous brick and etches a permanent outline into the surface. Chemical strippers bleed pigment into the material and leave a discolored shadow that is often more visible than the original tag.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
-            Charleston's historic district is full of soft, hand-made brick, lime mortar, and stucco that these methods can destroy. The city's own graffiti abatement guidance warns against aggressive removal on historic masonry for exactly this reason. Once the surface is gouged or shadowed, the damage is permanent.
+            Charleston&apos;s historic district is full of soft, hand-made brick, lime mortar, and stucco that these methods can destroy. The city&apos;s own graffiti abatement guidance warns against aggressive removal on historic masonry for exactly this reason. Once the surface is gouged or shadowed, the damage is permanent.
           </p>
           <p className="text-gray-400 leading-relaxed">
             Laser cleaning removes only the paint layer. Our pulsed fiber laser vaporizes the spray paint and stops at the original surface, so there is no ghosting, no etching, and no chemical residue. It is the safest method available for graffiti on historic and heritage surfaces, and it works on modern surfaces just as well.
@@ -216,6 +236,37 @@ export default function GraffitiRemovalPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        path='/services/graffiti-removal-charleston'
+        items={[
+          {
+            q: 'How quickly can you remove graffiti?',
+            a:
+              'Most single tags are a one visit job once we are on site. Scheduling depends on current workload, and we prioritize graffiti because the longer paint sits, particularly in sun, the deeper it bonds and the harder full removal becomes.',
+          },
+          {
+            q: 'Will there be a shadow or ghost left behind?',
+            a:
+              'Ghosting comes from methods that either drive pigment deeper into the surface or clean an area so aggressively that it no longer matches the wall around it. Lifting the paint off the surface is what makes a clean result possible on porous masonry.',
+          },
+          {
+            q: 'Is it safe on historic brick and stucco?',
+            a:
+              "Yes, and this is the case where other methods do the most damage. The City of Charleston's own graffiti guidance warns against aggressive removal on historic masonry. A dry, non-contact method avoids gouging the surface and leaves no chemical residue in the wall.",
+          },
+          {
+            q: 'Can you remove graffiti without stripping the paint underneath?',
+            a:
+              'Sometimes. Where a tag sits on top of a sound coating there is often enough difference between the two for the process to lift one and leave the other. Where the paints are too similar, the honest answer is that the area will need repainting, and we will tell you that up front.',
+          },
+          {
+            q: 'Do you work with property managers on repeat vandalism?',
+            a:
+              'Yes. For frontage that gets hit repeatedly we can set up a standing arrangement so removal happens quickly rather than waiting on a fresh quote each time.',
+          },
+        ]}
+      />
 
       {/* CTA */}
       <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">

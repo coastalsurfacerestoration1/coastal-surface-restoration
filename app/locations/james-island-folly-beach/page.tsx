@@ -1,15 +1,36 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
+import { serviceSchema } from '@/lib/schema';
+import Breadcrumbs from '@/app/components/Breadcrumbs';
+import JsonLd from '@/app/components/JsonLd';
+import Faq from '@/app/components/Faq';
 
-export const metadata: Metadata = {
-  title: 'Laser Cleaning on James Island & Folly Beach, SC | Coastal Surface Restoration',
+export const metadata = pageMetadata({
+  title: 'Laser Cleaning on James Island & Folly Beach, SC',
   description:
     'Mobile laser cleaning for James Island and Folly Beach. Dock and boat lift hardware, marsh-front railings, trailers, and exterior metal cleaned on site with no chemicals or runoff. Free estimates.',
-};
+  path: '/locations/james-island-folly-beach',
+});
 
 export default function JamesIslandFollyBeachPage() {
   return (
     <div className="min-h-screen bg-[#0a1628]">
+      <Breadcrumbs
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Service Areas', path: '/locations' },
+          { name: 'James Island & Folly Beach', path: '/locations/james-island-folly-beach' },
+        ]}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: 'Laser Cleaning on James Island and Folly Beach',
+          description: 'Mobile laser cleaning for James Island and Folly Beach. Dock and boat lift hardware, marsh-front railings, trailers, and exterior metal cleaned on site with no chemicals or runoff. Free estimates.',
+          path: '/locations/james-island-folly-beach',
+          serviceType: 'Laser cleaning',
+          areaServed: ['James Island', 'Folly Beach'],
+        })}
+      />
 
       {/* Hero */}
       <section className="py-20 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
@@ -211,6 +232,37 @@ export default function JamesIslandFollyBeachPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        path='/locations/james-island-folly-beach'
+        items={[
+          {
+            q: 'Can you clean a boat lift without taking it apart?',
+            a:
+              'Yes. Lift frames, cradles, and mounting hardware are cleaned in place on the dock. There is no blasting media to drop into the creek or work into the lift mechanism, which is the usual reason this work gets deferred.',
+          },
+          {
+            q: 'Does anything get into the water?',
+            a:
+              'No. The process is dry and contained at the surface, with no chemicals and no abrasive media. That is what makes it workable on a dock over a tidal creek, where blasting and chemical stripping are not realistic options.',
+          },
+          {
+            q: 'Do you schedule around the tide?',
+            a:
+              'Yes. Some dock and lift work is far easier at a particular stage of tide, so we plan the visit around it rather than working around whatever the water happens to be doing when we arrive.',
+          },
+          {
+            q: 'Why does hardware corrode so fast on the marsh side?',
+            a:
+              'Tidal marsh means a constant cycle of salt-laden humidity, wetting, and partial drying. Hardware spends more time damp than it would in straight ocean exposure, and that cycle drives corrosion into working parts like axles, hinges, and cable fittings.',
+          },
+          {
+            q: 'What do you work on around James Island and Folly?',
+            a:
+              'Boat lifts and davits, dock hardware and ladders, trailers and towing hardware, marsh-front railings and exterior metal, older cottage hardware, and graffiti on commercial frontage around Center Street.',
+          },
+        ]}
+      />
 
       {/* CTA */}
       <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">

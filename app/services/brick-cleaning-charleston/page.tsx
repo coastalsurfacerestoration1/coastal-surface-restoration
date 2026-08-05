@@ -1,15 +1,35 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
+import { serviceSchema } from '@/lib/schema';
+import Breadcrumbs from '@/app/components/Breadcrumbs';
+import JsonLd from '@/app/components/JsonLd';
+import Faq from '@/app/components/Faq';
 
-export const metadata: Metadata = {
-  title: 'Laser Brick & Masonry Cleaning in Charleston, SC | Coastal Surface Restoration',
+export const metadata = pageMetadata({
+  title: 'Laser Brick & Masonry Cleaning in Charleston, SC',
   description:
     'Laser brick and masonry cleaning in Charleston, SC. Remove efflorescence, grime, and staining from historic brick, stone, and stucco without pressure washing damage or chemicals. Free estimates.',
-};
+  path: '/services/brick-cleaning-charleston',
+});
 
 export default function BrickCleaningPage() {
   return (
     <div className="min-h-screen bg-[#0a1628]">
+      <Breadcrumbs
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Services', path: '/services' },
+          { name: 'Brick & Masonry Cleaning', path: '/services/brick-cleaning-charleston' },
+        ]}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: 'Laser Brick and Masonry Cleaning',
+          description: 'Laser brick and masonry cleaning in Charleston, SC. Remove efflorescence, grime, and staining from historic brick, stone, and stucco without pressure washing damage or chemicals. Free estimates.',
+          path: '/services/brick-cleaning-charleston',
+          serviceType: 'Masonry cleaning',
+        })}
+      />
 
       {/* Hero */}
       <section className="py-20 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
@@ -21,7 +41,7 @@ export default function BrickCleaningPage() {
             Laser Brick and Masonry Cleaning in Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Charleston's historic brick is soft, hand-made, and easy to ruin. Pressure washing blasts away the fired surface and opens the brick to water damage. Laser cleaning lifts efflorescence, grime, and staining while leaving the original masonry and mortar completely intact.
+            Charleston&apos;s historic brick is soft, hand-made, and easy to ruin. Pressure washing blasts away the fired surface and opens the brick to water damage. Laser cleaning lifts efflorescence, grime, and staining while leaving the original masonry and mortar completely intact.
           </p>
           <Link
             href="/quote"
@@ -39,7 +59,7 @@ export default function BrickCleaningPage() {
             Why Historic Brick Needs a Gentler Method
           </h2>
           <p className="text-gray-400 leading-relaxed mb-6">
-            The brick on Charleston's historic homes was fired in the 1700s and 1800s with a hard outer skin that protects the softer core. Once that skin is gone, the brick absorbs water, spalls, and deteriorates. High-pressure washing strips that skin in seconds, and it drives water and detergent deep into the wall and the lime mortar joints.
+            The brick on Charleston&apos;s historic homes was fired in the 1700s and 1800s with a hard outer skin that protects the softer core. Once that skin is gone, the brick absorbs water, spalls, and deteriorates. High-pressure washing strips that skin in seconds, and it drives water and detergent deep into the wall and the lime mortar joints.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
             Efflorescence, the white crystalline haze that appears on brick and stucco, comes from salts migrating to the surface. Scrubbing it with acid can etch the masonry and leave a burn mark, and it often comes right back because the underlying moisture issue was never addressed.
@@ -216,6 +236,37 @@ export default function BrickCleaningPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        path='/services/brick-cleaning-charleston'
+        items={[
+          {
+            q: "Is laser cleaning safe for Charleston's historic brick?",
+            a:
+              'Yes, and it addresses the specific risk with soft handmade brick. The fired outer skin protects the softer core, and pressure washing strips that skin away. Laser cleaning lifts surface soiling without removing the skin and without forcing water into the wall or the mortar joints.',
+          },
+          {
+            q: 'Can you remove efflorescence?',
+            a:
+              'Yes. Efflorescence is salt deposit carried to the surface by moisture moving through the masonry, and the laser removes the deposit itself. If the underlying moisture path is not addressed the salts will return, so we will tell you when what you actually have is a water problem.',
+          },
+          {
+            q: 'Will it damage lime mortar joints?',
+            a:
+              'Lime mortar is softer than the brick around it and is the first thing to fail under pressure washing. Because the process is dry and non-contact, the joints are not eroded and no water is driven into them.',
+          },
+          {
+            q: 'Can you clean painted brick?',
+            a:
+              'Often yes. Removing paint from masonry is slower than removing it from metal, and the result depends on the paint type and how deeply it soaked in. We test a patch first so you can see the realistic outcome before committing to a full elevation.',
+          },
+          {
+            q: 'Do you clean stucco and stone as well?',
+            a:
+              'Yes. Stucco, cast stone, and concrete all respond, with settings adjusted per material. Stucco in particular benefits from a dry method, since pressure washing drives water in behind the render.',
+          },
+        ]}
+      />
 
       {/* CTA */}
       <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">

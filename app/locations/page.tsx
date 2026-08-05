@@ -1,11 +1,12 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Service Areas | Laser Cleaning in Charleston & the Lowcountry',
+export const metadata = pageMetadata({
+  title: 'Service Areas in Charleston & the Lowcountry',
   description:
     'Coastal Surface Restoration serves downtown Charleston, Mount Pleasant, Isle of Palms, Sullivan\'s Island, James Island, and Folly Beach with mobile laser cleaning. All work performed on site.',
-};
+  path: '/locations',
+});
 
 const areas = [
   {

@@ -1,11 +1,13 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
+import Faq from '@/app/components/Faq';
 
-export const metadata: Metadata = {
-  title: 'Contact | Coastal Surface Restoration',
+export const metadata = pageMetadata({
+  title: 'Contact',
   description:
     'Contact Coastal Surface Restoration for mobile laser cleaning in Charleston, SC. Call, email, or request a free quote online.',
-};
+  path: '/contact',
+});
 
 export default function ContactPage() {
   return (
@@ -58,7 +60,7 @@ export default function ContactPage() {
                 <div>
                   <div className="text-[#00d4d4] font-semibold text-sm uppercase tracking-wider mb-1">Service Area</div>
                   <div className="text-white font-bold">Charleston, SC & Lowcountry</div>
-                  <div className="text-gray-400 text-sm mt-1">Downtown Charleston, Mount Pleasant, Isle of Palms, Sullivan's Island, James Island, Folly Beach, and surrounding areas</div>
+                  <div className="text-gray-400 text-sm mt-1">Downtown Charleston, Mount Pleasant, Isle of Palms, Sullivan&apos;s Island, James Island, Folly Beach, and surrounding areas</div>
                 </div>
               </div>
 
@@ -96,26 +98,31 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-white mb-10 text-center">Common Questions</h2>
-          <div className="space-y-6">
-            {[
-              { q: 'How quickly can you schedule a job?', a: 'Most jobs can be scheduled within 1-2 weeks. For urgent projects, contact us directly by phone and we will do our best to accommodate.' },
-              { q: 'Do I need to be present during the job?', a: 'Not necessarily. For outdoor work on gates, fences, or exterior surfaces, we can often complete the job without you present. We will confirm details beforehand.' },
-              { q: 'What is your service area?', a: "We serve Charleston and the surrounding Lowcountry including Mount Pleasant, Isle of Palms, Sullivan's Island, James Island, Folly Beach, West Ashley, and Summerville." },
-              { q: 'What is the minimum job size?', a: 'Our minimum job size is $400. This reflects the cost of mobilization and setup for any job regardless of size.' },
-              { q: 'Is laser cleaning safe for historic materials?', a: 'Yes -- it is one of the safest methods available for historic surfaces. The laser removes only the contaminant layer without affecting the underlying material.' },
-            ].map((faq) => (
-              <div key={faq.q} className="bg-[#0a1628] border border-[#0e7c7b]/20 rounded-lg p-6">
-                <h3 className="text-white font-bold mb-3">{faq.q}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{faq.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Faq
+        path="/contact"
+        items={[
+          {
+            q: 'How quickly can you schedule a job?',
+            a: 'Most jobs can be scheduled within 1-2 weeks. For urgent projects, contact us directly by phone and we will do our best to accommodate.',
+          },
+          {
+            q: 'Do I need to be present during the job?',
+            a: 'Not necessarily. For outdoor work on gates, fences, or exterior surfaces, we can often complete the job without you present. We will confirm details beforehand.',
+          },
+          {
+            q: 'What is your service area?',
+            a: "We serve Charleston and the surrounding Lowcountry including Mount Pleasant, Isle of Palms, Sullivan's Island, James Island, Folly Beach, West Ashley, and Summerville.",
+          },
+          {
+            q: 'What is the minimum job size?',
+            a: 'Our minimum job size is $400. This reflects the cost of mobilization and setup for any job regardless of size.',
+          },
+          {
+            q: 'Is laser cleaning safe for historic materials?',
+            a: 'Yes, it is one of the safest methods available for historic surfaces. The laser removes only the contaminant layer without affecting the underlying material.',
+          },
+        ]}
+      />
 
     </div>
   );

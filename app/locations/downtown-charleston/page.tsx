@@ -1,15 +1,36 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
+import { serviceSchema } from '@/lib/schema';
+import Breadcrumbs from '@/app/components/Breadcrumbs';
+import JsonLd from '@/app/components/JsonLd';
+import Faq from '@/app/components/Faq';
 
-export const metadata: Metadata = {
-  title: 'Laser Cleaning in Downtown Charleston, SC | Coastal Surface Restoration',
+export const metadata = pageMetadata({
+  title: 'Laser Cleaning in Downtown Charleston, SC',
   description:
     'Mobile laser cleaning on the Charleston peninsula. Rust, paint, graffiti, and grime removed from historic ironwork, brick, and stucco with no chemicals, no sand, and no water runoff. Free estimates.',
-};
+  path: '/locations/downtown-charleston',
+});
 
 export default function DowntownCharlestonPage() {
   return (
     <div className="min-h-screen bg-[#0a1628]">
+      <Breadcrumbs
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Service Areas', path: '/locations' },
+          { name: 'Downtown Charleston', path: '/locations/downtown-charleston' },
+        ]}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: 'Laser Cleaning in Downtown Charleston',
+          description: 'Mobile laser cleaning on the Charleston peninsula. Rust, paint, graffiti, and grime removed from historic ironwork, brick, and stucco with no chemicals, no sand, and no water runoff. Free estimates.',
+          path: '/locations/downtown-charleston',
+          serviceType: 'Laser cleaning',
+          areaServed: ['Charleston'],
+        })}
+      />
 
       {/* Hero */}
       <section className="py-20 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
@@ -213,6 +234,37 @@ export default function DowntownCharlestonPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        path='/locations/downtown-charleston'
+        items={[
+          {
+            q: 'Do you work in the Charleston historic district?',
+            a:
+              'Yes, the peninsula is a primary service area. Work on a designated property should be cleared with the Board of Architectural Review or your preservation consultant first, and we can provide a written description of the method for that submission.',
+          },
+          {
+            q: 'How do you handle access on narrow peninsula streets?',
+            a:
+              'The system is a portable unit and a generator rather than a truck-mounted rig, so it can be carried through a gate, into a courtyard, or up onto a piazza. That matters south of Broad and in the French Quarter, where there is nowhere to put a trailer.',
+          },
+          {
+            q: 'Is there any runoff into courtyards or storm drains?',
+            a:
+              'No. The process is dry. Nothing is discharged into courtyards, gardens, or the storm system, which is the usual objection to pressure washing and chemical stripping downtown.',
+          },
+          {
+            q: 'What downtown surfaces does this work on?',
+            a:
+              'Wrought iron gates and railings, handmade brick and lime mortar, original stucco, shutters and door hardware, and storefront metal. These are the materials most at risk from pressure washing and abrasive blasting.',
+          },
+          {
+            q: 'How much does a job downtown cost?',
+            a:
+              'Every job starts with a free estimate and the minimum job size is $400. Send photos of the gate, railing, or wall and we will follow up with pricing, usually within 24 hours.',
+          },
+        ]}
+      />
 
       {/* CTA */}
       <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
