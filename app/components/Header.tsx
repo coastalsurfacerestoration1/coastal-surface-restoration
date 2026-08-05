@@ -11,6 +11,7 @@ export default function Header() {
 
   const navLinks = [
     { href: '/services', label: 'Services' },
+    { href: '/locations', label: 'Service Areas' },
     { href: '/gallery', label: 'Gallery' },
     { href: '/about', label: 'About' },
     { href: '/contact', label: 'Contact' },
@@ -25,12 +26,12 @@ export default function Header() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <span className="text-white font-bold text-lg tracking-wide">
+            <span className="text-white font-bold text-lg md:text-base lg:text-lg tracking-wide">
               COASTAL <span className="text-[#00d4d4]">SURFACE RESTORATION</span>
             </span>
           </Link>
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-5 lg:gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}

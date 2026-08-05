@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/services/vacation-rental-cleaning-charleston', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/services/antique-restoration-charleston', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/services/commercial-exterior-cleaning-charleston', priority: 0.7, changeFrequency: 'monthly' },
+    { path: '/locations', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/locations/downtown-charleston', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/locations/mount-pleasant', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/locations/isle-of-palms-sullivans-island', priority: 0.8, changeFrequency: 'monthly' },
