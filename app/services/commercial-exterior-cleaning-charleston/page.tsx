@@ -32,7 +32,7 @@ export default function CommercialExteriorPage() {
       />
 
       {/* Hero */}
-      <section className="pt-20 pb-12 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
+      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             Commercial Exteriors
@@ -53,7 +53,7 @@ export default function CommercialExteriorPage() {
       </section>
 
       {/* Context */}
-      <section className="py-16 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
             Curb Appeal, Without the Disruption
@@ -71,7 +71,7 @@ export default function CommercialExteriorPage() {
       </section>
 
       {/* What We Clean */}
-      <section className="py-16 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-10">
             Commercial Surfaces We Restore
@@ -113,7 +113,7 @@ export default function CommercialExteriorPage() {
       </section>
 
       {/* Why laser for commercial */}
-      <section className="py-16 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
             Why Businesses Choose Laser Cleaning
@@ -143,7 +143,7 @@ export default function CommercialExteriorPage() {
       </section>
 
       {/* Process */}
-      <section className="py-16 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-10 text-center">
             Our Commercial Process
@@ -189,7 +189,7 @@ export default function CommercialExteriorPage() {
       </section>
 
       {/* Service Area */}
-      <section className="py-16 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Service Area</h2>
           <p className="text-gray-400 leading-relaxed mb-8">
@@ -250,7 +250,7 @@ export default function CommercialExteriorPage() {
       />
 
       {/* CTA */}
-      <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
+      <section className="py-8 lg:py-12 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Keep your storefront sharp

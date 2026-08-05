@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { pageMetadata } from '@/lib/seo';
+import { ClockIcon, MailIcon, PhoneIcon, PinIcon } from '@/app/components/icons';
 import Faq from '@/app/components/Faq';
 
 export const metadata = pageMetadata({
@@ -14,7 +15,7 @@ export default function ContactPage() {
     <div className="min-h-screen bg-[#0a1628]">
 
       {/* Hero */}
-      <section className="pt-20 pb-12 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
+      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             Get in Touch
@@ -29,7 +30,7 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Info + Quote CTA */}
-      <section className="py-16 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
@@ -38,7 +39,7 @@ export default function ContactPage() {
               <h2 className="text-2xl font-bold text-white mb-6">Direct Contact</h2>
 
               <a href="tel:8542227790" className="flex items-start gap-4 bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6 hover:border-[#00d4d4]/40 transition-colors group">
-                <span className="text-2xl">📞</span>
+                <PhoneIcon className="h-7 w-7 shrink-0 text-[#00d4d4]" />
                 <div>
                   <div className="text-[#00d4d4] font-semibold text-sm uppercase tracking-wider mb-1">Phone</div>
                   <div className="text-white font-bold text-lg group-hover:text-[#00d4d4] transition-colors">854-222-7790</div>
@@ -47,7 +48,7 @@ export default function ContactPage() {
               </a>
 
               <a href="mailto:tyler@coastalsurfacerestoration.com" className="flex items-start gap-4 bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6 hover:border-[#00d4d4]/40 transition-colors group">
-                <span className="text-2xl">✉️</span>
+                <MailIcon className="h-7 w-7 shrink-0 text-[#00d4d4]" />
                 <div>
                   <div className="text-[#00d4d4] font-semibold text-sm uppercase tracking-wider mb-1">Email</div>
                   <div className="text-white font-bold group-hover:text-[#00d4d4] transition-colors break-all">tyler@coastalsurfacerestoration.com</div>
@@ -56,7 +57,7 @@ export default function ContactPage() {
               </a>
 
               <div className="flex items-start gap-4 bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6">
-                <span className="text-2xl">📍</span>
+                <PinIcon className="h-7 w-7 shrink-0 text-[#00d4d4]" />
                 <div>
                   <div className="text-[#00d4d4] font-semibold text-sm uppercase tracking-wider mb-1">Service Area</div>
                   <div className="text-white font-bold">Charleston, SC & Lowcountry</div>
@@ -65,7 +66,7 @@ export default function ContactPage() {
               </div>
 
               <div className="flex items-start gap-4 bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6">
-                <span className="text-2xl">🕐</span>
+                <ClockIcon className="h-7 w-7 shrink-0 text-[#00d4d4]" />
                 <div>
                   <div className="text-[#00d4d4] font-semibold text-sm uppercase tracking-wider mb-1">Hours</div>
                   <div className="text-white font-bold">Monday - Saturday</div>

@@ -1,4 +1,14 @@
 import Link from 'next/link';
+import {
+  BoltIcon,
+  BrickIcon,
+  CleatIcon,
+  IronScrollIcon,
+  RailingIcon,
+  SprayIcon,
+  StorefrontIcon,
+  UrnIcon,
+} from '@/app/components/icons';
 import { pageMetadata } from '@/lib/seo';
 
 export const metadata = pageMetadata({
@@ -9,7 +19,7 @@ export const metadata = pageMetadata({
 });
 
 type Service = {
-  icon: string;
+  Icon: React.ComponentType<{ className?: string }>;
   title: string;
   desc: string;
   href: string;
@@ -18,56 +28,56 @@ type Service = {
 
 const services: Service[] = [
   {
-    icon: '🏛️',
+    Icon: IronScrollIcon,
     title: 'Historic Restoration',
     desc: 'Iron gates, brick stoops, wrought iron railings, church gates, wood shutters. Preserve Charleston\'s historic character without damaging original materials.',
     href: '/services/historic-ironwork-restoration-charleston',
     live: true,
   },
   {
-    icon: '⚓',
+    Icon: CleatIcon,
     title: 'Marine Cleaning',
     desc: 'Boat fittings, trailers, marine hardware, hulls, and dock equipment. Remove rust and marine growth without harsh chemicals near Charleston\'s waterways.',
     href: '/services/marine-cleaning-charleston',
     live: true,
   },
   {
-    icon: '🏠',
+    Icon: RailingIcon,
     title: 'Vacation Rental Restoration',
     desc: 'Keep your Isle of Palms, Sullivan\'s Island, or Folly Beach property in top condition. Recurring maintenance contracts available for property managers.',
     href: '/services/vacation-rental-cleaning-charleston',
     live: true,
   },
   {
-    icon: '🔩',
+    Icon: BoltIcon,
     title: 'Rust & Paint Removal',
     desc: 'Remove rust, old paint, and coatings from iron, steel, and metal surfaces without abrasives or chemicals.',
     href: '/services/rust-removal-charleston',
     live: true,
   },
   {
-    icon: '🧱',
+    Icon: BrickIcon,
     title: 'Brick & Masonry Cleaning',
     desc: 'Efflorescence, staining, and grime removal from brick, stone, and concrete without pressure washing damage.',
     href: '/services/brick-cleaning-charleston',
     live: true,
   },
   {
-    icon: '🎨',
+    Icon: SprayIcon,
     title: 'Graffiti Removal',
     desc: 'Clean graffiti from brick, metal, and concrete surfaces without leaving ghost marks or surface damage.',
     href: '/services/graffiti-removal-charleston',
     live: true,
   },
   {
-    icon: '🏺',
+    Icon: UrnIcon,
     title: 'Antique & Hardware Restoration',
     desc: 'Restore antique hardware, frames, tools, and decorative metal pieces to their original condition.',
     href: '/services/antique-restoration-charleston',
     live: true,
   },
   {
-    icon: '🏢',
+    Icon: StorefrontIcon,
     title: 'Commercial Exteriors',
     desc: 'Storefronts, railings, gates, signage, and metal fixtures for retail, restaurants, and property managers. Low-disruption cleaning that works around your hours.',
     href: '/services/commercial-exterior-cleaning-charleston',
@@ -83,7 +93,7 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-[#0a1628]">
 
       {/* Hero */}
-      <section className="pt-20 pb-12 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
+      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             What We Do
@@ -98,14 +108,14 @@ export default function ServicesPage() {
       </section>
 
       {/* Services Grid */}
-      <section className="py-16 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0a1628]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap justify-center gap-6">
             {services.map((service) => {
               // Shared inner content for both live and non-live cards.
               const inner = (
                 <>
-                  <div className="text-4xl mb-4">{service.icon}</div>
+                  <service.Icon className="h-12 w-12 text-[#00d4d4] mb-4" />
                   <h3 className="text-white font-bold text-xl mb-3 group-hover:text-[#00d4d4] transition-colors">
                     {service.title}
                   </h3>
@@ -145,7 +155,7 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
+      <section className="py-8 lg:py-12 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Not sure what you need?</h2>
           <p className="text-gray-400 mb-8">

@@ -32,7 +32,7 @@ export default function GraffitiRemovalPage() {
       />
 
       {/* Hero */}
-      <section className="pt-20 pb-12 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
+      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             Graffiti Removal
@@ -53,7 +53,7 @@ export default function GraffitiRemovalPage() {
       </section>
 
       {/* Context */}
-      <section className="py-16 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
             The Ghosting Problem, Solved
@@ -71,7 +71,7 @@ export default function GraffitiRemovalPage() {
       </section>
 
       {/* What We Clean */}
-      <section className="py-16 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-10">
             Surfaces We Remove Graffiti From
@@ -113,7 +113,7 @@ export default function GraffitiRemovalPage() {
       </section>
 
       {/* Comparison */}
-      <section className="py-16 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
             Laser vs. Pressure Washing vs. Chemical Removal
@@ -162,7 +162,7 @@ export default function GraffitiRemovalPage() {
       </section>
 
       {/* Process */}
-      <section className="py-16 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-10 text-center">
             Our Graffiti Removal Process
@@ -208,7 +208,7 @@ export default function GraffitiRemovalPage() {
       </section>
 
       {/* Service Area */}
-      <section className="py-16 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Service Area</h2>
           <p className="text-gray-400 leading-relaxed mb-8">
@@ -269,7 +269,7 @@ export default function GraffitiRemovalPage() {
       />
 
       {/* CTA */}
-      <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
+      <section className="py-8 lg:py-12 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Get the graffiti gone without the shadow

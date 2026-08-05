@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CertificateIcon, IronScrollIcon, ShieldIcon } from '@/app/components/icons';
 import { pageMetadata } from '@/lib/seo';
 
 export const metadata = pageMetadata({
@@ -13,7 +14,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-[#0a1628]">
 
       {/* Hero */}
-      <section className="pt-20 pb-12 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
+      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             About Us
@@ -29,7 +30,7 @@ export default function AboutPage() {
       </section>
 
       {/* Story */}
-      <section className="py-16 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
@@ -64,7 +65,7 @@ export default function AboutPage() {
       </section>
 
       {/* Credentials */}
-      <section className="py-16 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-white mb-4">Certified. Insured. Ready.</h2>
@@ -74,12 +75,12 @@ export default function AboutPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
-              { icon: '🎓', title: 'ANSI Z136.1 Certified', desc: 'Designated Laser Safety Officer (LSO) certified through the Laser Institute of America.' },
-              { icon: '🛡️', title: 'Fully Insured', desc: 'Commercial General Liability coverage through Burlington Insurance Company. $1M per occurrence / $2M aggregate.' },
-              { icon: '🏛️', title: 'Historic District Experience', desc: "Familiar with the unique requirements of working in Charleston's historic district and on protected structures." },
+              { Icon: CertificateIcon, title: 'ANSI Z136.1 Certified', desc: 'Designated Laser Safety Officer (LSO) certified through the Laser Institute of America.' },
+              { Icon: ShieldIcon, title: 'Fully Insured', desc: 'Commercial General Liability coverage through Burlington Insurance Company. $1M per occurrence / $2M aggregate.' },
+              { Icon: IronScrollIcon, title: 'Historic District Experience', desc: "Familiar with the unique requirements of working in Charleston's historic district and on protected structures." },
             ].map((item) => (
               <div key={item.title} className="bg-[#0a1628] border border-[#0e7c7b]/20 rounded-lg p-6 text-center">
-                <div className="text-4xl mb-4">{item.icon}</div>
+                <item.Icon className="h-12 w-12 text-[#00d4d4] mb-4 mx-auto" />
                 <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
@@ -89,7 +90,7 @@ export default function AboutPage() {
       </section>
 
       {/* Service Area */}
-      <section className="py-16 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold text-white mb-4">Service Area</h2>
@@ -106,7 +107,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
+      <section className="py-8 lg:py-12 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to get started?</h2>
           <p className="text-gray-400 mb-8">Free estimates for all jobs. We respond within 24 hours.</p>

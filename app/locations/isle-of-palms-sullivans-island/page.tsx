@@ -33,7 +33,7 @@ export default function IsleOfPalmsSullivansPage() {
       />
 
       {/* Hero */}
-      <section className="pt-20 pb-12 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
+      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             Service Area
@@ -54,7 +54,7 @@ export default function IsleOfPalmsSullivansPage() {
       </section>
 
       {/* Local Context */}
-      <section className="py-16 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
             Front-Line Salt Exposure Changes the Maintenance Math
@@ -72,7 +72,7 @@ export default function IsleOfPalmsSullivansPage() {
       </section>
 
       {/* What We Clean */}
-      <section className="py-16 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-10">
             What We Clean on the Islands
@@ -114,7 +114,7 @@ export default function IsleOfPalmsSullivansPage() {
       </section>
 
       {/* Rental Property Angle */}
-      <section className="py-16 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
             For Rental Owners and Property Managers
@@ -147,7 +147,7 @@ export default function IsleOfPalmsSullivansPage() {
       </section>
 
       {/* Areas */}
-      <section className="py-16 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Island Areas We Serve</h2>
           <p className="text-gray-400 leading-relaxed mb-8">
@@ -177,7 +177,7 @@ export default function IsleOfPalmsSullivansPage() {
       </section>
 
       {/* Related Services */}
-      <section className="py-16 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-10">
             Services Most Requested on the Islands
@@ -250,7 +250,7 @@ export default function IsleOfPalmsSullivansPage() {
       />
 
       {/* CTA */}
-      <section className="py-16 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
+      <section className="py-8 lg:py-12 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Serving Isle of Palms and Sullivan&apos;s Island

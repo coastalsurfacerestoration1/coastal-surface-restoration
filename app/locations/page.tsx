@@ -44,7 +44,7 @@ export default function LocationsPage() {
     <div className="min-h-screen bg-[#0a1628]">
 
       {/* Hero */}
-      <section className="pt-20 pb-12 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
+      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             Where We Work
@@ -59,7 +59,7 @@ export default function LocationsPage() {
       </section>
 
       {/* Area Cards */}
-      <section className="py-16 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0a1628]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {areas.map((area) => (
@@ -95,7 +95,7 @@ export default function LocationsPage() {
       </section>
 
       {/* Wider Coverage */}
-      <section className="py-16 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Not on the List?</h2>
           <p className="text-gray-400 leading-relaxed mb-8">
@@ -125,7 +125,7 @@ export default function LocationsPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-[#0a1628] border-t border-[#0e7c7b]/20">
+      <section className="py-8 lg:py-12 bg-[#0a1628] border-t border-[#0e7c7b]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Serving Charleston and the Lowcountry

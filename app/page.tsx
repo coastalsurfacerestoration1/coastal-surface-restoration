@@ -36,7 +36,7 @@ export default function Home() {
     <div className="min-h-screen bg-[#0a1628]">
 
       {/* Hero */}
-      <section className="grain relative overflow-hidden border-b border-[#0e7c7b]/20 bg-gradient-to-br from-[#0a1628] via-[#0d2040] to-[#0a1628] py-16 lg:py-24">
+      <section className="grain relative overflow-hidden border-b border-[#0e7c7b]/20 bg-gradient-to-br from-[#0a1628] via-[#0d2040] to-[#0a1628] py-12 lg:py-16">
         <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
 
@@ -95,7 +95,7 @@ export default function Home() {
       </section>
 
       {/* Specialties */}
-      <section className="bg-[#0a1628] py-20">
+      <section className="bg-[#0a1628] py-8 lg:py-12">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#00d4d4]">
             What we do
@@ -125,7 +125,7 @@ export default function Home() {
       </section>
 
       {/* Where each method stops */}
-      <section className="border-y border-[#0e7c7b]/20 bg-[#0d1f3c] py-20">
+      <section className="border-y border-[#0e7c7b]/20 bg-[#0d1f3c] py-8 lg:py-12">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#00d4d4]">
             The difference
@@ -143,7 +143,7 @@ export default function Home() {
       </section>
 
       {/* Next step */}
-      <section className="bg-[#0a1628] py-20">
+      <section className="bg-[#0a1628] py-8 lg:py-12">
         <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl">
             Send a photo. Get a number.

@@ -59,7 +59,7 @@ export default function GalleryPage() {
     <div className="min-h-screen bg-[#0a1628]">
 
       {/* Hero */}
-      <section className="pt-20 pb-12 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
+      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             Results
@@ -77,7 +77,7 @@ export default function GalleryPage() {
       </section>
 
       {/* Status */}
-      <section className="py-16 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0a1628]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-[#0d1f3c] border border-[#0e7c7b]/30 rounded-lg p-10">
             <h2 className="text-white font-bold text-2xl mb-4">
@@ -115,7 +115,7 @@ export default function GalleryPage() {
       </section>
 
       {/* What will be documented */}
-      <section className="py-16 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-4">
             What You Will See Here
@@ -148,7 +148,7 @@ export default function GalleryPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-[#0a1628] border-t border-[#0e7c7b]/20">
+      <section className="py-8 lg:py-12 bg-[#0a1628] border-t border-[#0e7c7b]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Have something worth photographing?
