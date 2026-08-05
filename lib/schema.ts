@@ -54,6 +54,23 @@ export function localBusinessSchema() {
       addressRegion: 'SC',
       addressCountry: 'US',
     },
+    // Downtown Charleston, used as the midpoint of the service area rather
+    // than as a location customers visit. The radius reaches Summerville,
+    // the furthest city we advertise.
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 32.7765,
+      longitude: -79.9311,
+    },
+    serviceArea: {
+      '@type': 'GeoCircle',
+      geoMidpoint: {
+        '@type': 'GeoCoordinates',
+        latitude: 32.7765,
+        longitude: -79.9311,
+      },
+      geoRadius: '40000',
+    },
     areaServed: SERVICE_AREAS.map((name) => ({
       '@type': 'City',
       name,
