@@ -41,7 +41,7 @@ export default function HistoricIronworkPage() {
             Laser Restoration for Charleston&apos;s Historic Ironwork
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Charleston has one of the most significant collections of historic ironwork in the Southeast -- wrought iron gates, railings, and decorative metalwork that date back hundreds of years. Restoring these pieces requires a method that removes rust and oxidation without touching the original material underneath. Laser cleaning is the only method that does this.
+            Charleston has one of the most significant collections of historic ironwork in the Southeast: wrought iron gates, railings, and decorative metalwork that date back hundreds of years. Restoring these pieces requires a method that removes rust and oxidation without touching the original material underneath. Laser cleaning is the only method that does this.
           </p>
           <Link
             href="/quote"
@@ -62,7 +62,7 @@ export default function HistoricIronworkPage() {
             Charleston&apos;s historic district contains some of the most celebrated ironwork in North America. From the Sword Gates on Legare Street to the intricate pieces created by master blacksmith Philip Simmons, these works represent centuries of craftsmanship that cannot be replaced.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
-            The challenge with restoring historic ironwork is that traditional cleaning methods -- sandblasting, chemical stripping, wire brushing -- all risk damaging or destroying the original surface. For pieces that are 100, 150, or 200 years old, that risk is simply too high.
+            The challenge with restoring historic ironwork is that traditional cleaning methods all risk damaging or destroying the original surface. Sandblasting, chemical stripping, and wire brushing each take something off the piece that cannot be put back. For pieces that are 100, 150, or 200 years old, that risk is simply too high.
           </p>
           <p className="text-gray-400 leading-relaxed">
             Laser cleaning changes this equation. Our pulsed fiber laser targets only the rust, paint, or oxidation layer, leaving the original iron completely intact. The result is a clean, restored surface that preserves the character and patina of historic pieces while stopping further deterioration.
@@ -212,7 +212,7 @@ export default function HistoricIronworkPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Service Area</h2>
           <p className="text-gray-400 leading-relaxed mb-8">
-            We serve historic properties throughout Charleston and the Lowcountry. All work is performed on-site -- no need to remove gates, railings, or fixtures from their original location.
+            We serve historic properties throughout Charleston and the Lowcountry. All work is performed on-site, so there is no need to remove gates, railings, or fixtures from their original location.
           </p>
           <div className="flex flex-wrap gap-3">
             {[

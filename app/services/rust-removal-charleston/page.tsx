@@ -41,7 +41,7 @@ export default function RustRemovalPage() {
             Laser Rust and Paint Removal in Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Charleston&apos;s salt air and humidity are hard on metal. Rust, flaking paint, and oxidation show up fast on iron, steel, and marine hardware. Laser cleaning strips it all away without abrasives, chemicals, or damage to the metal underneath -- leaving a clean surface ready for coating or reuse.
+            Charleston&apos;s salt air and humidity are hard on metal. Rust, flaking paint, and oxidation show up fast on iron, steel, and marine hardware. Laser cleaning strips it all away without abrasives, chemicals, or damage to the metal underneath, leaving a clean surface ready for coating or reuse.
           </p>
           <Link
             href="/quote"
@@ -212,7 +212,7 @@ export default function RustRemovalPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Service Area</h2>
           <p className="text-gray-400 leading-relaxed mb-8">
-            We serve residential, commercial, and marine clients throughout Charleston and the Lowcountry. All work is performed on-site wherever possible -- no need to transport gates, railings, or equipment.
+            We serve residential, commercial, and marine clients throughout Charleston and the Lowcountry. All work is performed on-site wherever possible, so there is no need to transport gates, railings, or equipment.
           </p>
           <div className="flex flex-wrap gap-3">
             {[
