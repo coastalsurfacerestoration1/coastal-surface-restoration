@@ -243,7 +243,7 @@ export default function RustRemovalPage() {
           {
             q: 'How much does laser rust removal cost in Charleston?',
             a:
-              'Pricing depends on the surface area, how heavy the corrosion is, and how accessible the piece is. Every job starts with a free estimate, and the minimum job size is $400, which covers mobilization and setup. Send photos of the piece and we will follow up with pricing, usually within 24 hours.',
+              'Pricing depends on the surface area, how heavy the corrosion is, and how accessible the piece is. Every job starts with a free estimate. Send photos of the piece and we will follow up with pricing, usually within 24 hours.',
           },
           {
             q: 'Does laser cleaning remove the metal underneath the rust?',
@@ -275,7 +275,7 @@ export default function RustRemovalPage() {
             Get the rust gone without the damage
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Free estimates for all jobs. Send us a photo and we will assess it and follow up within 24 hours. Minimum job size $400.
+            Free estimates for all jobs. Send us a photo and we will assess it and follow up within 24 hours.
           </p>
           <Link
             href="/quote"

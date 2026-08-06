@@ -91,8 +91,7 @@ export default function GalleryPage() {
             </p>
             <p className="text-gray-400 leading-relaxed mb-8">
               If you have a piece you want documented, early jobs are the ones we
-              photograph most thoroughly. Free estimates apply the same as always,
-              and the minimum job size is $400.
+              photograph most thoroughly. Free estimates apply the same as always.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link

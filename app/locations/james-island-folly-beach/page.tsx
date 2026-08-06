@@ -271,7 +271,7 @@ export default function JamesIslandFollyBeachPage() {
             Serving James Island and Folly Beach
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Free estimates on every job. Send a photo of the lift, dock hardware, or trailer and we will tell you what laser cleaning can do for it, usually within 24 hours. Minimum job size $400.
+            Free estimates on every job. Send a photo of the lift, dock hardware, or trailer and we will tell you what laser cleaning can do for it, usually within 24 hours.
           </p>
           <Link
             href="/quote"

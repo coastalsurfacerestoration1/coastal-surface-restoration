@@ -261,7 +261,7 @@ export default function DowntownCharlestonPage() {
           {
             q: 'How much does a job downtown cost?',
             a:
-              'Every job starts with a free estimate and the minimum job size is $400. Send photos of the gate, railing, or wall and we will follow up with pricing, usually within 24 hours.',
+              'Every job starts with a free estimate. Send photos of the gate, railing, or wall and we will follow up with pricing, usually within 24 hours.',
           },
         ]}
       />
@@ -273,7 +273,7 @@ export default function DowntownCharlestonPage() {
             Serving downtown Charleston
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Free estimates on every job. Send a photo of the piece or surface and we will tell you what laser cleaning can do for it, usually within 24 hours. Minimum job size $400.
+            Free estimates on every job. Send a photo of the piece or surface and we will tell you what laser cleaning can do for it, usually within 24 hours.
           </p>
           <Link
             href="/quote"

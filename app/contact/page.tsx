@@ -85,7 +85,7 @@ export default function ContactPage() {
                   The fastest way to get a quote is through our online form. Tell us about your project and we will follow up with pricing within 24 hours.
                 </p>
                 <ul className="space-y-3 mb-8">
-                  {['No obligation', 'Response within 24 hours', 'On-site estimates available', 'Minimum job size $400'].map((item) => (
+                  {['No obligation', 'Response within 24 hours', 'On-site estimates available'].map((item) => (
                     <li key={item} className="flex items-center gap-3 text-gray-300 text-sm">
                       <span className="text-[#00d4d4] font-bold">✓</span>
                       {item}
@@ -115,10 +115,6 @@ export default function ContactPage() {
           {
             q: 'What is your service area?',
             a: "We serve Charleston and the surrounding Lowcountry including Mount Pleasant, Isle of Palms, Sullivan's Island, James Island, Folly Beach, West Ashley, and Summerville.",
-          },
-          {
-            q: 'What is the minimum job size?',
-            a: 'Our minimum job size is $400. This reflects the cost of mobilization and setup for any job regardless of size.',
           },
           {
             q: 'Is laser cleaning safe for historic materials?',

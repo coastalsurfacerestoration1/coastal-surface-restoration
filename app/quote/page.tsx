@@ -10,7 +10,12 @@ type FormData = {
   address: string;
   serviceType: string;
   description: string;
+  /** Honeypot. Hidden from people, so anything in it came from a script. */
+  companyWebsite: string;
 };
+
+const GENERIC_ERROR =
+  'Something went wrong. Please try again or call us at 854-222-7790.';
 
 const services = [
   'Rust & Paint Removal',
@@ -25,6 +30,7 @@ const services = [
 
 export default function QuotePage() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState(GENERIC_ERROR);
 
   const {
     register,
@@ -41,10 +47,21 @@ export default function QuotePage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error('Failed');
+      if (!res.ok) {
+        // The rate limiter is the one failure where retrying is the wrong
+        // advice, so it gets its own message.
+        setErrorMessage(
+          res.status === 429
+            ? 'That is a few requests in a short window. Give us a call at 854-222-7790 and we will pick it up from there.'
+            : GENERIC_ERROR,
+        );
+        setStatus('error');
+        return;
+      }
       setStatus('success');
       reset();
     } catch {
+      setErrorMessage(GENERIC_ERROR);
       setStatus('error');
     }
   };
@@ -61,7 +78,7 @@ export default function QuotePage() {
             Request a Quote
           </h1>
           <p className="text-gray-400 text-lg">
-            Tell us about your project and we will get back to you within 24 hours. Minimum job size is $400.
+            Tell us about your project and we will get back to you within 24 hours.
           </p>
         </div>
 
@@ -182,9 +199,23 @@ export default function QuotePage() {
               )}
             </div>
 
+            {/* Honeypot. Off-screen and out of the tab order, so the only way
+                it gets filled is a script filling every input it finds. The
+                API drops those submissions silently. */}
+            <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+              <label htmlFor="companyWebsite">Company website</label>
+              <input
+                {...register('companyWebsite')}
+                id="companyWebsite"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
+
             {status === 'error' && (
-              <p className="text-red-400 text-sm">
-                Something went wrong. Please try again or call us at 854-222-7790.
+              <p className="text-red-400 text-sm" role="alert">
+                {errorMessage}
               </p>
             )}
 
@@ -197,7 +228,7 @@ export default function QuotePage() {
             </button>
 
             <p className="text-gray-500 text-xs text-center">
-              We respond within 24 hours. Minimum job size $400. Serving Charleston and the Lowcountry.
+              We respond within 24 hours. Serving Charleston and the Lowcountry.
             </p>
           </form>
         )}

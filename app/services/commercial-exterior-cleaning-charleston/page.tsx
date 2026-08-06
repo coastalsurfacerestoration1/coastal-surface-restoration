@@ -256,7 +256,7 @@ export default function CommercialExteriorPage() {
             Keep your storefront sharp
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Managing one location or many? Ask about a recurring maintenance schedule. Send us photos or your property details and we will follow up within 24 hours. Minimum job size $400.
+            Managing one location or many? Ask about a recurring maintenance schedule. Send us photos or your property details and we will follow up within 24 hours.
           </p>
           <Link
             href="/quote"

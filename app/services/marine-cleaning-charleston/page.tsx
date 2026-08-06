@@ -275,7 +275,7 @@ export default function MarineCleaningPage() {
             Keep your marine hardware in service
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Free estimates for all jobs. Send us a photo of the hardware and we will assess it and follow up within 24 hours. Minimum job size $400.
+            Free estimates for all jobs. Send us a photo of the hardware and we will assess it and follow up within 24 hours.
           </p>
           <Link
             href="/quote"

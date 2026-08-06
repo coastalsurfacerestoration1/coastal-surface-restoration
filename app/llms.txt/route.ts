@@ -74,7 +74,7 @@ Laser cleaning removes the contaminant layer while leaving the underlying materi
 - Email: ${BUSINESS.email}
 - Hours: Saturday and Sunday 8:00 AM to 9:00 PM, Monday to Friday 4:00 PM to 9:00 PM
 - Service model: mobile, service-area business with no walk-in storefront
-- Pricing: free estimates on every job, ${'$'}400 minimum job size
+- Pricing: free estimates on every job, quoted per project
 - Estimates: send photos of the piece and pricing follows, usually within 24 hours
 - Credentials: licensed and insured, ANSI Z136.1 certified Laser Safety Officer
 - Service areas: ${SERVICE_AREAS.join(', ')}

@@ -28,7 +28,7 @@ const credentials = [
   { label: 'ANSI Z136.1', detail: 'Certified Laser Safety Officer' },
   { label: '$1M / $2M', detail: 'General liability coverage' },
   { label: 'Fully mobile', detail: 'We work at your property' },
-  { label: 'Free estimates', detail: '$400 minimum job size' },
+  { label: 'Free estimates', detail: 'Quoted from photos, no obligation' },
 ];
 
 export default function Home() {
@@ -150,8 +150,8 @@ export default function Home() {
           </h2>
           <p className="mx-auto mt-5 mb-10 max-w-xl leading-relaxed text-gray-400">
             Tell us what needs work and we will tell you what laser cleaning can
-            do for it, usually within 24 hours. Free estimates on every job,
-            $400 minimum. Serving Charleston, Mount Pleasant, Isle of Palms,
+            do for it, usually within 24 hours. Free estimates on every job.
+            Serving Charleston, Mount Pleasant, Isle of Palms,
             Sullivan&apos;s Island, James Island, and Folly Beach.
           </p>
           <Link
