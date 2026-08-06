@@ -24,13 +24,6 @@ body {
   color: var(--foreground);
 }
 
-/* Set by the inline script in the root layout, before paint, when the visitor
-   has already dismissed the pre-launch banner. The banner is in the server HTML
-   on every page; this suppresses it without a flash or a layout shift. */
-html[data-banner-dismissed] [data-prelaunch-banner] {
-  display: none;
-}
-
 /* Fine grain so the flat navy reads as a material rather than a swatch.
    Kept very low opacity: it should register as texture, not as noise. */
 .grain::after {

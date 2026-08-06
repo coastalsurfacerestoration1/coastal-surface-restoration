@@ -7,7 +7,7 @@ import { localBusinessSchema, websiteSchema } from "@/lib/schema";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import JsonLd from "./components/JsonLd";
-import PreLaunchBanner, { bannerDismissScript } from "./components/PreLaunchBanner";
+import PreLaunchBanner from "./components/PreLaunchBanner";
 import "./globals.css";
 
 const inter = Inter({
@@ -77,22 +77,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // The banner script below sets data-banner-dismissed on this element before
-    // React hydrates, which React would otherwise report as a server/client
-    // mismatch. Suppression applies to this element's own attributes only.
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body
         className={`${inter.variable} ${barlowCondensed.variable} font-sans antialiased bg-[#0a1628]`}
       >
-        {/* Must run before the banner paints. See PreLaunchBanner. */}
-        <script dangerouslySetInnerHTML={{ __html: bannerDismissScript }} />
         <JsonLd data={localBusinessSchema()} />
         <JsonLd data={websiteSchema()} />
         <PreLaunchBanner />
         {/* The header is sticky rather than fixed so the banner can sit above
-            it in normal flow and scroll away, while the nav still pins to the
-            top. A fixed header would need the page offset recalculated every
-            time the banner is dismissed. */}
+            it in normal flow, with the nav still pinning to the top once the
+            banner scrolls past. A fixed header would sit on top of the banner
+            instead and need the page offset hardcoded around it. */}
         <Header />
         <main>{children}</main>
         <Footer />
