@@ -4,6 +4,7 @@ import { serviceSchema } from '@/lib/schema';
 import Breadcrumbs from '@/app/components/Breadcrumbs';
 import JsonLd from '@/app/components/JsonLd';
 import Faq from '@/app/components/Faq';
+import RelatedItemsSection from '@/app/components/RelatedItemsSection';
 
 export const metadata = pageMetadata({
   title: 'Laser Cleaning & Rust Removal in Mount Pleasant, SC',
@@ -268,6 +269,28 @@ export default function MountPleasantPage() {
             q: 'What parts of Mount Pleasant do you cover?',
             a:
               "From the Old Village and Shem Creek out through I'On, Snee Farm, Belle Hall, Park West, Dunes West, and Carolina Park, plus Daniel Island and the Wando side.",
+          },
+        ]}
+      />
+
+      <RelatedItemsSection
+        heading="Other Service Areas"
+        intro="The exposure changes with the neighborhood. See how the work reads for other parts of Charleston."
+        items={[
+          {
+            title: 'Downtown Charleston',
+            desc: 'Historic ironwork, brick, and stucco on the peninsula, with no runoff into courtyards or storm drains.',
+            href: '/locations/downtown-charleston',
+          },
+          {
+            title: "Isle of Palms & Sullivan's Island",
+            desc: 'Barrier island properties where salt spray hits the hardest, cleaned on site with no runoff.',
+            href: '/locations/isle-of-palms-sullivans-island',
+          },
+          {
+            title: 'James Island & Folly Beach',
+            desc: 'Marsh-front hardware, dock and boat lift metal, and rentals on the tidal creek side of Charleston.',
+            href: '/locations/james-island-folly-beach',
           },
         ]}
       />

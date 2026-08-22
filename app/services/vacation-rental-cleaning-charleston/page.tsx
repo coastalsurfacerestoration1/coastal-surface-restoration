@@ -4,6 +4,8 @@ import { serviceSchema } from '@/lib/schema';
 import Breadcrumbs from '@/app/components/Breadcrumbs';
 import JsonLd from '@/app/components/JsonLd';
 import Faq from '@/app/components/Faq';
+import RelatedItemsSection from '@/app/components/RelatedItemsSection';
+import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 
 export const metadata = pageMetadata({
   title: 'Laser Cleaning for Vacation Rentals in Charleston, SC',
@@ -149,8 +151,8 @@ export default function VacationRentalPage() {
           <p className="text-gray-400 leading-relaxed mb-8">
             We serve vacation rental owners and property managers across the Charleston coast, with a focus on the barrier islands where salt air takes the heaviest toll.
           </p>
-          <div className="flex flex-wrap gap-3">
-            {[
+          <ServiceAreaChips
+            areas={[
               'Isle of Palms',
               "Sullivan's Island",
               'Folly Beach',
@@ -163,12 +165,9 @@ export default function VacationRentalPage() {
               'Daniel Island',
               'Edisto Beach',
               'Dewees Island',
-            ].map((area) => (
-              <span key={area} className="bg-[#0a1628] border border-[#0e7c7b]/20 text-gray-300 px-4 py-2 rounded text-sm">
-                {area}
-              </span>
-            ))}
-          </div>
+            ]}
+            variant="onLight"
+          />
         </div>
       </section>
 
@@ -199,6 +198,23 @@ export default function VacationRentalPage() {
             q: 'Do you work with property management companies?',
             a:
               'Yes. We can cover multiple properties on one schedule and coordinate access with your existing turnover crews, so the owner does not need to be present.',
+          },
+        ]}
+      />
+
+      <RelatedItemsSection
+        heading="Related Services"
+        intro="Waterfront rental properties usually need more than one thing done at a time. These are the services most often bundled with rental maintenance."
+        items={[
+          {
+            title: 'Marine Cleaning',
+            desc: 'Dock hardware, boat trailers, and waterfront fittings cleaned on site.',
+            href: '/services/marine-cleaning-charleston',
+          },
+          {
+            title: 'Rust and Paint Removal',
+            desc: 'Salt-driven corrosion removed from outdoor metal on any rental property.',
+            href: '/services/rust-removal-charleston',
           },
         ]}
       />

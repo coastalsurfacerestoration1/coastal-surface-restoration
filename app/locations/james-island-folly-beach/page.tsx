@@ -4,6 +4,7 @@ import { serviceSchema } from '@/lib/schema';
 import Breadcrumbs from '@/app/components/Breadcrumbs';
 import JsonLd from '@/app/components/JsonLd';
 import Faq from '@/app/components/Faq';
+import RelatedItemsSection from '@/app/components/RelatedItemsSection';
 
 export const metadata = pageMetadata({
   title: 'Laser Cleaning on James Island & Folly Beach, SC',
@@ -260,6 +261,28 @@ export default function JamesIslandFollyBeachPage() {
             q: 'What do you work on around James Island and Folly?',
             a:
               'Boat lifts and davits, dock hardware and ladders, trailers and towing hardware, marsh-front railings and exterior metal, older cottage hardware, and graffiti on commercial frontage around Center Street.',
+          },
+        ]}
+      />
+
+      <RelatedItemsSection
+        heading="Other Service Areas"
+        intro="The exposure changes with the neighborhood. See how the work reads for other parts of Charleston."
+        items={[
+          {
+            title: 'Downtown Charleston',
+            desc: 'Historic ironwork, brick, and stucco on the peninsula, with no runoff into courtyards or storm drains.',
+            href: '/locations/downtown-charleston',
+          },
+          {
+            title: 'Mount Pleasant',
+            desc: 'Salt-driven corrosion on Old Village hardware, Wando dock equipment, and Carolina Park exterior metal.',
+            href: '/locations/mount-pleasant',
+          },
+          {
+            title: "Isle of Palms & Sullivan's Island",
+            desc: 'Barrier island properties where salt spray hits the hardest, cleaned on site with no runoff.',
+            href: '/locations/isle-of-palms-sullivans-island',
           },
         ]}
       />

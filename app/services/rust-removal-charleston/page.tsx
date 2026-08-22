@@ -4,6 +4,8 @@ import { serviceSchema } from '@/lib/schema';
 import Breadcrumbs from '@/app/components/Breadcrumbs';
 import JsonLd from '@/app/components/JsonLd';
 import Faq from '@/app/components/Faq';
+import RelatedItemsSection from '@/app/components/RelatedItemsSection';
+import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 
 export const metadata = pageMetadata({
   title: 'Laser Rust & Paint Removal in Charleston, SC',
@@ -214,8 +216,8 @@ export default function RustRemovalPage() {
           <p className="text-gray-400 leading-relaxed mb-8">
             We serve residential, commercial, and marine clients throughout Charleston and the Lowcountry. All work is performed on-site wherever possible, so there is no need to transport gates, railings, or equipment.
           </p>
-          <div className="flex flex-wrap gap-3">
-            {[
+          <ServiceAreaChips
+            areas={[
               'Downtown Charleston',
               'Historic District',
               'South of Broad',
@@ -228,12 +230,8 @@ export default function RustRemovalPage() {
               'Daniel Island',
               'North Charleston',
               'Summerville',
-            ].map((area) => (
-              <span key={area} className="bg-[#0d1f3c] border border-[#0e7c7b]/20 text-gray-300 px-4 py-2 rounded text-sm">
-                {area}
-              </span>
-            ))}
-          </div>
+            ]}
+          />
         </div>
       </section>
 
@@ -264,6 +262,28 @@ export default function RustRemovalPage() {
             q: 'Do you have to take the piece to a shop?',
             a:
               'No. The system is portable, so gates, railings, trailers, and hardware are cleaned where they sit. That matters most for anything mounted, structural, or too heavy to move without a crew.',
+          },
+        ]}
+      />
+
+      <RelatedItemsSection
+        heading="Related Services"
+        intro="Rust removal is often the broader category that specific work falls under. These are the specialties within it."
+        items={[
+          {
+            title: 'Historic Ironwork Restoration',
+            desc: 'Wrought iron gates and railings on Charleston historic properties, cleaned without erasing forged detail.',
+            href: '/services/historic-ironwork-restoration-charleston',
+          },
+          {
+            title: 'Marine Cleaning',
+            desc: 'Boat trailers, dock hardware, and marine fittings cleaned dockside with no runoff.',
+            href: '/services/marine-cleaning-charleston',
+          },
+          {
+            title: 'Antique and Hardware Restoration',
+            desc: 'Heirloom pieces cleaned with a controlled hand that preserves patina.',
+            href: '/services/antique-restoration-charleston',
           },
         ]}
       />

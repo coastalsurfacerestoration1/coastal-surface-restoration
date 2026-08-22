@@ -4,6 +4,8 @@ import { serviceSchema } from '@/lib/schema';
 import Breadcrumbs from '@/app/components/Breadcrumbs';
 import JsonLd from '@/app/components/JsonLd';
 import Faq from '@/app/components/Faq';
+import RelatedItemsSection from '@/app/components/RelatedItemsSection';
+import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 
 export const metadata = pageMetadata({
   title: 'Laser Antique & Hardware Restoration in Charleston, SC',
@@ -209,26 +211,7 @@ export default function AntiqueRestorationPage() {
           <p className="text-gray-400 leading-relaxed mb-8">
             We restore antiques and hardware for collectors, dealers, and homeowners throughout Charleston and the Lowcountry. Drop-off and pickup can be arranged for smaller pieces.
           </p>
-          <div className="flex flex-wrap gap-3">
-            {[
-              'Downtown Charleston',
-              'Historic District',
-              'South of Broad',
-              'Mount Pleasant',
-              'West Ashley',
-              'James Island',
-              'Daniel Island',
-              'Isle of Palms',
-              "Sullivan's Island",
-              'North Charleston',
-              'Summerville',
-              'Folly Beach',
-            ].map((area) => (
-              <span key={area} className="bg-[#0d1f3c] border border-[#0e7c7b]/20 text-gray-300 px-4 py-2 rounded text-sm">
-                {area}
-              </span>
-            ))}
-          </div>
+          <ServiceAreaChips />
         </div>
       </section>
 
@@ -259,6 +242,23 @@ export default function AntiqueRestorationPage() {
             q: 'How do you approach a piece you have not seen before?',
             a:
               'We start with an inconspicuous test area, show you the result, and adjust before going further. On anything irreplaceable, that step is not optional.',
+          },
+        ]}
+      />
+
+      <RelatedItemsSection
+        heading="Related Services"
+        intro="Pieces that hold their value through the surface often need more than one kind of care. These pair well with antique restoration."
+        items={[
+          {
+            title: 'Rust and Paint Removal',
+            desc: 'Corrosion and failed coatings lifted from iron, steel, and aluminum without abrasives or chemicals.',
+            href: '/services/rust-removal-charleston',
+          },
+          {
+            title: 'Historic Ironwork Restoration',
+            desc: 'Wrought iron gates and railings cleaned without erasing forged detail or maker marks.',
+            href: '/services/historic-ironwork-restoration-charleston',
           },
         ]}
       />

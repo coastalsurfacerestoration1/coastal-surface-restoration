@@ -4,6 +4,8 @@ import { serviceSchema } from '@/lib/schema';
 import Breadcrumbs from '@/app/components/Breadcrumbs';
 import JsonLd from '@/app/components/JsonLd';
 import Faq from '@/app/components/Faq';
+import RelatedItemsSection from '@/app/components/RelatedItemsSection';
+import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 
 export const metadata = pageMetadata({
   title: 'Historic Ironwork Restoration in Charleston, SC',
@@ -214,8 +216,8 @@ export default function HistoricIronworkPage() {
           <p className="text-gray-400 leading-relaxed mb-8">
             We serve historic properties throughout Charleston and the Lowcountry. All work is performed on-site, so there is no need to remove gates, railings, or fixtures from their original location.
           </p>
-          <div className="flex flex-wrap gap-3">
-            {[
+          <ServiceAreaChips
+            areas={[
               'South of Broad',
               'Historic District',
               'Downtown Charleston',
@@ -228,12 +230,8 @@ export default function HistoricIronworkPage() {
               "Sullivan's Island",
               'James Island',
               'West Ashley',
-            ].map((area) => (
-              <span key={area} className="bg-[#0d1f3c] border border-[#0e7c7b]/20 text-gray-300 px-4 py-2 rounded text-sm">
-                {area}
-              </span>
-            ))}
-          </div>
+            ]}
+          />
         </div>
       </section>
 
@@ -264,6 +262,23 @@ export default function HistoricIronworkPage() {
             q: 'Can you clean ironwork that is still mounted?',
             a:
               'Yes, and usually that is preferable. Gates, railings, balconies, and fence panels are cleaned in place, which avoids the risk of damage during removal and reinstallation and avoids disturbing the masonry the ironwork is set into.',
+          },
+        ]}
+      />
+
+      <RelatedItemsSection
+        heading="Related Services"
+        intro="Historic ironwork sits on the same continuum as smaller antique hardware and general rust removal. These pair naturally with it."
+        items={[
+          {
+            title: 'Antique and Hardware Restoration',
+            desc: 'Heirloom hardware and decorative metalwork cleaned with the patina preserved.',
+            href: '/services/antique-restoration-charleston',
+          },
+          {
+            title: 'Rust and Paint Removal',
+            desc: 'Corrosion and failed coatings lifted from iron, steel, and aluminum.',
+            href: '/services/rust-removal-charleston',
           },
         ]}
       />

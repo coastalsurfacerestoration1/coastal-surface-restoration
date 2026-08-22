@@ -4,6 +4,8 @@ import { serviceSchema } from '@/lib/schema';
 import Breadcrumbs from '@/app/components/Breadcrumbs';
 import JsonLd from '@/app/components/JsonLd';
 import Faq from '@/app/components/Faq';
+import RelatedItemsSection from '@/app/components/RelatedItemsSection';
+import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 
 export const metadata = pageMetadata({
   title: 'Laser Brick & Masonry Cleaning in Charleston, SC',
@@ -214,8 +216,8 @@ export default function BrickCleaningPage() {
           <p className="text-gray-400 leading-relaxed mb-8">
             We clean brick and masonry for historic homes, commercial buildings, and residential properties throughout Charleston and the Lowcountry.
           </p>
-          <div className="flex flex-wrap gap-3">
-            {[
+          <ServiceAreaChips
+            areas={[
               'South of Broad',
               'Historic District',
               'Downtown Charleston',
@@ -228,12 +230,8 @@ export default function BrickCleaningPage() {
               'North Charleston',
               'Daniel Island',
               'Summerville',
-            ].map((area) => (
-              <span key={area} className="bg-[#0d1f3c] border border-[#0e7c7b]/20 text-gray-300 px-4 py-2 rounded text-sm">
-                {area}
-              </span>
-            ))}
-          </div>
+            ]}
+          />
         </div>
       </section>
 
@@ -264,6 +262,23 @@ export default function BrickCleaningPage() {
             q: 'Do you clean stucco and stone as well?',
             a:
               'Yes. Stucco, cast stone, and concrete all respond, with settings adjusted per material. Stucco in particular benefits from a dry method, since pressure washing drives water in behind the render.',
+          },
+        ]}
+      />
+
+      <RelatedItemsSection
+        heading="Related Services"
+        intro="Brick and masonry rarely need only one thing done. These are the services most often booked alongside a brick cleaning job."
+        items={[
+          {
+            title: 'Graffiti Removal',
+            desc: 'Spray paint lifted from brick and masonry without ghost outlines or surface gouging.',
+            href: '/services/graffiti-removal-charleston',
+          },
+          {
+            title: 'Commercial Exterior Cleaning',
+            desc: 'Storefronts and mixed-material facades restored outside business hours.',
+            href: '/services/commercial-exterior-cleaning-charleston',
           },
         ]}
       />

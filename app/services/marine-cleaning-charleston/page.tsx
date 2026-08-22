@@ -4,6 +4,8 @@ import { serviceSchema } from '@/lib/schema';
 import Breadcrumbs from '@/app/components/Breadcrumbs';
 import JsonLd from '@/app/components/JsonLd';
 import Faq from '@/app/components/Faq';
+import RelatedItemsSection from '@/app/components/RelatedItemsSection';
+import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 
 export const metadata = pageMetadata({
   title: 'Laser Marine Cleaning in Charleston, SC',
@@ -214,8 +216,8 @@ export default function MarineCleaningPage() {
           <p className="text-gray-400 leading-relaxed mb-8">
             We serve boat owners, marinas, and dock owners throughout Charleston Harbor and the Lowcountry, with dockside service wherever access allows.
           </p>
-          <div className="flex flex-wrap gap-3">
-            {[
+          <ServiceAreaChips
+            areas={[
               'Charleston Harbor',
               'Shem Creek',
               'Mount Pleasant',
@@ -228,12 +230,8 @@ export default function MarineCleaningPage() {
               'West Ashley',
               'Downtown Charleston',
               'Wild Dunes',
-            ].map((area) => (
-              <span key={area} className="bg-[#0d1f3c] border border-[#0e7c7b]/20 text-gray-300 px-4 py-2 rounded text-sm">
-                {area}
-              </span>
-            ))}
-          </div>
+            ]}
+          />
         </div>
       </section>
 
@@ -264,6 +262,23 @@ export default function MarineCleaningPage() {
             q: 'What about corrosion in hard to reach fittings?',
             a:
               'Detail work is where the method has an advantage. The beam can be directed into recesses, around fasteners, and along weld seams without masking or disassembling the surrounding area.',
+          },
+        ]}
+      />
+
+      <RelatedItemsSection
+        heading="Related Services"
+        intro="Marine work sits next to two other things we do regularly on the same properties: waterfront rentals and general rust removal on gear."
+        items={[
+          {
+            title: 'Vacation Rental Restoration',
+            desc: 'Salt corrosion removed from waterfront rental properties on a turnover-friendly schedule.',
+            href: '/services/vacation-rental-cleaning-charleston',
+          },
+          {
+            title: 'Rust and Paint Removal',
+            desc: 'Corrosion lifted from trailers, tools, and shop equipment away from the water.',
+            href: '/services/rust-removal-charleston',
           },
         ]}
       />

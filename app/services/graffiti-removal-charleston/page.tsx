@@ -4,6 +4,8 @@ import { serviceSchema } from '@/lib/schema';
 import Breadcrumbs from '@/app/components/Breadcrumbs';
 import JsonLd from '@/app/components/JsonLd';
 import Faq from '@/app/components/Faq';
+import RelatedItemsSection from '@/app/components/RelatedItemsSection';
+import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 
 export const metadata = pageMetadata({
   title: 'Laser Graffiti Removal in Charleston, SC',
@@ -214,8 +216,8 @@ export default function GraffitiRemovalPage() {
           <p className="text-gray-400 leading-relaxed mb-8">
             We remove graffiti for residential, commercial, and municipal clients throughout Charleston and the Lowcountry, with particular care for historic brick and masonry downtown.
           </p>
-          <div className="flex flex-wrap gap-3">
-            {[
+          <ServiceAreaChips
+            areas={[
               'Downtown Charleston',
               'Historic District',
               'King Street',
@@ -228,12 +230,8 @@ export default function GraffitiRemovalPage() {
               'Folly Beach',
               "Sullivan's Island",
               'Isle of Palms',
-            ].map((area) => (
-              <span key={area} className="bg-[#0d1f3c] border border-[#0e7c7b]/20 text-gray-300 px-4 py-2 rounded text-sm">
-                {area}
-              </span>
-            ))}
-          </div>
+            ]}
+          />
         </div>
       </section>
 
@@ -264,6 +262,23 @@ export default function GraffitiRemovalPage() {
             q: 'Do you work with property managers on repeat vandalism?',
             a:
               'Yes. For frontage that gets hit repeatedly we can set up a standing arrangement so removal happens quickly rather than waiting on a fresh quote each time.',
+          },
+        ]}
+      />
+
+      <RelatedItemsSection
+        heading="Related Services"
+        intro="Graffiti almost never lands on a clean wall. These are the services most often booked in the same visit."
+        items={[
+          {
+            title: 'Brick and Masonry Cleaning',
+            desc: 'Efflorescence and soiling on historic brick, stucco, and stone without pressure washing damage.',
+            href: '/services/brick-cleaning-charleston',
+          },
+          {
+            title: 'Commercial Exterior Cleaning',
+            desc: 'Storefronts and property maintained on schedules that work around your hours.',
+            href: '/services/commercial-exterior-cleaning-charleston',
           },
         ]}
       />

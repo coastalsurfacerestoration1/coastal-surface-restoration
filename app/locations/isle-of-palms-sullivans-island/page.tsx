@@ -4,6 +4,7 @@ import { serviceSchema } from '@/lib/schema';
 import Breadcrumbs from '@/app/components/Breadcrumbs';
 import JsonLd from '@/app/components/JsonLd';
 import Faq from '@/app/components/Faq';
+import RelatedItemsSection from '@/app/components/RelatedItemsSection';
 
 export const metadata = pageMetadata({
   title: "Laser Cleaning on Isle of Palms & Sullivan's Island, SC",
@@ -245,6 +246,28 @@ export default function IsleOfPalmsSullivansPage() {
             q: 'What is the most common island job?',
             a:
               'Exterior stairs and railings. Beach access stairs and deck rails take the heaviest exposure on the property, and surface rust there turns into a structural conversation faster than anywhere else.',
+          },
+        ]}
+      />
+
+      <RelatedItemsSection
+        heading="Other Service Areas"
+        intro="The exposure changes with the neighborhood. See how the work reads for other parts of Charleston."
+        items={[
+          {
+            title: 'Downtown Charleston',
+            desc: 'Historic ironwork, brick, and stucco on the peninsula, with no runoff into courtyards or storm drains.',
+            href: '/locations/downtown-charleston',
+          },
+          {
+            title: 'Mount Pleasant',
+            desc: 'Salt-driven corrosion on Old Village hardware, Wando dock equipment, and Carolina Park exterior metal.',
+            href: '/locations/mount-pleasant',
+          },
+          {
+            title: 'James Island & Folly Beach',
+            desc: 'Marsh-front hardware, dock and boat lift metal, and rentals on the tidal creek side of Charleston.',
+            href: '/locations/james-island-folly-beach',
           },
         ]}
       />

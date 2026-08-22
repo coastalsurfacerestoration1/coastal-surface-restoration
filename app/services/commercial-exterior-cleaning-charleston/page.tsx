@@ -4,6 +4,8 @@ import { serviceSchema } from '@/lib/schema';
 import Breadcrumbs from '@/app/components/Breadcrumbs';
 import JsonLd from '@/app/components/JsonLd';
 import Faq from '@/app/components/Faq';
+import RelatedItemsSection from '@/app/components/RelatedItemsSection';
+import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 
 export const metadata = pageMetadata({
   title: 'Commercial Exterior Laser Cleaning in Charleston, SC',
@@ -195,8 +197,8 @@ export default function CommercialExteriorPage() {
           <p className="text-gray-400 leading-relaxed mb-8">
             We serve retail, restaurant, hospitality, and office properties, plus property management companies, throughout Charleston and the Lowcountry.
           </p>
-          <div className="flex flex-wrap gap-3">
-            {[
+          <ServiceAreaChips
+            areas={[
               'King Street',
               'Downtown Charleston',
               'Historic District',
@@ -209,12 +211,8 @@ export default function CommercialExteriorPage() {
               'Summerville',
               'Isle of Palms',
               "Sullivan's Island",
-            ].map((area) => (
-              <span key={area} className="bg-[#0d1f3c] border border-[#0e7c7b]/20 text-gray-300 px-4 py-2 rounded text-sm">
-                {area}
-              </span>
-            ))}
-          </div>
+            ]}
+          />
         </div>
       </section>
 
@@ -245,6 +243,23 @@ export default function CommercialExteriorPage() {
             q: 'Do you provide documentation for property records?',
             a:
               'Yes. We can supply before and after documentation for maintenance records, insurance, or ownership reporting.',
+          },
+        ]}
+      />
+
+      <RelatedItemsSection
+        heading="Related Services"
+        intro="Commercial jobs rarely stop at one surface. These are the services most often bundled with a storefront or property job."
+        items={[
+          {
+            title: 'Rust and Paint Removal',
+            desc: 'Iron, steel, and aluminum stripped clean for railings, gates, and signage.',
+            href: '/services/rust-removal-charleston',
+          },
+          {
+            title: 'Graffiti Removal',
+            desc: 'Tags lifted from brick, metal, and painted surfaces without the ghost outlines solvents leave behind.',
+            href: '/services/graffiti-removal-charleston',
           },
         ]}
       />

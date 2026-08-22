@@ -4,6 +4,7 @@ import { serviceSchema } from '@/lib/schema';
 import Breadcrumbs from '@/app/components/Breadcrumbs';
 import JsonLd from '@/app/components/JsonLd';
 import Faq from '@/app/components/Faq';
+import RelatedItemsSection from '@/app/components/RelatedItemsSection';
 
 export const metadata = pageMetadata({
   title: 'Laser Cleaning in Downtown Charleston, SC',
@@ -262,6 +263,28 @@ export default function DowntownCharlestonPage() {
             q: 'How much does a job downtown cost?',
             a:
               'Every job starts with a free estimate. Send photos of the gate, railing, or wall and we will follow up with pricing, usually within 24 hours.',
+          },
+        ]}
+      />
+
+      <RelatedItemsSection
+        heading="Other Service Areas"
+        intro="We work across the Lowcountry, and the exposure changes with the neighborhood. See how the work reads for other parts of Charleston."
+        items={[
+          {
+            title: 'Mount Pleasant',
+            desc: 'Salt-driven corrosion on Old Village hardware, Wando dock equipment, and Carolina Park exterior metal.',
+            href: '/locations/mount-pleasant',
+          },
+          {
+            title: "Isle of Palms & Sullivan's Island",
+            desc: 'Barrier island properties where salt spray hits the hardest, cleaned on site with no runoff.',
+            href: '/locations/isle-of-palms-sullivans-island',
+          },
+          {
+            title: 'James Island & Folly Beach',
+            desc: 'Marsh-front hardware, dock and boat lift metal, and rentals on the tidal creek side of Charleston.',
+            href: '/locations/james-island-folly-beach',
           },
         ]}
       />
