@@ -12,13 +12,24 @@ export const metadata = pageMetadata({
   path: '/how-laser-cleaning-works',
 });
 
-// Placeholder slots for real assets. Drop files into public/media/how-it-works/
-// and video IDs into the VIDEO_IDS array once available, then delete the
-// `pending` flag on the item.
-const VIDEO_IDS: { id: string; caption: string; pending: boolean }[] = [
-  { id: '', caption: 'Laser cleaning rust off wrought iron', pending: true },
-  { id: '', caption: 'Close-up of the ablation process', pending: true },
+// Stand-in videos from third parties, used until Coastal Surface Restoration
+// has its own footage (targeted Oct 2026, when first jobs start). Any video
+// here needs the third-party disclaimer rendered near it, see VideoSlot below.
+const VIDEO_IDS: { id: string; caption: string; credit: string }[] = [
+  {
+    id: '078v2jLQTt0',
+    caption: 'How laser cleaning works',
+    credit: 'P-Laser',
+  },
+  {
+    id: 'JRzg3i7o-IA',
+    caption: 'Removing decades of rust from a car body',
+    credit: 'Insider Cars',
+  },
 ];
+
+const VIDEO_DISCLAIMER =
+  'Example footage from other laser cleaning equipment, not our machine. Our own before-and-after videos from Charleston jobs will replace these starting October 2026.';
 
 const PHOTOS: { src: string; alt: string; pending: boolean }[] = [
   { src: '/media/how-it-works/before-rust-gate.jpg', alt: 'Wrought iron gate covered in surface rust before laser cleaning', pending: true },
@@ -26,25 +37,24 @@ const PHOTOS: { src: string; alt: string; pending: boolean }[] = [
   { src: '/media/how-it-works/after-clean-metal.jpg', alt: 'Same wrought iron gate cleaned to bare metal with detail preserved', pending: true },
 ];
 
-function VideoSlot({ id, caption, pending }: { id: string; caption: string; pending: boolean }) {
+function VideoSlot({ id, caption, credit }: { id: string; caption: string; credit: string }) {
   return (
     <figure>
       <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-[#0a1628] border border-[#0e7c7b]/20">
-        {pending || !id ? (
-          <div className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm">
-            Video coming soon
-          </div>
-        ) : (
-          <iframe
-            src={`https://www.youtube-nocookie.com/embed/${id}`}
-            title={caption}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="absolute inset-0 h-full w-full"
-          />
-        )}
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${id}`}
+          title={caption}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          className="absolute inset-0 h-full w-full"
+        />
       </div>
-      <figcaption className="mt-3 text-center text-sm text-gray-500">{caption}</figcaption>
+      <figcaption className="mt-3 text-center text-sm text-gray-500">
+        {caption}. Video credit: {credit}.
+      </figcaption>
+      <p className="mt-2 text-center text-xs italic text-gray-600 max-w-xl mx-auto">
+        {VIDEO_DISCLAIMER}
+      </p>
     </figure>
   );
 }
@@ -111,7 +121,7 @@ export default function HowLaserCleaningWorksPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">The 30 Second Version</h2>
           <p className="text-gray-400 leading-relaxed mb-4">
-            A laser cleaner fires very short pulses of light at a surface. Rust, paint, and coatings absorb that energy and lift off as fine dust. The trick is that the laser is tuned to a level that removes the contamination but sits below the level that would affect the metal, brick, or stone underneath. Clean the top layer off, and the pulses have nothing left to work on.
+            A laser cleaner fires very short pulses of light at a specific frequency. Rust, paint, and other contaminants absorb that light and vaporize off as fine dust. The material underneath, whether it is metal, brick, stone, or wood, absorbs much less of it and is left intact.
           </p>
           <p className="text-gray-400 leading-relaxed">
             No sand, no chemicals, no water, no abrasion. It is the same technology used in aerospace, museum conservation, and nuclear decommissioning, packaged into a portable unit we bring to your property.
@@ -148,8 +158,8 @@ export default function HowLaserCleaningWorksPage() {
               },
               {
                 step: '03',
-                title: 'The Substrate Stays Below Its Threshold',
-                desc: 'Every material has a minimum energy level, called an ablation threshold, before the laser starts to remove it. The pulse strength is set above the threshold of the contamination and below the threshold of the surface underneath. That gap is why the rust comes off and the metal, brick, or stone does not.',
+                title: 'The Substrate Is Left Intact',
+                desc: 'Clean metal, brick, stone, and wood absorb far less of that specific wavelength than the contamination does, so the pulses have little effect on them. As a second margin of safety, the total energy per pulse is set below the level that would start removing the substrate itself. That is why the rust comes off and the surface underneath does not.',
               },
               {
                 step: '04',
@@ -203,8 +213,41 @@ export default function HowLaserCleaningWorksPage() {
         </div>
       </section>
 
-      {/* Comparison */}
+      {/* Safe surfaces */}
       <section className="py-8 lg:py-12 bg-[#0d1f3c]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-white mb-6">Surfaces It Is Safe On</h2>
+          <p className="text-gray-400 leading-relaxed mb-8 max-w-2xl">
+            Because the laser targets the contaminant rather than grinding across the surface, it works on materials that other methods have to avoid.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {[
+              'Iron',
+              'Steel',
+              'Aluminum',
+              'Brass and bronze',
+              'Cast iron',
+              'Brick',
+              'Stone',
+              'Stucco',
+              'Concrete',
+              'Wood',
+              'Marine hardware',
+              'Antique and heirloom metal',
+            ].map((surface) => (
+              <span key={surface} className="bg-[#0a1628] border border-[#0e7c7b]/20 text-gray-300 px-4 py-2 rounded text-sm">
+                {surface}
+              </span>
+            ))}
+          </div>
+          <p className="text-gray-500 text-sm leading-relaxed mt-6 max-w-2xl">
+            On anything historic or irreplaceable we still run a small test area first before working the full piece, and dial in the settings to match the material.
+          </p>
+        </div>
+      </section>
+
+      {/* Comparison */}
+      <section className="py-8 lg:py-12 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
             Laser vs. the Alternatives
