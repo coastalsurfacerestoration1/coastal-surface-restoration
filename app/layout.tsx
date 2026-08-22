@@ -7,6 +7,7 @@ import { localBusinessSchema, websiteSchema } from "@/lib/schema";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import JsonLd from "./components/JsonLd";
+import MobileStickyCta from "./components/MobileStickyCta";
 import PreLaunchBanner from "./components/PreLaunchBanner";
 import "./globals.css";
 
@@ -91,6 +92,7 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
+        <MobileStickyCta />
         <Analytics />
         <GoogleAnalytics gaId="G-TN5F5V63RG" />
       </body>

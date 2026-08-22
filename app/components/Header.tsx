@@ -25,18 +25,18 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <span className="text-white font-bold text-lg md:text-base lg:text-lg tracking-wide">
+          <Link href="/" className="flex items-center shrink-0">
+            <span className="text-white font-bold text-lg md:text-sm lg:text-base xl:text-lg tracking-wide whitespace-nowrap">
               COASTAL <span className="text-[#00d4d4]">SURFACE RESTORATION</span>
             </span>
           </Link>
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-5 lg:gap-8">
+          <nav className="hidden md:flex items-center gap-3 lg:gap-5 xl:gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors ${
+                className={`text-sm font-medium transition-colors whitespace-nowrap ${
                   isActive(link.href)
                     ? 'text-[#00d4d4] border-b-2 border-[#00d4d4] pb-0.5'
                     : 'text-gray-300 hover:text-[#00d4d4]'
