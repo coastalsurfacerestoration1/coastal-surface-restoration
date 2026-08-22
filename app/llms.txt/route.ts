@@ -87,6 +87,10 @@ ${SERVICES.map(([name, path, desc]) => `- [${name}](${SITE_URL}${path}): ${desc}
 
 ${LOCATIONS.map(([name, path]) => `- [${name}](${SITE_URL}${path}): laser cleaning services in ${name}`).join('\n')}
 
+## Learn
+
+- [How Laser Cleaning Works](${SITE_URL}/how-laser-cleaning-works): plain-language explanation of the technology, what it removes, and where its limits are
+
 ## Company
 
 - [About](${SITE_URL}/about): background on the business and its founder, Tyler Scherzer

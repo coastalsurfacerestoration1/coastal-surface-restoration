@@ -11,6 +11,7 @@ export default function Header() {
   const navLinks = [
     { href: '/services', label: 'Services' },
     { href: '/locations', label: 'Service Areas' },
+    { href: '/how-laser-cleaning-works', label: 'How It Works' },
     { href: '/gallery', label: 'Gallery' },
     { href: '/about', label: 'About' },
     { href: '/contact', label: 'Contact' },
