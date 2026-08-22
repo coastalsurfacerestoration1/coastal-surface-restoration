@@ -75,7 +75,7 @@ export default function AboutPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
-              { Icon: CertificateIcon, title: 'ANSI Z136.1 Certified', desc: 'Designated Laser Safety Officer (LSO) certified through the Laser Institute of America.' },
+              { Icon: CertificateIcon, title: 'ANSI Z136.1 Trained', desc: 'Designated Laser Safety Officer trained to ANSI Z136.1 through the Laser Institute of America.' },
               { Icon: ShieldIcon, title: 'Fully Insured', desc: 'Commercial General Liability coverage through Burlington Insurance Company. $1M per occurrence / $2M aggregate.' },
               { Icon: IronScrollIcon, title: 'Historic District Experience', desc: "Familiar with the unique requirements of working in Charleston's historic district and on protected structures." },
             ].map((item) => (

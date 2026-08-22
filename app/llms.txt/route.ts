@@ -76,7 +76,7 @@ Laser cleaning removes the contaminant layer while leaving the underlying materi
 - Service model: mobile, service-area business with no walk-in storefront
 - Pricing: free estimates on every job, quoted per project
 - Estimates: send photos of the piece and pricing follows, usually within 24 hours
-- Credentials: licensed and insured, ANSI Z136.1 certified Laser Safety Officer
+- Credentials: licensed and insured, Laser Safety Officer trained to ANSI Z136.1 through the Laser Institute of America
 - Service areas: ${SERVICE_AREAS.join(', ')}
 
 ## Services
