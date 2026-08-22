@@ -8,7 +8,7 @@ import Faq from '@/app/components/Faq';
 export const metadata = pageMetadata({
   title: 'How Laser Cleaning Works',
   description:
-    'A plain-language guide to laser cleaning. How the pulsed fiber laser removes rust, paint, and coatings without chemicals, abrasives, or damage to the underlying surface. Video, photos, and comparisons.',
+    'A plain-language guide to laser cleaning. How the pulsed fiber laser removes rust, paint, and coatings without chemicals, abrasives, or damage to the underlying surface. Diagrams, video, and comparisons.',
   path: '/how-laser-cleaning-works',
 });
 
@@ -30,12 +30,6 @@ const VIDEO_IDS: { id: string; caption: string; credit: string }[] = [
 
 const VIDEO_DISCLAIMER =
   'Example footage from other laser cleaning equipment, not our machine. Our own before-and-after videos from Charleston jobs will replace these starting October 2026.';
-
-const PHOTOS: { src: string; alt: string; pending: boolean }[] = [
-  { src: '/media/how-it-works/before-rust-gate.jpg', alt: 'Wrought iron gate covered in surface rust before laser cleaning', pending: true },
-  { src: '/media/how-it-works/during-laser-pass.jpg', alt: 'Laser cleaning head making a pass across a rusted metal surface', pending: true },
-  { src: '/media/how-it-works/after-clean-metal.jpg', alt: 'Same wrought iron gate cleaned to bare metal with detail preserved', pending: true },
-];
 
 function VideoSlot({ id, caption, credit }: { id: string; caption: string; credit: string }) {
   return (
@@ -59,20 +53,158 @@ function VideoSlot({ id, caption, credit }: { id: string; caption: string; credi
   );
 }
 
-function PhotoSlot({ src, alt, pending }: { src: string; alt: string; pending: boolean }) {
+/**
+ * Three-panel cross-section of a laser cleaning pass: contaminated surface,
+ * mid-ablation, clean substrate. Built from positioned HTML rather than an SVG
+ * for the same reason as SurfaceCrossSection: keeping the labels as real text
+ * lets them render at a legible size on small screens.
+ *
+ * Colors match SurfaceCrossSection so both diagrams on the site read as parts
+ * of the same visual vocabulary.
+ */
+function ProcessStep({
+  step,
+  title,
+  caption,
+  ariaLabel,
+  children,
+}: {
+  step: string;
+  title: string;
+  caption: string;
+  ariaLabel: string;
+  children: React.ReactNode;
+}) {
   return (
-    <figure>
-      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-[#0a1628] border border-[#0e7c7b]/20">
-        {pending ? (
-          <div className="absolute inset-0 flex items-center justify-center text-gray-500 text-xs px-4 text-center">
-            Photo coming soon
-          </div>
-        ) : (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={src} alt={alt} className="absolute inset-0 h-full w-full object-cover" />
-        )}
+    <div>
+      <div
+        className="relative h-[180px] w-full overflow-hidden rounded-lg border border-[#0e7c7b]/20 bg-[#0a1628]"
+        role="img"
+        aria-label={ariaLabel}
+      >
+        {children}
+        <div className="absolute left-3 top-3 rounded bg-[#00d4d4] px-2 py-0.5 text-xs font-bold text-[#0a1628]">
+          {step}
+        </div>
       </div>
-    </figure>
+      <h3 className="mt-4 text-white font-bold text-base">{title}</h3>
+      <p className="mt-1 text-gray-400 text-sm leading-relaxed">{caption}</p>
+    </div>
+  );
+}
+
+function LaserProcessDiagram() {
+  // Shared layer geometry: contamination sits on top of the base metal.
+  const layers = (opts: { gap?: boolean }) => (
+    <>
+      {/* Base metal */}
+      <div className="absolute inset-x-0 bottom-0 h-[70px] bg-gradient-to-b from-[#b6c6d6] to-[#7f94aa]" />
+      {/* Contamination band, rust and paint colors matched to SurfaceCrossSection */}
+      {!opts.gap ? (
+        <div className="absolute inset-x-0 bottom-[70px] h-[36px] bg-gradient-to-b from-[#a85c25] to-[#7c4a2a]" />
+      ) : (
+        <>
+          <div className="absolute left-0 bottom-[70px] h-[36px] w-[35%] bg-gradient-to-b from-[#a85c25] to-[#7c4a2a]" />
+          <div className="absolute right-0 bottom-[70px] h-[36px] w-[35%] bg-gradient-to-b from-[#a85c25] to-[#7c4a2a]" />
+        </>
+      )}
+    </>
+  );
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <ProcessStep
+        step="01"
+        title="Contact"
+        caption="A short pulse of laser light meets the contaminated surface. Rust and paint absorb energy at this wavelength strongly."
+        ariaLabel="Diagram: a laser beam angling down onto a rust layer sitting on top of clean base metal."
+      >
+        {layers({ gap: false })}
+        {/* Laser beam angling down onto the surface */}
+        <div
+          className="absolute"
+          style={{
+            top: '10px',
+            right: '38%',
+            width: '3px',
+            height: '96px',
+            background: 'linear-gradient(to bottom, rgba(0,212,212,0), #00d4d4)',
+            transform: 'rotate(12deg)',
+            transformOrigin: 'top center',
+            boxShadow: '0 0 8px #00d4d4',
+          }}
+        />
+        {/* Contact glow */}
+        <div
+          className="absolute"
+          style={{
+            bottom: '96px',
+            left: '48%',
+            width: '18px',
+            height: '18px',
+            borderRadius: '9999px',
+            background: 'radial-gradient(circle, rgba(0,212,212,0.75) 0%, rgba(0,212,212,0) 70%)',
+          }}
+        />
+      </ProcessStep>
+
+      <ProcessStep
+        step="02"
+        title="Ablation"
+        caption="The contaminant absorbs the energy and vaporizes off as fine dust. The base metal reflects most of the light and stays put."
+        ariaLabel="Diagram: the laser has removed a section of the rust layer in the middle, and fine particles rise from the cleaned area. The base metal beneath is exposed and undamaged."
+      >
+        {layers({ gap: true })}
+        {/* Laser beam entering the gap */}
+        <div
+          className="absolute"
+          style={{
+            top: '10px',
+            left: '50%',
+            width: '3px',
+            height: '96px',
+            background: 'linear-gradient(to bottom, rgba(0,212,212,0), #00d4d4)',
+            transform: 'translateX(-50%)',
+            boxShadow: '0 0 8px #00d4d4',
+          }}
+        />
+        {/* Vapor particles above the ablation zone */}
+        {[
+          { l: '38%', b: 115, s: 4 },
+          { l: '44%', b: 128, s: 3 },
+          { l: '52%', b: 132, s: 5 },
+          { l: '58%', b: 120, s: 3 },
+          { l: '48%', b: 145, s: 3 },
+          { l: '55%', b: 152, s: 2 },
+        ].map((p, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-[#c99672]/80"
+            style={{ left: p.l, bottom: p.b, width: p.s, height: p.s }}
+          />
+        ))}
+      </ProcessStep>
+
+      <ProcessStep
+        step="03"
+        title="Clean substrate"
+        caption="The contamination is gone, the surface underneath is intact. No sand to clean up, no chemical residue, no water to soak in."
+        ariaLabel="Diagram: only clean base metal remains, with no contamination on top and no laser beam active."
+      >
+        {/* Base metal only */}
+        <div className="absolute inset-x-0 bottom-0 h-[106px] bg-gradient-to-b from-[#b6c6d6] to-[#7f94aa]" />
+        {/* Subtle teal check to signal complete */}
+        <svg
+          className="absolute right-4 bottom-4 h-7 w-7 text-[#00d4d4]"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="11" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M7 12.5l3.2 3.2L17 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </ProcessStep>
+    </div>
   );
 }
 
@@ -179,15 +311,17 @@ export default function HowLaserCleaningWorksPage() {
         </div>
       </section>
 
-      {/* Photo strip */}
+      {/* Process diagram */}
       <section className="py-8 lg:py-12 bg-[#0d1f3c]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-white mb-10 text-center">Before, During, After</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {PHOTOS.map((photo) => (
-              <PhotoSlot key={photo.src} {...photo} />
-            ))}
-          </div>
+          <h2 className="text-3xl font-bold text-white mb-4 text-center">The Process in Three Steps</h2>
+          <p className="text-gray-400 text-center mb-10 max-w-2xl mx-auto">
+            A cross-section through the surface as the laser passes over it. Contamination on top, base material underneath.
+          </p>
+          <LaserProcessDiagram />
+          <p className="mt-10 text-center text-sm italic text-gray-500 max-w-xl mx-auto">
+            Real before-and-after photos from our Charleston jobs coming October 2026.
+          </p>
         </div>
       </section>
 
