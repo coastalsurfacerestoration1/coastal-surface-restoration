@@ -7,7 +7,7 @@ export const BUSINESS = {
   name: 'Coastal Surface Restoration LLC',
   shortName: SITE_NAME,
   phone: '854-222-7790',
-  email: 'tyler@coastalsurfacerestoration.com',
+  email: 'quotes@coastalsurfacerestoration.com',
   region: 'Charleston, SC & Lowcountry',
   socials: [
     'https://www.instagram.com/coastalsurfacerestoration',

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { pageMetadata } from '@/lib/seo';
+import { BUSINESS, pageMetadata } from '@/lib/seo';
 import { ClockIcon, MailIcon, PhoneIcon, PinIcon } from '@/app/components/icons';
 import Faq from '@/app/components/Faq';
 
@@ -47,11 +47,11 @@ export default function ContactPage() {
                 </div>
               </a>
 
-              <a href="mailto:tyler@coastalsurfacerestoration.com" className="flex items-start gap-4 bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6 hover:border-[#00d4d4]/40 transition-colors group">
+              <a href={`mailto:${BUSINESS.email}`} className="flex items-start gap-4 bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6 hover:border-[#00d4d4]/40 transition-colors group">
                 <MailIcon className="h-7 w-7 shrink-0 text-[#00d4d4]" />
                 <div>
                   <div className="text-[#00d4d4] font-semibold text-sm uppercase tracking-wider mb-1">Email</div>
-                  <div className="text-white font-bold group-hover:text-[#00d4d4] transition-colors break-all">tyler@coastalsurfacerestoration.com</div>
+                  <div className="text-white font-bold group-hover:text-[#00d4d4] transition-colors break-all">{BUSINESS.email}</div>
                   <div className="text-gray-400 text-sm mt-1">We respond within 24 hours</div>
                 </div>
               </a>

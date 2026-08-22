@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { BUSINESS } from '@/lib/seo';
 
 
 const socials = [
@@ -89,8 +90,8 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="mailto:tyler@coastalsurfacerestoration.com" className="text-gray-400 hover:text-[#00d4d4] text-sm transition-colors">
-                  tyler@coastalsurfacerestoration.com
+                <a href={`mailto:${BUSINESS.email}`} className="text-gray-400 hover:text-[#00d4d4] text-sm transition-colors">
+                  {BUSINESS.email}
                 </a>
               </li>
               <li className="text-gray-400 text-sm">Charleston, SC &amp; Lowcountry</li>
