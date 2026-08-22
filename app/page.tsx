@@ -68,6 +68,9 @@ export default function Home() {
                   See Our Services
                 </Link>
               </div>
+              <p className="mt-4 text-sm text-gray-400">
+                Free estimates. No obligation. Reply within 24 hours.
+              </p>
             </div>
 
             <LaserReveal />

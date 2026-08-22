@@ -26,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/locations/mount-pleasant', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/locations/isle-of-palms-sullivans-island', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/locations/james-island-folly-beach', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/privacy', priority: 0.2, changeFrequency: 'yearly' },
   ];
 
   return routes.map((r) => ({

@@ -124,9 +124,13 @@ export default function Footer() {
           <p className="text-gray-500 text-xs">
             © {new Date().getFullYear()} Coastal Surface Restoration LLC. All rights reserved.
           </p>
-          <p className="text-gray-500 text-xs">
-            Licensed &amp; Insured · Charleston, SC
-          </p>
+          <div className="flex items-center gap-x-4 text-xs text-gray-500">
+            <Link href="/privacy" className="hover:text-[#00d4d4] transition-colors">
+              Privacy Policy
+            </Link>
+            <span aria-hidden="true">·</span>
+            <span>Licensed &amp; Insured · Charleston, SC</span>
+          </div>
         </div>
       </div>
     </footer>
