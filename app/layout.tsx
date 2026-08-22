@@ -28,25 +28,8 @@ const barlowCondensed = Barlow_Condensed({
 const DESCRIPTION =
   "Charleston's mobile laser cleaning specialist for historic, marine, and property restoration. No chemicals, no damage, no mess.";
 
-/**
- * Search Console and Bing Webmaster Tools each issue a token to prove domain
- * ownership. They come from the environment rather than the source so adding
- * or rotating one is a config change, and each key is only emitted when it is
- * actually set — an empty meta tag fails verification rather than passing it.
- *
- * Google's token is the "HTML tag" method in Search Console. Bing's is under
- * Site verification, meta tag option, the `content` value of msvalidate.01.
- * Bing can also import a verified Search Console property, which skips its
- * token entirely.
- */
-const verification: Metadata['verification'] = {
-  ...(process.env.GOOGLE_SITE_VERIFICATION
-    ? { google: process.env.GOOGLE_SITE_VERIFICATION }
-    : {}),
-  ...(process.env.BING_SITE_VERIFICATION
-    ? { other: { 'msvalidate.01': process.env.BING_SITE_VERIFICATION } }
-    : {}),
-};
+// Search Console and Bing verification are handled via DNS TXT record at
+// Porkbun (Bing imports from the verified GSC property), not via meta tags.
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -56,7 +39,6 @@ export const metadata: Metadata = {
   },
   description: DESCRIPTION,
   alternates: { canonical: "/" },
-  verification,
   openGraph: {
     type: "website",
     locale: "en_US",
