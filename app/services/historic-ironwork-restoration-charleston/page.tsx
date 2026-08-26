@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
 
 export default function HistoricIronworkPage() {
   return (
-    <div className="min-h-screen bg-[#0a1628]">
+    <div className="min-h-screen bg-[#0e273e]">
       <Breadcrumbs
         trail={[
           { name: 'Home', path: '/' },
@@ -34,9 +34,9 @@ export default function HistoricIronworkPage() {
       />
 
       {/* Hero */}
-      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
+      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#1a3958] to-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
+          <p className="text-[#397774] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             Historic District & Beyond
           </p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">
@@ -47,7 +47,7 @@ export default function HistoricIronworkPage() {
           </p>
           <Link
             href="/quote"
-            className="inline-block bg-[#00d4d4] text-[#0a1628] px-8 py-4 rounded font-bold text-lg hover:bg-[#00b8b8] transition-colors"
+            className="inline-block bg-[#397774] text-white px-8 py-4 rounded font-bold text-lg hover:bg-[#2a5c5a] transition-colors"
           >
             Get a Free Estimate
           </Link>
@@ -55,7 +55,7 @@ export default function HistoricIronworkPage() {
       </section>
 
       {/* Charleston Ironwork Context */}
-      <section className="py-8 lg:py-12 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
             Preserving Charleston&apos;s Irreplaceable Ironwork Legacy
@@ -73,7 +73,7 @@ export default function HistoricIronworkPage() {
       </section>
 
       {/* What We Restore */}
-      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#1a3958]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-10">
             Historic Ironwork We Restore in Charleston
@@ -105,7 +105,7 @@ export default function HistoricIronworkPage() {
                 desc: 'Antique furniture hardware, tools, frames, and family heirloom metalwork where preserving the original surface is the top priority.',
               },
             ].map((item) => (
-              <div key={item.title} className="bg-[#0a1628] border border-[#0e7c7b]/20 rounded-lg p-6">
+              <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">
                 <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
@@ -115,7 +115,7 @@ export default function HistoricIronworkPage() {
       </section>
 
       {/* Why Not Sandblasting */}
-      <section className="py-8 lg:py-12 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
             Why Historic Ironwork Requires a Different Approach
@@ -142,16 +142,16 @@ export default function HistoricIronworkPage() {
                 key={item.method}
                 className={`rounded-lg p-6 border ${
                   item.safe
-                    ? 'bg-[#00d4d4]/5 border-[#00d4d4]/30'
-                    : 'bg-[#0d1f3c] border-[#0e7c7b]/20'
+                    ? 'bg-[#397774]/5 border-[#397774]/30'
+                    : 'bg-[#1a3958] border-[#397774]/20'
                 }`}
               >
                 <div className="flex items-center gap-2 mb-3">
-                  <span className={`text-lg font-bold ${item.safe ? 'text-[#00d4d4]' : 'text-gray-300'}`}>
+                  <span className={`text-lg font-bold ${item.safe ? 'text-[#397774]' : 'text-gray-300'}`}>
                     {item.method}
                   </span>
                   <span className={`text-xs px-2 py-0.5 rounded font-semibold ${
-                    item.safe ? 'bg-[#00d4d4]/20 text-[#00d4d4]' : 'bg-red-900/30 text-red-400'
+                    item.safe ? 'bg-[#397774]/20 text-[#397774]' : 'bg-red-900/30 text-red-400'
                   }`}>
                     {item.safe ? 'Recommended' : 'Risk to Historic Pieces'}
                   </span>
@@ -164,7 +164,7 @@ export default function HistoricIronworkPage() {
       </section>
 
       {/* Process */}
-      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#1a3958]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-10 text-center">
             Our Historic Ironwork Restoration Process
@@ -198,7 +198,7 @@ export default function HistoricIronworkPage() {
               },
             ].map((item) => (
               <div key={item.step} className="flex gap-6 items-start">
-                <div className="text-[#00d4d4] font-bold text-2xl w-10 shrink-0">{item.step}</div>
+                <div className="text-[#397774] font-bold text-2xl w-10 shrink-0">{item.step}</div>
                 <div>
                   <h3 className="text-white font-bold text-lg mb-1">{item.title}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
@@ -210,7 +210,7 @@ export default function HistoricIronworkPage() {
       </section>
 
       {/* Service Area */}
-      <section className="py-8 lg:py-12 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Service Area</h2>
           <p className="text-gray-400 leading-relaxed mb-8">
@@ -284,7 +284,7 @@ export default function HistoricIronworkPage() {
       />
 
       {/* CTA */}
-      <section className="py-8 lg:py-12 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
+      <section className="py-8 lg:py-12 bg-[#1a3958] border-t border-[#397774]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Restore your historic ironwork the right way
@@ -294,7 +294,7 @@ export default function HistoricIronworkPage() {
           </p>
           <Link
             href="/quote"
-            className="bg-[#00d4d4] text-[#0a1628] px-10 py-4 rounded font-bold text-lg hover:bg-[#00b8b8] transition-colors"
+            className="bg-[#397774] text-white px-10 py-4 rounded font-bold text-lg hover:bg-[#2a5c5a] transition-colors"
           >
             Request a Free Quote
           </Link>

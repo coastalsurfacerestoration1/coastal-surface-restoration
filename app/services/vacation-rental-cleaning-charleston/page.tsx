@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
 
 export default function VacationRentalPage() {
   return (
-    <div className="min-h-screen bg-[#0a1628]">
+    <div className="min-h-screen bg-[#0e273e]">
       <Breadcrumbs
         trail={[
           { name: 'Home', path: '/' },
@@ -34,9 +34,9 @@ export default function VacationRentalPage() {
       />
 
       {/* Hero */}
-      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
+      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#1a3958] to-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
+          <p className="text-[#397774] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             Vacation Rental Restoration
           </p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">
@@ -47,7 +47,7 @@ export default function VacationRentalPage() {
           </p>
           <Link
             href="/quote"
-            className="inline-block bg-[#00d4d4] text-[#0a1628] px-8 py-4 rounded font-bold text-lg hover:bg-[#00b8b8] transition-colors"
+            className="inline-block bg-[#397774] text-white px-8 py-4 rounded font-bold text-lg hover:bg-[#2a5c5a] transition-colors"
           >
             Get a Free Estimate
           </Link>
@@ -55,7 +55,7 @@ export default function VacationRentalPage() {
       </section>
 
       {/* Who this is for */}
-      <section className="py-8 lg:py-12 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
             Built for Owners and Property Managers
@@ -73,7 +73,7 @@ export default function VacationRentalPage() {
       </section>
 
       {/* What We Handle */}
-      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#1a3958]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-10">
             What We Handle at Rental Properties
@@ -105,7 +105,7 @@ export default function VacationRentalPage() {
                 desc: 'Efflorescence, staining, and grime on brick and stucco removed without pressure washing damage.',
               },
             ].map((item) => (
-              <div key={item.title} className="bg-[#0a1628] border border-[#0e7c7b]/20 rounded-lg p-6">
+              <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">
                 <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
@@ -115,7 +115,7 @@ export default function VacationRentalPage() {
       </section>
 
       {/* Why laser for rentals */}
-      <section className="py-8 lg:py-12 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
             Why Laser Cleaning Fits a Rental Operation
@@ -135,7 +135,7 @@ export default function VacationRentalPage() {
                 desc: 'Set a regular cadence for coastal properties so surfaces are maintained before they decline, not after.',
               },
             ].map((item) => (
-              <div key={item.title} className="bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6">
+              <div key={item.title} className="bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6">
                 <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
@@ -145,7 +145,7 @@ export default function VacationRentalPage() {
       </section>
 
       {/* Service Area */}
-      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#1a3958]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Service Area</h2>
           <p className="text-gray-400 leading-relaxed mb-8">
@@ -220,7 +220,7 @@ export default function VacationRentalPage() {
       />
 
       {/* CTA */}
-      <section className="py-8 lg:py-12 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
+      <section className="py-8 lg:py-12 bg-[#1a3958] border-t border-[#397774]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Keep your rental guest-ready
@@ -230,7 +230,7 @@ export default function VacationRentalPage() {
           </p>
           <Link
             href="/quote"
-            className="bg-[#00d4d4] text-[#0a1628] px-10 py-4 rounded font-bold text-lg hover:bg-[#00b8b8] transition-colors"
+            className="bg-[#397774] text-white px-10 py-4 rounded font-bold text-lg hover:bg-[#2a5c5a] transition-colors"
           >
             Request a Free Quote
           </Link>

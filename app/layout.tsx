@@ -62,7 +62,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${barlowCondensed.variable} font-sans antialiased bg-[#0a1628]`}
+        className={`${inter.variable} ${barlowCondensed.variable} font-sans antialiased bg-[#0e273e]`}
       >
         <JsonLd data={localBusinessSchema()} />
         <JsonLd data={websiteSchema()} />

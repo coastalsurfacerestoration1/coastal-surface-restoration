@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-[#0a1628] flex items-center justify-center py-24">
+    <div className="min-h-screen bg-[#0e273e] flex items-center justify-center py-24">
       <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
+        <p className="text-[#397774] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
           404
         </p>
         <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">
@@ -26,13 +26,13 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/services"
-            className="bg-[#00d4d4] text-[#0a1628] px-8 py-4 rounded font-bold text-lg hover:bg-[#00b8b8] transition-colors"
+            className="bg-[#397774] text-white px-8 py-4 rounded font-bold text-lg hover:bg-[#2a5c5a] transition-colors"
           >
             See Our Services
           </Link>
           <a
             href="tel:8542227790"
-            className="border border-[#00d4d4]/50 text-[#00d4d4] px-8 py-4 rounded font-bold text-lg hover:border-[#00d4d4] hover:bg-[#00d4d4]/10 transition-colors"
+            className="border border-[#397774]/50 text-[#397774] px-8 py-4 rounded font-bold text-lg hover:border-[#397774] hover:bg-[#397774]/10 transition-colors"
           >
             Call 854-222-7790
           </a>
@@ -48,7 +48,7 @@ export default function NotFound() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-gray-400 hover:text-[#00d4d4] transition-colors"
+              className="text-gray-400 hover:text-[#397774] transition-colors"
             >
               {l.label}
             </Link>

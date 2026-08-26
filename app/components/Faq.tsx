@@ -21,14 +21,14 @@ export default function Faq({
   return (
     <>
       <JsonLd data={faqSchema(items, path)} />
-      <section className="py-8 lg:py-12 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
+      <section className="py-8 lg:py-12 bg-[#1a3958] border-t border-[#397774]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-10">{heading}</h2>
           <div className="space-y-6">
             {items.map((item) => (
               <div
                 key={item.q}
-                className="bg-[#0a1628] border border-[#0e7c7b]/20 rounded-lg p-6"
+                className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6"
               >
                 <h3 className="text-white font-bold mb-3">{item.q}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{item.a}</p>

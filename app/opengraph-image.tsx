@@ -17,7 +17,7 @@ export default function OpengraphImage() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          background: 'linear-gradient(135deg, #0a1628 0%, #0d2040 50%, #0a1628 100%)',
+          background: 'linear-gradient(135deg, #0e273e 0%, #1a3958 50%, #0e273e 100%)',
           padding: 72,
         }}
       >
@@ -43,7 +43,7 @@ export default function OpengraphImage() {
               display: 'flex',
               fontSize: 26,
               letterSpacing: 6,
-              color: '#00d4d4',
+              color: '#397774',
               fontWeight: 600,
             }}
           >
@@ -66,7 +66,7 @@ export default function OpengraphImage() {
               display: 'flex',
               fontSize: 86,
               fontWeight: 700,
-              color: '#00d4d4',
+              color: '#397774',
               lineHeight: 1.05,
             }}
           >
@@ -95,7 +95,7 @@ export default function OpengraphImage() {
           }}
         >
           <div style={{ display: 'flex', fontSize: 30, fontWeight: 700, color: '#ffffff' }}>
-            COASTAL&nbsp;<span style={{ color: '#00d4d4' }}>SURFACE RESTORATION</span>
+            COASTAL&nbsp;<span style={{ color: '#397774' }}>SURFACE RESTORATION</span>
           </div>
           <div style={{ display: 'flex', fontSize: 26, color: '#9ca3af' }}>
             No chemicals · No abrasives · No mess

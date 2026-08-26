@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# brand source files (AI/EPS/PDF/hi-res) — kept locally, not in repo
+/logos

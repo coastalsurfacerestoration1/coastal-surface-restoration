@@ -34,7 +34,7 @@ const VIDEO_DISCLAIMER =
 function VideoSlot({ id, caption, credit }: { id: string; caption: string; credit: string }) {
   return (
     <figure>
-      <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-[#0a1628] border border-[#0e7c7b]/20">
+      <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-[#0e273e] border border-[#397774]/20">
         <iframe
           src={`https://www.youtube-nocookie.com/embed/${id}`}
           title={caption}
@@ -78,12 +78,12 @@ function ProcessStep({
   return (
     <div>
       <div
-        className="relative h-[180px] w-full overflow-hidden rounded-lg border border-[#0e7c7b]/20 bg-[#0a1628]"
+        className="relative h-[180px] w-full overflow-hidden rounded-lg border border-[#397774]/20 bg-[#0e273e]"
         role="img"
         aria-label={ariaLabel}
       >
         {children}
-        <div className="absolute left-3 top-3 rounded bg-[#00d4d4] px-2 py-0.5 text-xs font-bold text-[#0a1628]">
+        <div className="absolute left-3 top-3 rounded bg-[#397774] px-2 py-0.5 text-xs font-bold text-white">
           {step}
         </div>
       </div>
@@ -128,10 +128,10 @@ function LaserProcessDiagram() {
             right: '38%',
             width: '3px',
             height: '96px',
-            background: 'linear-gradient(to bottom, rgba(0,212,212,0), #00d4d4)',
+            background: 'linear-gradient(to bottom, rgba(0,212,212,0), #397774)',
             transform: 'rotate(12deg)',
             transformOrigin: 'top center',
-            boxShadow: '0 0 8px #00d4d4',
+            boxShadow: '0 0 8px #397774',
           }}
         />
         {/* Contact glow */}
@@ -163,9 +163,9 @@ function LaserProcessDiagram() {
             left: '50%',
             width: '3px',
             height: '96px',
-            background: 'linear-gradient(to bottom, rgba(0,212,212,0), #00d4d4)',
+            background: 'linear-gradient(to bottom, rgba(0,212,212,0), #397774)',
             transform: 'translateX(-50%)',
-            boxShadow: '0 0 8px #00d4d4',
+            boxShadow: '0 0 8px #397774',
           }}
         />
         {/* Vapor particles above the ablation zone */}
@@ -195,7 +195,7 @@ function LaserProcessDiagram() {
         <div className="absolute inset-x-0 bottom-0 h-[106px] bg-gradient-to-b from-[#b6c6d6] to-[#7f94aa]" />
         {/* Subtle teal check to signal complete */}
         <svg
-          className="absolute right-4 bottom-4 h-7 w-7 text-[#00d4d4]"
+          className="absolute right-4 bottom-4 h-7 w-7 text-[#397774]"
           viewBox="0 0 24 24"
           fill="none"
           aria-hidden="true"
@@ -210,7 +210,7 @@ function LaserProcessDiagram() {
 
 export default function HowLaserCleaningWorksPage() {
   return (
-    <div className="min-h-screen bg-[#0a1628]">
+    <div className="min-h-screen bg-[#0e273e]">
       <Breadcrumbs
         trail={[
           { name: 'Home', path: '/' },
@@ -228,9 +228,9 @@ export default function HowLaserCleaningWorksPage() {
       />
 
       {/* Hero */}
-      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
+      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#1a3958] to-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
+          <p className="text-[#397774] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             The Technology
           </p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">
@@ -241,7 +241,7 @@ export default function HowLaserCleaningWorksPage() {
           </p>
           <Link
             href="/quote"
-            className="inline-block bg-[#00d4d4] text-[#0a1628] px-8 py-4 rounded font-bold text-lg hover:bg-[#00b8b8] transition-colors"
+            className="inline-block bg-[#397774] text-white px-8 py-4 rounded font-bold text-lg hover:bg-[#2a5c5a] transition-colors"
           >
             Get a Free Estimate
           </Link>
@@ -249,7 +249,7 @@ export default function HowLaserCleaningWorksPage() {
       </section>
 
       {/* 30-second version */}
-      <section className="py-8 lg:py-12 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">The 30 Second Version</h2>
           <p className="text-gray-400 leading-relaxed mb-4">
@@ -262,7 +262,7 @@ export default function HowLaserCleaningWorksPage() {
       </section>
 
       {/* Featured video */}
-      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#1a3958]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6 text-center">See It In Action</h2>
           <p className="text-gray-400 text-center mb-8">
@@ -273,7 +273,7 @@ export default function HowLaserCleaningWorksPage() {
       </section>
 
       {/* How it actually works */}
-      <section className="py-8 lg:py-12 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-10">What Is Happening at the Surface</h2>
           <div className="space-y-6">
@@ -300,7 +300,7 @@ export default function HowLaserCleaningWorksPage() {
               },
             ].map((item) => (
               <div key={item.step} className="flex gap-6 items-start">
-                <div className="text-[#00d4d4] font-bold text-2xl w-10 shrink-0">{item.step}</div>
+                <div className="text-[#397774] font-bold text-2xl w-10 shrink-0">{item.step}</div>
                 <div>
                   <h3 className="text-white font-bold text-lg mb-1">{item.title}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
@@ -312,7 +312,7 @@ export default function HowLaserCleaningWorksPage() {
       </section>
 
       {/* Process diagram */}
-      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#1a3958]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-4 text-center">The Process in Three Steps</h2>
           <p className="text-gray-400 text-center mb-10 max-w-2xl mx-auto">
@@ -326,7 +326,7 @@ export default function HowLaserCleaningWorksPage() {
       </section>
 
       {/* What it removes */}
-      <section className="py-8 lg:py-12 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-10">What Laser Cleaning Removes</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -338,7 +338,7 @@ export default function HowLaserCleaningWorksPage() {
               { title: 'Marine Growth', desc: 'Salt buildup, calcium deposits, biological staining, and light oxidation on marine hardware, trailers, and dock fittings.' },
               { title: 'Efflorescence and Soiling', desc: 'Mineral deposits, atmospheric soiling, and biological staining on historic brick, stucco, and stone without opening mortar joints. Heavy or recurring efflorescence often points to a moisture problem in the wall itself, and that has to be addressed separately.' },
             ].map((item) => (
-              <div key={item.title} className="bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6">
+              <div key={item.title} className="bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6">
                 <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
@@ -348,7 +348,7 @@ export default function HowLaserCleaningWorksPage() {
       </section>
 
       {/* Safe surfaces */}
-      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#1a3958]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Surfaces It Is Safe On</h2>
           <p className="text-gray-400 leading-relaxed mb-8 max-w-2xl">
@@ -369,7 +369,7 @@ export default function HowLaserCleaningWorksPage() {
               'Marine hardware',
               'Antique and heirloom metal',
             ].map((surface) => (
-              <span key={surface} className="bg-[#0a1628] border border-[#0e7c7b]/20 text-gray-300 px-4 py-2 rounded text-sm">
+              <span key={surface} className="bg-[#0e273e] border border-[#397774]/20 text-gray-300 px-4 py-2 rounded text-sm">
                 {surface}
               </span>
             ))}
@@ -381,7 +381,7 @@ export default function HowLaserCleaningWorksPage() {
       </section>
 
       {/* Comparison */}
-      <section className="py-8 lg:py-12 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
+      <section className="py-8 lg:py-12 bg-[#1a3958] border-t border-[#397774]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
             Laser vs. the Alternatives
@@ -416,16 +416,16 @@ export default function HowLaserCleaningWorksPage() {
                 key={item.method}
                 className={`rounded-lg p-6 border ${
                   item.safe
-                    ? 'bg-[#00d4d4]/5 border-[#00d4d4]/30'
-                    : 'bg-[#0a1628] border-[#0e7c7b]/20'
+                    ? 'bg-[#397774]/5 border-[#397774]/30'
+                    : 'bg-[#0e273e] border-[#397774]/20'
                 }`}
               >
                 <div className="flex items-center gap-2 mb-3">
-                  <span className={`text-lg font-bold ${item.safe ? 'text-[#00d4d4]' : 'text-gray-300'}`}>
+                  <span className={`text-lg font-bold ${item.safe ? 'text-[#397774]' : 'text-gray-300'}`}>
                     {item.method}
                   </span>
                   <span className={`text-xs px-2 py-0.5 rounded font-semibold ${
-                    item.safe ? 'bg-[#00d4d4]/20 text-[#00d4d4]' : 'bg-red-900/30 text-red-400'
+                    item.safe ? 'bg-[#397774]/20 text-[#397774]' : 'bg-red-900/30 text-red-400'
                   }`}>
                     {item.safe ? 'Recommended' : 'Trade-offs'}
                   </span>
@@ -438,7 +438,7 @@ export default function HowLaserCleaningWorksPage() {
       </section>
 
       {/* Secondary video */}
-      <section className="py-8 lg:py-12 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6 text-center">A Closer Look</h2>
           <p className="text-gray-400 text-center mb-8">
@@ -449,7 +449,7 @@ export default function HowLaserCleaningWorksPage() {
       </section>
 
       {/* What we work on */}
-      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#1a3958]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Common Surfaces We Work On</h2>
           <p className="text-gray-400 leading-relaxed mb-10 max-w-2xl">
@@ -467,13 +467,13 @@ export default function HowLaserCleaningWorksPage() {
               <Link
                 key={s.title}
                 href={s.href}
-                className="block bg-[#0a1628] border border-[#0e7c7b]/20 rounded-lg p-6 hover:border-[#00d4d4]/50 transition-colors group"
+                className="block bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6 hover:border-[#397774]/50 transition-colors group"
               >
-                <h3 className="text-white font-bold text-lg mb-2 group-hover:text-[#00d4d4] transition-colors">
+                <h3 className="text-white font-bold text-lg mb-2 group-hover:text-[#397774] transition-colors">
                   {s.title}
                 </h3>
                 <p className="text-gray-400 text-sm leading-relaxed mb-4">{s.desc}</p>
-                <span className="inline-flex items-center gap-1 text-[#00d4d4] font-semibold text-sm group-hover:gap-2 transition-all">
+                <span className="inline-flex items-center gap-1 text-[#397774] font-semibold text-sm group-hover:gap-2 transition-all">
                   Learn more <span aria-hidden="true">→</span>
                 </span>
               </Link>
@@ -483,7 +483,7 @@ export default function HowLaserCleaningWorksPage() {
       </section>
 
       {/* What it does not do */}
-      <section className="py-8 lg:py-12 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Honest Limits</h2>
           <p className="text-gray-400 leading-relaxed mb-6">
@@ -495,7 +495,7 @@ export default function HowLaserCleaningWorksPage() {
               { title: 'Some surfaces are not candidates.', desc: 'Very thin plating, painted surfaces you want to keep, and materials that absorb laser light the same way the contamination does. On anything questionable we run a small test area first.' },
               { title: 'It is not the fastest method for every job.', desc: 'On a large flat wall with soft paint, hand scraping can be faster. Laser wins on detail, delicate substrates, and jobs where cleanup and containment would otherwise be the main cost.' },
             ].map((item) => (
-              <div key={item.title} className="bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6">
+              <div key={item.title} className="bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6">
                 <h3 className="text-white font-bold text-base mb-2">{item.title}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
@@ -505,7 +505,7 @@ export default function HowLaserCleaningWorksPage() {
       </section>
 
       {/* Safety */}
-      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#1a3958]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Safety and Certification</h2>
           <p className="text-gray-400 leading-relaxed mb-4">
@@ -557,7 +557,7 @@ export default function HowLaserCleaningWorksPage() {
       />
 
       {/* CTA */}
-      <section className="py-8 lg:py-12 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
+      <section className="py-8 lg:py-12 bg-[#1a3958] border-t border-[#397774]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Have a piece you are curious about?
@@ -567,7 +567,7 @@ export default function HowLaserCleaningWorksPage() {
           </p>
           <Link
             href="/quote"
-            className="bg-[#00d4d4] text-[#0a1628] px-10 py-4 rounded font-bold text-lg hover:bg-[#00b8b8] transition-colors"
+            className="bg-[#397774] text-white px-10 py-4 rounded font-bold text-lg hover:bg-[#2a5c5a] transition-colors"
           >
             Request a Free Quote
           </Link>

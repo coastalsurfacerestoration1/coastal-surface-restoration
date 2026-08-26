@@ -13,7 +13,7 @@
 const METHODS = [
   {
     name: 'Laser cleaning',
-    color: '#00d4d4',
+    color: '#397774',
     /** Top of the base metal: exactly where you want to stop. */
     line: 72,
     label: 78,
@@ -76,13 +76,13 @@ export default function SurfaceCrossSection() {
         {METHODS.map((m) => (
           <span
             key={m.name}
-            className="absolute left-3 rounded bg-[#0a1628]/85 px-2 py-0.5 text-xs font-bold"
+            className="absolute left-3 rounded bg-[#0e273e]/85 px-2 py-0.5 text-xs font-bold"
             style={{ top: m.label, color: m.color }}
           >
             {m.name}
           </span>
         ))}
-        <span className="absolute bottom-3 left-3 text-xs font-bold text-[#16233a]">
+        <span className="absolute bottom-3 left-3 text-xs font-bold text-[#1a3958]">
           Base metal, what you are keeping
         </span>
       </div>

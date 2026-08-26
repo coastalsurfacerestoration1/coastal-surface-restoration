@@ -86,16 +86,16 @@ const services: Service[] = [
 ];
 
 const cardBase =
-  'block w-full md:w-[calc(50%_-_0.75rem)] lg:w-[calc(33.333%_-_1rem)] bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-8 hover:border-[#00d4d4]/50 transition-colors group';
+  'block w-full md:w-[calc(50%_-_0.75rem)] lg:w-[calc(33.333%_-_1rem)] bg-[#1a3958] border border-[#397774]/20 rounded-lg p-8 hover:border-[#397774]/50 transition-colors group';
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-[#0a1628]">
+    <div className="min-h-screen bg-[#0e273e]">
 
       {/* Hero */}
-      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
+      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#1a3958] to-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
+          <p className="text-[#397774] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             What We Do
           </p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">
@@ -108,15 +108,15 @@ export default function ServicesPage() {
       </section>
 
       {/* Services Grid */}
-      <section className="py-8 lg:py-12 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap justify-center gap-6">
             {services.map((service) => {
               // Shared inner content for both live and non-live cards.
               const inner = (
                 <>
-                  <service.Icon className="h-12 w-12 text-[#00d4d4] mb-4" />
-                  <h3 className="text-white font-bold text-xl mb-3 group-hover:text-[#00d4d4] transition-colors">
+                  <service.Icon className="h-12 w-12 text-[#397774] mb-4" />
+                  <h3 className="text-white font-bold text-xl mb-3 group-hover:text-[#397774] transition-colors">
                     {service.title}
                   </h3>
                   <p className="text-gray-400 text-sm leading-relaxed mb-4">
@@ -126,7 +126,7 @@ export default function ServicesPage() {
                     // NOTE: this is a <span>, not a <Link>. The whole card is
                     // already the link, so a nested <Link>/<a> here would be
                     // invalid HTML and can fail to render.
-                    <span className="inline-flex items-center gap-1 text-[#00d4d4] font-semibold text-sm group-hover:gap-2 transition-all">
+                    <span className="inline-flex items-center gap-1 text-[#397774] font-semibold text-sm group-hover:gap-2 transition-all">
                       Learn more <span aria-hidden="true">→</span>
                     </span>
                   )}
@@ -155,7 +155,7 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-8 lg:py-12 bg-[#0d1f3c] border-t border-[#0e7c7b]/20">
+      <section className="py-8 lg:py-12 bg-[#1a3958] border-t border-[#397774]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Not sure what you need?</h2>
           <p className="text-gray-400 mb-8">
@@ -163,7 +163,7 @@ export default function ServicesPage() {
           </p>
           <Link
             href="/quote"
-            className="bg-[#00d4d4] text-[#0a1628] px-10 py-4 rounded font-bold text-lg hover:bg-[#00b8b8] transition-colors"
+            className="bg-[#397774] text-white px-10 py-4 rounded font-bold text-lg hover:bg-[#2a5c5a] transition-colors"
           >
             Request a Free Quote
           </Link>

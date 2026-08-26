@@ -15,7 +15,7 @@ const LAST_UPDATED = 'August 22, 2026';
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-[#0a1628]">
+    <div className="min-h-screen bg-[#0e273e]">
       <Breadcrumbs
         trail={[
           { name: 'Home', path: '/' },
@@ -24,9 +24,9 @@ export default function PrivacyPage() {
       />
 
       {/* Hero */}
-      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
+      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#1a3958] to-[#0e273e]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
+          <p className="text-[#397774] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             Legal
           </p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
@@ -85,15 +85,15 @@ export default function PrivacyPage() {
             <ul>
               <li>
                 <span className="text-white">Resend</span> delivers the quote form submissions to us as email. Their privacy policy is at{' '}
-                <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-[#00d4d4] hover:underline">resend.com/legal/privacy-policy</a>.
+                <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-[#397774] hover:underline">resend.com/legal/privacy-policy</a>.
               </li>
               <li>
                 <span className="text-white">Vercel</span> hosts this website and provides basic, cookieless traffic analytics. Their policy is at{' '}
-                <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-[#00d4d4] hover:underline">vercel.com/legal/privacy-policy</a>.
+                <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-[#397774] hover:underline">vercel.com/legal/privacy-policy</a>.
               </li>
               <li>
                 <span className="text-white">Google Analytics</span> gives us aggregate reporting on how the site is used. Google&apos;s policy is at{' '}
-                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-[#00d4d4] hover:underline">policies.google.com/privacy</a>.
+                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-[#397774] hover:underline">policies.google.com/privacy</a>.
               </li>
             </ul>
             <p>
@@ -149,13 +149,13 @@ export default function PrivacyPage() {
             <ul>
               <li>
                 Email:{' '}
-                <a href={`mailto:${BUSINESS.email}`} className="text-[#00d4d4] hover:underline">
+                <a href={`mailto:${BUSINESS.email}`} className="text-[#397774] hover:underline">
                   {BUSINESS.email}
                 </a>
               </li>
               <li>
                 Phone:{' '}
-                <a href={`tel:${BUSINESS.phone.replace(/\D/g, '')}`} className="text-[#00d4d4] hover:underline">
+                <a href={`tel:${BUSINESS.phone.replace(/\D/g, '')}`} className="text-[#397774] hover:underline">
                   {BUSINESS.phone}
                 </a>
               </li>
@@ -163,10 +163,10 @@ export default function PrivacyPage() {
             </ul>
           </Section>
 
-          <div className="mt-12 pt-8 border-t border-[#0e7c7b]/20 text-sm text-gray-500">
+          <div className="mt-12 pt-8 border-t border-[#397774]/20 text-sm text-gray-500">
             <p>
               If you have not sent us a quote request and just want to read up on what we do, the{' '}
-              <Link href="/how-laser-cleaning-works" className="text-[#00d4d4] hover:underline">
+              <Link href="/how-laser-cleaning-works" className="text-[#397774] hover:underline">
                 How Laser Cleaning Works
               </Link>{' '}
               page is a good place to start.

@@ -13,7 +13,7 @@ export default function PreLaunchBanner() {
     <div
       role="region"
       aria-label="Pre-launch announcement"
-      className="border-b border-[#00d4d4]/30 bg-[#0e7c7b]"
+      className="border-b border-[#397774]/30 bg-[#397774]"
     >
       {/* Same max-width and gutters as the header, so the message centers on
           the nav above it rather than on the full window. */}
@@ -22,7 +22,7 @@ export default function PreLaunchBanner() {
           We are not yet operational but expect to launch in October 2026.{' '}
           <Link
             href="/quote"
-            className="font-semibold text-[#0a1628] underline decoration-[#0a1628]/40 underline-offset-2 transition-colors hover:text-white hover:decoration-white/60"
+            className="font-semibold text-[#0e273e] underline decoration-[#0e273e]/40 underline-offset-2 transition-colors hover:text-white hover:decoration-white/60"
           >
             Accepting provisional clients now.
           </Link>

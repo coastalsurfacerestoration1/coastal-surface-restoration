@@ -58,14 +58,14 @@ const chipBase =
   'px-4 py-2 rounded text-sm border transition-colors';
 
 const chipVariant: Record<Variant, string> = {
-  // Chip on a bg-[#0a1628] section (e.g. inside a service page's service area).
-  onDark: 'bg-[#0d1f3c] border-[#0e7c7b]/20 text-gray-300',
-  // Chip on a bg-[#0d1f3c] section (e.g. inside a location page's neighborhood list).
-  onLight: 'bg-[#0a1628] border-[#0e7c7b]/20 text-gray-300',
+  // Chip on a bg-[#0e273e] section (e.g. inside a service page's service area).
+  onDark: 'bg-[#1a3958] border-[#397774]/20 text-gray-300',
+  // Chip on a bg-[#1a3958] section (e.g. inside a location page's neighborhood list).
+  onLight: 'bg-[#0e273e] border-[#397774]/20 text-gray-300',
 };
 
 const linkHover =
-  'hover:text-[#00d4d4] hover:border-[#00d4d4]/50';
+  'hover:text-[#397774] hover:border-[#397774]/50';
 
 export default function ServiceAreaChips({
   areas = DEFAULT_AREAS,

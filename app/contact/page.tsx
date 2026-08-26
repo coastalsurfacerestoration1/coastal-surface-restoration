@@ -12,12 +12,12 @@ export const metadata = pageMetadata({
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-[#0a1628]">
+    <div className="min-h-screen bg-[#0e273e]">
 
       {/* Hero */}
-      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
+      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#1a3958] to-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
+          <p className="text-[#397774] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             Get in Touch
           </p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">
@@ -30,7 +30,7 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Info + Quote CTA */}
-      <section className="py-8 lg:py-12 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
@@ -38,37 +38,37 @@ export default function ContactPage() {
             <div className="space-y-6">
               <h2 className="text-2xl font-bold text-white mb-6">Direct Contact</h2>
 
-              <a href="tel:8542227790" className="flex items-start gap-4 bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6 hover:border-[#00d4d4]/40 transition-colors group">
-                <PhoneIcon className="h-7 w-7 shrink-0 text-[#00d4d4]" />
+              <a href="tel:8542227790" className="flex items-start gap-4 bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6 hover:border-[#397774]/40 transition-colors group">
+                <PhoneIcon className="h-7 w-7 shrink-0 text-[#397774]" />
                 <div>
-                  <div className="text-[#00d4d4] font-semibold text-sm uppercase tracking-wider mb-1">Phone</div>
-                  <div className="text-white font-bold text-lg group-hover:text-[#00d4d4] transition-colors">854-222-7790</div>
+                  <div className="text-[#397774] font-semibold text-sm uppercase tracking-wider mb-1">Phone</div>
+                  <div className="text-white font-bold text-lg group-hover:text-[#397774] transition-colors">854-222-7790</div>
                   <div className="text-gray-400 text-sm mt-1">Weekends 8am-9pm, weekdays from 4pm</div>
                 </div>
               </a>
 
-              <a href={`mailto:${BUSINESS.email}`} className="flex items-start gap-4 bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6 hover:border-[#00d4d4]/40 transition-colors group">
-                <MailIcon className="h-7 w-7 shrink-0 text-[#00d4d4]" />
+              <a href={`mailto:${BUSINESS.email}`} className="flex items-start gap-4 bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6 hover:border-[#397774]/40 transition-colors group">
+                <MailIcon className="h-7 w-7 shrink-0 text-[#397774]" />
                 <div>
-                  <div className="text-[#00d4d4] font-semibold text-sm uppercase tracking-wider mb-1">Email</div>
-                  <div className="text-white font-bold group-hover:text-[#00d4d4] transition-colors break-all">{BUSINESS.email}</div>
+                  <div className="text-[#397774] font-semibold text-sm uppercase tracking-wider mb-1">Email</div>
+                  <div className="text-white font-bold group-hover:text-[#397774] transition-colors break-all">{BUSINESS.email}</div>
                   <div className="text-gray-400 text-sm mt-1">We respond within 24 hours</div>
                 </div>
               </a>
 
-              <div className="flex items-start gap-4 bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6">
-                <PinIcon className="h-7 w-7 shrink-0 text-[#00d4d4]" />
+              <div className="flex items-start gap-4 bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6">
+                <PinIcon className="h-7 w-7 shrink-0 text-[#397774]" />
                 <div>
-                  <div className="text-[#00d4d4] font-semibold text-sm uppercase tracking-wider mb-1">Service Area</div>
+                  <div className="text-[#397774] font-semibold text-sm uppercase tracking-wider mb-1">Service Area</div>
                   <div className="text-white font-bold">Charleston, SC & Lowcountry</div>
                   <div className="text-gray-400 text-sm mt-1">Downtown Charleston, Mount Pleasant, Isle of Palms, Sullivan&apos;s Island, James Island, Folly Beach, and surrounding areas</div>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6">
-                <ClockIcon className="h-7 w-7 shrink-0 text-[#00d4d4]" />
+              <div className="flex items-start gap-4 bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6">
+                <ClockIcon className="h-7 w-7 shrink-0 text-[#397774]" />
                 <div>
-                  <div className="text-[#00d4d4] font-semibold text-sm uppercase tracking-wider mb-1">Hours</div>
+                  <div className="text-[#397774] font-semibold text-sm uppercase tracking-wider mb-1">Hours</div>
                   <div className="text-white font-bold">Saturday &amp; Sunday</div>
                   <div className="text-gray-400 text-sm mt-1 mb-3">8:00 AM - 9:00 PM</div>
                   <div className="text-white font-bold">Monday - Friday</div>
@@ -78,7 +78,7 @@ export default function ContactPage() {
             </div>
 
             {/* Quote CTA */}
-            <div className="bg-[#0d1f3c] border border-[#0e7c7b]/30 rounded-lg p-8 flex flex-col justify-between">
+            <div className="bg-[#1a3958] border border-[#397774]/30 rounded-lg p-8 flex flex-col justify-between">
               <div>
                 <h2 className="text-2xl font-bold text-white mb-4">Want a Free Estimate?</h2>
                 <p className="text-gray-400 mb-6 leading-relaxed">
@@ -87,13 +87,13 @@ export default function ContactPage() {
                 <ul className="space-y-3 mb-8">
                   {['No obligation', 'Response within 24 hours', 'On-site estimates available'].map((item) => (
                     <li key={item} className="flex items-center gap-3 text-gray-300 text-sm">
-                      <span className="text-[#00d4d4] font-bold">✓</span>
+                      <span className="text-[#397774] font-bold">✓</span>
                       {item}
                     </li>
                   ))}
                 </ul>
               </div>
-              <Link href="/quote" className="block text-center bg-[#00d4d4] text-[#0a1628] px-8 py-4 rounded font-bold text-lg hover:bg-[#00b8b8] transition-colors">
+              <Link href="/quote" className="block text-center bg-[#397774] text-white px-8 py-4 rounded font-bold text-lg hover:bg-[#2a5c5a] transition-colors">
                 Request a Free Quote
               </Link>
             </div>

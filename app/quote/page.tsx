@@ -70,11 +70,11 @@ export default function QuotePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a1628] py-12 lg:py-16">
+    <div className="min-h-screen bg-[#0e273e] py-12 lg:py-16">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="text-center mb-12">
-          <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-3">
+          <p className="text-[#397774] text-sm font-semibold uppercase tracking-[0.2em] mb-3">
             Free Estimates
           </p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
@@ -87,15 +87,15 @@ export default function QuotePage() {
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-[#0d1f3c] border border-[#0e7c7b]/30 rounded-lg p-8 space-y-6"
+          className="bg-[#1a3958] border border-[#397774]/30 rounded-lg p-8 space-y-6"
         >
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
-              Full Name <span className="text-[#00d4d4]">*</span>
+              Full Name <span className="text-[#397774]">*</span>
             </label>
             <input
               {...register('name', { required: 'Name is required' })}
-              className="w-full bg-[#0a1628] border border-[#0e7c7b]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#00d4d4] transition-colors"
+              className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
               placeholder="John Smith"
             />
             {errors.name && (
@@ -106,7 +106,7 @@ export default function QuotePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Email <span className="text-[#00d4d4]">*</span>
+                Email <span className="text-[#397774]">*</span>
               </label>
               <input
                 {...register('email', {
@@ -114,7 +114,7 @@ export default function QuotePage() {
                   pattern: { value: /^\S+@\S+$/i, message: 'Invalid email' },
                 })}
                 type="email"
-                className="w-full bg-[#0a1628] border border-[#0e7c7b]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#00d4d4] transition-colors"
+                className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
                 placeholder="john@example.com"
               />
               {errors.email && (
@@ -123,12 +123,12 @@ export default function QuotePage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Phone <span className="text-[#00d4d4]">*</span>
+                Phone <span className="text-[#397774]">*</span>
               </label>
               <input
                 {...register('phone', { required: 'Phone is required' })}
                 type="tel"
-                className="w-full bg-[#0a1628] border border-[#0e7c7b]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#00d4d4] transition-colors"
+                className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
                 placeholder="843-555-0100"
                 onInput={(e) => {
                   const input = e.currentTarget;
@@ -146,11 +146,11 @@ export default function QuotePage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
-              Property Address <span className="text-[#00d4d4]">*</span>
+              Property Address <span className="text-[#397774]">*</span>
             </label>
             <input
               {...register('address', { required: 'Address is required' })}
-              className="w-full bg-[#0a1628] border border-[#0e7c7b]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#00d4d4] transition-colors"
+              className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
               placeholder="123 King Street, Charleston, SC 29401"
             />
             {errors.address && (
@@ -160,11 +160,11 @@ export default function QuotePage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
-              Service Type <span className="text-[#00d4d4]">*</span>
+              Service Type <span className="text-[#397774]">*</span>
             </label>
             <select
               {...register('serviceType', { required: 'Please select a service' })}
-              className="w-full bg-[#0a1628] border border-[#0e7c7b]/40 rounded px-4 py-3 text-white focus:outline-none focus:border-[#00d4d4] transition-colors"
+              className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white focus:outline-none focus:border-[#397774] transition-colors"
             >
               <option value="">Select a service...</option>
               {services.map((s) => (
@@ -178,12 +178,12 @@ export default function QuotePage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
-              Project Description <span className="text-[#00d4d4]">*</span>
+              Project Description <span className="text-[#397774]">*</span>
             </label>
             <textarea
               {...register('description', { required: 'Please describe your project' })}
               rows={5}
-              className="w-full bg-[#0a1628] border border-[#0e7c7b]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#00d4d4] transition-colors resize-none"
+              className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors resize-none"
               placeholder="Describe what you need cleaned or restored. Include material type, approximate size, and any details that will help us give you an accurate quote."
             />
             {errors.description && (
@@ -214,7 +214,7 @@ export default function QuotePage() {
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="w-full bg-[#00d4d4] text-[#0a1628] py-4 rounded font-bold text-lg hover:bg-[#00b8b8] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[#397774] text-white py-4 rounded font-bold text-lg hover:bg-[#2a5c5a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {status === 'loading' ? 'Sending...' : 'Request Free Quote'}
           </button>

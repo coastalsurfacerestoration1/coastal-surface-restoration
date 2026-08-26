@@ -231,7 +231,7 @@ export default function LaserReveal() {
         // pan-y keeps vertical page scrolling working while horizontal drags
         // stay with us instead of being swallowed by the browser.
         style={{ touchAction: 'pan-y' }}
-        className="relative aspect-square w-full cursor-ew-resize touch-pan-y select-none overflow-hidden rounded-lg border border-[#0e7c7b]/30 bg-[#0d1f3c] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00d4d4] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a1628]"
+        className="relative aspect-square w-full cursor-ew-resize touch-pan-y select-none overflow-hidden rounded-lg border border-[#397774]/30 bg-[#1a3958] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#397774] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0e273e]"
       >
         {/* Corroded state underneath */}
         <Ironwork corroded />
@@ -241,13 +241,13 @@ export default function LaserReveal() {
           className="absolute inset-0"
           style={{ clipPath: `inset(0 ${100 - pct}% 0 0)` }}
         >
-          <div className="absolute inset-0 bg-[#0a1628]" />
+          <div className="absolute inset-0 bg-[#0e273e]" />
           <Ironwork corroded={false} />
         </div>
 
         {/* The beam */}
         <div
-          className="pointer-events-none absolute inset-y-0 w-px bg-[#00d4d4]"
+          className="pointer-events-none absolute inset-y-0 w-px bg-[#397774]"
           style={{
             left: `${pct}%`,
             boxShadow:
@@ -258,7 +258,7 @@ export default function LaserReveal() {
         {/* Grip. Touch has no hover state, so the control has to look
             draggable before it is touched. */}
         <div
-          className="pointer-events-none absolute top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#00d4d4] bg-[#0a1628]/85 shadow-[0_0_16px_rgba(0,212,212,0.5)]"
+          className="pointer-events-none absolute top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#397774] bg-[#0e273e]/85 shadow-[0_0_16px_rgba(0,212,212,0.5)]"
           style={{ left: `${pct}%` }}
         >
           <svg
@@ -266,7 +266,7 @@ export default function LaserReveal() {
             height="20"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#00d4d4"
+            stroke="#397774"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -287,13 +287,13 @@ export default function LaserReveal() {
           style={{ opacity: used ? 0 : 1 }}
           className="pointer-events-none absolute inset-x-0 top-4 flex justify-center transition-opacity duration-500"
         >
-          <span className="flex items-center gap-2 rounded-full border border-[#00d4d4] bg-[#0a1628]/95 px-4 py-2 text-sm font-bold uppercase tracking-[0.12em] text-white shadow-[0_0_24px_rgba(0,212,212,0.4)]">
+          <span className="flex items-center gap-2 rounded-full border border-[#397774] bg-[#0e273e]/95 px-4 py-2 text-sm font-bold uppercase tracking-[0.12em] text-white shadow-[0_0_24px_rgba(0,212,212,0.4)]">
             <svg
               width="15"
               height="15"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#00d4d4"
+              stroke="#397774"
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -306,7 +306,7 @@ export default function LaserReveal() {
               height="15"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#00d4d4"
+              stroke="#397774"
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -316,10 +316,10 @@ export default function LaserReveal() {
           </span>
         </div>
 
-        <span className="pointer-events-none absolute bottom-3 left-3 rounded bg-[#0a1628]/80 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-[#00d4d4]">
+        <span className="pointer-events-none absolute bottom-3 left-3 rounded bg-[#0e273e]/80 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-[#397774]">
           Cleaned
         </span>
-        <span className="pointer-events-none absolute right-3 bottom-3 rounded bg-[#0a1628]/80 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-400">
+        <span className="pointer-events-none absolute right-3 bottom-3 rounded bg-[#0e273e]/80 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-400">
           Corroded
         </span>
       </div>

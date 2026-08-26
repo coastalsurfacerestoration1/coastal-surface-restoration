@@ -152,7 +152,7 @@ export async function POST(req: Request) {
       subject: `New Quote Request -- ${singleLine(values.serviceType)} -- ${singleLine(values.name)}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #0a1628;">New Quote Request</h2>
+          <h2 style="color: #0e273e;">New Quote Request</h2>
           <table style="width: 100%; border-collapse: collapse;">
             <tr><td style="padding: 8px 0; color: #666; width: 140px;"><strong>Name</strong></td><td style="padding: 8px 0;">${safe.name}</td></tr>
             <tr><td style="padding: 8px 0; color: #666;"><strong>Email</strong></td><td style="padding: 8px 0;"><a href="mailto:${safe.email}">${safe.email}</a></td></tr>
@@ -221,9 +221,9 @@ function acknowledgementHtml(safe: Record<Field, string>): string {
 
   return `
     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #222;">
-      <div style="background: #0a1628; padding: 20px 24px;">
+      <div style="background: #0e273e; padding: 20px 24px;">
         <p style="margin: 0; color: #ffffff; font-size: 18px; font-weight: bold; letter-spacing: 0.04em;">
-          COASTAL <span style="color: #00d4d4;">SURFACE RESTORATION</span>
+          COASTAL <span style="color: #397774;">SURFACE RESTORATION</span>
         </p>
       </div>
       <div style="padding: 24px;">
@@ -249,7 +249,7 @@ function acknowledgementHtml(safe: Record<Field, string>): string {
         <p style="margin: 24px 0 0; line-height: 1.6;">
           Tyler Scherzer<br />
           ${SITE_NAME}<br />
-          <a href="tel:${BUSINESS.phone.replace(/\D/g, '')}" style="color: #0e7c7b;">${BUSINESS.phone}</a>
+          <a href="tel:${BUSINESS.phone.replace(/\D/g, '')}" style="color: #397774;">${BUSINESS.phone}</a>
         </p>
       </div>
       <div style="border-top: 1px solid #eee; padding: 16px 24px;">

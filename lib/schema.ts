@@ -40,7 +40,7 @@ export function localBusinessSchema() {
     name: BUSINESS.name,
     alternateName: SITE_NAME,
     url: SITE_URL,
-    logo: `${SITE_URL}/icon.png`,
+    logo: `${SITE_URL}/logo-icon.png`,
     image: `${SITE_URL}/opengraph-image`,
     description:
       "Charleston's mobile laser cleaning specialist for historic, marine, and property restoration. Rust, paint, graffiti, and corrosion removed on site with no chemicals, no abrasives, and no water runoff.",

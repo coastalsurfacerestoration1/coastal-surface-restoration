@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { BUSINESS } from '@/lib/seo';
 
 
@@ -35,15 +36,24 @@ const locations = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0a1628] border-t border-[#0e7c7b]/20">
+    <footer className="bg-[#0e273e] border-t border-[#397774]/20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
           {/* Brand */}
           <div>
-            <h3 className="text-white font-bold text-lg mb-3">
-              COASTAL <span className="text-[#00d4d4]">SURFACE RESTORATION</span>
-            </h3>
+            <Link href="/" className="flex items-center gap-2.5 mb-3">
+              <Image
+                src="/logo-social.png"
+                alt=""
+                width={1986}
+                height={1986}
+                className="h-11 w-11 rounded-full bg-white"
+              />
+              <h3 className="text-white font-bold text-lg">
+                COASTAL <span className="text-[#397774]">SURFACE RESTORATION</span>
+              </h3>
+            </Link>
             <p className="text-gray-400 text-sm leading-relaxed">
               Charleston&apos;s mobile laser cleaning specialist for historic, marine, and property restoration.
             </p>
@@ -55,7 +65,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.label}
-                  className="text-gray-400 hover:text-[#00d4d4] transition-colors"
+                  className="text-gray-400 hover:text-[#397774] transition-colors"
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d={s.path} />
@@ -69,14 +79,14 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-4">Services</h4>
             <ul className="space-y-2">
-              <li><Link href="/services/rust-removal-charleston" className="text-gray-400 hover:text-[#00d4d4] text-sm transition-colors">Rust Removal</Link></li>
-              <li><Link href="/services/historic-ironwork-restoration-charleston" className="text-gray-400 hover:text-[#00d4d4] text-sm transition-colors">Historic Restoration</Link></li>
-              <li><Link href="/services/marine-cleaning-charleston" className="text-gray-400 hover:text-[#00d4d4] text-sm transition-colors">Marine Cleaning</Link></li>
-              <li><Link href="/services/brick-cleaning-charleston" className="text-gray-400 hover:text-[#00d4d4] text-sm transition-colors">Brick Cleaning</Link></li>
-              <li><Link href="/services/graffiti-removal-charleston" className="text-gray-400 hover:text-[#00d4d4] text-sm transition-colors">Graffiti Removal</Link></li>
-              <li><Link href="/services/vacation-rental-cleaning-charleston" className="text-gray-400 hover:text-[#00d4d4] text-sm transition-colors">Vacation Rental Restoration</Link></li>
-              <li><Link href="/services/antique-restoration-charleston" className="text-gray-400 hover:text-[#00d4d4] text-sm transition-colors">Antique Restoration</Link></li>
-              <li><Link href="/services/commercial-exterior-cleaning-charleston" className="text-gray-400 hover:text-[#00d4d4] text-sm transition-colors">Commercial Exteriors</Link></li>
+              <li><Link href="/services/rust-removal-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Rust Removal</Link></li>
+              <li><Link href="/services/historic-ironwork-restoration-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Historic Restoration</Link></li>
+              <li><Link href="/services/marine-cleaning-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Marine Cleaning</Link></li>
+              <li><Link href="/services/brick-cleaning-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Brick Cleaning</Link></li>
+              <li><Link href="/services/graffiti-removal-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Graffiti Removal</Link></li>
+              <li><Link href="/services/vacation-rental-cleaning-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Vacation Rental Restoration</Link></li>
+              <li><Link href="/services/antique-restoration-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Antique Restoration</Link></li>
+              <li><Link href="/services/commercial-exterior-cleaning-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Commercial Exteriors</Link></li>
             </ul>
           </div>
 
@@ -85,12 +95,12 @@ export default function Footer() {
             <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-4">Contact</h4>
             <ul className="space-y-2">
               <li>
-                <a href="tel:8542227790" className="text-gray-400 hover:text-[#00d4d4] text-sm transition-colors">
+                <a href="tel:8542227790" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">
                   854-222-7790
                 </a>
               </li>
               <li>
-                <a href={`mailto:${BUSINESS.email}`} className="text-gray-400 hover:text-[#00d4d4] text-sm transition-colors">
+                <a href={`mailto:${BUSINESS.email}`} className="text-gray-400 hover:text-[#397774] text-sm transition-colors">
                   {BUSINESS.email}
                 </a>
               </li>
@@ -98,7 +108,7 @@ export default function Footer() {
             </ul>
             <Link
               href="/quote"
-              className="inline-block mt-4 bg-[#00d4d4] text-[#0a1628] px-4 py-2 rounded text-sm font-bold hover:bg-[#00b8b8] transition-colors"
+              className="inline-block mt-4 bg-[#397774] text-white px-4 py-2 rounded text-sm font-bold hover:bg-[#2a5c5a] transition-colors"
             >
               Get a Free Quote
             </Link>
@@ -106,27 +116,36 @@ export default function Footer() {
         </div>
 
         {/* Service Areas */}
-        <div className="border-t border-[#0e7c7b]/20 mt-8 pt-8">
+        <div className="border-t border-[#397774]/20 mt-8 pt-8">
           <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-4">Service Areas</h4>
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
-            {locations.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="text-gray-400 hover:text-[#00d4d4] text-sm transition-colors"
-              >
-                {l.label}
-              </Link>
+          <div className="flex flex-wrap gap-y-2">
+            {locations.map((l, i) => (
+              <div key={l.href} className="flex items-center">
+                {i > 0 && (
+                  <span
+                    aria-hidden="true"
+                    className="mx-4 text-[#397774]/40 text-sm select-none"
+                  >
+                    |
+                  </span>
+                )}
+                <Link
+                  href={l.href}
+                  className="text-gray-400 hover:text-[#397774] text-sm transition-colors"
+                >
+                  {l.label}
+                </Link>
+              </div>
             ))}
           </div>
         </div>
 
-        <div className="border-t border-[#0e7c7b]/20 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="border-t border-[#397774]/20 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-gray-500 text-xs">
             © {new Date().getFullYear()} Coastal Surface Restoration LLC. All rights reserved.
           </p>
           <div className="flex items-center gap-x-4 text-xs text-gray-500">
-            <Link href="/privacy" className="hover:text-[#00d4d4] transition-colors">
+            <Link href="/privacy" className="hover:text-[#397774] transition-colors">
               Privacy Policy
             </Link>
             <span aria-hidden="true">·</span>

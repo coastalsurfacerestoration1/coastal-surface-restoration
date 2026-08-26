@@ -15,7 +15,7 @@ export default function Breadcrumbs({ trail }: { trail: Crumb[] }) {
       <JsonLd data={breadcrumbSchema(trail)} />
       <nav
         aria-label="Breadcrumb"
-        className="border-b border-[#0e7c7b]/20 bg-[#0a1628]"
+        className="border-b border-[#397774]/20 bg-[#0e273e]"
       >
         <ol className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
           {trail.map((crumb, i) => {
@@ -34,7 +34,7 @@ export default function Breadcrumbs({ trail }: { trail: Crumb[] }) {
                 ) : (
                   <Link
                     href={crumb.path}
-                    className="text-gray-400 hover:text-[#00d4d4] transition-colors"
+                    className="text-gray-400 hover:text-[#397774] transition-colors"
                   >
                     {crumb.name}
                   </Link>

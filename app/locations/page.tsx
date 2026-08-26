@@ -41,12 +41,12 @@ const areas = [
 
 export default function LocationsPage() {
   return (
-    <div className="min-h-screen bg-[#0a1628]">
+    <div className="min-h-screen bg-[#0e273e]">
 
       {/* Hero */}
-      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#0d1f3c] to-[#0a1628]">
+      <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#1a3958] to-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
+          <p className="text-[#397774] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             Where We Work
           </p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">
@@ -59,19 +59,19 @@ export default function LocationsPage() {
       </section>
 
       {/* Area Cards */}
-      <section className="py-8 lg:py-12 bg-[#0a1628]">
+      <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {areas.map((area) => (
               <Link
                 key={area.href}
                 href={area.href}
-                className="block bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-8 hover:border-[#00d4d4]/50 transition-colors group"
+                className="block bg-[#1a3958] border border-[#397774]/20 rounded-lg p-8 hover:border-[#397774]/50 transition-colors group"
               >
-                <p className="text-[#00d4d4] text-xs font-semibold uppercase tracking-[0.15em] mb-2">
+                <p className="text-[#397774] text-xs font-semibold uppercase tracking-[0.15em] mb-2">
                   {area.tagline}
                 </p>
-                <h2 className="text-white font-bold text-2xl mb-3 group-hover:text-[#00d4d4] transition-colors">
+                <h2 className="text-white font-bold text-2xl mb-3 group-hover:text-[#397774] transition-colors">
                   {area.name}
                 </h2>
                 <p className="text-gray-400 text-sm leading-relaxed mb-5">{area.desc}</p>
@@ -79,13 +79,13 @@ export default function LocationsPage() {
                   {area.spots.map((spot) => (
                     <span
                       key={spot}
-                      className="bg-[#0a1628] border border-[#0e7c7b]/20 text-gray-400 px-3 py-1 rounded text-xs"
+                      className="bg-[#0e273e] border border-[#397774]/20 text-gray-400 px-3 py-1 rounded text-xs"
                     >
                       {spot}
                     </span>
                   ))}
                 </div>
-                <span className="inline-flex items-center gap-1 text-[#00d4d4] font-semibold text-sm group-hover:gap-2 transition-all">
+                <span className="inline-flex items-center gap-1 text-[#397774] font-semibold text-sm group-hover:gap-2 transition-all">
                   View area details <span aria-hidden="true">→</span>
                 </span>
               </Link>
@@ -95,7 +95,7 @@ export default function LocationsPage() {
       </section>
 
       {/* Wider Coverage */}
-      <section className="py-8 lg:py-12 bg-[#0d1f3c]">
+      <section className="py-8 lg:py-12 bg-[#1a3958]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Not on the List?</h2>
           <p className="text-gray-400 leading-relaxed mb-8">
@@ -116,7 +116,7 @@ export default function LocationsPage() {
               'Ravenel',
               'Wadmalaw Island',
             ].map((area) => (
-              <span key={area} className="bg-[#0a1628] border border-[#0e7c7b]/20 text-gray-300 px-4 py-2 rounded text-sm">
+              <span key={area} className="bg-[#0e273e] border border-[#397774]/20 text-gray-300 px-4 py-2 rounded text-sm">
                 {area}
               </span>
             ))}
@@ -125,7 +125,7 @@ export default function LocationsPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-8 lg:py-12 bg-[#0a1628] border-t border-[#0e7c7b]/20">
+      <section className="py-8 lg:py-12 bg-[#0e273e] border-t border-[#397774]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Serving Charleston and the Lowcountry
@@ -135,7 +135,7 @@ export default function LocationsPage() {
           </p>
           <Link
             href="/quote"
-            className="bg-[#00d4d4] text-[#0a1628] px-10 py-4 rounded font-bold text-lg hover:bg-[#00b8b8] transition-colors"
+            className="bg-[#397774] text-white px-10 py-4 rounded font-bold text-lg hover:bg-[#2a5c5a] transition-colors"
           >
             Request a Free Quote
           </Link>

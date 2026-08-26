@@ -15,8 +15,8 @@ type Variant = 'onDark' | 'onLight';
  * Charleston's original layout so the site's visual vocabulary is one thing.
  *
  * Variant switches the card background so the cards visually pop off whichever
- * section color they sit in: `onDark` for cards inside a `bg-[#0a1628]`
- * section, `onLight` for cards inside a `bg-[#0d1f3c]` section.
+ * section color they sit in: `onDark` for cards inside a `bg-[#0e273e]`
+ * section, `onLight` for cards inside a `bg-[#1a3958]` section.
  */
 export default function RelatedItemsSection({
   heading,
@@ -29,8 +29,8 @@ export default function RelatedItemsSection({
   items: RelatedItem[];
   variant?: Variant;
 }) {
-  const sectionBg = variant === 'onDark' ? 'bg-[#0a1628]' : 'bg-[#0d1f3c]';
-  const cardBg = variant === 'onDark' ? 'bg-[#0d1f3c]' : 'bg-[#0a1628]';
+  const sectionBg = variant === 'onDark' ? 'bg-[#0e273e]' : 'bg-[#1a3958]';
+  const cardBg = variant === 'onDark' ? 'bg-[#1a3958]' : 'bg-[#0e273e]';
 
   // 2 or 3 cards side by side; more than 3 wraps to the next row.
   const cols = items.length >= 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2';
@@ -49,13 +49,13 @@ export default function RelatedItemsSection({
             <Link
               key={item.href}
               href={item.href}
-              className={`block ${cardBg} border border-[#0e7c7b]/20 rounded-lg p-6 hover:border-[#00d4d4]/50 transition-colors group`}
+              className={`block ${cardBg} border border-[#397774]/20 rounded-lg p-6 hover:border-[#397774]/50 transition-colors group`}
             >
-              <h3 className="text-white font-bold text-lg mb-2 group-hover:text-[#00d4d4] transition-colors">
+              <h3 className="text-white font-bold text-lg mb-2 group-hover:text-[#397774] transition-colors">
                 {item.title}
               </h3>
               <p className="text-gray-400 text-sm leading-relaxed mb-4">{item.desc}</p>
-              <span className="inline-flex items-center gap-1 text-[#00d4d4] font-semibold text-sm group-hover:gap-2 transition-all">
+              <span className="inline-flex items-center gap-1 text-[#397774] font-semibold text-sm group-hover:gap-2 transition-all">
                 Learn more <span aria-hidden="true">→</span>
               </span>
             </Link>

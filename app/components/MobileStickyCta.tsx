@@ -26,12 +26,12 @@ export default function MobileStickyCta() {
   return (
     <>
       <div
-        className="fixed inset-x-0 bottom-0 z-40 md:hidden border-t border-[#0e7c7b]/30 bg-[#0a1628]/95 backdrop-blur-sm p-3"
+        className="fixed inset-x-0 bottom-0 z-40 md:hidden border-t border-[#397774]/30 bg-[#0e273e]/95 backdrop-blur-sm p-3"
         style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.75rem)' }}
       >
         <Link
           href="/quote"
-          className="block w-full rounded bg-[#00d4d4] py-3.5 text-center text-base font-bold text-[#0a1628] transition-colors hover:bg-[#00b8b8]"
+          className="block w-full rounded bg-[#397774] py-3.5 text-center text-base font-bold text-white transition-colors hover:bg-[#2a5c5a]"
         >
           Get a Free Quote
         </Link>

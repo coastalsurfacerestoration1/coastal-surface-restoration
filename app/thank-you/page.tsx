@@ -12,11 +12,11 @@ export const metadata: Metadata = {
 
 export default function ThankYouPage() {
   return (
-    <div className="min-h-screen bg-[#0a1628] flex items-center justify-center py-16 lg:py-24">
+    <div className="min-h-screen bg-[#0e273e] flex items-center justify-center py-16 lg:py-24">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
-        <div className="mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-full bg-[#00d4d4]/10 border border-[#00d4d4]/40">
-          <svg className="h-9 w-9 text-[#00d4d4]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <div className="mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-full bg-[#397774]/10 border border-[#397774]/40">
+          <svg className="h-9 w-9 text-[#397774]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path
               d="M5 12.5l4.5 4.5L19 7.5"
               stroke="currentColor"
@@ -27,7 +27,7 @@ export default function ThankYouPage() {
           </svg>
         </div>
 
-        <p className="text-[#00d4d4] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
+        <p className="text-[#397774] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
           Request Received
         </p>
         <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">
@@ -37,7 +37,7 @@ export default function ThankYouPage() {
           Your quote request is in. We review every project personally and follow up within 24 hours, usually sooner.
         </p>
 
-        <div className="bg-[#0d1f3c] border border-[#0e7c7b]/20 rounded-lg p-6 sm:p-8 mb-10 text-left">
+        <div className="bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6 sm:p-8 mb-10 text-left">
           <h2 className="text-white font-bold text-lg mb-6 text-center">What Happens Next</h2>
           <ol className="space-y-5">
             {[
@@ -58,7 +58,7 @@ export default function ThankYouPage() {
               },
             ].map((item) => (
               <li key={item.step} className="flex gap-4 items-start">
-                <div className="text-[#00d4d4] font-bold text-xl w-8 shrink-0">{item.step}</div>
+                <div className="text-[#397774] font-bold text-xl w-8 shrink-0">{item.step}</div>
                 <div>
                   <div className="text-white font-semibold text-base mb-1">{item.title}</div>
                   <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
@@ -74,13 +74,13 @@ export default function ThankYouPage() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
           <a
             href={`tel:${BUSINESS.phone.replace(/\D/g, '')}`}
-            className="bg-[#00d4d4] text-[#0a1628] px-8 py-4 rounded font-bold text-base hover:bg-[#00b8b8] transition-colors"
+            className="bg-[#397774] text-white px-8 py-4 rounded font-bold text-base hover:bg-[#2a5c5a] transition-colors"
           >
             Call {BUSINESS.phone}
           </a>
           <a
             href={`mailto:${BUSINESS.email}`}
-            className="border border-[#00d4d4]/50 text-[#00d4d4] px-8 py-4 rounded font-bold text-base hover:border-[#00d4d4] hover:bg-[#00d4d4]/10 transition-colors"
+            className="border border-[#397774]/50 text-[#397774] px-8 py-4 rounded font-bold text-base hover:border-[#397774] hover:bg-[#397774]/10 transition-colors"
           >
             Email Us
           </a>
@@ -96,7 +96,7 @@ export default function ThankYouPage() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-gray-400 hover:text-[#00d4d4] transition-colors"
+              className="text-gray-400 hover:text-[#397774] transition-colors"
             >
               {l.label}
             </Link>
