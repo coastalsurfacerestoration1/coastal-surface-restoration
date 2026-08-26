@@ -79,20 +79,33 @@ export default function Home() {
       </section>
 
       {/* Credentials */}
-      <section className="border-b border-[#397774]/20 bg-[#1a3958]">
+      <section className="bg-[#1a3958] py-10 sm:py-12">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <dl className="grid grid-cols-2 lg:grid-cols-4">
-            {credentials.map((c) => (
-              <div
-                key={c.label}
-                className="border-b border-[#397774]/20 px-2 py-6 lg:border-b-0 lg:border-l lg:px-6 lg:first:border-l-0"
-              >
-                <dt className="font-display text-xl font-bold tracking-wide text-white">
-                  {c.label}
-                </dt>
-                <dd className="mt-1 text-sm text-gray-400">{c.detail}</dd>
-              </div>
-            ))}
+          <dl className="grid grid-cols-2 overflow-hidden rounded-lg border-2 border-white lg:grid-cols-4">
+            {credentials.map((c, i) => {
+              const mobileRight = i % 2 === 0;
+              const mobileBottom = i < 2;
+              const desktopLeft = i > 0;
+              return (
+                <div
+                  key={c.label}
+                  className={[
+                    'border-white px-4 py-5 lg:px-6 lg:py-6',
+                    mobileRight && 'border-r-2',
+                    mobileBottom && 'border-b-2',
+                    'lg:border-r-0 lg:border-b-0',
+                    desktopLeft && 'lg:border-l-2',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
+                >
+                  <dt className="font-display text-xl font-bold tracking-wide text-white">
+                    {c.label}
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-400">{c.detail}</dd>
+                </div>
+              );
+            })}
           </dl>
         </div>
       </section>

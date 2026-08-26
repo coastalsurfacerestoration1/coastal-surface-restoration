@@ -118,13 +118,13 @@ export default function Footer() {
         {/* Service Areas */}
         <div className="border-t border-[#397774]/20 mt-8 pt-8">
           <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-4">Service Areas</h4>
-          <div className="flex flex-wrap gap-y-2">
+          <ul className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-y-2">
             {locations.map((l, i) => (
-              <div key={l.href} className="flex items-center">
+              <li key={l.href} className="flex items-center">
                 {i > 0 && (
                   <span
                     aria-hidden="true"
-                    className="mx-4 text-[#397774]/40 text-sm select-none"
+                    className="hidden sm:inline mx-4 text-[#397774]/40 text-sm select-none"
                   >
                     |
                   </span>
@@ -135,9 +135,9 @@ export default function Footer() {
                 >
                   {l.label}
                 </Link>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
 
         <div className="border-t border-[#397774]/20 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
