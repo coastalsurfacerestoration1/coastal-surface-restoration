@@ -141,15 +141,17 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-[#397774]/20 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-gray-500 text-xs">
+          <p className="text-gray-500 text-xs text-center sm:text-left">
             © {new Date().getFullYear()} Coastal Surface Restoration LLC. All rights reserved.
           </p>
-          <div className="flex items-center gap-x-4 text-xs text-gray-500">
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-gray-500">
             <Link href="/privacy" className="hover:text-[#397774] transition-colors">
               Privacy Policy
             </Link>
             <span aria-hidden="true">·</span>
-            <span>Licensed &amp; Insured · Charleston, SC</span>
+            <span>Licensed &amp; Insured</span>
+            <span aria-hidden="true">·</span>
+            <span>Charleston, SC</span>
           </div>
         </div>
       </div>
