@@ -26,16 +26,16 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0">
+          <Link href="/" className="flex items-center gap-2 min-w-0 flex-1 md:flex-none md:shrink-0 mr-3">
             <Image
               src="/logo-social.png"
               alt=""
               width={1986}
               height={1986}
               priority
-              className="h-12 w-12 rounded-full bg-white"
+              className="h-9 w-9 shrink-0 rounded-full bg-white sm:h-10 sm:w-10 md:h-12 md:w-12"
             />
-            <span className="text-white font-bold text-lg md:text-sm lg:text-base xl:text-lg tracking-wide whitespace-nowrap">
+            <span className="text-white font-bold text-xs sm:text-sm md:text-sm lg:text-base xl:text-lg tracking-wide whitespace-nowrap truncate">
               COASTAL <span className="text-[#397774]">SURFACE RESTORATION</span>
             </span>
           </Link>
