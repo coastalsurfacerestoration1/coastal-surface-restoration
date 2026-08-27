@@ -1,8 +1,10 @@
 # Quote Pipeline: Context and Setup
 
 Paste this into Claude Desktop and ask it to walk you through the setup steps.
-Everything in "Already done" is live in code. Everything in "Your setup steps"
-needs a human with account access, which is why the code cannot do it.
+Everything in "Already done" is live and confirmed working. Everything in "Your
+setup steps" needs a human with account access, which is why the code cannot do
+it. Text alerts are part way through that list: wired up and configured, but not
+delivering until the A2P Campaign clears.
 
 ---
 
@@ -90,31 +92,58 @@ in the appendix at the bottom of this file for redeployment.
 
 ## Your setup steps
 
-### 1. Text alerts to Tyler
+### 1. Text alerts to Tyler (in progress, not delivering yet)
 
-This is the high value, low friction half. It needs no consent and no customer
-involvement.
+Status as of 2026-08-26:
 
-1. Create a Twilio account and buy a local phone number.
-2. Find the Account SID and Auth Token on the Twilio console dashboard.
-3. In Vercel, go to the project, then Settings, then Environment Variables, and
-   add:
-   - `TWILIO_ACCOUNT_SID`
-   - `TWILIO_AUTH_TOKEN`
-   - `TWILIO_FROM_NUMBER` (the Twilio number, in +18435550100 form)
-   - `ALERT_SMS_TO` (Tyler's mobile, same format)
-4. Redeploy. Alerts start on the next quote.
+- Twilio account created
+- Charleston number purchased: **+1 843 396 2257**, used as `TWILIO_FROM_NUMBER`
+- A2P 10DLC **Brand approved**
+- A2P 10DLC **Campaign still pending**
+- All four env vars set in Vercel: `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`,
+  `TWILIO_FROM_NUMBER`, `ALERT_SMS_TO`
+- Redeployed, but a test quote produced no text
 
-Until these exist the texts are skipped and logged. Email is unaffected either
-way, so nothing breaks while this is pending.
+**Brand approved is not Campaign approved.** They are two separate reviews and
+Twilio blocks messages until the Campaign clears, which on its own explains a
+quote that sends its emails and its sheet row but no text. Finish the Campaign
+before treating this as a code problem.
 
-**Expect a delay:** Twilio blocks unregistered application to person traffic to
-US numbers. You will likely need the A2P 10DLC registration below before even
-your own alerts deliver reliably. The sole proprietor path is the fast one.
+Email and sheet logging are unaffected while this is pending. Every text failure
+is logged and swallowed on purpose, so nothing else breaks.
 
-### 2. A2P 10DLC registration
+### 2. Debugging the missing text
 
-Required before texting anyone in the US from a business number.
+Do not change the quote route until a log line says what is wrong. The code
+already reports the cause. Search the Vercel function logs for:
+
+```
+Quote alert text not sent:
+```
+
+| Log reason | What it means |
+|---|---|
+| `Twilio is not configured` | One of the four vars is not reaching the runtime |
+| `not a US number: ...` | `ALERT_SMS_TO` is not a 10 or 11 digit US number |
+| `Twilio 400: ...` or `Twilio 401: ...` | Twilio rejected it. A pending Campaign shows up here |
+| no such line at all | The send never ran, so the notification email failed first |
+
+An easy one to miss: check **which environments** the four variables are enabled
+for in Vercel. If they are Production only and the test hit a preview
+deployment, the log says `Twilio is not configured` while the dashboard looks
+correct.
+
+**Faster than reading Vercel logs.** Local dev is working, so paste the four
+Twilio values into `.env.local` and submit a quote at `localhost:3000/quote`.
+The reason prints straight to the terminal with Twilio's own error code in it,
+with no deploy cycle. Note that the alert runs after the notification email
+succeeds, so a local `RESEND_API_KEY` has to be valid or the route returns 500
+before it ever reaches the text.
+
+### 3. A2P 10DLC registration
+
+Required before texting anyone in the US from a business number. Brand is done;
+the Campaign is the remaining step.
 
 1. In the Twilio console, go to Messaging, then Regulatory Compliance, then
    Brand and Campaign registration.
@@ -123,15 +152,16 @@ Required before texting anyone in the US from a business number.
    about quote requests the customer initiated.
 4. Wait for approval. Days, sometimes longer.
 
-### 3. Customer texts, only after step 2
+### 4. Customer texts, only after the Campaign is approved
 
 Two separate gates protect this, and both must pass:
 
 - The customer checks the consent box on the quote form
 - `TWILIO_CUSTOMER_SMS` is set to the word `enabled`
 
-**Leave `TWILIO_CUSTOMER_SMS` unset in Vercel until 10DLC is approved.** To test
-locally, set it in `.env.local` and check the box yourself.
+**Leave `TWILIO_CUSTOMER_SMS` unset in Vercel until the Campaign is approved.**
+It is unset as of 2026-08-26 and should stay that way. To test locally, set it
+in `.env.local` and check the box yourself.
 
 Texting customers without both captured consent and an approved campaign is a
 TCPA problem, at $500 to $1,500 per message. The consent checkbox only covers
