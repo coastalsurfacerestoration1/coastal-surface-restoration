@@ -16,6 +16,8 @@ type QuoteFormValues = {
   zip: string;
   serviceType: string;
   description: string;
+  /** Opt in for texts. Unchecked by default, and never required. */
+  smsConsent: boolean;
   /**
    * Honeypot. Deliberately meaningless name: the old one, companyWebsite,
    * matched the heuristics password managers and autofill extensions use, so
@@ -215,13 +217,16 @@ export default function QuotePage() {
       // Multipart, so the photos travel with the fields. The Content-Type
       // header is left off on purpose: the browser has to set it itself in
       // order to include the multipart boundary.
-      const { city, cityOther, state, ...rest } = data;
+      const { city, cityOther, state, smsConsent, ...rest } = data;
       const payload = new FormData();
       for (const [key, value] of Object.entries(rest)) {
         payload.append(key, value ?? '');
       }
       payload.append('city', city === OTHER_CITY ? cityOther.trim() : city);
       payload.append('state', state.trim().toUpperCase());
+      // Only sent when actually checked. The server treats presence as consent,
+      // so an unchecked box must not arrive as "false".
+      if (smsConsent) payload.append('smsConsent', 'yes');
       for (const photo of photos) {
         payload.append('photos', photo.file);
       }
@@ -541,6 +546,21 @@ export default function QuotePage() {
                 ))}
               </ul>
             )}
+          </div>
+
+          <div className="border-t border-[#397774]/20 pt-5">
+            <label htmlFor="smsConsent" className="flex items-start gap-3 cursor-pointer">
+              <input
+                {...register('smsConsent')}
+                id="smsConsent"
+                type="checkbox"
+                className="mt-0.5 h-4 w-4 shrink-0 accent-[#397774] cursor-pointer"
+              />
+              <span className="text-gray-400 text-sm leading-relaxed">
+                Text me about this quote. Message and data rates may apply. Reply STOP to opt
+                out at any time. Leaving this unchecked will not affect your quote.
+              </span>
+            </label>
           </div>
 
           {/* Honeypot. Off-screen and out of the tab order, so the ordinary way

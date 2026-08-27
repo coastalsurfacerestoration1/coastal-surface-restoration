@@ -1,6 +1,7 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
-import { BUSINESS, SITE_NAME } from '@/lib/seo';
+import { BUSINESS, SITE_NAME, SITE_URL } from '@/lib/seo';
+import { customerSmsEnabled, sendSms } from '@/lib/notify';
 
 const FROM = `${SITE_NAME} <quotes@coastalsurfacerestoration.com>`;
 
@@ -34,6 +35,17 @@ const MAX_LENGTH: Record<Field, number> = {
 };
 
 const RATE_LIMIT = { max: 3, windowMs: 10 * 60 * 1000 };
+
+/**
+ * How long after a quote lands before Tyler gets a reminder about it.
+ *
+ * The reminder goes to him, not the customer. The acknowledgement already
+ * promises that he will make contact within 24 hours, so a nudge aimed at the
+ * customer would either duplicate a call he already made or advertise that he
+ * did not make one. This is the safety net for the second case without
+ * involving the customer in it.
+ */
+const REMINDER_DELAY_MS = 48 * 60 * 60 * 1000;
 
 const MAX_PHOTOS = 4;
 const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
@@ -268,6 +280,9 @@ export async function POST(req: Request) {
 
   // Deliberately after the rate limit check: reading file bytes is the
   // expensive part of this handler and a blocked caller should never reach it.
+  // Unchecked boxes are simply absent from a FormData, so presence is consent.
+  const smsConsent = form.get('smsConsent') === 'yes';
+
   const result = await readPhotos(form);
   if ('error' in result) {
     return NextResponse.json({ error: result.error }, { status: 400 });
@@ -362,8 +377,51 @@ export async function POST(req: Request) {
   // The customer acknowledgement is best effort. Tyler already has the lead at
   // this point, so a failure here should not tell the customer their request
   // did not go through.
+  // Alert Tyler by text. His own number, so no consent or A2P registration is
+  // involved. Failures are logged and ignored: the lead is already in his inbox
+  // and a missing text must not turn a delivered quote into an error.
+  const alertNumber = process.env.ALERT_SMS_TO ?? BUSINESS.phone;
+  const alert = await sendSms(
+    alertNumber,
+    `New quote: ${singleLine(values.name)}, ${singleLine(values.serviceType)}, ` +
+      `${singleLine(values.city)}. ${values.phone}.` +
+      (photos.length > 0 ? ` ${photos.length} photo(s).` : ''),
+  );
+  if (!alert.sent) console.warn(`Quote alert text not sent: ${alert.reason}`);
+
+  // Reminder to Tyler, scheduled with Resend so no cron or queue is needed.
+  try {
+    const { error } = await resend.emails.send({
+      from: FROM,
+      to: BUSINESS.email,
+      replyTo: values.email,
+      scheduledAt: new Date(Date.now() + REMINDER_DELAY_MS).toISOString(),
+      subject: `Reminder: quote from ${singleLine(values.name)} is 2 days old`,
+      text: reminderText(values, addressLine),
+    });
+    if (error) console.error('Quote reminder could not be scheduled:', error);
+  } catch (error) {
+    console.error('Quote reminder could not be scheduled:', error);
+  }
+
   if (suspectedSpam) {
     return NextResponse.json({ success: true });
+  }
+
+  // Customer text, which unlike the alert above needs their explicit consent
+  // and an approved A2P 10DLC campaign. Both gates have to pass.
+  if (smsConsent && customerSmsEnabled()) {
+    const firstName = singleLine(values.name).split(' ')[0];
+    const confirmation = await sendSms(
+      values.phone,
+      `Thanks ${firstName}, ${SITE_NAME} has your quote request. ` +
+        `We will follow up within 24 hours. Reply STOP to opt out.`,
+    );
+    if (!confirmation.sent) {
+      console.warn(`Customer confirmation text not sent: ${confirmation.reason}`);
+    }
+  } else if (smsConsent) {
+    console.info('Customer consented to texts but customer SMS is not enabled.');
   }
 
   try {
@@ -382,6 +440,22 @@ export async function POST(req: Request) {
   }
 
   return NextResponse.json({ success: true });
+}
+
+function reminderText(values: Record<Field, string>, addressLine: string): string {
+  return [
+    `This quote came in two days ago and this is the automatic nudge about it.`,
+    'If you already spoke to them, nothing to do.',
+    '',
+    `Name: ${values.name}`,
+    `Phone: ${values.phone}`,
+    `Email: ${values.email}`,
+    `Service: ${values.serviceType}`,
+    `Address: ${addressLine}`,
+    '',
+    'What they said:',
+    values.description,
+  ].join('\n');
 }
 
 function acknowledgementText(
@@ -424,50 +498,110 @@ function acknowledgementHtml(
   photoCount: number,
 ): string {
   const row = (label: string, value: string) =>
-    `<tr><td style="padding: 6px 0; color: #666; width: 110px; vertical-align: top;"><strong>${label}</strong></td><td style="padding: 6px 0; color: #222;">${value}</td></tr>`;
+    `<tr>
+       <td style="padding: 7px 0; color: #6b7684; font-size: 13px; width: 92px; vertical-align: top;">${label}</td>
+       <td style="padding: 7px 0; color: #1f2937; font-size: 14px;">${value}</td>
+     </tr>`;
 
+  const telHref = BUSINESS.phone.replace(/[^0-9+]/g, '');
+
+  // Tables rather than divs, and inline styles throughout, because Outlook
+  // ignores most modern layout CSS. The wordmark stays live text next to the
+  // logo so the brand still reads when a client blocks images, which many do
+  // by default.
   return `
-    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #222;">
-      <div style="background: #0e273e; padding: 20px 24px;">
-        <p style="margin: 0; color: #ffffff; font-size: 18px; font-weight: bold; letter-spacing: 0.04em;">
-          COASTAL <span style="color: #397774;">SURFACE RESTORATION</span>
-        </p>
-      </div>
-      <div style="padding: 24px;">
-        <p style="margin: 0 0 16px;">Hi ${safe.name},</p>
-        <p style="margin: 0 0 16px; line-height: 1.6;">
-          Thanks for reaching out. We have your request and will follow up within 24 hours.
-        </p>
-        <p style="margin: 0 0 16px; line-height: 1.6;">
-          One thing to know up front: we are not operational yet. Equipment arrives in the fall
-          and we expect to take our first Charleston jobs in October 2026. We will get you a
-          price now and put you on the schedule for launch.
-        </p>
-        <p style="margin: 24px 0 8px; font-weight: bold;">What you sent us</p>
-        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-          ${row('Service', safe.serviceType)}
-          ${row('Address', safeAddressLine)}
-          ${row('Phone', safe.phone)}
-          ${row('Project', safe.description)}
-          ${photoCount > 0 ? row('Photos', `${photoCount} received`) : ''}
+    <div style="margin: 0; padding: 0; background: #0b1f33;">
+      <div style="max-width: 600px; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">
+
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background: #0e273e;">
+          <tr>
+            <td style="padding: 22px 24px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td valign="middle" style="padding-right: 12px;">
+                    <img src="${SITE_URL}/logo-social.png" width="46" height="46"
+                         alt="Coastal Surface Restoration"
+                         style="display: block; width: 46px; height: 46px; border-radius: 23px; background: #ffffff;" />
+                  </td>
+                  <td valign="middle">
+                    <span style="color: #ffffff; font-size: 16px; font-weight: bold; letter-spacing: 0.04em;">
+                      COASTAL <span style="color: #397774;">SURFACE RESTORATION</span>
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
         </table>
-        <p style="margin: 24px 0 0; line-height: 1.6;">
-          ${
-            photoCount > 0
-              ? 'Thanks for the photos. If anything above is wrong, just reply to this email.'
-              : 'If anything above is wrong, or you have photos of the piece, just reply to this email.'
-          }
-        </p>
-        <p style="margin: 24px 0 0; line-height: 1.6;">
-          Tyler Scherzer<br />
-          ${SITE_NAME}<br />
-          <a href="tel:${BUSINESS.phone.replace(/\D/g, '')}" style="color: #397774;">${BUSINESS.phone}</a>
-        </p>
-      </div>
-      <div style="border-top: 1px solid #eee; padding: 16px 24px;">
-        <p style="margin: 0; color: #999; font-size: 12px;">
-          You are getting this because you requested a quote at coastalsurfacerestoration.com.
-        </p>
+
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background: #ffffff;">
+          <tr>
+            <td style="padding: 30px 24px 26px;">
+              <p style="margin: 0 0 6px; font-size: 20px; font-weight: bold; color: #0e273e;">
+                We got your request
+              </p>
+              <p style="margin: 0 0 18px; font-size: 15px; line-height: 1.6; color: #4b5563;">
+                Hi ${safe.name}, thanks for reaching out. We will follow up within 24 hours.
+              </p>
+
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+                     style="background: #f4f7f8; border-left: 3px solid #397774; margin: 0 0 24px;">
+                <tr>
+                  <td style="padding: 14px 16px; font-size: 14px; line-height: 1.6; color: #4b5563;">
+                    One thing to know up front: we are not operational yet. Equipment arrives in the
+                    fall and we expect to take our first Charleston jobs in October 2026. We will get
+                    you a price now and put you on the schedule for launch.
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin: 0 0 6px; font-size: 12px; font-weight: bold; color: #0e273e; letter-spacing: 0.08em; text-transform: uppercase;">
+                What you sent us
+              </p>
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+                     style="border-top: 1px solid #e5e9ec; margin: 0 0 26px;">
+                ${row('Service', safe.serviceType)}
+                ${row('Address', safeAddressLine)}
+                ${row('Phone', safe.phone)}
+                ${row('Project', safe.description)}
+                ${photoCount > 0 ? row('Photos', `${photoCount} received`) : ''}
+              </table>
+
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="background: #397774; border-radius: 6px;">
+                    <a href="tel:${telHref}"
+                       style="display: inline-block; padding: 13px 26px; color: #ffffff; font-size: 15px; font-weight: bold; text-decoration: none;">
+                      Call ${BUSINESS.phone}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin: 24px 0 0; font-size: 14px; line-height: 1.6; color: #4b5563;">
+                ${
+                  photoCount > 0
+                    ? 'Thanks for the photos. If anything above is wrong, just reply to this email.'
+                    : 'If anything above is wrong, or you have photos of the piece, just reply to this email.'
+                }
+              </p>
+
+              <p style="margin: 22px 0 0; font-size: 14px; line-height: 1.6; color: #1f2937;">
+                Tyler Scherzer<br />
+                <span style="color: #6b7684;">${SITE_NAME}</span>
+              </p>
+            </td>
+          </tr>
+        </table>
+
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background: #0e273e;">
+          <tr>
+            <td style="padding: 16px 24px; color: #7c8a99; font-size: 12px; line-height: 1.5;">
+              You are getting this because you requested a quote at coastalsurfacerestoration.com.
+            </td>
+          </tr>
+        </table>
+
       </div>
     </div>
   `;
