@@ -19,6 +19,82 @@ const MAX_LENGTH: Record<Field, number> = {
 
 const RATE_LIMIT = { max: 3, windowMs: 10 * 60 * 1000 };
 
+const MAX_PHOTOS = 4;
+const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
+/**
+ * Ceiling for the photos in one submission. Serverless platforms cap the
+ * request body well below Resend's 40MB attachment allowance, so this is sized
+ * to stay inside the smaller of the two. The browser downscales before upload,
+ * which puts a normal four photo submission an order of magnitude under it.
+ */
+const MAX_TOTAL_PHOTO_BYTES = 9 * 1024 * 1024;
+
+type PhotoKind = 'jpg' | 'png' | 'webp';
+
+/**
+ * Identifies an image from its leading bytes.
+ *
+ * The client-declared MIME type and the filename are both attacker-controlled,
+ * so neither decides what gets attached to an email. The signature does.
+ */
+function sniffImage(bytes: Uint8Array): PhotoKind | null {
+  if (bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) {
+    return 'jpg';
+  }
+  const PNG = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
+  if (bytes.length >= 8 && PNG.every((b, i) => bytes[i] === b)) {
+    return 'png';
+  }
+  const ascii = (start: number, end: number) =>
+    String.fromCharCode(...bytes.subarray(start, end));
+  if (bytes.length >= 12 && ascii(0, 4) === 'RIFF' && ascii(8, 12) === 'WEBP') {
+    return 'webp';
+  }
+  return null;
+}
+
+type PhotoAttachment = { filename: string; content: Buffer };
+
+/**
+ * Turns the uploaded photos into Resend attachments, or returns the message to
+ * show the customer if something is wrong with them.
+ *
+ * Filenames are generated rather than echoed back from the upload, so a
+ * hostile name cannot decide what appears in the inbox.
+ */
+async function readPhotos(
+  form: FormData,
+): Promise<{ photos: PhotoAttachment[] } | { error: string }> {
+  const files = form
+    .getAll('photos')
+    .filter((entry): entry is File => entry instanceof File && entry.size > 0);
+
+  if (files.length === 0) return { photos: [] };
+  if (files.length > MAX_PHOTOS) {
+    return { error: `Please attach at most ${MAX_PHOTOS} photos.` };
+  }
+
+  const photos: PhotoAttachment[] = [];
+  let total = 0;
+
+  for (const file of files) {
+    total += file.size;
+    if (file.size > MAX_PHOTO_BYTES || total > MAX_TOTAL_PHOTO_BYTES) {
+      return { error: 'Those photos are too large. Please send fewer or smaller ones.' };
+    }
+
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const kind = sniffImage(bytes);
+    if (!kind) {
+      return { error: 'Photos need to be JPEG, PNG, or WebP images.' };
+    }
+
+    photos.push({ filename: `photo-${photos.length + 1}.${kind}`, content: Buffer.from(bytes) });
+  }
+
+  return { photos };
+}
+
 /**
  * Per-instance submission log, keyed by client IP.
  *
@@ -79,29 +155,27 @@ function singleLine(value: string): string {
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(req: Request) {
-  let body: unknown;
+  // The form posts multipart/form-data so photos can ride along with the text
+  // fields. A body that is not multipart fails to parse here and gets the same
+  // 400 as any other malformed request.
+  let form: FormData;
   try {
-    body = await req.json();
+    form = await req.formData();
   } catch {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }
 
-  if (typeof body !== 'object' || body === null) {
-    return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
-  }
-
-  const raw = body as Record<string, unknown>;
-
   // Honeypot. A real person never sees this input, so anything in it is a bot.
   // Answer 200 rather than an error: a rejection tells the script what tripped
   // it, a success tells it nothing and it moves on.
-  if (typeof raw.companyWebsite === 'string' && raw.companyWebsite.trim() !== '') {
+  const honeypot = form.get('companyWebsite');
+  if (typeof honeypot === 'string' && honeypot.trim() !== '') {
     return NextResponse.json({ success: true });
   }
 
   const values = {} as Record<Field, string>;
   for (const field of FIELDS) {
-    const value = raw[field];
+    const value = form.get(field);
     if (typeof value !== 'string' || value.trim() === '') {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
@@ -123,6 +197,14 @@ export async function POST(req: Request) {
     );
   }
 
+  // Deliberately after the rate limit check: reading file bytes is the
+  // expensive part of this handler and a blocked caller should never reach it.
+  const result = await readPhotos(form);
+  if ('error' in result) {
+    return NextResponse.json({ error: result.error }, { status: 400 });
+  }
+  const { photos } = result;
+
   const safe = Object.fromEntries(
     FIELDS.map((field) => [field, escapeHtml(values[field])]),
   ) as Record<Field, string>;
@@ -133,6 +215,11 @@ export async function POST(req: Request) {
 
   /** tel: and mailto: targets, reduced to characters those schemes allow. */
   const telHref = values.phone.replace(/[^\d+]/g, '');
+
+  const photoRow =
+    photos.length > 0
+      ? `<tr><td style="padding: 8px 0; color: #666;"><strong>Photos</strong></td><td style="padding: 8px 0;">${photos.length} attached to this email</td></tr>`
+      : '';
 
   // The Resend constructor throws on a missing key. Checking here turns a
   // misconfigured environment into a logged 500 the form can explain, rather
@@ -149,6 +236,7 @@ export async function POST(req: Request) {
       from: FROM,
       to: BUSINESS.email,
       replyTo: values.email,
+      attachments: photos.length > 0 ? photos : undefined,
       subject: `New Quote Request -- ${singleLine(values.serviceType)} -- ${singleLine(values.name)}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
@@ -160,6 +248,7 @@ export async function POST(req: Request) {
             <tr><td style="padding: 8px 0; color: #666;"><strong>Address</strong></td><td style="padding: 8px 0;">${safe.address}</td></tr>
             <tr><td style="padding: 8px 0; color: #666;"><strong>Service</strong></td><td style="padding: 8px 0;">${safe.serviceType}</td></tr>
             <tr><td style="padding: 8px 0; color: #666; vertical-align: top;"><strong>Description</strong></td><td style="padding: 8px 0;">${safe.description}</td></tr>
+            ${photoRow}
           </table>
           <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;" />
           <p style="color: #999; font-size: 12px;">Sent from coastalsurfacerestoration.com quote form</p>
@@ -180,8 +269,8 @@ export async function POST(req: Request) {
       to: values.email,
       replyTo: BUSINESS.email,
       subject: `We got your request, ${singleLine(values.name)}`,
-      text: acknowledgementText(values),
-      html: acknowledgementHtml(safe),
+      text: acknowledgementText(values, photos.length),
+      html: acknowledgementHtml(safe, photos.length),
     });
   } catch (error) {
     console.error('Quote acknowledgement error:', error);
@@ -190,7 +279,7 @@ export async function POST(req: Request) {
   return NextResponse.json({ success: true });
 }
 
-function acknowledgementText(values: Record<Field, string>): string {
+function acknowledgementText(values: Record<Field, string>, photoCount: number): string {
   return [
     `Hi ${values.name},`,
     '',
@@ -203,11 +292,16 @@ function acknowledgementText(values: Record<Field, string>): string {
     `Service: ${values.serviceType}`,
     `Address: ${values.address}`,
     `Phone: ${values.phone}`,
+    ...(photoCount > 0 ? [`Photos: ${photoCount} received`] : []),
     '',
     'Project description:',
     values.description,
     '',
-    `If anything above is wrong, or you have photos of the piece, just reply to this email.`,
+    photoCount === 1
+      ? 'Thanks for the photo. If anything above is wrong, just reply to this email.'
+      : photoCount > 1
+        ? `Thanks for the ${photoCount} photos. If anything above is wrong, just reply to this email.`
+        : 'If anything above is wrong, or you have photos of the piece, just reply to this email.',
     '',
     'Tyler Scherzer',
     `${SITE_NAME}`,
@@ -215,7 +309,7 @@ function acknowledgementText(values: Record<Field, string>): string {
   ].join('\n');
 }
 
-function acknowledgementHtml(safe: Record<Field, string>): string {
+function acknowledgementHtml(safe: Record<Field, string>, photoCount: number): string {
   const row = (label: string, value: string) =>
     `<tr><td style="padding: 6px 0; color: #666; width: 110px; vertical-align: top;"><strong>${label}</strong></td><td style="padding: 6px 0; color: #222;">${value}</td></tr>`;
 
@@ -242,9 +336,14 @@ function acknowledgementHtml(safe: Record<Field, string>): string {
           ${row('Address', safe.address)}
           ${row('Phone', safe.phone)}
           ${row('Project', safe.description)}
+          ${photoCount > 0 ? row('Photos', `${photoCount} received`) : ''}
         </table>
         <p style="margin: 24px 0 0; line-height: 1.6;">
-          If anything above is wrong, or you have photos of the piece, just reply to this email.
+          ${
+            photoCount > 0
+              ? 'Thanks for the photos. If anything above is wrong, just reply to this email.'
+              : 'If anything above is wrong, or you have photos of the piece, just reply to this email.'
+          }
         </p>
         <p style="margin: 24px 0 0; line-height: 1.6;">
           Tyler Scherzer<br />
