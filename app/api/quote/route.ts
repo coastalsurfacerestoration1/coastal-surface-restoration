@@ -4,7 +4,17 @@ import { BUSINESS, SITE_NAME } from '@/lib/seo';
 
 const FROM = `${SITE_NAME} <quotes@coastalsurfacerestoration.com>`;
 
-const FIELDS = ['name', 'email', 'phone', 'address', 'serviceType', 'description'] as const;
+const FIELDS = [
+  'name',
+  'email',
+  'phone',
+  'street',
+  'city',
+  'state',
+  'zip',
+  'serviceType',
+  'description',
+] as const;
 type Field = (typeof FIELDS)[number];
 
 /** Longest a field can be before we assume it is not a real quote request. */
@@ -12,7 +22,13 @@ const MAX_LENGTH: Record<Field, number> = {
   name: 100,
   email: 254,
   phone: 30,
-  address: 200,
+  street: 200,
+  city: 80,
+  // Not 2. The length guard runs before the format check, so a tight ceiling
+  // here would answer "Field too long" where "two letter state" is the useful
+  // message. STATE_PATTERN is what actually enforces the format.
+  state: 20,
+  zip: 10,
   serviceType: 80,
   description: 5000,
 };
@@ -159,6 +175,20 @@ function singleLine(value: string): string {
 }
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/**
+ * North American numbering plan: ten digits, with the area code and the
+ * exchange both starting 2-9. Rejects the placeholder-looking numbers that a
+ * plain length check lets through, 000-000-0000 among them.
+ */
+const PHONE_PATTERN = /^[2-9]\d{2}[2-9]\d{6}$/;
+const STATE_PATTERN = /^[A-Za-z]{2}$/;
+const ZIP_PATTERN = /^\d{5}$/;
+/**
+ * Every ZIP in the Charleston tri-county area begins 294. A submission outside
+ * it is flagged in the notification rather than refused: an out of area job may
+ * still be worth taking, and that is Tyler's call to make, not the form's.
+ */
+const LOCAL_ZIP_PREFIX = '294';
 
 export async function POST(req: Request) {
   // The form posts multipart/form-data so photos can ride along with the text
@@ -193,7 +223,31 @@ export async function POST(req: Request) {
   }
 
   if (!EMAIL_PATTERN.test(values.email)) {
-    return NextResponse.json({ error: 'Invalid email address' }, { status: 400 });
+    return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
+  }
+
+  if (!PHONE_PATTERN.test(values.phone.replace(/\D/g, ''))) {
+    return NextResponse.json(
+      { error: 'Please enter a valid 10 digit US phone number.' },
+      { status: 400 },
+    );
+  }
+
+  // A street line with no digit is a city or a landmark, not somewhere a truck
+  // can be sent.
+  if (!/\d/.test(values.street) || !/[A-Za-z]/.test(values.street)) {
+    return NextResponse.json(
+      { error: 'Please include a street number and street name.' },
+      { status: 400 },
+    );
+  }
+
+  if (!STATE_PATTERN.test(values.state)) {
+    return NextResponse.json({ error: 'Please enter a two letter state.' }, { status: 400 });
+  }
+
+  if (!ZIP_PATTERN.test(values.zip)) {
+    return NextResponse.json({ error: 'Please enter a five digit ZIP code.' }, { status: 400 });
   }
 
   if (rateLimited(clientIp(req))) {
@@ -222,6 +276,14 @@ export async function POST(req: Request) {
   /** tel: and mailto: targets, reduced to characters those schemes allow. */
   const telHref = values.phone.replace(/[^\d+]/g, '');
 
+  const addressLine = `${values.street}, ${values.city}, ${values.state.toUpperCase()} ${values.zip}`;
+  const safeAddressLine = escapeHtml(addressLine);
+  const outOfArea = !values.zip.startsWith(LOCAL_ZIP_PREFIX);
+
+  const outOfAreaRow = outOfArea
+    ? `<tr><td style="padding: 8px 0; color: #666;"><strong>Heads up</strong></td><td style="padding: 8px 0; color: #b45309;">ZIP ${escapeHtml(values.zip)} is outside the usual Charleston service area.</td></tr>`
+    : '';
+
   const photoRow =
     photos.length > 0
       ? `<tr><td style="padding: 8px 0; color: #666;"><strong>Photos</strong></td><td style="padding: 8px 0;">${photos.length} attached to this email</td></tr>`
@@ -247,7 +309,7 @@ export async function POST(req: Request) {
       to: BUSINESS.email,
       replyTo: values.email,
       attachments: photos.length > 0 ? photos : undefined,
-      subject: `New Quote Request -- ${singleLine(values.serviceType)} -- ${singleLine(values.name)}`,
+      subject: `${outOfArea ? '[Outside area] ' : ''}New Quote Request -- ${singleLine(values.serviceType)} -- ${singleLine(values.name)}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #0e273e;">New Quote Request</h2>
@@ -255,7 +317,8 @@ export async function POST(req: Request) {
             <tr><td style="padding: 8px 0; color: #666; width: 140px;"><strong>Name</strong></td><td style="padding: 8px 0;">${safe.name}</td></tr>
             <tr><td style="padding: 8px 0; color: #666;"><strong>Email</strong></td><td style="padding: 8px 0;"><a href="mailto:${safe.email}">${safe.email}</a></td></tr>
             <tr><td style="padding: 8px 0; color: #666;"><strong>Phone</strong></td><td style="padding: 8px 0;"><a href="tel:${telHref}">${safe.phone}</a></td></tr>
-            <tr><td style="padding: 8px 0; color: #666;"><strong>Address</strong></td><td style="padding: 8px 0;">${safe.address}</td></tr>
+            <tr><td style="padding: 8px 0; color: #666;"><strong>Address</strong></td><td style="padding: 8px 0;">${safeAddressLine}</td></tr>
+            ${outOfAreaRow}
             <tr><td style="padding: 8px 0; color: #666;"><strong>Service</strong></td><td style="padding: 8px 0;">${safe.serviceType}</td></tr>
             <tr><td style="padding: 8px 0; color: #666; vertical-align: top;"><strong>Description</strong></td><td style="padding: 8px 0;">${safe.description}</td></tr>
             ${photoRow}
@@ -284,8 +347,8 @@ export async function POST(req: Request) {
       to: values.email,
       replyTo: BUSINESS.email,
       subject: `We got your request, ${singleLine(values.name)}`,
-      text: acknowledgementText(values, photos.length),
-      html: acknowledgementHtml(safe, photos.length),
+      text: acknowledgementText(values, addressLine, photos.length),
+      html: acknowledgementHtml(safe, safeAddressLine, photos.length),
     });
 
     if (error) console.error('Quote acknowledgement error:', error);
@@ -296,7 +359,11 @@ export async function POST(req: Request) {
   return NextResponse.json({ success: true });
 }
 
-function acknowledgementText(values: Record<Field, string>, photoCount: number): string {
+function acknowledgementText(
+  values: Record<Field, string>,
+  addressLine: string,
+  photoCount: number,
+): string {
   return [
     `Hi ${values.name},`,
     '',
@@ -307,7 +374,7 @@ function acknowledgementText(values: Record<Field, string>, photoCount: number):
     'Here is what you sent us:',
     '',
     `Service: ${values.serviceType}`,
-    `Address: ${values.address}`,
+    `Address: ${addressLine}`,
     `Phone: ${values.phone}`,
     ...(photoCount > 0 ? [`Photos: ${photoCount} received`] : []),
     '',
@@ -326,7 +393,11 @@ function acknowledgementText(values: Record<Field, string>, photoCount: number):
   ].join('\n');
 }
 
-function acknowledgementHtml(safe: Record<Field, string>, photoCount: number): string {
+function acknowledgementHtml(
+  safe: Record<Field, string>,
+  safeAddressLine: string,
+  photoCount: number,
+): string {
   const row = (label: string, value: string) =>
     `<tr><td style="padding: 6px 0; color: #666; width: 110px; vertical-align: top;"><strong>${label}</strong></td><td style="padding: 6px 0; color: #222;">${value}</td></tr>`;
 
@@ -350,7 +421,7 @@ function acknowledgementHtml(safe: Record<Field, string>, photoCount: number): s
         <p style="margin: 24px 0 8px; font-weight: bold;">What you sent us</p>
         <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
           ${row('Service', safe.serviceType)}
-          ${row('Address', safe.address)}
+          ${row('Address', safeAddressLine)}
           ${row('Phone', safe.phone)}
           ${row('Project', safe.description)}
           ${photoCount > 0 ? row('Photos', `${photoCount} received`) : ''}

@@ -2,13 +2,18 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 
 type QuoteFormValues = {
   name: string;
   email: string;
   phone: string;
-  address: string;
+  street: string;
+  city: string;
+  /** Only used when `city` is OTHER_CITY. Never sent as its own field. */
+  cityOther: string;
+  state: string;
+  zip: string;
   serviceType: string;
   description: string;
   /** Honeypot. Hidden from people, so anything in it came from a script. */
@@ -65,6 +70,34 @@ async function downscale(file: File): Promise<File> {
     return file;
   }
 }
+
+const OTHER_CITY = 'Other / not listed';
+
+/**
+ * Cities offered in the address dropdown.
+ *
+ * Deliberately not SERVICE_AREAS from lib/schema.ts: that list is the areas we
+ * advertise, including neighborhoods like the Historic District that are not
+ * mailing cities. This one has to match what a customer would write on an
+ * envelope, so it lists municipalities and keeps an escape hatch for the rest.
+ */
+const ADDRESS_CITIES = [
+  'Charleston',
+  'Mount Pleasant',
+  'North Charleston',
+  'West Ashley',
+  'James Island',
+  'Johns Island',
+  'Daniel Island',
+  'Folly Beach',
+  'Isle of Palms',
+  "Sullivan's Island",
+  'Summerville',
+  OTHER_CITY,
+];
+
+/** Charleston tri-county ZIPs all begin 294. */
+const LOCAL_ZIP_PREFIX = '294';
 
 const services = [
   'Rust & Paint Removal',
@@ -162,8 +195,15 @@ export default function QuotePage() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
-  } = useForm<QuoteFormValues>();
+  } = useForm<QuoteFormValues>({ defaultValues: { state: 'SC' } });
+
+  const selectedCity = useWatch({ control, name: 'city' });
+  const zip = useWatch({ control, name: 'zip' }) ?? '';
+  // Soft signal only. An out of area job may still be worth taking, so this
+  // never blocks the submission.
+  const outOfArea = /^\d{5}$/.test(zip) && !zip.startsWith(LOCAL_ZIP_PREFIX);
 
   const onSubmit = async (data: QuoteFormValues) => {
     setStatus('loading');
@@ -171,10 +211,13 @@ export default function QuotePage() {
       // Multipart, so the photos travel with the fields. The Content-Type
       // header is left off on purpose: the browser has to set it itself in
       // order to include the multipart boundary.
+      const { city, cityOther, state, ...rest } = data;
       const payload = new FormData();
-      for (const [key, value] of Object.entries(data)) {
+      for (const [key, value] of Object.entries(rest)) {
         payload.append(key, value ?? '');
       }
+      payload.append('city', city === OTHER_CITY ? cityOther.trim() : city);
+      payload.append('state', state.trim().toUpperCase());
       for (const photo of photos) {
         payload.append('photos', photo.file);
       }
@@ -253,7 +296,10 @@ export default function QuotePage() {
               <input
                 {...register('email', {
                   required: 'Email is required',
-                  pattern: { value: /^\S+@\S+$/i, message: 'Invalid email' },
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: 'Enter a valid email address',
+                  },
                 })}
                 type="email"
                 className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
@@ -268,7 +314,12 @@ export default function QuotePage() {
                 Phone <span className="text-[#397774]">*</span>
               </label>
               <input
-                {...register('phone', { required: 'Phone is required' })}
+                {...register('phone', {
+                required: 'Phone is required',
+                validate: (value) =>
+                  /^[2-9]\d{2}[2-9]\d{6}$/.test(value.replace(/\D/g, '')) ||
+                  'Enter a valid 10 digit phone number',
+              })}
                 type="tel"
                 className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
                 placeholder="843-555-0100"
@@ -287,18 +338,114 @@ export default function QuotePage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label htmlFor="street" className="block text-sm font-medium text-gray-300 mb-2">
               Property Address <span className="text-[#397774]">*</span>
             </label>
             <input
-              {...register('address', { required: 'Address is required' })}
+              {...register('street', {
+                required: 'Street address is required',
+                validate: (value) =>
+                  (/\d/.test(value) && /[A-Za-z]/.test(value)) ||
+                  'Include a street number and street name',
+              })}
+              id="street"
+              autoComplete="address-line1"
               className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
-              placeholder="123 King Street, Charleston, SC 29401"
+              placeholder="123 King Street"
             />
-            {errors.address && (
-              <p className="text-red-400 text-sm mt-1">{errors.address.message}</p>
+            {errors.street && (
+              <p className="text-red-400 text-sm mt-1">{errors.street.message}</p>
             )}
           </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="col-span-2">
+              <label htmlFor="city" className="block text-sm font-medium text-gray-300 mb-2">
+                City <span className="text-[#397774]">*</span>
+              </label>
+              <select
+                {...register('city', { required: 'Please select a city' })}
+                id="city"
+                className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white focus:outline-none focus:border-[#397774] transition-colors"
+              >
+                <option value="">Select a city...</option>
+                {ADDRESS_CITIES.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+              {errors.city && (
+                <p className="text-red-400 text-sm mt-1">{errors.city.message}</p>
+              )}
+            </div>
+            <div>
+              <label htmlFor="state" className="block text-sm font-medium text-gray-300 mb-2">
+                State <span className="text-[#397774]">*</span>
+              </label>
+              <input
+                {...register('state', {
+                  required: 'Required',
+                  pattern: { value: /^[A-Za-z]{2}$/, message: 'Use 2 letters' },
+                })}
+                id="state"
+                autoComplete="address-level1"
+                maxLength={2}
+                className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors uppercase"
+              />
+              {errors.state && (
+                <p className="text-red-400 text-sm mt-1">{errors.state.message}</p>
+              )}
+            </div>
+            <div>
+              <label htmlFor="zip" className="block text-sm font-medium text-gray-300 mb-2">
+                ZIP <span className="text-[#397774]">*</span>
+              </label>
+              <input
+                {...register('zip', {
+                  required: 'Required',
+                  pattern: { value: /^\d{5}$/, message: '5 digits' },
+                })}
+                id="zip"
+                inputMode="numeric"
+                autoComplete="postal-code"
+                maxLength={5}
+                className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
+                placeholder="29401"
+              />
+              {errors.zip && (
+                <p className="text-red-400 text-sm mt-1">{errors.zip.message}</p>
+              )}
+            </div>
+          </div>
+
+          {selectedCity === OTHER_CITY && (
+            <div>
+              <label htmlFor="cityOther" className="block text-sm font-medium text-gray-300 mb-2">
+                City name <span className="text-[#397774]">*</span>
+              </label>
+              <input
+                {...register('cityOther', {
+                  validate: (value, values) =>
+                    values.city !== OTHER_CITY ||
+                    value.trim().length > 1 ||
+                    'Please enter the city',
+                })}
+                id="cityOther"
+                autoComplete="address-level2"
+                className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
+                placeholder="Awendaw"
+              />
+              {errors.cityOther && (
+                <p className="text-red-400 text-sm mt-1">{errors.cityOther.message}</p>
+              )}
+            </div>
+          )}
+
+          {outOfArea && (
+            <p className="text-amber-400 text-sm" role="status">
+              That ZIP looks outside our usual Charleston service area. Send it anyway and we
+              will let you know if we can get to you.
+            </p>
+          )}
 
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
