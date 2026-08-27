@@ -16,8 +16,12 @@ type QuoteFormValues = {
   zip: string;
   serviceType: string;
   description: string;
-  /** Honeypot. Hidden from people, so anything in it came from a script. */
-  companyWebsite: string;
+  /**
+   * Honeypot. Deliberately meaningless name: the old one, companyWebsite,
+   * matched the heuristics password managers and autofill extensions use, so
+   * they filled it and got real customers flagged as bots.
+   */
+  extraField: string;
 };
 
 const GENERIC_ERROR =
@@ -539,17 +543,24 @@ export default function QuotePage() {
             )}
           </div>
 
-          {/* Honeypot. Off-screen and out of the tab order, so the only way
-              it gets filled is a script filling every input it finds. The
-              API drops those submissions silently. */}
+          {/* Honeypot. Off-screen and out of the tab order, so the ordinary way
+              it gets filled is a script filling every input it finds.
+              The data-* attributes are the documented opt-outs for 1Password,
+              LastPass, Dashlane and Bitwarden. autoComplete="off" alone is not
+              enough: extensions routinely ignore it, and one of them filling
+              this field is what made real quotes look like bot traffic. */}
           <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
-            <label htmlFor="companyWebsite">Company website</label>
+            <label htmlFor="extraField">Leave this field empty</label>
             <input
-              {...register('companyWebsite')}
-              id="companyWebsite"
+              {...register('extraField')}
+              id="extraField"
               type="text"
               tabIndex={-1}
               autoComplete="off"
+              data-1p-ignore=""
+              data-lpignore="true"
+              data-form-type="other"
+              data-bwignore="true"
             />
           </div>
 

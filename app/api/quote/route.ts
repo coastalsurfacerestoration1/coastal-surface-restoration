@@ -201,21 +201,21 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }
 
-  // Honeypot. A real person never sees this input, so anything in it is a bot.
-  // Answer 200 rather than an error: a rejection tells the script what tripped
-  // it, a success tells it nothing and it moves on.
-  const honeypot = form.get('companyWebsite');
-  if (typeof honeypot === 'string' && honeypot.trim() !== '') {
-    // Still answered with success, for the reason above. Logged because a
-    // false positive here is otherwise invisible: an autofill extension or a
-    // password manager that fills the hidden field turns a real customer's
-    // request into a silent discard that looks identical to a delivered one.
+  // Honeypot. A real person never sees this input, so anything in it is most
+  // likely a script.
+  //
+  // It no longer discards the submission. An autofill extension filling this
+  // field destroyed real quote requests while the form reported success, and
+  // the two outcomes were indistinguishable from the outside. For a business
+  // with no leads yet, one spam email in the inbox costs far less than one
+  // lost customer, so a trip is flagged for Tyler to judge instead.
+  const honeypot = form.get('extraField');
+  const suspectedSpam = typeof honeypot === 'string' && honeypot.trim() !== '';
+  if (suspectedSpam) {
     console.warn(
-      `Quote discarded by honeypot. value=${JSON.stringify(honeypot.slice(0, 80))} ` +
-        `name=${JSON.stringify(String(form.get('name') ?? '').slice(0, 60))} ` +
-        `email=${JSON.stringify(String(form.get('email') ?? '').slice(0, 60))}`,
+      `Quote tripped the honeypot, flagged rather than dropped. ` +
+        `value=${JSON.stringify(honeypot.slice(0, 80))}`,
     );
-    return NextResponse.json({ success: true });
   }
 
   const values = {} as Record<Field, string>;
@@ -289,6 +289,10 @@ export async function POST(req: Request) {
   const safeAddressLine = escapeHtml(addressLine);
   const outOfArea = !values.zip.startsWith(LOCAL_ZIP_PREFIX);
 
+  const spamRow = suspectedSpam
+    ? `<tr><td style="padding: 8px 0; color: #666;"><strong>Flag</strong></td><td style="padding: 8px 0; color: #b45309;">The hidden anti-spam field was filled. Usually a bot, but an autofill extension can do it too, so check before discarding.</td></tr>`
+    : '';
+
   const outOfAreaRow = outOfArea
     ? `<tr><td style="padding: 8px 0; color: #666;"><strong>Heads up</strong></td><td style="padding: 8px 0; color: #b45309;">ZIP ${escapeHtml(values.zip)} is outside the usual Charleston service area.</td></tr>`
     : '';
@@ -318,7 +322,7 @@ export async function POST(req: Request) {
       to: BUSINESS.email,
       replyTo: values.email,
       attachments: photos.length > 0 ? photos : undefined,
-      subject: `${outOfArea ? '[Outside area] ' : ''}New Quote Request -- ${singleLine(values.serviceType)} -- ${singleLine(values.name)}`,
+      subject: `${suspectedSpam ? '[Possible spam] ' : ''}${outOfArea ? '[Outside area] ' : ''}New Quote Request -- ${singleLine(values.serviceType)} -- ${singleLine(values.name)}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #0e273e;">New Quote Request</h2>
@@ -328,6 +332,7 @@ export async function POST(req: Request) {
             <tr><td style="padding: 8px 0; color: #666;"><strong>Phone</strong></td><td style="padding: 8px 0;"><a href="tel:${telHref}">${safe.phone}</a></td></tr>
             <tr><td style="padding: 8px 0; color: #666;"><strong>Address</strong></td><td style="padding: 8px 0;">${safeAddressLine}</td></tr>
             ${outOfAreaRow}
+            ${spamRow}
             <tr><td style="padding: 8px 0; color: #666;"><strong>Service</strong></td><td style="padding: 8px 0;">${safe.serviceType}</td></tr>
             <tr><td style="padding: 8px 0; color: #666; vertical-align: top;"><strong>Description</strong></td><td style="padding: 8px 0;">${safe.description}</td></tr>
             ${photoRow}
@@ -357,6 +362,10 @@ export async function POST(req: Request) {
   // The customer acknowledgement is best effort. Tyler already has the lead at
   // this point, so a failure here should not tell the customer their request
   // did not go through.
+  if (suspectedSpam) {
+    return NextResponse.json({ success: true });
+  }
+
   try {
     const { error } = await resend.emails.send({
       from: FROM,
