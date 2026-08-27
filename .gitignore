@@ -42,3 +42,6 @@ next-env.d.ts
 
 # brand source files (AI/EPS/PDF/hi-res) — kept locally, not in repo
 /logos
+
+.vercel
+.env*
