@@ -53,7 +53,7 @@ function sniffImage(bytes: Uint8Array): PhotoKind | null {
   return null;
 }
 
-type PhotoAttachment = { filename: string; content: Buffer };
+type PhotoAttachment = { filename: string; content: string };
 
 /**
  * Turns the uploaded photos into Resend attachments, or returns the message to
@@ -89,7 +89,13 @@ async function readPhotos(
       return { error: 'Photos need to be JPEG, PNG, or WebP images.' };
     }
 
-    photos.push({ filename: `photo-${photos.length + 1}.${kind}`, content: Buffer.from(bytes) });
+    // Base64, not a raw Buffer: the SDK hands the payload to JSON.stringify,
+    // which would turn a Buffer into { type: 'Buffer', data: [...] } instead of
+    // file content.
+    photos.push({
+      filename: `photo-${photos.length + 1}.${kind}`,
+      content: Buffer.from(bytes).toString('base64'),
+    });
   }
 
   return { photos };
@@ -232,7 +238,11 @@ export async function POST(req: Request) {
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   try {
-    await resend.emails.send({
+    // The SDK resolves with { data, error } rather than throwing when the API
+    // rejects a send, so the error has to be read off the result. Without this
+    // a rejected email still returns 200 and the customer lands on the thank
+    // you page while nothing reaches the inbox.
+    const { error } = await resend.emails.send({
       from: FROM,
       to: BUSINESS.email,
       replyTo: values.email,
@@ -255,6 +265,11 @@ export async function POST(req: Request) {
         </div>
       `,
     });
+
+    if (error) {
+      console.error('Quote form error, Resend rejected the send:', error);
+      return NextResponse.json({ error: 'Failed to send' }, { status: 500 });
+    }
   } catch (error) {
     console.error('Quote form error:', error);
     return NextResponse.json({ error: 'Failed to send' }, { status: 500 });
@@ -264,7 +279,7 @@ export async function POST(req: Request) {
   // this point, so a failure here should not tell the customer their request
   // did not go through.
   try {
-    await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: FROM,
       to: values.email,
       replyTo: BUSINESS.email,
@@ -272,6 +287,8 @@ export async function POST(req: Request) {
       text: acknowledgementText(values, photos.length),
       html: acknowledgementHtml(safe, photos.length),
     });
+
+    if (error) console.error('Quote acknowledgement error:', error);
   } catch (error) {
     console.error('Quote acknowledgement error:', error);
   }
