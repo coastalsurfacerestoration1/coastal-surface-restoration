@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 import { BUSINESS, SITE_NAME, SITE_URL } from '@/lib/seo';
-import { customerSmsEnabled, sendSms } from '@/lib/notify';
+import { appendQuoteRow, customerSmsEnabled, sendSms } from '@/lib/notify';
 
 const FROM = `${SITE_NAME} <quotes@coastalsurfacerestoration.com>`;
 
@@ -388,6 +388,27 @@ export async function POST(req: Request) {
       (photos.length > 0 ? ` ${photos.length} photo(s).` : ''),
   );
   if (!alert.sent) console.warn(`Quote alert text not sent: ${alert.reason}`);
+
+  // Log to the spreadsheet. Flagged and out of area submissions are logged too,
+  // so the sheet stays a complete record of what came through the form rather
+  // than only the ones that looked clean.
+  const logged = await appendQuoteRow({
+    timestamp: new Date().toISOString(),
+    name: values.name,
+    email: values.email,
+    phone: values.phone,
+    street: values.street,
+    city: values.city,
+    state: values.state.toUpperCase(),
+    zip: values.zip,
+    service: values.serviceType,
+    description: values.description,
+    photos: photos.length,
+    smsConsent,
+    outOfArea,
+    spamFlag: suspectedSpam,
+  });
+  if (!logged.sent) console.warn(`Quote not written to the sheet: ${logged.reason}`);
 
   // Reminder to Tyler, scheduled with Resend so no cron or queue is needed.
   try {

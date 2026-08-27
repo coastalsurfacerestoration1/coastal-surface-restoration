@@ -82,3 +82,75 @@ export async function sendSms(to: string, body: string): Promise<SmsResult> {
 export function customerSmsEnabled(): boolean {
   return process.env.TWILIO_CUSTOMER_SMS === 'enabled';
 }
+
+/** One quote, flattened for the spreadsheet. */
+export type QuoteRow = {
+  timestamp: string;
+  name: string;
+  email: string;
+  phone: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  service: string;
+  description: string;
+  photos: number;
+  smsConsent: boolean;
+  outOfArea: boolean;
+  spamFlag: boolean;
+};
+
+/**
+ * Appends a quote to the Google Sheet.
+ *
+ * Posts to an Apps Script web app bound to the sheet rather than going through
+ * the Sheets API. That avoids a Google Cloud project, a service account, and a
+ * private key living in an environment variable. The tradeoff is that the
+ * endpoint is reachable by anyone holding the URL, which is what the shared
+ * secret is for.
+ *
+ * Like the texts, this never throws. The sheet is a convenience for outreach
+ * later; the email is what actually carries the lead, and a spreadsheet outage
+ * must not cost a customer their submission.
+ */
+export async function appendQuoteRow(row: QuoteRow): Promise<SmsResult> {
+  const url = process.env.QUOTE_SHEET_WEBHOOK_URL;
+  const secret = process.env.QUOTE_SHEET_SECRET;
+
+  if (!url || !secret) {
+    return { sent: false, reason: 'Quote sheet is not configured' };
+  }
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      // Apps Script answers a deployed web app with a redirect to
+      // script.googleusercontent.com, so redirects have to be followed.
+      redirect: 'follow',
+      body: JSON.stringify({
+        secret,
+        ...row,
+        smsConsent: row.smsConsent ? 'yes' : 'no',
+        outOfArea: row.outOfArea ? 'yes' : '',
+        spamFlag: row.spamFlag ? 'flagged' : '',
+      }),
+    });
+
+    if (!res.ok) {
+      return { sent: false, reason: `Sheet webhook ${res.status}` };
+    }
+
+    const text = (await res.text().catch(() => '')).trim();
+    if (text !== 'ok') {
+      // A wrong secret comes back as a 200 carrying "forbidden", so the status
+      // alone is not enough to call this a success.
+      return { sent: false, reason: `Sheet webhook replied: ${text.slice(0, 80)}` };
+    }
+
+    return { sent: true };
+  } catch (error) {
+    return { sent: false, reason: `Sheet webhook failed: ${String(error)}` };
+  }
+}
