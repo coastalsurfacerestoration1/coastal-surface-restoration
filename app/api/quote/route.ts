@@ -206,6 +206,15 @@ export async function POST(req: Request) {
   // it, a success tells it nothing and it moves on.
   const honeypot = form.get('companyWebsite');
   if (typeof honeypot === 'string' && honeypot.trim() !== '') {
+    // Still answered with success, for the reason above. Logged because a
+    // false positive here is otherwise invisible: an autofill extension or a
+    // password manager that fills the hidden field turns a real customer's
+    // request into a silent discard that looks identical to a delivered one.
+    console.warn(
+      `Quote discarded by honeypot. value=${JSON.stringify(honeypot.slice(0, 80))} ` +
+        `name=${JSON.stringify(String(form.get('name') ?? '').slice(0, 60))} ` +
+        `email=${JSON.stringify(String(form.get('email') ?? '').slice(0, 60))}`,
+    );
     return NextResponse.json({ success: true });
   }
 
