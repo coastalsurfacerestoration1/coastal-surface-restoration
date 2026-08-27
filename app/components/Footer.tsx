@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { BUSINESS } from '@/lib/seo';
 
 
+
 const socials = [
   {
     label: 'Instagram',
