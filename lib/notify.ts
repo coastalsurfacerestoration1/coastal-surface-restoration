@@ -122,6 +122,17 @@ export async function appendQuoteRow(row: QuoteRow): Promise<SmsResult> {
     return { sent: false, reason: 'Quote sheet is not configured' };
   }
 
+  // A deployed Apps Script web app always ends in /exec, or /dev for the test
+  // deployment. Anything else is a copy that lost its suffix or its full
+  // deployment id, which Google answers with a login page or a 404. Catching
+  // it here turns a confusing round trip into an obvious message.
+  if (!url.endsWith('/exec') && !url.endsWith('/dev')) {
+    return {
+      sent: false,
+      reason: 'QUOTE_SHEET_WEBHOOK_URL should end in /exec. Copy it from Deploy, Manage deployments.',
+    };
+  }
+
   try {
     const res = await fetch(url, {
       method: 'POST',
