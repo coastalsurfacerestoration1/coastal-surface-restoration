@@ -304,7 +304,7 @@ export async function POST(req: Request) {
     // rejects a send, so the error has to be read off the result. Without this
     // a rejected email still returns 200 and the customer lands on the thank
     // you page while nothing reaches the inbox.
-    const { error } = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: FROM,
       to: BUSINESS.email,
       replyTo: values.email,
@@ -333,6 +333,13 @@ export async function POST(req: Request) {
       console.error('Quote form error, Resend rejected the send:', error);
       return NextResponse.json({ error: 'Failed to send' }, { status: 500 });
     }
+
+    // Accepted by Resend. Logging the id makes an accepted-but-missing email
+    // traceable: the id either appears in the Resend dashboard or it does not,
+    // which distinguishes a delivery problem from looking at the wrong account.
+    console.log(
+      `Quote accepted by Resend. id=${data?.id ?? 'none'} to=${BUSINESS.email} from=${FROM} photos=${photos.length}`,
+    );
   } catch (error) {
     console.error('Quote form error:', error);
     return NextResponse.json({ error: 'Failed to send' }, { status: 500 });
