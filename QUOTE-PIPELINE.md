@@ -33,13 +33,13 @@ Laser Institute of America", never "certified".
    `[Possible spam]` if the hidden anti-bot field was filled.
 6. **Reminder email to Tyler** scheduled 48 hours out through Resend.
 7. **Acknowledgement email to the customer**, with logo and details.
-8. Redirects to `/thank-you`.
-
-Nothing is stored anywhere. Every quote exists only as an email.
+8. **Row appended to the Quote Requests Log sheet**, including flagged and out
+   of area submissions, so the sheet is a complete record of the form.
+9. Redirects to `/thank-you`.
 
 ---
 
-## Already done in code
+## Already done
 
 - Photo upload with browser side downscaling
 - Full validation on both client and server
@@ -49,7 +49,42 @@ Nothing is stored anywhere. Every quote exists only as an email.
   destroying real submissions
 - Text message sending, through Twilio, gated on environment variables
 - SMS consent checkbox on the form, unchecked by default
-- Google Sheet append, gated on environment variables
+- Google Sheet logging, live and confirmed working, see below
+
+### Google Sheet logging (live)
+
+Confirmed working on 2026-08-26. `QUOTE_SHEET_WEBHOOK_URL` and
+`QUOTE_SHEET_SECRET` are set in Vercel, and the Apps Script web app is
+deployed. Nothing to do here unless it breaks.
+
+- Folder: `12 - Quote Requests`
+  https://drive.google.com/drive/folders/1207gfjwNeIszYX02iLeI98L3c_xJK_IB
+- Sheet: `Quote Requests Log`
+  https://docs.google.com/spreadsheets/d/1FmD9uNtHD_FWNO4ij9VDHdeuFwFGN5Wzl0Qh95Iecyg/edit
+- Photos subfolder, currently unused:
+  https://drive.google.com/drive/folders/1eXOqTXcQyoxDwR6v_4FMCzap9vojim8x
+
+Columns are Timestamp, Name, Email, Phone, Street, City, State, ZIP, Service,
+Description, Photos, SMS Consent, Out of Area, Spam Flag, then Status and Notes
+which are left blank for Tyler to fill in by hand.
+
+It posts to an Apps Script web app bound to the sheet rather than using the
+Sheets API, which avoids a Google Cloud project, a service account, and a
+private key in an environment variable. The URL is reachable by anyone holding
+it, so a shared secret authenticates the call. Treat the URL as a credential.
+
+**If rows stop appearing**, the Vercel log line names which of three things it
+is: `Quote sheet is not configured` (env vars missing), `should end in /exec`
+(bad URL), or `replied: forbidden` (the secret in Vercel and the secret in the
+script do not match). To check the endpoint without writing a row:
+
+```bash
+curl -s -X POST "<the /exec url>" -H "Content-Type: application/json" -d '{"probe":true}'
+```
+
+A healthy deployment answers with the plain text `forbidden`, because the probe
+carries no secret. HTML back means the URL is wrong. The script itself is kept
+in the appendix at the bottom of this file for redeployment.
 
 ---
 
@@ -102,25 +137,37 @@ Texting customers without both captured consent and an approved campaign is a
 TCPA problem, at $500 to $1,500 per message. The consent checkbox only covers
 half of that requirement.
 
-### 4. Google Sheet logging
+---
 
-The Drive folder and sheet already exist:
+## Notes for later
 
-- Folder: `12 - Quote Requests`
-  https://drive.google.com/drive/folders/1207gfjwNeIszYX02iLeI98L3c_xJK_IB
-- Sheet: `Quote Requests Log`
-  https://docs.google.com/spreadsheets/d/1FmD9uNtHD_FWNO4ij9VDHdeuFwFGN5Wzl0Qh95Iecyg/edit
-- Photos subfolder for later:
-  https://drive.google.com/drive/folders/1eXOqTXcQyoxDwR6v_4FMCzap9vojim8x
+**Outreach.** Emailing people who requested a quote is fine under CAN-SPAM,
+since they contacted you first, as long as there is an unsubscribe path.
+Texting them is only legal for the ones who checked the consent box, which is
+why that flag is a column in the sheet. Filter on it before any text campaign.
 
-We use a Google Apps Script web app rather than a service account. No Google
-Cloud project, no JSON key to leak, no OAuth flow. One URL and one shared
-secret.
+**When to leave the spreadsheet behind.** Once volume justifies it, Jobber or
+Housecall Pro are the standard tools for a mobile service business, roughly $30
+to $100 a month, and they cover quote to schedule to invoice. Do not hand build
+a CRM.
+
+**Resend is not a database.** Its list endpoint returns metadata only, with no
+message body, and no documented retention guarantee. It is an audit trail, not
+a source of truth.
+
+**Privacy.** The sheet holds customer names, addresses, and phone numbers.
+Keep sharing restricted, and make sure the site privacy policy reflects what is
+retained.
+
+---
+
+## Appendix: the Apps Script
+
+Already deployed. Kept here in case it needs to be recreated.
 
 1. Open the Quote Requests Log sheet.
 2. Extensions, then Apps Script.
-3. Delete whatever is there and paste this, replacing the secret with a long
-   random string you generate:
+3. Replace the contents with this, using a long random string as the secret:
 
 ```javascript
 const SECRET = 'replace-with-a-long-random-string';
@@ -175,25 +222,3 @@ shared secret exists. Treat the URL as a credential and do not commit it.
 
 The last two sheet columns, Status and Notes, are left blank on purpose. They
 are yours to fill in by hand as you work a lead.
-
----
-
-## Notes for later
-
-**Outreach.** Emailing people who requested a quote is fine under CAN-SPAM,
-since they contacted you first, as long as there is an unsubscribe path.
-Texting them is only legal for the ones who checked the consent box, which is
-why that flag is a column in the sheet. Filter on it before any text campaign.
-
-**When to leave the spreadsheet behind.** Once volume justifies it, Jobber or
-Housecall Pro are the standard tools for a mobile service business, roughly $30
-to $100 a month, and they cover quote to schedule to invoice. Do not hand build
-a CRM.
-
-**Resend is not a database.** Its list endpoint returns metadata only, with no
-message body, and no documented retention guarantee. It is an audit trail, not
-a source of truth.
-
-**Privacy.** The sheet holds customer names, addresses, and phone numbers.
-Keep sharing restricted, and make sure the site privacy policy reflects what is
-retained.
