@@ -13,12 +13,6 @@ export const metadata = pageMetadata({
 // not on cosmetic edits.
 const LAST_UPDATED = 'August 31, 2026';
 
-// The quote form is the only place SMS consent is collected, and the carrier
-// registration points at this page for the opt-in details. Keep the Text
-// messages section below and the checkbox label in app/quote/page.tsx saying
-// the same thing.
-const CONTACT_EMAIL = 'tyler@coastalsurfacerestoration.com';
-
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-[#0e273e]">
@@ -122,6 +116,10 @@ export default function TermsPage() {
             </p>
           </Section>
 
+          {/* The quote form is the only place SMS consent is collected, and the
+              carrier registration points at this page for the opt-in details.
+              Keep this section and the checkbox label in app/quote/page.tsx
+              saying the same thing. */}
           <Section title="Text messages">
             <p>
               We use text messages to answer quote requests and coordinate appointments, because it is usually the fastest way to reach people. Texting is entirely optional.
@@ -147,8 +145,8 @@ export default function TermsPage() {
                 {BUSINESS.phone}
               </a>{' '}
               or{' '}
-              <a href={`mailto:${CONTACT_EMAIL}`} className="text-[#397774] hover:underline">
-                {CONTACT_EMAIL}
+              <a href={`mailto:${BUSINESS.email}`} className="text-[#397774] hover:underline">
+                {BUSINESS.email}
               </a>.
             </p>
             <p>
@@ -219,8 +217,8 @@ export default function TermsPage() {
             <ul>
               <li>
                 Email:{' '}
-                <a href={`mailto:${CONTACT_EMAIL}`} className="text-[#397774] hover:underline">
-                  {CONTACT_EMAIL}
+                <a href={`mailto:${BUSINESS.email}`} className="text-[#397774] hover:underline">
+                  {BUSINESS.email}
                 </a>
               </li>
               <li>
