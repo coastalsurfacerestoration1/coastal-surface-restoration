@@ -149,6 +149,10 @@ export default function Footer() {
               Privacy Policy
             </Link>
             <span aria-hidden="true">·</span>
+            <Link href="/terms" className="hover:text-[#397774] transition-colors">
+              Terms of Service
+            </Link>
+            <span aria-hidden="true">·</span>
             <span>Licensed &amp; Insured</span>
             <span aria-hidden="true">·</span>
             <span>Charleston, SC</span>

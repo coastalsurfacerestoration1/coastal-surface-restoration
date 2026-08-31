@@ -27,6 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/locations/isle-of-palms-sullivans-island', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/locations/james-island-folly-beach', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/privacy', priority: 0.2, changeFrequency: 'yearly' },
+    { path: '/terms', priority: 0.2, changeFrequency: 'yearly' },
   ];
 
   return routes.map((r) => ({
