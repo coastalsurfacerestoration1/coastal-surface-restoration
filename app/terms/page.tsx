@@ -11,7 +11,7 @@ export const metadata = pageMetadata({
 
 // Last meaningful change to these terms. Update this when the content changes,
 // not on cosmetic edits.
-const LAST_UPDATED = 'August 31, 2026';
+const LAST_UPDATED = 'September 3, 2026';
 
 export default function TermsPage() {
   return (
@@ -153,7 +153,10 @@ export default function TermsPage() {
               <span className="text-white">Consent is not required to get service.</span> Leaving the box unchecked has no effect on your quote, your price, or your place in the schedule. We will reach you by phone or email instead.
             </p>
             <p>
-              Carriers are not liable for delayed or undelivered messages. We do not sell your phone number, and we do not share it for anyone else&apos;s marketing. See our{' '}
+              <span className="text-white">We do not share your mobile information or messaging consent with third parties or affiliates for marketing or promotional purposes.</span> We do share your number with the messaging provider that delivers the texts for us, but only so the message reaches your phone. We do not sell it.
+            </p>
+            <p>
+              Carriers are not liable for delayed or undelivered messages. See our{' '}
               <Link href="/privacy" className="text-[#397774] hover:underline">
                 Privacy Policy
               </Link>{' '}

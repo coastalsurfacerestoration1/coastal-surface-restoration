@@ -11,7 +11,7 @@ export const metadata = pageMetadata({
 
 // Last meaningful change to this policy. Update this when the content changes,
 // not on cosmetic edits.
-const LAST_UPDATED = 'August 22, 2026';
+const LAST_UPDATED = 'September 3, 2026';
 
 export default function PrivacyPage() {
   return (
@@ -98,6 +98,32 @@ export default function PrivacyPage() {
             </ul>
             <p>
               We may also share information if we are legally required to, for example in response to a court order, or if it is necessary to protect the rights or safety of the business or another person.
+            </p>
+          </Section>
+
+          {/* Required for Twilio A2P 10DLC registration: the carrier review
+              looks for an explicit mobile-information non-sharing statement on
+              the privacy policy, and rejects the campaign without one (error
+              30908). Keep the sentence below and the matching one in the Text
+              messages section of app/terms/page.tsx intact and worded the same.
+              The opt-in details here also have to match the checkbox label in
+              app/quote/page.tsx. */}
+          <Section title="Text messages">
+            <p>
+              If you check the box on our quote form that reads &quot;Text me about this quote,&quot; we will use the phone number you gave us to text you about your quote, to schedule and confirm your appointment, and to follow up after the work is done. The box is unchecked by default, and consent is not required to get service. If you leave it unchecked, we will reach you by phone or email instead.
+            </p>
+            <p>
+              <span className="text-white">We do not share your mobile information or messaging consent with third parties or affiliates for marketing or promotional purposes.</span>
+            </p>
+            <p>
+              We do share your number with the messaging provider that delivers the texts for us, but only so the message reaches your phone. It is never shared for anyone else&apos;s marketing, and we do not sell it.
+            </p>
+            <p>
+              Message frequency varies, and message and data rates may apply depending on your mobile plan. Reply STOP to any message to opt out, or HELP for help. Full details are in our{' '}
+              <Link href="/terms" className="text-[#397774] hover:underline">
+                Terms of Service
+              </Link>
+              .
             </p>
           </Section>
 
