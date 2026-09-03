@@ -37,7 +37,7 @@ export default function PrivacyPage() {
       </section>
 
       {/* Body */}
-      <section className="py-8 lg:py-12">
+      <section className="pt-4 pb-8 lg:pt-6 lg:pb-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 prose-content">
           <p className="text-gray-300 leading-relaxed mb-8">
             This policy explains what information Coastal Surface Restoration LLC collects when you use this website, why we collect it, and what we do with it. We try to keep it short and honest. If anything here is unclear, contact us using the details at the bottom of the page.

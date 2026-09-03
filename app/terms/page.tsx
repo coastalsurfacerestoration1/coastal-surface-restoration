@@ -37,7 +37,7 @@ export default function TermsPage() {
       </section>
 
       {/* Body */}
-      <section className="py-8 lg:py-12">
+      <section className="pt-4 pb-8 lg:pt-6 lg:pb-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 prose-content">
           <p className="text-gray-300 leading-relaxed mb-8">
             These are the terms you agree to when you request a quote from Coastal Surface Restoration LLC or hire us to do work. We have written them in plain English on purpose. If something here does not match what you were told, or you have a question about it, call or email us before the job starts and we will sort it out.
