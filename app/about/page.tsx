@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { CertificateIcon, IronScrollIcon, ShieldIcon } from '@/app/components/icons';
 import { pageMetadata } from '@/lib/seo';
+import Breadcrumbs from '@/app/components/Breadcrumbs';
 
 export const metadata = pageMetadata({
   title: 'About',
@@ -12,6 +13,12 @@ export const metadata = pageMetadata({
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#0e273e]">
+      <Breadcrumbs
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'About', path: '/about' },
+        ]}
+      />
 
       {/* Hero */}
       <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#1a3958] to-[#0e273e]">

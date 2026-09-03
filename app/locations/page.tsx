@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { pageMetadata } from '@/lib/seo';
+import Breadcrumbs from '@/app/components/Breadcrumbs';
 
 export const metadata = pageMetadata({
   title: 'Service Areas in Charleston & the Lowcountry',
@@ -42,6 +43,12 @@ const areas = [
 export default function LocationsPage() {
   return (
     <div className="min-h-screen bg-[#0e273e]">
+      <Breadcrumbs
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Service Areas', path: '/locations' },
+        ]}
+      />
 
       {/* Hero */}
       <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#1a3958] to-[#0e273e]">

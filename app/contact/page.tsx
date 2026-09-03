@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { BUSINESS, pageMetadata } from '@/lib/seo';
+import Breadcrumbs from '@/app/components/Breadcrumbs';
 import { ClockIcon, MailIcon, PhoneIcon, PinIcon } from '@/app/components/icons';
 import Faq from '@/app/components/Faq';
 
@@ -13,6 +14,12 @@ export const metadata = pageMetadata({
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-[#0e273e]">
+      <Breadcrumbs
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Contact', path: '/contact' },
+        ]}
+      />
 
       {/* Hero */}
       <section className="pt-10 pb-6 lg:pt-14 lg:pb-8 bg-gradient-to-b from-[#1a3958] to-[#0e273e]">
