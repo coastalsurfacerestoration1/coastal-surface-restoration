@@ -206,6 +206,22 @@ export default function HistoricIronworkPage() {
               </div>
             ))}
           </div>
+
+          {/* Lead paint. Stated in full here rather than linked across to the
+              rust page. Painted pre-1978 ironwork is the likeliest place on
+              this site for lead to actually come up, and making someone click
+              away to find out where we stand on it reads as evasive.
+              Sits at the end of the process, next to the painter referral
+              step, because it is the same kind of commitment: what happens
+              when the job needs a trade we are not the right party for. */}
+          <div className="bg-[#0e273e] border border-[#397774]/20 border-l-[3px] border-l-[#397774] rounded-lg p-6 mt-10">
+            <h3 className="text-white font-bold text-lg mb-3">
+              Lead paint on older ironwork
+            </h3>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              A lot of Charleston housing stock predates 1978, which means the coating on a gate, a railing, or a section of fence may contain lead. Any surface that might have lead paint is assessed before work starts. Where lead is present or suspected, the job is coordinated with a contractor certified under the EPA Renovation, Repair and Painting rule, or referred out entirely. That call is made before a quote, not after the work has started.
+            </p>
+          </div>
         </div>
       </section>
 
