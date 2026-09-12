@@ -515,7 +515,7 @@ export default function HowLaserCleaningWorksPage() {
             Coastal Surface Restoration is run by a Laser Safety Officer trained to ANSI Z136.1 through the Laser Institute of America, and every job follows a written safety plan. On older paint and coatings, the same fume extraction that keeps the site clean also keeps hazardous binders like lead out of the air.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            The business is fully insured through Burlington Insurance Company. Full details on the About page.
+            The business carries Commercial General Liability coverage. Full details on the About page.
           </p>
         </div>
       </section>

@@ -25,7 +25,9 @@ const specialties = [
 ];
 
 const credentials = [
-  { label: 'ANSI Z136.1', detail: 'Certified Laser Safety Officer' },
+  // Trained, never certified. The label already names the standard, so the
+  // detail carries who was trained and through whom.
+  { label: 'ANSI Z136.1', detail: 'Laser Safety Officer, LIA trained' },
   { label: '$1M / $2M', detail: 'General liability coverage' },
   { label: 'Fully mobile', detail: 'We work at your property' },
   { label: 'Free estimates', detail: 'Quoted from photos, no obligation' },

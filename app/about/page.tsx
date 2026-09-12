@@ -79,7 +79,10 @@ export default function AboutPage() {
       <section className="py-8 lg:py-12 bg-[#1a3958]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">Certified. Insured. Ready.</h2>
+            {/* Trained, not certified. The credential is ANSI Z136.1 training
+                through the LIA, and this heading was the largest text on the
+                page still calling it certification. */}
+            <h2 className="text-3xl font-bold text-white mb-4">Trained. Insured. Ready.</h2>
             {/* Says only what can be evidenced. The previous wording claimed
                 "certifications" plural, which overstated an ANSI Z136.1
                 training credential and implied others that are not held, EPA
@@ -92,8 +95,17 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
               { Icon: CertificateIcon, title: 'ANSI Z136.1 Trained', desc: 'Designated Laser Safety Officer trained to ANSI Z136.1 through the Laser Institute of America.' },
-              { Icon: ShieldIcon, title: 'Fully Insured', desc: 'Commercial General Liability coverage through Burlington Insurance Company. $1M per occurrence / $2M aggregate.' },
-              { Icon: IronScrollIcon, title: 'Historic District Experience', desc: "Familiar with the unique requirements of working in Charleston's historic district and on protected structures." },
+              // Limits stay, carrier name goes. The limits are verifiable and
+              // already appear on certificates issued to CLIMB and AvantStay.
+              // The legal entity is not: the policy was placed through a
+              // wholesaler, so the name on the paperwork is not necessarily
+              // the entity on the declarations page. Add it back only once the
+              // agent confirms it.
+              { Icon: ShieldIcon, title: 'Fully Insured', desc: 'Commercial General Liability coverage. $1M per occurrence / $2M aggregate.' },
+              // Describes what the service suits, not what has been done. The
+              // old title, "Historic District Experience", implied a job
+              // history that does not exist yet.
+              { Icon: IronScrollIcon, title: "Built for Charleston's Historic District", desc: "Familiar with the unique requirements of working in Charleston's historic district and on protected structures." },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6 text-center">
                 <item.Icon className="h-12 w-12 text-[#397774] mb-4 mx-auto" />
