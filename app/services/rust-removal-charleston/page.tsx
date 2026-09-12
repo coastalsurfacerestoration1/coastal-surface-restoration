@@ -114,6 +114,73 @@ export default function RustRemovalPage() {
         </div>
       </section>
 
+      {/* Paint Removal.
+          Deep link target for the /paint short path, which is printed on
+          material that is specifically about paint. Someone arriving from one
+          of those lands here rather than at the top of the page, so this
+          section has to stand on its own and read as being about paint from
+          the first line.
+          scroll-mt clears the sticky header, which would otherwise sit on top
+          of the heading the anchor just scrolled to.
+          The gradient bridges the solid section above into the solid section
+          below, so inserting a band here does not break the page's alternating
+          backgrounds. */}
+      <section
+        id="paint-removal"
+        className="scroll-mt-24 py-8 lg:py-12 bg-gradient-to-b from-[#1a3958] to-[#0e273e]"
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-[#397774] text-sm font-semibold uppercase tracking-[0.2em] mb-4">
+            Paint Removal
+          </p>
+          <h2 className="text-3xl font-bold text-white mb-6">
+            Laser Paint Removal in Charleston
+          </h2>
+          <p className="text-gray-400 leading-relaxed mb-6">
+            Stripping paint usually means choosing which kind of damage you are willing to accept. Chemical strippers soften everything they touch, run into seams and joints, and leave residue that the next coat has to bond through. Media blasting drives grit into the surface and rounds off the detail it passes over. Both are all or nothing: they take the entire coating system down to bare substrate whether that is what the piece needed or not.
+          </p>
+          <p className="text-gray-400 leading-relaxed mb-10">
+            A pulsed fiber laser removes coating by absorption rather than by force, which makes the depth controllable. Each pass lifts a measured amount, so the work can stop at whatever layer the job actually calls for. On a piece where the topcoat has failed but the primer underneath is still sound, that difference decides whether you are recoating or rebuilding the whole finish.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+            {[
+              {
+                title: 'Topcoat Only',
+                desc: 'Lift a chalked, faded, or failing topcoat and leave intact primer in place. The piece is ready to recoat without starting again from bare metal.',
+              },
+              {
+                title: 'Down to Primer',
+                desc: 'Take the finish back to a sound, known layer. Useful when you need to see the condition of what is underneath before deciding how far to go.',
+              },
+              {
+                title: 'Back to Bare Metal',
+                desc: 'A full strip where the whole coating system has failed, leaving clean metal with no embedded grit and no chemical residue to interfere with the new finish.',
+              },
+            ].map((item) => (
+              <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">
+                <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-gray-400 leading-relaxed mb-6">
+            The same control is what makes the process suited to detailed work. Paint sitting in the crevices of a forged railing, in threads, or in the recesses of a casting is exactly where blasting either fails to reach or erodes the detail trying. Laser cleaning follows the shape of the piece, so ornamental ironwork, hardware, and fabricated assemblies come out with their profile intact.
+          </p>
+          <p className="text-gray-400 leading-relaxed mb-8">
+            There is also nothing left behind to deal with. No solvent runoff, which matters on any property near Charleston&apos;s waterways and tidal creeks, and no spent abrasive to collect and haul away. Work happens where the piece sits, and the surface it leaves is a better foundation for the next coating than a blasted or hand-scraped one, because adhesion depends on a clean profile rather than a roughened one.
+          </p>
+
+          <Link
+            href="/quote"
+            className="inline-block bg-[#397774] text-white px-8 py-4 rounded font-bold text-lg hover:bg-[#2a5c5a] transition-colors"
+          >
+            Get a Free Paint Removal Estimate
+          </Link>
+        </div>
+      </section>
+
       {/* Why Not Sandblasting / Chemical */}
       <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
