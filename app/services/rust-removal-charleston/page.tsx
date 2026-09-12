@@ -343,6 +343,11 @@ export default function RustRemovalPage() {
               'Yes. The same process lifts old coatings, and it can often be dialed in to take one layer at a time. That is useful when you want to remove a failed topcoat without stripping sound primer, or when you need to see what is under old paint before deciding how to proceed.',
           },
           {
+            q: 'Can you remove lead paint?',
+            a:
+              'Not on our own. We do not hold certification under the EPA Renovation, Repair and Painting rule, so lead paint is not work we take on by ourselves. A lot of Charleston housing stock predates 1978, so any surface that might have lead paint is assessed before work starts. Where lead is present or suspected, the job is coordinated with an RRP certified contractor or referred out entirely. That call is made before a quote, not after the work has started.',
+          },
+          {
             q: 'Do you have to take the piece to a shop?',
             a:
               'No. The system is portable, so gates, railings, trailers, and hardware are cleaned where they sit. That matters most for anything mounted, structural, or too heavy to move without a crew.',
