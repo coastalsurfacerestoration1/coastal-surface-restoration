@@ -80,8 +80,13 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-white mb-4">Certified. Insured. Ready.</h2>
+            {/* Says only what can be evidenced. The previous wording claimed
+                "certifications" plural, which overstated an ANSI Z136.1
+                training credential and implied others that are not held, EPA
+                RRP among them. This version is accurate regardless of what
+                the declarations page turns out to say. */}
             <p className="text-gray-400 max-w-xl mx-auto">
-              Laser cleaning is precision work. We hold the certifications and insurance that serious restoration jobs require.
+              Trained to ANSI Z136.1 through the Laser Institute of America, and carrying general liability insurance.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
