@@ -78,6 +78,28 @@ async function downscale(file: File): Promise<File> {
   }
 }
 
+/**
+ * What the overlay says while the submission is in flight, and how long after
+ * the submit before each line takes over.
+ *
+ * The server makes six sequential network calls after the upload lands, three
+ * to Resend, one to Twilio and one to the Apps Script that writes the sheet, so
+ * a submission with photos genuinely can run close to a minute. None of that
+ * reports progress, so there is no honest percentage to show. What a person
+ * needs in that gap is evidence the page is still alive, which is what changing
+ * text and a spinner give them.
+ *
+ * The wording stays true at every stage rather than counting down to a moment
+ * that may not arrive on cue. Nothing here claims the request is nearly
+ * finished when it might not be.
+ */
+const SUBMIT_STAGES = [
+  { after: 0, text: 'Uploading your request' },
+  { after: 4000, text: 'Sending your details' },
+  { after: 12000, text: 'Finishing up' },
+  { after: 30000, text: 'Still working, thanks for waiting' },
+] as const;
+
 const OTHER_CITY = 'Other / not listed';
 
 /**
@@ -124,6 +146,7 @@ export default function QuotePage() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [photoNotice, setPhotoNotice] = useState<string | null>(null);
   const [optimizing, setOptimizing] = useState(false);
+  const [stage, setStage] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Object URLs live until they are revoked. Removing a photo revokes its own,
@@ -136,6 +159,17 @@ export default function QuotePage() {
     () => () => photosRef.current.forEach((photo) => URL.revokeObjectURL(photo.previewUrl)),
     [],
   );
+
+  // Advances the overlay text while a submission is in flight. The reset lives
+  // in onSubmit rather than here: setting state synchronously in an effect body
+  // triggers a cascading render, and every retry goes through onSubmit anyway.
+  useEffect(() => {
+    if (status !== 'loading') return;
+    const timers = SUBMIT_STAGES.slice(1).map((s, i) =>
+      setTimeout(() => setStage(i + 1), s.after),
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [status]);
 
   const addPhotos = async (selected: FileList | null) => {
     if (!selected || selected.length === 0) return;
@@ -213,6 +247,9 @@ export default function QuotePage() {
   const outOfArea = /^\d{5}$/.test(zip) && !zip.startsWith(LOCAL_ZIP_PREFIX);
 
   const onSubmit = async (data: QuoteFormValues) => {
+    // Back to the first line before the timers are armed, so a second attempt
+    // does not open part way through the sequence.
+    setStage(0);
     setStatus('loading');
     try {
       // Multipart, so the photos travel with the fields. The Content-Type
@@ -294,6 +331,37 @@ export default function QuotePage() {
             Tell us about your project and we will get back to you within 24 hours.
           </p>
         </div>
+
+        {/* The overlay is a sibling of the form, not a child of it. Inside the
+            form it matched space-y-6's `* + *` rule and picked up a 24px top
+            margin, which on an inset-0 box does not move it, it shortens it, so
+            it stopped 24px above the bottom edge. Out here nothing in the form's
+            cascade can reach it and inset-0 covers the form exactly. */}
+        <div className="relative">
+          {/* Covers the whole form while the request is in flight. A disabled
+              button reading "Sending..." was the only signal before, and over a
+              wait this long that reads as a page that has frozen rather than one
+              that is working. It also sits above the fields, so nothing can be
+              edited mid submission. */}
+          {status === 'loading' && (
+            <div
+              role="status"
+              aria-live="polite"
+              className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-[#1a3958]/95 px-6 text-center backdrop-blur-sm"
+            >
+              {/* motion-safe so a reduced motion preference is respected. The
+                  changing text carries the liveness signal when it is. */}
+              <div
+                aria-hidden="true"
+                className="h-10 w-10 rounded-full border-2 border-[#397774]/25 border-t-[#397774] motion-safe:animate-spin"
+              />
+              <p className="text-lg font-bold text-white">{SUBMIT_STAGES[stage].text}</p>
+              <p className="max-w-sm text-sm leading-relaxed text-gray-400">
+                Please keep this page open. Photos can take a moment to send, and we will
+                email you a confirmation as soon as it is through.
+              </p>
+            </div>
+          )}
 
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -618,6 +686,7 @@ export default function QuotePage() {
             We respond within 24 hours. Serving Charleston and the Lowcountry.
           </p>
         </form>
+        </div>
       </div>
     </div>
   );
