@@ -25,9 +25,11 @@ const specialties = [
 ];
 
 const credentials = [
-  // Trained, never certified. The label already names the standard, so the
-  // detail carries who was trained and through whom.
-  { label: 'ANSI Z136.1', detail: 'Laser Safety Officer, LIA trained' },
+  // Trained, never certified. Naming the standard is what carries the
+  // weight, and "LIA trained" read as though the LIA issued a credential
+  // rather than delivered training against ANSI Z136.1. This matches the
+  // phrasing used everywhere else on the site.
+  { label: 'ANSI Z136.1', detail: 'Laser Safety Officer, trained to ANSI Z136.1' },
   { label: '$1M / $2M', detail: 'General liability coverage' },
   { label: 'Fully mobile', detail: 'We work at your property' },
   { label: 'Free estimates', detail: 'Quoted from photos, no obligation' },
