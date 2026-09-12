@@ -172,6 +172,23 @@ export default function RustRemovalPage() {
             There is also nothing left behind to deal with. No solvent runoff, which matters on any property near Charleston&apos;s waterways and tidal creeks, and no spent abrasive to collect and haul away. Work happens where the piece sits, and the surface it leaves is a better foundation for the next coating than a blasted or hand-scraped one, because adhesion depends on a clean profile rather than a roughened one.
           </p>
 
+          {/* Lead paint. Stated plainly rather than left out, because a
+              visitor with a pre-1978 property is likely to be wondering about
+              it, and silence on the point reads worse than the limitation
+              does. We hold no EPA RRP certification, so this claims no
+              capability and commits to assessing first and handing off where
+              lead is involved.
+              Neutral styling on purpose. Amber is the form's warning colour
+              and would frame a statement of practice as an alarm. */}
+          <div className="bg-[#0e273e] border border-[#397774]/20 border-l-[3px] border-l-[#397774] rounded-lg p-6 mb-10">
+            <h3 className="text-white font-bold text-lg mb-3">
+              Lead paint on older surfaces
+            </h3>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              A lot of Charleston housing stock predates 1978, which means the coating on a shutter, a railing, or a door may contain lead. Any surface that might have lead paint is assessed before work starts. Where lead is present or suspected, the job is coordinated with a contractor certified under the EPA Renovation, Repair and Painting rule, or referred out entirely. That call is made before a quote, not after the work has started.
+            </p>
+          </div>
+
           <Link
             href="/quote"
             className="inline-block bg-[#397774] text-white px-8 py-4 rounded font-bold text-lg hover:bg-[#2a5c5a] transition-colors"
