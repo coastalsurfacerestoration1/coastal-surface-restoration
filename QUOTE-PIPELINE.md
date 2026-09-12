@@ -169,6 +169,50 @@ half of that requirement.
 
 ---
 
+## Deferred: lead source attribution
+
+**Decided on 2026-09-11: not building this yet.** The site captures no
+attribution of any kind. No `utm_source`, `utm_medium`, `utm_campaign`, no
+`gclid`, no referrer, no landing page. Every lead that reaches the sheet is
+source blind, and that is a known and accepted gap rather than an oversight.
+
+The reason is that there is nothing to measure. With no leads and no ad spend,
+attribution infrastructure reports on an empty set, and the work would touch
+the quote form, the API route, the sheet schema, and the Apps Script.
+
+**Build trigger, whichever comes first:**
+
+- 20 leads in a single month, or
+- the first dollar of paid ad spend
+
+**When it does get built, these were already decided:**
+
+- **First touch, not last touch.** Write the parameters to `sessionStorage` on
+  the first page of the visit and do not overwrite them on later navigations.
+  Last touch would attribute a lead to whatever internal page preceded the
+  form, which is the one answer guaranteed to be useless.
+- Capture `gclid`, `document.referrer`, and the landing path in the same pass,
+  not just the three UTM parameters. The referrer is what covers organic and
+  the untagged links that no campaign parameter ever reaches.
+- Hidden form inputs need the autofill opt-outs (`data-1p-ignore`,
+  `data-lpignore`, `data-bwignore`, `data-form-type="other"`), for the same
+  reason the honeypot carries them. A password manager filling a hidden field
+  on this form has already cost real submissions once.
+- The new fields go in as optional on the server. They must sit outside the
+  required `FIELDS` loop in `app/api/quote/route.ts`, or a visitor who arrives
+  with no parameters, which is most of them, gets a 400.
+- Four new columns go before Status and Notes in the sheet, and **the Apps
+  Script has to be redeployed to match**. It lives in Google, not in this repo.
+  Adding fields to the payload without updating the script means the values
+  silently never land.
+
+Note that the short path aliases in `next.config.ts` already pass query strings
+through to their destinations, so `/rust?utm_source=truck` arrives at the
+service page with the parameters intact. Printed material can be tagged now and
+the tags will simply be ignored until the above is built.
+
+---
+
 ## Notes for later
 
 **Outreach.** Emailing people who requested a quote is fine under CAN-SPAM,
