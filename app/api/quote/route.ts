@@ -432,11 +432,16 @@ export async function POST(req: Request) {
   // Customer text, which unlike the alert above needs their explicit consent
   // and an approved A2P 10DLC campaign. Both gates have to pass.
   if (smsConsent && customerSmsEnabled()) {
-    const firstName = singleLine(values.name).split(' ')[0];
+    // Wording is matched to the sample messages registered on the approved A2P
+    // campaign. It identifies the business, discloses rates, and carries both
+    // STOP and HELP, which the previous version was missing. The first name is
+    // gone on purpose: it buys nothing on a transactional confirmation and
+    // costs characters against the segment limit.
     const confirmation = await sendSms(
       values.phone,
-      `Thanks ${firstName}, ${SITE_NAME} has your quote request. ` +
-        `We will follow up within 24 hours. Reply STOP to opt out.`,
+      `${SITE_NAME} received your quote request. ` +
+        `We will follow up within 24 hours. Msg & data rates may apply. ` +
+        `Reply STOP to opt out, HELP for help.`,
     );
     if (!confirmation.sent) {
       console.warn(`Customer confirmation text not sent: ${confirmation.reason}`);

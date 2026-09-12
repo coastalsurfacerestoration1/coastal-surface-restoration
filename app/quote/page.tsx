@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
 import { sendGAEvent } from '@next/third-parties/google';
@@ -640,9 +641,35 @@ export default function QuotePage() {
                 type="checkbox"
                 className="mt-0.5 h-4 w-4 shrink-0 accent-[#397774] cursor-pointer"
               />
+              {/* The opening sentence has to match the Message Flow language
+                  registered on the approved A2P campaign word for word. The
+                  rest carries what carriers look for at the point of consent:
+                  program scope, frequency, rates, STOP and HELP, and links to
+                  the policies. The old label disclosed none of the last four.
+                  Both links open in a new tab so tapping one part way through
+                  the form does not navigate away and discard everything
+                  already typed. */}
               <span className="text-gray-400 text-sm leading-relaxed">
-                Text me about this quote. Message and data rates may apply. Reply STOP to opt
-                out at any time. Leaving this unchecked will not affect your quote.
+                I consent to receive text messages from Coastal Surface Restoration LLC about
+                my quote request and, if I book, service scheduling. Message frequency varies.
+                Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help. See our{' '}
+                <Link
+                  href="/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#397774] underline underline-offset-2 hover:text-white transition-colors"
+                >
+                  Privacy Policy
+                </Link>{' '}
+                and{' '}
+                <Link
+                  href="/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#397774] underline underline-offset-2 hover:text-white transition-colors"
+                >
+                  Terms
+                </Link>. Leaving this unchecked will not affect your quote.
               </span>
             </label>
           </div>
