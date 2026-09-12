@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
+import { sendGAEvent } from '@next/third-parties/google';
 
 type QuoteFormValues = {
   name: string;
@@ -253,6 +254,21 @@ export default function QuotePage() {
         setStatus('error');
         return;
       }
+      // Counted here rather than on /thank-you, which is reachable directly and
+      // would report a lead for anyone who simply landed on it. This fires only
+      // on a submission the server actually accepted.
+      //
+      // Nothing is awaited and nothing is guarded on it. The analytics call is
+      // the least important thing that happens on this path, and the lead is
+      // already recorded server side by the time it runs, so it must never be
+      // able to turn a delivered quote into an error. The navigation below is a
+      // client side route change rather than a page unload, so the beacon is
+      // not cut off by it.
+      sendGAEvent('event', 'generate_lead', {
+        service_type: data.serviceType,
+        has_photos: photos.length > 0,
+      });
+
       // Replace, not push: the back button should return the user to whatever
       // page led them to the form, not to a stale filled-in form they might
       // resubmit.

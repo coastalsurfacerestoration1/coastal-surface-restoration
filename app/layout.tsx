@@ -9,7 +9,20 @@ import Footer from "./components/Footer";
 import JsonLd from "./components/JsonLd";
 import MobileStickyCta from "./components/MobileStickyCta";
 import PreLaunchBanner from "./components/PreLaunchBanner";
+import ContactLinkTracking from "./components/ContactLinkTracking";
 import "./globals.css";
+
+// Read rather than hardcoded, so the measurement ID is configured in one place
+// instead of two that can drift. Inlined at build time by Next.js because of
+// the NEXT_PUBLIC_ prefix, so it has to be referenced as a full literal
+// property access and cannot be destructured off process.env.
+//
+// Rendering nothing when it is unset is deliberate. A preview deployment
+// without the variable then sends no traffic to the property rather than
+// polluting production numbers, and a missing variable in production shows up
+// as no data at all, which is far easier to notice than a silent fallback to a
+// stale ID would be.
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 const inter = Inter({
   variable: "--font-inter",
@@ -76,7 +89,15 @@ export default function RootLayout({
         <Footer />
         <MobileStickyCta />
         <Analytics />
-        <GoogleAnalytics gaId="G-TN5F5V63RG" />
+        {GA_MEASUREMENT_ID && (
+          <>
+            <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
+            {/* Must render alongside GoogleAnalytics, never without it:
+                sendGAEvent pushes to a dataLayer that only exists once the
+                GoogleAnalytics component has set it up. */}
+            <ContactLinkTracking />
+          </>
+        )}
       </body>
     </html>
   );
