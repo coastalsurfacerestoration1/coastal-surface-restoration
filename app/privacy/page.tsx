@@ -110,7 +110,7 @@ export default function PrivacyPage() {
               app/quote/page.tsx. */}
           <Section title="Text messages">
             <p>
-              If you check the consent box on our quote form, which begins &quot;I consent to receive text messages from Coastal Surface Restoration LLC,&quot; we will use the phone number you gave us to text you about your quote, to schedule and confirm your appointment, and to follow up after the work is done. The box is unchecked by default, and consent is not required to get service. If you leave it unchecked, we will reach you by phone or email instead.
+              If you check the consent box on our quote form, which begins &quot;I consent to receive text messages from Coastal Surface Restoration LLC,&quot; we will use the phone number you gave us to text you about your quote and to schedule and confirm your appointment. The box is unchecked by default, and consent is not required to get service. If you leave it unchecked, we will reach you by phone or email instead.
             </p>
             <p>
               <span className="text-white">We do not share your mobile information or messaging consent with third parties or affiliates for marketing or promotional purposes.</span>

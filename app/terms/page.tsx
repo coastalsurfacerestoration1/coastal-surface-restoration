@@ -128,7 +128,7 @@ export default function TermsPage() {
               <span className="text-white">How you opt in.</span> The quote form on this website has a consent checkbox that begins &quot;I consent to receive text messages from Coastal Surface Restoration LLC.&quot; It is unchecked by default. You are opted in only if you check it yourself, or if you text us first and ask us to follow up that way. We never add a number to texting for any other reason.
             </p>
             <p>
-              <span className="text-white">What you will get.</span> Messages about your quote, scheduling and confirming your appointment, letting you know we are on the way, and following up after the work is done.
+              <span className="text-white">What you will get.</span> Messages about your quote, scheduling and confirming your appointment, and letting you know we are on the way.
             </p>
             <p>
               <span className="text-white">How often.</span> Message frequency varies. We text as your job requires rather than on a set schedule, so most people get a handful of messages around a single job.

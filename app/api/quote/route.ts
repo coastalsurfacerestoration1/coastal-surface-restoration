@@ -380,7 +380,12 @@ export async function POST(req: Request) {
   // Alert Tyler by text. His own number, so no consent or A2P registration is
   // involved. Failures are logged and ignored: the lead is already in his inbox
   // and a missing text must not turn a delivered quote into an error.
-  const alertNumber = process.env.ALERT_SMS_TO ?? BUSINESS.phone;
+  // `||`, not `??`. An environment variable that exists but holds an empty
+  // string is the common shape of this mistake, and `??` only falls back on
+  // null or undefined, so the empty string would win and every alert would fail
+  // with "not a US number:" against a blank. The fallback exists precisely so
+  // there is always a number to alert.
+  const alertNumber = process.env.ALERT_SMS_TO || BUSINESS.phone;
   const alert = await sendSms(
     alertNumber,
     `New quote: ${singleLine(values.name)}, ${singleLine(values.serviceType)}, ` +
