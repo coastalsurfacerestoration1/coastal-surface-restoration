@@ -6,7 +6,11 @@ import Breadcrumbs from '@/app/components/Breadcrumbs';
 export const metadata = pageMetadata({
   title: 'About',
   description:
-    "Learn about Coastal Surface Restoration, Charleston's mobile laser cleaning specialist. Meet Tyler Scherzer, ANSI-certified Laser Safety Officer and founder.",
+    // "ANSI-certified" is not a thing and is not what the credential says.
+    // The body of this page has always had it right, so the description was
+    // the only place on the site still claiming certification rather than
+    // training, and it is the copy that shows in search snippets.
+    "Coastal Surface Restoration is Charleston's mobile laser cleaning specialist. Founder Tyler Scherzer is a Laser Safety Officer trained to ANSI Z136.1 through the LIA.",
   path: '/about',
 });
 
