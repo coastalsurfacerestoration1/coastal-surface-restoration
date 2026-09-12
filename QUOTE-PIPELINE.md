@@ -92,22 +92,40 @@ in the appendix at the bottom of this file for redeployment.
 
 ## Your setup steps
 
-### 1. Text alerts to Tyler (in progress, not delivering yet)
+### 1. Text alerts to Tyler
 
-Status as of 2026-08-26:
+Status as of 2026-09-12. A2P 10DLC registration is complete and all four steps
+show Complete.
 
 - Twilio account created
-- Charleston number purchased: **+1 843 396 2257**, used as `TWILIO_FROM_NUMBER`
-- A2P 10DLC **Brand approved**
-- A2P 10DLC **Campaign still pending**
-- All four env vars set in Vercel: `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`,
-  `TWILIO_FROM_NUMBER`, `ALERT_SMS_TO`
-- Redeployed, but a test quote produced no text
+- Charleston number purchased: **+1 843 396 2257**, shows REGISTERED on the
+  campaign
+- A2P 10DLC **Brand approved**, `BNbbb2762090284dfe8395259f634a728d`
+- A2P 10DLC **Campaign approved 2026-09-04**,
+  `CMd1c94908673d14cd9dcee35e603fa872`, use case LOW_VOLUME
+- Messaging Service `MGbbceeb960b48be860070c4732e554589`, created 2026-08-27,
+  with opt-out management configured for STOP, START, UNSTOP and HELP
+- Env vars set in Vercel: `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`,
+  `TWILIO_MESSAGING_SERVICE_SID`, `ALERT_SMS_TO`
 
-**Brand approved is not Campaign approved.** They are two separate reviews and
-Twilio blocks messages until the Campaign clears, which on its own explains a
-quote that sends its emails and its sheet row but no text. Finish the Campaign
-before treating this as a code problem.
+`TWILIO_MESSAGING_SERVICE_SID` is the one that matters. Messages are sent with
+`MessagingServiceSid`, never a raw `From`, because the number is registered to
+the approved campaign through the service, and because Advanced Opt-Out, which
+is what answers STOP, START and HELP, only applies to messages sent through it.
+Sending from a bare number is what can still return error 30034, unregistered
+number, after a campaign is approved.
+
+There is no fallback. If that variable is missing, texts stop rather than going
+out down the unregistered path, and the log line reads `Twilio is not
+configured`. That is the failure worth having: the email still carries the lead.
+`TWILIO_FROM_NUMBER` is no longer read by anything and can be deleted from
+Vercel.
+
+**Historical note.** Before the campaign cleared, a test quote sent its emails
+and its sheet row but no text. Brand approved is not Campaign approved; they are
+two separate reviews, and Twilio blocks messages until the second one clears.
+That is resolved. The single Error 30034 in Messaging Insights predates campaign
+approval and is closed.
 
 Email and sheet logging are unaffected while this is pending. Every text failure
 is logged and swallowed on purpose, so nothing else breaks.
@@ -123,18 +141,18 @@ Quote alert text not sent:
 
 | Log reason | What it means |
 |---|---|
-| `Twilio is not configured` | One of the four vars is not reaching the runtime |
+| `Twilio is not configured` | `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN` or `TWILIO_MESSAGING_SERVICE_SID` is not reaching the runtime |
 | `not a US number: ...` | `ALERT_SMS_TO` is not a 10 or 11 digit US number |
 | `Twilio 400: ...` or `Twilio 401: ...` | Twilio rejected it. A pending Campaign shows up here |
 | no such line at all | The send never ran, so the notification email failed first |
 
-An easy one to miss: check **which environments** the four variables are enabled
+An easy one to miss: check **which environments** the Twilio variables are enabled
 for in Vercel. If they are Production only and the test hit a preview
 deployment, the log says `Twilio is not configured` while the dashboard looks
 correct.
 
-**Faster than reading Vercel logs.** Local dev is working, so paste the four
-Twilio values into `.env.local` and submit a quote at `localhost:3000/quote`.
+**Faster than reading Vercel logs.** Local dev is working, so paste the Twilio
+values into `.env.local` and submit a quote at `localhost:3000/quote`.
 The reason prints straight to the terminal with Twilio's own error code in it,
 with no deploy cycle. Note that the alert runs after the notification email
 succeeds, so a local `RESEND_API_KEY` has to be valid or the route returns 500

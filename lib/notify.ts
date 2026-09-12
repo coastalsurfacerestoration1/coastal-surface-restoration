@@ -37,9 +37,24 @@ type SmsResult = { sent: boolean; reason?: string };
 export async function sendSms(to: string, body: string): Promise<SmsResult> {
   const sid = process.env.TWILIO_ACCOUNT_SID;
   const token = process.env.TWILIO_AUTH_TOKEN;
-  const from = process.env.TWILIO_FROM_NUMBER;
+  /**
+   * The Messaging Service, not a bare phone number.
+   *
+   * The number is registered to the approved A2P 10DLC campaign through this
+   * service, and sending with a raw From is what leaves a message liable to
+   * come back as error 30034, unregistered number, even after the campaign is
+   * approved. Advanced Opt-Out, which is what actually answers STOP, START and
+   * HELP, is also a Messaging Service feature and does not apply to a message
+   * sent outside it.
+   *
+   * There is deliberately no fallback to TWILIO_FROM_NUMBER. A missing value
+   * here stops texts rather than quietly sending them down the unregistered
+   * path, which is the failure worth having: the email still carries the lead,
+   * and the log line says exactly what is wrong.
+   */
+  const messagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
 
-  if (!sid || !token || !from) {
+  if (!sid || !token || !messagingServiceSid) {
     return { sent: false, reason: 'Twilio is not configured' };
   }
 
@@ -56,7 +71,11 @@ export async function sendSms(to: string, body: string): Promise<SmsResult> {
         Authorization: `Basic ${Buffer.from(`${sid}:${token}`).toString('base64')}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: new URLSearchParams({ To: target, From: from, Body: body }),
+      body: new URLSearchParams({
+        To: target,
+        MessagingServiceSid: messagingServiceSid,
+        Body: body,
+      }),
     });
 
     if (!res.ok) {
