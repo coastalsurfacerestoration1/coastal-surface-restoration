@@ -67,6 +67,26 @@ export default function TermsPage() {
             </p>
           </Section>
 
+          {/* Sits between pricing and payment because it governs what happens
+              before a quote exists at all. The closing line is the load bearing
+              one: it ties every service page on the site back to the
+              evaluation, so nothing described elsewhere reads as a commitment
+              to take a specific job. */}
+          <Section title="Scope and what we can take on">
+            <p>
+              Every job starts with an evaluation before we give you a price. That is either a visit to the property or a look at photos you send us.
+            </p>
+            <p>
+              The evaluation is not a formality. Some surfaces and materials cannot be cleaned safely with a Class IV laser. Some locations are not places we can safely or lawfully run one. And some work falls outside what our current insurance covers.
+            </p>
+            <p>
+              If a job turns out to be any of those, we will tell you. We will either decline it or point you toward someone better suited to it. That happens before you have a quote in hand, not after work has started.
+            </p>
+            <p>
+              Nothing on this website is a commitment to take on a particular job. The services described are what we do generally, and the evaluation is what decides whether we can do yours.
+            </p>
+          </Section>
+
           <Section title="Payment">
             <p>
               <span className="text-white">Payment is due upon completion of the work,</span> once you have looked it over and are satisfied. We accept the payment methods listed on your estimate. For larger commercial jobs or recurring accounts, we may agree to different terms in writing ahead of time.

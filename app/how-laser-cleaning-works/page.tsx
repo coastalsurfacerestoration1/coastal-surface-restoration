@@ -459,7 +459,7 @@ export default function HowLaserCleaningWorksPage() {
             {[
               { title: 'Historic Ironwork', desc: 'Charleston gates, railings, and antique iron.', href: '/services/historic-ironwork-restoration-charleston' },
               { title: 'Rust and Paint Removal', desc: 'Iron, steel, and aluminum stripped clean.', href: '/services/rust-removal-charleston' },
-              { title: 'Marine Cleaning', desc: 'Boat trailers, hulls, dock hardware, and fittings.', href: '/services/marine-cleaning-charleston' },
+              { title: 'Marine Cleaning', desc: 'Boat trailers, dock hardware, and fittings.', href: '/services/marine-cleaning-charleston' },
               { title: 'Brick and Masonry', desc: 'Efflorescence and soiling on historic surfaces.', href: '/services/brick-cleaning-charleston' },
               { title: 'Graffiti Removal', desc: 'Tag removal without ghost outlines on masonry.', href: '/services/graffiti-removal-charleston' },
               { title: 'Antiques and Hardware', desc: 'Heirloom pieces where the patina must survive.', href: '/services/antique-restoration-charleston' },

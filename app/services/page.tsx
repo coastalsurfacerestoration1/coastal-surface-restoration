@@ -38,7 +38,7 @@ const services: Service[] = [
   {
     Icon: CleatIcon,
     title: 'Marine Cleaning',
-    desc: 'Boat fittings, trailers, marine hardware, hulls, and dock equipment. Remove rust and marine growth without harsh chemicals near Charleston\'s waterways.',
+    desc: 'Boat fittings, trailers, marine hardware, and dock equipment. Remove rust and marine growth without harsh chemicals near Charleston\'s waterways.',
     href: '/services/marine-cleaning-charleston',
     live: true,
   },

@@ -13,7 +13,7 @@ const specialties = [
   {
     Icon: CleatIcon,
     title: 'Marine Cleaning',
-    desc: 'Boat fittings, trailers, marine hardware, hulls, and dock equipment. Rust and marine growth removed without harsh chemicals near the waterways.',
+    desc: 'Boat fittings, trailers, marine hardware, and dock equipment. Rust and marine growth removed without harsh chemicals near the waterways.',
     href: '/services/marine-cleaning-charleston',
   },
   {

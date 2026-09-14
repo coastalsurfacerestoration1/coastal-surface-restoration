@@ -97,8 +97,8 @@ export default function BrickCleaningPage() {
                 desc: 'Natural stone facades, stucco, and render cleaned of dirt, algae, and staining without damaging the finish.',
               },
               {
-                title: 'Chimneys & Fireplaces',
-                desc: 'Exterior chimneys and interior fireplace brick cleaned of soot, smoke staining, and grime.',
+                title: 'Chimneys',
+                desc: 'Exterior chimney brick cleaned of soot, smoke staining, and grime.',
               },
               {
                 title: 'Garden & Retaining Walls',

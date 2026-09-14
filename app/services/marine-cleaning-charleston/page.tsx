@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Laser Marine Cleaning in Charleston, SC',
   description:
-    'Laser cleaning for boats, trailers, and marine hardware in Charleston, SC. Remove rust, corrosion, and oxidation from fittings, hulls, and dock equipment without chemicals or abrasives. Free estimates.',
+    'Laser cleaning for boats, trailers, and marine hardware in Charleston, SC. Remove rust, corrosion, and oxidation from fittings and dock equipment without chemicals or abrasives. Free estimates.',
   path: '/services/marine-cleaning-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function MarineCleaningPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Marine Cleaning',
-          description: 'Laser cleaning for boats, trailers, and marine hardware in Charleston, SC. Remove rust, corrosion, and oxidation from fittings, hulls, and dock equipment without chemicals or abrasives. Free estimates.',
+          description: 'Laser cleaning for boats, trailers, and marine hardware in Charleston, SC. Remove rust, corrosion, and oxidation from fittings and dock equipment without chemicals or abrasives. Free estimates.',
           path: '/services/marine-cleaning-charleston',
           serviceType: 'Marine cleaning',
         })}
@@ -252,11 +252,6 @@ export default function MarineCleaningPage() {
             q: 'Is it safe on aluminum and stainless?',
             a:
               'Yes, with settings adjusted for the metal. Aluminum and the lower stainless grades common on marine hardware both behave differently than steel, so we test a small area first and confirm the result with you before working through the piece.',
-          },
-          {
-            q: 'Can you remove bottom paint?',
-            a:
-              'The process removes coatings, but a full hull is a large surface area job and pricing reflects that. Send photos and dimensions and we will tell you honestly whether laser is the right tool for your hull or whether another method makes more sense.',
           },
           {
             q: 'What about corrosion in hard to reach fittings?',
