@@ -14,9 +14,10 @@ const nextConfig: NextConfig = {
       // Short aliases for print and vehicle decals, where a full
       // /services/rust-removal-charleston is too long to read off a truck.
       //
-      // POLICY: these paths are for print and vehicle decals only. They are
-      // never to be linked from the web. Anything linked publicly, from this
-      // site or from anywhere else, uses the canonical /services/ URL.
+      // POLICY: these paths are for print and vehicle decals only, with one
+      // exception, /ig, called out below. They are never to be linked from the
+      // web. Anything linked publicly, from this site or from anywhere else,
+      // uses the canonical /services/ URL.
       //
       // That rule is what settles the status code. permanent: false serves a
       // 307, which browsers do not cache, so an alias can be re-pointed later
@@ -27,10 +28,20 @@ const nextConfig: NextConfig = {
       // that breaks the policy above, and the status code for that one path
       // needs revisiting at the same time.
       //
+      // THE EXCEPTION: /ig is linked publicly, from the Instagram profile bio,
+      // and is still a 307. It is correct there for a different reason than it
+      // is for the print paths, not by the rule above. Instagram marks outbound
+      // profile links nofollow, so that link carries no equity for a 308 to
+      // consolidate; the "nothing links here" argument is not what is doing the
+      // work. A future short path linked from a nofollow surface can reason the
+      // same way. One linked from a followed surface cannot, and is the case
+      // the rule above was written for.
+      //
       // Query strings survive the hop. Next.js passes the incoming query
-      // through to the destination, and none of these destinations carry a
-      // query of their own to collide with, so /rust?utm_source=truck arrives
-      // as /services/rust-removal-charleston?utm_source=truck.
+      // through to the destination, and none of the service destinations below
+      // carry a query of their own to collide with, so /rust?utm_source=truck
+      // arrives as /services/rust-removal-charleston?utm_source=truck. /ig does
+      // carry one; see the note there.
       { source: '/rust', destination: '/services/rust-removal-charleston', permanent: false },
       // Paint has no page of its own, by decision rather than by omission.
       // Splitting it would divide equity on a domain with no authority yet, so
@@ -48,6 +59,24 @@ const nextConfig: NextConfig = {
       { source: '/marine', destination: '/services/marine-cleaning-charleston', permanent: false },
       { source: '/graffiti', destination: '/services/graffiti-removal-charleston', permanent: false },
       { source: '/ironwork', destination: '/services/historic-ironwork-restoration-charleston', permanent: false },
+
+      // Instagram profile bio link, the named exception to the policy above.
+      // That field renders as plain text rather than as an anchor, so it
+      // displays the full raw URL including the query string. A short path is
+      // what keeps it readable while still tagging the traffic, which is the
+      // whole reason this one exists.
+      //
+      // Unlike the aliases above, this destination carries a query of its own.
+      // Next.js merges the incoming query underneath the destination's, so a
+      // request to /ig?utm_source=x still arrives as /?utm_source=instagram.
+      // The destination value wins the collision rather than doubling up.
+      //
+      // It points at the home page on purpose. A gallery or the quote form
+      // would serve traffic from a visual platform better in principle, but as
+      // of September 2026 the account has no posts and the site has no
+      // before/after work to land that traffic on, so there is nothing better
+      // to point at yet. Revisit once real posts exist.
+      { source: '/ig', destination: '/?utm_source=instagram', permanent: false },
     ];
   },
 };

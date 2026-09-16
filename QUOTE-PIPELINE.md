@@ -229,6 +229,18 @@ through to their destinations, so `/rust?utm_source=truck` arrives at the
 service page with the parameters intact. Printed material can be tagged now and
 the tags will simply be ignored until the above is built.
 
+Short paths are no longer print only. `/ig` redirects to
+`/?utm_source=instagram` for the Instagram profile bio link, so that tag is live
+on every visitor who arrives that way. It runs ahead of this build on purpose.
+GA4 and Vercel Analytics record session source for every visit, and untagged
+Instagram traffic lands in (direct) or a bare domain bucket indistinguishable
+from someone typing the URL off a business card. That distinction cannot be
+reconstructed after the fact, so tagging from the start is what makes it
+possible to look back, when the trigger above fires, and see whether Instagram
+was producing traffic before any further investment in it. Otherwise the same
+rule as the printed tags: the parameter reaches analytics, never the sheet,
+until the work above is done.
+
 ---
 
 ## Notes for later
