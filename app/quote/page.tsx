@@ -11,6 +11,8 @@ type QuoteFormValues = {
   email: string;
   phone: string;
   street: string;
+  /** Optional apartment, suite or unit. */
+  street2: string;
   city: string;
   /** Only used when `city` is OTHER_CITY. Never sent as its own field. */
   cityOther: string;
@@ -18,6 +20,12 @@ type QuoteFormValues = {
   zip: string;
   serviceType: string;
   description: string;
+  /** Optional. One of HEARD_OPTIONS, or empty. */
+  howHeard: string;
+  /** Only used when `howHeard` is HEARD_OTHER. Folded into howHeard on send. */
+  howHeardOther: string;
+  /** Optional. Left visible whatever howHeard says, to keep the form simple. */
+  referredBy: string;
   /** Opt in for texts. Unchecked by default, and never required. */
   smsConsent: boolean;
   /**
@@ -124,6 +132,16 @@ const ADDRESS_CITIES = [
   "Sullivan's Island",
   'Summerville',
   OTHER_CITY,
+];
+
+const HEARD_OTHER = 'Other';
+
+const HEARD_OPTIONS = [
+  'Google',
+  'Facebook group',
+  'Referral',
+  'Drove by/saw the truck',
+  HEARD_OTHER,
 ];
 
 /** Charleston tri-county ZIPs all begin 294. */
@@ -242,6 +260,7 @@ export default function QuotePage() {
   } = useForm<QuoteFormValues>({ defaultValues: { state: 'SC' } });
 
   const selectedCity = useWatch({ control, name: 'city' });
+  const selectedHeard = useWatch({ control, name: 'howHeard' });
   const zip = useWatch({ control, name: 'zip' }) ?? '';
   // Soft signal only. An out of area job may still be worth taking, so this
   // never blocks the submission.
@@ -256,7 +275,8 @@ export default function QuotePage() {
       // Multipart, so the photos travel with the fields. The Content-Type
       // header is left off on purpose: the browser has to set it itself in
       // order to include the multipart boundary.
-      const { city, cityOther, state, smsConsent, ...rest } = data;
+      const { city, cityOther, state, smsConsent, howHeard, howHeardOther, referredBy, ...rest } =
+        data;
       const payload = new FormData();
       for (const [key, value] of Object.entries(rest)) {
         payload.append(key, value ?? '');
@@ -266,6 +286,12 @@ export default function QuotePage() {
       // Only sent when actually checked. The server treats presence as consent,
       // so an unchecked box must not arrive as "false".
       if (smsConsent) payload.append('smsConsent', 'yes');
+      // Both optional. Blank answers are simply not sent.
+      const other = howHeardOther?.trim() ?? '';
+      const heard =
+        howHeard === HEARD_OTHER && other ? `${HEARD_OTHER}: ${other}` : (howHeard ?? '');
+      if (heard) payload.append('howHeard', heard);
+      if (referredBy?.trim()) payload.append('referredBy', referredBy.trim());
       for (const photo of photos) {
         payload.append('photos', photo.file);
       }
@@ -390,6 +416,9 @@ export default function QuotePage() {
               <input
                 {...register('email', {
                   required: 'Email is required',
+                  // Same cleanup the server does, so what is checked here is
+                  // what gets stored: no spaces, lowercase.
+                  setValueAs: (value: string) => value.replace(/\s+/g, '').toLowerCase(),
                   pattern: {
                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                     message: 'Enter a valid email address',
@@ -450,6 +479,17 @@ export default function QuotePage() {
             {errors.street && (
               <p className="text-red-400 text-sm mt-1">{errors.street.message}</p>
             )}
+            <label htmlFor="street2" className="sr-only">
+              Apartment, suite or unit (optional)
+            </label>
+            <input
+              {...register('street2')}
+              id="street2"
+              autoComplete="address-line2"
+              maxLength={60}
+              className="mt-3 w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
+              placeholder="Apt, suite, unit (optional)"
+            />
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -539,6 +579,65 @@ export default function QuotePage() {
               That ZIP looks outside our usual Charleston service area. Send it anyway and we
               will let you know if we can get to you.
             </p>
+          )}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="howHeard" className="block text-sm font-medium text-gray-300 mb-2">
+                How did you hear about us?{' '}
+                <span className="text-gray-500 font-normal">(optional)</span>
+              </label>
+              <select
+                {...register('howHeard')}
+                id="howHeard"
+                className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white focus:outline-none focus:border-[#397774] transition-colors"
+              >
+                <option value="">Select one...</option>
+                {HEARD_OPTIONS.map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="referredBy" className="block text-sm font-medium text-gray-300 mb-2">
+                Referred by{' '}
+                <span className="text-gray-500 font-normal">(optional)</span>
+              </label>
+              {/* Visible, so a filled value is never lost. The opt-outs only stop
+                  an autofill extension from writing the customer's own name in
+                  here, which it would otherwise match as a name field. */}
+              <input
+                {...register('referredBy')}
+                id="referredBy"
+                autoComplete="off"
+                data-1p-ignore=""
+                data-lpignore="true"
+                data-form-type="other"
+                data-bwignore="true"
+                className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
+                placeholder="Who sent you our way"
+              />
+            </div>
+          </div>
+
+          {selectedHeard === HEARD_OTHER && (
+            <div>
+              <label htmlFor="howHeardOther" className="block text-sm font-medium text-gray-300 mb-2">
+                Where did you hear about us?{' '}
+                <span className="text-gray-500 font-normal">(optional)</span>
+              </label>
+              <input
+                {...register('howHeardOther')}
+                id="howHeardOther"
+                autoComplete="off"
+                data-1p-ignore=""
+                data-lpignore="true"
+                data-form-type="other"
+                data-bwignore="true"
+                maxLength={100}
+                className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
+              />
+            </div>
           )}
 
           <div>

@@ -92,7 +92,7 @@ export default function GalleryPage() {
             </h2>
             <p className="text-gray-400 leading-relaxed mb-4">
               Equipment setup is in its final stages and we expect to take our
-              first Charleston jobs in October 2026. Photos will go up here as
+              first Charleston jobs in late October 2026. Photos will go up here as
               those jobs are completed, with the neighborhood, the material, and
               what was actually done to it.
             </p>

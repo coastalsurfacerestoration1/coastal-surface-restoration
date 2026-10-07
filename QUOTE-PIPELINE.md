@@ -265,64 +265,119 @@ retained.
 
 ---
 
+## Job folders and lead source (added 2026-10-06)
+
+After the row is written, the same Apps Script creates the job folder in
+`15 - Jobs` (https://drive.google.com/drive/folders/1py4OwKoqrxhwDcBn7IPpIt6kH9UyRfxF):
+
+- Named `J-YYYY-NNN Name, Street`. NNN is the highest existing `J-YYYY-NNN`
+  in the Jobs folder plus one, so folders made by hand count too. Numbering
+  restarts at 001 each January.
+- Three subfolders: `Photos (Before & After)`, `Quotes & Invoices`, `Signed Forms`.
+- The folder URL goes into column Q, `Job Folder`, on the new row.
+- Quote photos are copied into `Photos (Before & After)` by a second call, after
+  the customer already has their response.
+
+The script runs as the sheet owner, tyler@coastalsurfacerestoration.com, who
+also owns the Jobs folder. No service account and no sharing are involved.
+A folder failure never fails the quote: the row is written first, the script
+still answers `ok`, and Vercel logs `Job folder not created: <reason>`.
+
+The form also asks two optional questions. They land in R, `How They Heard`
+(`Other: <text>` when Other is picked), and S, `Referred By`. This is
+self-reported source, which is not the same as the deferred UTM attribution
+above. That is still deferred.
+
+Columns are now A to N form fields, O Status, P Notes, Q Job Folder,
+R How They Heard, S Referred By. The script adds the Q to S headers itself if
+they are blank.
+
+---
+
+## Dev environment
+
+Production is `main`. Every change goes on a branch, gets checked on its
+Vercel preview deployment, and is merged to `main` only after that.
+
+Previews and local dev must never write to the live sheet or the live Jobs
+folder. They point at a separate test setup in
+`99 - Dev Testing (not live)` (https://drive.google.com/drive/folders/117Ff2XJRxk3FT6-WsilnEYyispbxw6Za):
+
+- `Quote Requests Log (TEST)`
+  https://docs.google.com/spreadsheets/d/1k6rsNVgCQ8bYKi4VqKbpXrN3-cWgv3-_pjs6tRzfmkQ/edit
+- `15 - Jobs (TEST)` https://drive.google.com/drive/folders/1zDzvf3chhgm_BJUKCvQYBiXBWqfAG12Y
+
+The TEST sheet has its own Apps Script deployment with its own secret. In
+Vercel, `QUOTE_SHEET_WEBHOOK_URL` and `QUOTE_SHEET_SECRET` hold the TEST values
+for Preview and Development, and the live values for Production only. Twilio
+variables stay Production only, so previews never text anyone.
+
+Every email sent from a non-production deployment carries `[TEST]` in its
+subject. The notification still goes to quotes@, because that is where you
+check it arrived. Use `delivered@resend.dev` as the customer email when
+testing, and remember each test also schedules a `[TEST] Reminder` 48 hours
+out.
+
+---
+
 ## Appendix: the Apps Script
 
-Already deployed. Kept here in case it needs to be recreated.
+The source of truth is `scripts/apps-script/` in this repo. It is deployed with
+clasp, logged in as tyler@coastalsurfacerestoration.com, never pasted by hand:
 
-1. Open the Quote Requests Log sheet.
-2. Extensions, then Apps Script.
-3. Replace the contents with this, using a long random string as the secret:
-
-```javascript
-const SECRET = 'replace-with-a-long-random-string';
-
-function doPost(e) {
-  var body;
-  try {
-    body = JSON.parse(e.postData.contents);
-  } catch (err) {
-    return ContentService.createTextOutput('bad request');
-  }
-
-  if (body.secret !== SECRET) {
-    return ContentService.createTextOutput('forbidden');
-  }
-
-  SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].appendRow([
-    body.timestamp,
-    body.name,
-    body.email,
-    body.phone,
-    body.street,
-    body.city,
-    body.state,
-    body.zip,
-    body.service,
-    body.description,
-    body.photos,
-    body.smsConsent,
-    body.outOfArea,
-    body.spamFlag,
-    '',
-    ''
-  ]);
-
-  return ContentService.createTextOutput('ok');
-}
+```bash
+node scripts/deploy-apps-script.mjs test                 # TEST sheet
+node scripts/deploy-apps-script.mjs live --confirm-live  # live sheet
 ```
 
-4. Save, then Deploy, then New deployment, and choose type Web app.
-5. Set "Execute as" to Me, and "Who has access" to Anyone.
-6. Authorize when prompted. Google will warn that the app is unverified because
-   you wrote it yourself. Choose Advanced, then go to the project.
-7. Copy the web app URL.
-8. In Vercel add:
-   - `QUOTE_SHEET_WEBHOOK_URL` (the URL from step 7)
-   - `QUOTE_SHEET_SECRET` (the same random string from step 3)
-9. Redeploy.
+The deploy fills in `SECRET` and `JOBS_FOLDER_ID` from
+`.env.apps-script.<env>.local` (git ignored), refuses a Jobs folder that does
+not match the environment, and updates the existing web app deployment so the
+`/exec` URL never changes.
 
-"Who has access: Anyone" means anyone with the URL can POST, which is why the
-shared secret exists. Treat the URL as a credential and do not commit it.
+| | TEST | LIVE |
+|---|---|---|
+| Sheet | `Quote Requests Log (TEST)` | `Quote Requests Log` |
+| Script id | `1AHXi731LkWXMYVkQmwRP2o8moa_l9Hyl3JvP-YJEpa0zK84zvbn4YI1C` | not yet under clasp |
+| Jobs folder | `15 - Jobs (TEST)` | `15 - Jobs` |
+| Vercel env | Preview, Development | Production |
 
-The last two sheet columns, Status and Notes, are left blank on purpose. They
-are yours to fill in by hand as you work a lead.
+A brand new script, or one that gains a new permission, has to be authorized
+once by hand: open it in the editor, pick `authorize` in the function
+dropdown, Run, and Allow. Until then the `/exec` URL answers with a Google
+sign in page instead of `forbidden`.
+
+**The live sheet is not under clasp yet.** Its bound script was pasted by hand
+in August. Bringing it under clasp means finding its script id (Extensions,
+Apps Script, Project Settings), putting it with the live secret and
+deployment id in `.env.apps-script.live.local`, and running the live deploy.
+Do that as the last step before merging a branch that needs the new script.
+
+To check a deployment without writing a row (note: no `-X POST`, which breaks
+on Google's redirect with a 411):
+
+```bash
+curl -sL "<the /exec url>" -H "Content-Type: application/json" -d '{"probe":true}'
+```
+
+A healthy deployment answers `forbidden`. HTML back means the URL is wrong or
+the script is not authorized yet.
+
+---
+
+## End to end test
+
+```bash
+node scripts/e2e-quote.mjs https://<branch preview>.vercel.app
+```
+
+Submits two quotes through the preview, one with two photos and both optional
+answers, one with neither, then reads back the TEST sheet and
+`15 - Jobs (TEST)` through the script's test only `verify` action. It checks
+the folder name and sequential number, the three subfolders, the photos in
+`Photos (Before & After)`, and columns Q, R and S. It refuses production URLs,
+and `verify` refuses to run on the live deployment.
+
+Needs `.env.test.local` (git ignored) with `VERCEL_AUTOMATION_BYPASS_SECRET`,
+`TEST_QUOTE_SHEET_WEBHOOK_URL` and `TEST_QUOTE_SHEET_SECRET`. Each run sends two
+`[TEST]` notifications to quotes@ and schedules two `[TEST]` reminders.

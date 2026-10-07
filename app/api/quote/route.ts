@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
-import { NextResponse } from 'next/server';
+import { NextResponse, after } from 'next/server';
 import { BUSINESS, SITE_NAME, SITE_URL } from '@/lib/seo';
-import { appendQuoteRow, customerSmsEnabled, sendSms } from '@/lib/notify';
+import { appendQuoteRow, customerSmsEnabled, saveJobPhotos, sendSms } from '@/lib/notify';
 
 const FROM = `${SITE_NAME} <quotes@coastalsurfacerestoration.com>`;
 
@@ -34,7 +34,102 @@ const MAX_LENGTH: Record<Field, number> = {
   description: 5000,
 };
 
+/**
+ * Optional answers. Read outside the FIELDS loop on purpose, because that loop
+ * answers a missing value with a 400. Neither of these may ever block a quote,
+ * so an overlong value is cut down rather than refused.
+ */
+const MAX_OPTIONAL_LENGTH = 120;
+
+function optionalField(form: FormData, key: string): string {
+  const value = form.get(key);
+  if (typeof value !== 'string') return '';
+  return cleanLine(value).slice(0, MAX_OPTIONAL_LENGTH);
+}
+
+/**
+ * Marks every email from a preview deployment or local dev, so a test can never
+ * be mistaken for a real lead in the quotes@ inbox. VERCEL_ENV is only ever
+ * "production" on the live deployment.
+ */
+const IS_PRODUCTION = process.env.VERCEL_ENV === 'production';
+const TEST_TAG = IS_PRODUCTION ? '' : '[TEST] ';
+
+/**
+ * Where Tyler's notification and reminder go. Outside production this can be
+ * pointed at a test address (quotes+test@, filtered out of the inbox) so test
+ * runs never land among real leads. Production ignores the override entirely,
+ * so a variable set in the wrong environment can never divert a real quote.
+ */
+const NOTIFY_TO = (!IS_PRODUCTION && process.env.QUOTE_NOTIFY_TO) || BUSINESS.email;
+
 const RATE_LIMIT = { max: 3, windowMs: 10 * 60 * 1000 };
+
+/**
+ * Invisible characters that ride along with copy and paste: zero width spaces
+ * and joiners, the byte order mark, soft hyphens. They make two identical
+ * looking values compare unequal, which is how a sheet ends up with "the same"
+ * customer twice.
+ */
+const INVISIBLE = /[­​-‍⁠﻿]/g;
+/** Control characters other than newline and tab. */
+const CONTROL = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g;
+
+/** One line of text: invisibles gone, any run of whitespace becomes one space. */
+function cleanLine(value: string): string {
+  return value.replace(INVISIBLE, '').replace(CONTROL, '').replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Puts each field in the one shape it is stored in, before validation, so the
+ * sheet, the email and the folder name never disagree about the same customer.
+ * Only formatting is changed here. Anything that still does not make sense
+ * after this is refused by the checks below, not guessed at.
+ */
+function normalize(field: Field, raw: string): string {
+  switch (field) {
+    case 'email':
+      // Addresses never contain spaces, and every real mail system treats
+      // them case insensitively, so lowercase is the one stored form. A
+      // pasted "mailto:" or a trailing full stop from a sentence are dropped.
+      return raw
+        .replace(INVISIBLE, '')
+        .replace(/\s+/g, '')
+        .replace(/^mailto:/i, '')
+        .replace(/^<(.*)>$/, '$1')
+        .replace(/[.,;]+$/, '')
+        .toLowerCase();
+    case 'phone': {
+      // Stored as 843-555-0100 whatever was typed: dots, brackets, spaces or
+      // a leading +1. Anything that is not ten digits is left for the phone
+      // check to refuse.
+      let digits = raw.replace(/\D/g, '');
+      if (digits.length === 11 && digits.startsWith('1')) digits = digits.slice(1);
+      return digits.length === 10
+        ? `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`
+        : cleanLine(raw);
+    }
+    case 'state':
+      return cleanLine(raw).toUpperCase();
+    case 'zip': {
+      // ZIP+4 is still a valid ZIP. Keep the five digits the area check uses.
+      const digits = raw.replace(/\D/g, '');
+      return digits.length === 9 ? digits.slice(0, 5) : cleanLine(raw);
+    }
+    case 'description':
+      // Paragraphs are kept. Trailing spaces on each line and long runs of
+      // blank lines are not.
+      return raw
+        .replace(INVISIBLE, '')
+        .replace(CONTROL, '')
+        .replace(/\r\n?/g, '\n')
+        .replace(/[ \t]+$/gm, '')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+    default:
+      return cleanLine(raw);
+  }
+}
 
 /**
  * How long after a quote lands before Tyler gets a reminder about it.
@@ -236,11 +331,14 @@ export async function POST(req: Request) {
     if (typeof value !== 'string' || value.trim() === '') {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
-    const trimmed = value.trim();
-    if (trimmed.length > MAX_LENGTH[field]) {
+    const cleaned = normalize(field, value);
+    if (cleaned === '') {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+    if (cleaned.length > MAX_LENGTH[field]) {
       return NextResponse.json({ error: 'Field too long' }, { status: 400 });
     }
-    values[field] = trimmed;
+    values[field] = cleaned;
   }
 
   if (!EMAIL_PATTERN.test(values.email)) {
@@ -271,7 +369,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Please enter a five digit ZIP code.' }, { status: 400 });
   }
 
-  if (rateLimited(clientIp(req))) {
+  // Optional second address line, apartment or unit. Attached only after the
+  // street itself has passed its checks, then folded into it from here on, so
+  // the sheet, the email and the folder name all carry it without a new column.
+  const street2 = optionalField(form, 'street2').slice(0, 60);
+  if (street2) values.street = `${values.street}, ${street2}`;
+
+  // Production only. Previews sit behind Vercel's login, so the only traffic
+  // there is testing, and a limit would just trip up repeat test runs.
+  if (IS_PRODUCTION && rateLimited(clientIp(req))) {
     return NextResponse.json(
       { error: 'Too many requests. Please call us instead.' },
       { status: 429 },
@@ -282,6 +388,8 @@ export async function POST(req: Request) {
   // expensive part of this handler and a blocked caller should never reach it.
   // Unchecked boxes are simply absent from a FormData, so presence is consent.
   const smsConsent = form.get('smsConsent') === 'yes';
+  const howHeard = optionalField(form, 'howHeard');
+  const referredBy = optionalField(form, 'referredBy');
 
   const result = await readPhotos(form);
   if ('error' in result) {
@@ -334,10 +442,10 @@ export async function POST(req: Request) {
     // you page while nothing reaches the inbox.
     const { data, error } = await resend.emails.send({
       from: FROM,
-      to: BUSINESS.email,
+      to: NOTIFY_TO,
       replyTo: values.email,
       attachments: photos.length > 0 ? photos : undefined,
-      subject: `${suspectedSpam ? '[Possible spam] ' : ''}${outOfArea ? '[Outside area] ' : ''}New Quote Request -- ${singleLine(values.serviceType)} -- ${singleLine(values.name)}`,
+      subject: `${TEST_TAG}${suspectedSpam ? '[Possible spam] ' : ''}${outOfArea ? '[Outside area] ' : ''}New Quote Request -- ${singleLine(values.serviceType)} -- ${singleLine(values.name)}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #0e273e;">New Quote Request</h2>
@@ -367,7 +475,7 @@ export async function POST(req: Request) {
     // traceable: the id either appears in the Resend dashboard or it does not,
     // which distinguishes a delivery problem from looking at the wrong account.
     console.log(
-      `Quote accepted by Resend. id=${data?.id ?? 'none'} to=${BUSINESS.email} from=${FROM} photos=${photos.length}`,
+      `Quote accepted by Resend. id=${data?.id ?? 'none'} to=${NOTIFY_TO} from=${FROM} photos=${photos.length}`,
     );
   } catch (error) {
     console.error('Quote form error:', error);
@@ -412,17 +520,38 @@ export async function POST(req: Request) {
     smsConsent,
     outOfArea,
     spamFlag: suspectedSpam,
+    howHeard,
+    referredBy,
   });
   if (!logged.sent) console.warn(`Quote not written to the sheet: ${logged.reason}`);
+
+  // The script makes the job folder in Drive right after the row. It is a
+  // convenience, so a failure is only logged. The row is already written.
+  const jobFolder = logged.jobFolder;
+  if (jobFolder && !jobFolder.created) {
+    console.warn(`Job folder not created: ${jobFolder.reason}`);
+  } else if (jobFolder?.created) {
+    console.log(`Job folder created: ${jobFolder.url}`);
+
+    // After the response, so the customer is not left waiting on a Drive
+    // upload of photos that are already attached to Tyler's email.
+    if (photos.length > 0) {
+      const { photosFolderId } = jobFolder;
+      after(async () => {
+        const saved = await saveJobPhotos(photosFolderId, photos);
+        if (!saved.sent) console.warn(`Quote photos not copied to the job folder: ${saved.reason}`);
+      });
+    }
+  }
 
   // Reminder to Tyler, scheduled with Resend so no cron or queue is needed.
   try {
     const { error } = await resend.emails.send({
       from: FROM,
-      to: BUSINESS.email,
+      to: NOTIFY_TO,
       replyTo: values.email,
       scheduledAt: new Date(Date.now() + REMINDER_DELAY_MS).toISOString(),
-      subject: `Reminder: quote from ${singleLine(values.name)} is 2 days old`,
+      subject: `${TEST_TAG}Reminder: quote from ${singleLine(values.name)} is 2 days old`,
       text: reminderText(values, addressLine),
     });
     if (error) console.error('Quote reminder could not be scheduled:', error);
@@ -460,7 +589,7 @@ export async function POST(req: Request) {
       from: FROM,
       to: values.email,
       replyTo: BUSINESS.email,
-      subject: `We got your request, ${singleLine(values.name)}`,
+      subject: `${TEST_TAG}We got your request, ${singleLine(values.name)}`,
       text: acknowledgementText(values, addressLine, photos.length),
       html: acknowledgementHtml(safe, safeAddressLine, photos.length),
     });
@@ -499,7 +628,7 @@ function acknowledgementText(
     '',
     `Thanks for reaching out to ${SITE_NAME}. We have your request and will follow up within 24 hours.`,
     '',
-    'One thing to know up front: we are not operational yet. Equipment arrives in the fall and we expect to take our first Charleston jobs in October 2026. We will get you a price now and put you on the schedule for launch.',
+    'One thing to know up front: we are not operational yet. Equipment arrives in the fall and we expect to take our first Charleston jobs in late October 2026. We will get you a price now and put you on the schedule for launch.',
     '',
     'Here is what you sent us:',
     '',
@@ -580,7 +709,7 @@ function acknowledgementHtml(
                 <tr>
                   <td style="padding: 14px 16px; font-size: 14px; line-height: 1.6; color: #4b5563;">
                     One thing to know up front: we are not operational yet. Equipment arrives in the
-                    fall and we expect to take our first Charleston jobs in October 2026. We will get
+                    fall and we expect to take our first Charleston jobs in late October 2026. We will get
                     you a price now and put you on the schedule for launch.
                   </td>
                 </tr>

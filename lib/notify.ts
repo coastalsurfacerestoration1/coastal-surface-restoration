@@ -118,7 +118,24 @@ export type QuoteRow = {
   smsConsent: boolean;
   outOfArea: boolean;
   spamFlag: boolean;
+  /** Optional on the form. Empty string when not answered. */
+  howHeard: string;
+  referredBy: string;
 };
+
+/**
+ * What the sheet webhook reports back about the job folder it tried to make.
+ *
+ * Folder creation runs inside the Apps Script after the row is written, and a
+ * failure there still answers "ok" because the row is what matters. This is
+ * how the route finds out, so a missing folder shows up in the logs instead of
+ * only as an empty cell in column Q.
+ */
+export type JobFolder =
+  | { created: true; url: string; photosFolderId: string }
+  | { created: false; reason: string };
+
+type SheetResult = { sent: boolean; reason?: string; jobFolder?: JobFolder };
 
 /**
  * Appends a quote to the Google Sheet.
@@ -133,7 +150,7 @@ export type QuoteRow = {
  * later; the email is what actually carries the lead, and a spreadsheet outage
  * must not cost a customer their submission.
  */
-export async function appendQuoteRow(row: QuoteRow): Promise<SmsResult> {
+export async function appendQuoteRow(row: QuoteRow): Promise<SheetResult> {
   const url = process.env.QUOTE_SHEET_WEBHOOK_URL;
   const secret = process.env.QUOTE_SHEET_SECRET;
 
@@ -173,14 +190,84 @@ export async function appendQuoteRow(row: QuoteRow): Promise<SmsResult> {
     }
 
     const text = (await res.text().catch(() => '')).trim();
-    if (text !== 'ok') {
+    // The first line is the verdict on the row. Anything after it is the job
+    // folder report, which an older deployment of the script does not send,
+    // so a bare "ok" still counts as success.
+    const [verdict, ...detail] = text.split('\n');
+    if (verdict.trim() !== 'ok') {
       // A wrong secret comes back as a 200 carrying "forbidden", so the status
       // alone is not enough to call this a success.
       return { sent: false, reason: `Sheet webhook replied: ${text.slice(0, 80)}` };
     }
 
-    return { sent: true };
+    return { sent: true, jobFolder: parseJobFolder(detail.join('\n')) };
   } catch (error) {
     return { sent: false, reason: `Sheet webhook failed: ${String(error)}` };
+  }
+}
+
+function parseJobFolder(detail: string): JobFolder {
+  if (!detail.trim()) {
+    return { created: false, reason: 'Sheet script sent no folder report. Is it the current version?' };
+  }
+  try {
+    const parsed = JSON.parse(detail);
+    if (typeof parsed?.jobFolderUrl === 'string' && typeof parsed?.photosFolderId === 'string') {
+      return { created: true, url: parsed.jobFolderUrl, photosFolderId: parsed.photosFolderId };
+    }
+    return { created: false, reason: String(parsed?.folderError ?? 'no folder in reply') };
+  } catch {
+    return { created: false, reason: `unreadable folder report: ${detail.slice(0, 80)}` };
+  }
+}
+
+const PHOTO_MIME: Record<string, string> = {
+  jpg: 'image/jpeg',
+  png: 'image/png',
+  webp: 'image/webp',
+};
+
+/**
+ * Copies the quote photos into the new job's "Photos (Before & After)" folder.
+ *
+ * A second call to the same script rather than riding along with the row.
+ * Several megabytes of base64 make the request slower and more likely to fail,
+ * and the row write must never be the thing that pays for that. The photos are
+ * also already attached to the notification email, so this is a filing
+ * convenience and, like everything else here, never throws.
+ */
+export async function saveJobPhotos(
+  photosFolderId: string,
+  photos: { filename: string; content: string }[],
+): Promise<SmsResult> {
+  const url = process.env.QUOTE_SHEET_WEBHOOK_URL;
+  const secret = process.env.QUOTE_SHEET_SECRET;
+  if (!url || !secret) return { sent: false, reason: 'Quote sheet is not configured' };
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      redirect: 'follow',
+      body: JSON.stringify({
+        secret,
+        action: 'photos',
+        folderId: photosFolderId,
+        photos: photos.map((photo) => ({
+          filename: `quote-${photo.filename}`,
+          mimeType: PHOTO_MIME[photo.filename.split('.').pop() ?? ''] ?? 'image/jpeg',
+          content: photo.content,
+        })),
+      }),
+    });
+    if (!res.ok) return { sent: false, reason: `Photo upload ${res.status}` };
+
+    const text = (await res.text().catch(() => '')).trim();
+    if (text.split('\n')[0].trim() !== 'ok') {
+      return { sent: false, reason: `Photo upload replied: ${text.slice(0, 120)}` };
+    }
+    return { sent: true };
+  } catch (error) {
+    return { sent: false, reason: `Photo upload failed: ${String(error)}` };
   }
 }
