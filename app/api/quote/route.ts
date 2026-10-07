@@ -44,7 +44,7 @@ const MAX_OPTIONAL_LENGTH = 120;
 function optionalField(form: FormData, key: string): string {
   const value = form.get(key);
   if (typeof value !== 'string') return '';
-  return value.replace(/[\r\n]+/g, ' ').trim().slice(0, MAX_OPTIONAL_LENGTH);
+  return cleanLine(value).slice(0, MAX_OPTIONAL_LENGTH);
 }
 
 /**
@@ -64,6 +64,72 @@ const TEST_TAG = IS_PRODUCTION ? '' : '[TEST] ';
 const NOTIFY_TO = (!IS_PRODUCTION && process.env.QUOTE_NOTIFY_TO) || BUSINESS.email;
 
 const RATE_LIMIT = { max: 3, windowMs: 10 * 60 * 1000 };
+
+/**
+ * Invisible characters that ride along with copy and paste: zero width spaces
+ * and joiners, the byte order mark, soft hyphens. They make two identical
+ * looking values compare unequal, which is how a sheet ends up with "the same"
+ * customer twice.
+ */
+const INVISIBLE = /[­​-‍⁠﻿]/g;
+/** Control characters other than newline and tab. */
+const CONTROL = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g;
+
+/** One line of text: invisibles gone, any run of whitespace becomes one space. */
+function cleanLine(value: string): string {
+  return value.replace(INVISIBLE, '').replace(CONTROL, '').replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Puts each field in the one shape it is stored in, before validation, so the
+ * sheet, the email and the folder name never disagree about the same customer.
+ * Only formatting is changed here. Anything that still does not make sense
+ * after this is refused by the checks below, not guessed at.
+ */
+function normalize(field: Field, raw: string): string {
+  switch (field) {
+    case 'email':
+      // Addresses never contain spaces, and every real mail system treats
+      // them case insensitively, so lowercase is the one stored form. A
+      // pasted "mailto:" or a trailing full stop from a sentence are dropped.
+      return raw
+        .replace(INVISIBLE, '')
+        .replace(/\s+/g, '')
+        .replace(/^mailto:/i, '')
+        .replace(/^<(.*)>$/, '$1')
+        .replace(/[.,;]+$/, '')
+        .toLowerCase();
+    case 'phone': {
+      // Stored as 843-555-0100 whatever was typed: dots, brackets, spaces or
+      // a leading +1. Anything that is not ten digits is left for the phone
+      // check to refuse.
+      let digits = raw.replace(/\D/g, '');
+      if (digits.length === 11 && digits.startsWith('1')) digits = digits.slice(1);
+      return digits.length === 10
+        ? `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`
+        : cleanLine(raw);
+    }
+    case 'state':
+      return cleanLine(raw).toUpperCase();
+    case 'zip': {
+      // ZIP+4 is still a valid ZIP. Keep the five digits the area check uses.
+      const digits = raw.replace(/\D/g, '');
+      return digits.length === 9 ? digits.slice(0, 5) : cleanLine(raw);
+    }
+    case 'description':
+      // Paragraphs are kept. Trailing spaces on each line and long runs of
+      // blank lines are not.
+      return raw
+        .replace(INVISIBLE, '')
+        .replace(CONTROL, '')
+        .replace(/\r\n?/g, '\n')
+        .replace(/[ \t]+$/gm, '')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+    default:
+      return cleanLine(raw);
+  }
+}
 
 /**
  * How long after a quote lands before Tyler gets a reminder about it.
@@ -265,11 +331,14 @@ export async function POST(req: Request) {
     if (typeof value !== 'string' || value.trim() === '') {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
-    const trimmed = value.trim();
-    if (trimmed.length > MAX_LENGTH[field]) {
+    const cleaned = normalize(field, value);
+    if (cleaned === '') {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+    if (cleaned.length > MAX_LENGTH[field]) {
       return NextResponse.json({ error: 'Field too long' }, { status: 400 });
     }
-    values[field] = trimmed;
+    values[field] = cleaned;
   }
 
   if (!EMAIL_PATTERN.test(values.email)) {
@@ -300,7 +369,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Please enter a five digit ZIP code.' }, { status: 400 });
   }
 
-  if (rateLimited(clientIp(req))) {
+  // Optional second address line, apartment or unit. Attached only after the
+  // street itself has passed its checks, then folded into it from here on, so
+  // the sheet, the email and the folder name all carry it without a new column.
+  const street2 = optionalField(form, 'street2').slice(0, 60);
+  if (street2) values.street = `${values.street}, ${street2}`;
+
+  // Production only. Previews sit behind Vercel's login, so the only traffic
+  // there is testing, and a limit would just trip up repeat test runs.
+  if (IS_PRODUCTION && rateLimited(clientIp(req))) {
     return NextResponse.json(
       { error: 'Too many requests. Please call us instead.' },
       { status: 429 },

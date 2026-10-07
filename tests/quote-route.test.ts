@@ -206,6 +206,79 @@ describe('POST /api/quote', () => {
     expect(recipients).toContain('quotes@coastalsurfacerestoration.com');
   });
 
+  it('normalizes messy contact details before storing them', async () => {
+    const { POST } = await loadRoute();
+    const res = await POST(
+      quote({
+        name: '  Jane​   Customer ',
+        email: ' Mailto:Jane.Customer @Example.COM. ',
+        phone: '+1 (843) 555.2345',
+        street: ' 12   King  St ',
+        city: ' North   Charleston ',
+        state: ' sc ',
+        zip: '29401-1234',
+        description: 'Line one   \r\n\r\n\r\n\r\nLine two­',
+      }),
+    );
+
+    expect(res.status).toBe(200);
+    expect(mocks.appendQuoteRow).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: 'Jane Customer',
+        email: 'jane.customer@example.com',
+        phone: '843-555-2345',
+        street: '12 King St',
+        city: 'North Charleston',
+        state: 'SC',
+        zip: '29401',
+        description: 'Line one\n\nLine two',
+      }),
+    );
+  });
+
+  it('still refuses details that are wrong rather than messy', async () => {
+    const { POST } = await loadRoute();
+    expect((await POST(quote({ phone: '555-2345' }))).status).toBe(400);
+    expect((await POST(quote({ email: 'jane at example' }))).status).toBe(400);
+    expect((await POST(quote({ zip: '2940' }))).status).toBe(400);
+    expect((await POST(quote({ name: '​ ​' }))).status).toBe(400);
+  });
+
+  it('adds the optional unit to the street everywhere', async () => {
+    const { POST } = await loadRoute();
+    await POST(quote({ street2: '  Apt   4B ' }));
+    expect(mocks.appendQuoteRow).toHaveBeenCalledWith(expect.objectContaining({ street: '1 King St, Apt 4B' }));
+  });
+
+  it('checks the street itself before adding the unit', async () => {
+    const { POST } = await loadRoute();
+    const res = await POST(quote({ street: 'King St', street2: 'Apt 4' }));
+    expect(res.status).toBe(400);
+  });
+
+  it('rate limits in production', async () => {
+    const { POST } = await loadRoute('production');
+    const sameIp = () => {
+      const req = quote();
+      req.headers.set('x-forwarded-for', '10.9.9.9');
+      return req;
+    };
+    const statuses = [];
+    for (let i = 0; i < 4; i++) statuses.push((await POST(sameIp())).status);
+    expect(statuses).toEqual([200, 200, 200, 429]);
+  });
+
+  it('does not rate limit previews, so tests can be rerun', async () => {
+    const { POST } = await loadRoute('preview');
+    const statuses = [];
+    for (let i = 0; i < 5; i++) {
+      const req = quote();
+      req.headers.set('x-forwarded-for', '10.8.8.8');
+      statuses.push((await POST(req)).status);
+    }
+    expect(statuses.every((status) => status === 200)).toBe(true);
+  });
+
   it('tells the customer late October', async () => {
     const { POST } = await loadRoute();
     await POST(quote());

@@ -109,7 +109,14 @@ async function submit(fields, photos) {
     body: form,
     headers: { 'x-vercel-protection-bypass': env.VERCEL_AUTOMATION_BYPASS_SECRET },
   });
-  return { status: res.status, body: await res.text() };
+  const result = { status: res.status, body: await res.text() };
+  // Everything after a rejected submission would only report on nothing, so
+  // stop here rather than print a page of meaningless failures.
+  if (result.status !== 200) {
+    console.log(`FAIL  submission for ${fields.name} was refused: ${result.status} ${result.body}`);
+    process.exit(1);
+  }
+  return result;
 }
 
 /** Polls until `done` says so, since photos are copied after the response. */
@@ -141,12 +148,16 @@ console.log(`Highest TEST job number before: ${before.highestJobNumber}\n`);
 
 // Case 1: both optional answers and two photos.
 const name1 = `E2E Test ${stamp}`;
-const street1 = '100 Test Lane';
+const street1 = '100 Test Lane, Unit 2';
 const sent1 = await submit(
   {
     ...common,
+    // Deliberately messy, the way people actually type and paste.
+    email: ' Delivered@Resend.DEV ',
+    phone: '+1 (843) 555.2345',
     name: name1,
-    street: street1,
+    street: '  100   Test Lane ',
+    street2: ' Unit   2 ',
     description: 'Automated end to end test. Ignore.',
     howHeard: 'Other: e2e test',
     referredBy: 'E2E Referrer',
@@ -182,6 +193,11 @@ check('exactly one sheet row', got1.rows.length === 1, `found ${got1.rows.length
 check('row Job Folder (Q) links to the folder', row1['Job Folder'] === folder1?.url, `${row1['Job Folder']} vs ${folder1?.url}`);
 check('row How They Heard (R)', row1['How They Heard'] === 'Other: e2e test', JSON.stringify(row1['How They Heard']));
 check('row Referred By (S)', row1['Referred By'] === 'E2E Referrer', JSON.stringify(row1['Referred By']));
+check(
+  'email and phone stored clean',
+  row1.Email === 'delivered@resend.dev' && row1.Phone === '843-555-2345',
+  `${JSON.stringify(row1.Email)} ${JSON.stringify(row1.Phone)}`,
+);
 check('row core fields', row1.Street === street1 && Number(row1.Photos) === 2 && row1.ZIP == 29401, JSON.stringify(row1));
 
 // Case 2: no optional answers, no photos. Must still work, numbered next.

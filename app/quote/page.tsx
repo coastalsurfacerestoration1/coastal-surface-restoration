@@ -11,6 +11,8 @@ type QuoteFormValues = {
   email: string;
   phone: string;
   street: string;
+  /** Optional apartment, suite or unit. */
+  street2: string;
   city: string;
   /** Only used when `city` is OTHER_CITY. Never sent as its own field. */
   cityOther: string;
@@ -414,6 +416,9 @@ export default function QuotePage() {
               <input
                 {...register('email', {
                   required: 'Email is required',
+                  // Same cleanup the server does, so what is checked here is
+                  // what gets stored: no spaces, lowercase.
+                  setValueAs: (value: string) => value.replace(/\s+/g, '').toLowerCase(),
                   pattern: {
                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                     message: 'Enter a valid email address',
@@ -474,6 +479,17 @@ export default function QuotePage() {
             {errors.street && (
               <p className="text-red-400 text-sm mt-1">{errors.street.message}</p>
             )}
+            <label htmlFor="street2" className="sr-only">
+              Apartment, suite or unit (optional)
+            </label>
+            <input
+              {...register('street2')}
+              id="street2"
+              autoComplete="address-line2"
+              maxLength={60}
+              className="mt-3 w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
+              placeholder="Apt, suite, unit (optional)"
+            />
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
