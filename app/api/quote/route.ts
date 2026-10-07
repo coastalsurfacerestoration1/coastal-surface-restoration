@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
-import { NextResponse } from 'next/server';
+import { NextResponse, after } from 'next/server';
 import { BUSINESS, SITE_NAME, SITE_URL } from '@/lib/seo';
-import { appendQuoteRow, customerSmsEnabled, sendSms } from '@/lib/notify';
+import { appendQuoteRow, customerSmsEnabled, saveJobPhotos, sendSms } from '@/lib/notify';
 
 const FROM = `${SITE_NAME} <quotes@coastalsurfacerestoration.com>`;
 
@@ -33,6 +33,26 @@ const MAX_LENGTH: Record<Field, number> = {
   serviceType: 80,
   description: 5000,
 };
+
+/**
+ * Optional answers. Read outside the FIELDS loop on purpose, because that loop
+ * answers a missing value with a 400. Neither of these may ever block a quote,
+ * so an overlong value is cut down rather than refused.
+ */
+const MAX_OPTIONAL_LENGTH = 120;
+
+function optionalField(form: FormData, key: string): string {
+  const value = form.get(key);
+  if (typeof value !== 'string') return '';
+  return value.replace(/[\r\n]+/g, ' ').trim().slice(0, MAX_OPTIONAL_LENGTH);
+}
+
+/**
+ * Marks every email from a preview deployment or local dev, so a test can never
+ * be mistaken for a real lead in the quotes@ inbox. VERCEL_ENV is only ever
+ * "production" on the live deployment.
+ */
+const TEST_TAG = process.env.VERCEL_ENV === 'production' ? '' : '[TEST] ';
 
 const RATE_LIMIT = { max: 3, windowMs: 10 * 60 * 1000 };
 
@@ -282,6 +302,8 @@ export async function POST(req: Request) {
   // expensive part of this handler and a blocked caller should never reach it.
   // Unchecked boxes are simply absent from a FormData, so presence is consent.
   const smsConsent = form.get('smsConsent') === 'yes';
+  const howHeard = optionalField(form, 'howHeard');
+  const referredBy = optionalField(form, 'referredBy');
 
   const result = await readPhotos(form);
   if ('error' in result) {
@@ -337,7 +359,7 @@ export async function POST(req: Request) {
       to: BUSINESS.email,
       replyTo: values.email,
       attachments: photos.length > 0 ? photos : undefined,
-      subject: `${suspectedSpam ? '[Possible spam] ' : ''}${outOfArea ? '[Outside area] ' : ''}New Quote Request -- ${singleLine(values.serviceType)} -- ${singleLine(values.name)}`,
+      subject: `${TEST_TAG}${suspectedSpam ? '[Possible spam] ' : ''}${outOfArea ? '[Outside area] ' : ''}New Quote Request -- ${singleLine(values.serviceType)} -- ${singleLine(values.name)}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #0e273e;">New Quote Request</h2>
@@ -412,8 +434,29 @@ export async function POST(req: Request) {
     smsConsent,
     outOfArea,
     spamFlag: suspectedSpam,
+    howHeard,
+    referredBy,
   });
   if (!logged.sent) console.warn(`Quote not written to the sheet: ${logged.reason}`);
+
+  // The script makes the job folder in Drive right after the row. It is a
+  // convenience, so a failure is only logged. The row is already written.
+  const jobFolder = logged.jobFolder;
+  if (jobFolder && !jobFolder.created) {
+    console.warn(`Job folder not created: ${jobFolder.reason}`);
+  } else if (jobFolder?.created) {
+    console.log(`Job folder created: ${jobFolder.url}`);
+
+    // After the response, so the customer is not left waiting on a Drive
+    // upload of photos that are already attached to Tyler's email.
+    if (photos.length > 0) {
+      const { photosFolderId } = jobFolder;
+      after(async () => {
+        const saved = await saveJobPhotos(photosFolderId, photos);
+        if (!saved.sent) console.warn(`Quote photos not copied to the job folder: ${saved.reason}`);
+      });
+    }
+  }
 
   // Reminder to Tyler, scheduled with Resend so no cron or queue is needed.
   try {
@@ -422,7 +465,7 @@ export async function POST(req: Request) {
       to: BUSINESS.email,
       replyTo: values.email,
       scheduledAt: new Date(Date.now() + REMINDER_DELAY_MS).toISOString(),
-      subject: `Reminder: quote from ${singleLine(values.name)} is 2 days old`,
+      subject: `${TEST_TAG}Reminder: quote from ${singleLine(values.name)} is 2 days old`,
       text: reminderText(values, addressLine),
     });
     if (error) console.error('Quote reminder could not be scheduled:', error);
@@ -460,7 +503,7 @@ export async function POST(req: Request) {
       from: FROM,
       to: values.email,
       replyTo: BUSINESS.email,
-      subject: `We got your request, ${singleLine(values.name)}`,
+      subject: `${TEST_TAG}We got your request, ${singleLine(values.name)}`,
       text: acknowledgementText(values, addressLine, photos.length),
       html: acknowledgementHtml(safe, safeAddressLine, photos.length),
     });

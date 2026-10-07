@@ -265,64 +265,97 @@ retained.
 
 ---
 
+## Job folders and lead source (added 2026-10-06)
+
+After the row is written, the same Apps Script creates the job folder in
+`15 - Jobs` (https://drive.google.com/drive/folders/1py4OwKoqrxhwDcBn7IPpIt6kH9UyRfxF):
+
+- Named `J-YYYY-NNN Name, Street`. NNN is the highest existing `J-YYYY-NNN`
+  in the Jobs folder plus one, so folders made by hand count too. Numbering
+  restarts at 001 each January.
+- Three subfolders: `Photos (Before & After)`, `Quotes & Invoices`, `Signed Forms`.
+- The folder URL goes into column Q, `Job Folder`, on the new row.
+- Quote photos are copied into `Photos (Before & After)` by a second call, after
+  the customer already has their response.
+
+The script runs as the sheet owner, tyler@coastalsurfacerestoration.com, who
+also owns the Jobs folder. No service account and no sharing are involved.
+A folder failure never fails the quote: the row is written first, the script
+still answers `ok`, and Vercel logs `Job folder not created: <reason>`.
+
+The form also asks two optional questions. They land in R, `How They Heard`
+(`Other: <text>` when Other is picked), and S, `Referred By`. This is
+self-reported source, which is not the same as the deferred UTM attribution
+above. That is still deferred.
+
+Columns are now A to N form fields, O Status, P Notes, Q Job Folder,
+R How They Heard, S Referred By. The script adds the Q to S headers itself if
+they are blank.
+
+---
+
+## Dev environment
+
+Production is `main`. Every change goes on a branch, gets checked on its
+Vercel preview deployment, and is merged to `main` only after that.
+
+Previews and local dev must never write to the live sheet or the live Jobs
+folder. They point at a separate test setup in
+`99 - Dev Testing (not live)` (https://drive.google.com/drive/folders/117Ff2XJRxk3FT6-WsilnEYyispbxw6Za):
+
+- `Quote Requests Log (TEST)`
+  https://docs.google.com/spreadsheets/d/1k6rsNVgCQ8bYKi4VqKbpXrN3-cWgv3-_pjs6tRzfmkQ/edit
+- `15 - Jobs (TEST)` https://drive.google.com/drive/folders/1zDzvf3chhgm_BJUKCvQYBiXBWqfAG12Y
+
+The TEST sheet has its own Apps Script deployment with its own secret. In
+Vercel, `QUOTE_SHEET_WEBHOOK_URL` and `QUOTE_SHEET_SECRET` hold the TEST values
+for Preview and Development, and the live values for Production only. Twilio
+variables stay Production only, so previews never text anyone.
+
+Every email sent from a non-production deployment carries `[TEST]` in its
+subject. The notification still goes to quotes@, because that is where you
+check it arrived. Use `delivered@resend.dev` as the customer email when
+testing, and remember each test also schedules a `[TEST] Reminder` 48 hours
+out.
+
+---
+
 ## Appendix: the Apps Script
 
-Already deployed. Kept here in case it needs to be recreated.
+The source of truth is `scripts/quote-sheet.gs` in this repo. Edit it there,
+then paste it into the sheet. Only two constants differ between the live and
+TEST copies: `SECRET`, and `JOBS_FOLDER_ID`, whose live and TEST values are
+noted at the top of the file.
 
-1. Open the Quote Requests Log sheet.
-2. Extensions, then Apps Script.
-3. Replace the contents with this, using a long random string as the secret:
+To update an existing deployment **without changing its URL**:
 
-```javascript
-const SECRET = 'replace-with-a-long-random-string';
+1. Open the sheet, then Extensions, then Apps Script.
+2. Replace the contents with `scripts/quote-sheet.gs`, keeping that sheet's
+   own `SECRET` and setting its `JOBS_FOLDER_ID`.
+3. Save, then Deploy, then Manage deployments, the pencil on the existing
+   deployment, Version: New version, Deploy. A brand new deployment would get a new URL and break
+   Vercel.
+4. The first deploy after adding Drive access asks you to authorize again.
+   Google warns the app is unverified because you wrote it. Choose Advanced,
+   then go to the project.
 
-function doPost(e) {
-  var body;
-  try {
-    body = JSON.parse(e.postData.contents);
-  } catch (err) {
-    return ContentService.createTextOutput('bad request');
-  }
+To create one from scratch, for example on the TEST sheet:
 
-  if (body.secret !== SECRET) {
-    return ContentService.createTextOutput('forbidden');
-  }
-
-  SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].appendRow([
-    body.timestamp,
-    body.name,
-    body.email,
-    body.phone,
-    body.street,
-    body.city,
-    body.state,
-    body.zip,
-    body.service,
-    body.description,
-    body.photos,
-    body.smsConsent,
-    body.outOfArea,
-    body.spamFlag,
-    '',
-    ''
-  ]);
-
-  return ContentService.createTextOutput('ok');
-}
-```
-
-4. Save, then Deploy, then New deployment, and choose type Web app.
-5. Set "Execute as" to Me, and "Who has access" to Anyone.
-6. Authorize when prompted. Google will warn that the app is unverified because
-   you wrote it yourself. Choose Advanced, then go to the project.
-7. Copy the web app URL.
-8. In Vercel add:
-   - `QUOTE_SHEET_WEBHOOK_URL` (the URL from step 7)
-   - `QUOTE_SHEET_SECRET` (the same random string from step 3)
-9. Redeploy.
+1. Extensions, then Apps Script, paste the file, set `SECRET` to a new long
+   random string and `JOBS_FOLDER_ID` to the TEST folder.
+2. Deploy, then New deployment, type Web app. Execute as: Me. Who has access:
+   Anyone. Authorize.
+3. Copy the web app URL, which ends in `/exec`.
+4. In Vercel, set `QUOTE_SHEET_WEBHOOK_URL` and `QUOTE_SHEET_SECRET` to those
+   values for the environments that should use it, then redeploy.
 
 "Who has access: Anyone" means anyone with the URL can POST, which is why the
 shared secret exists. Treat the URL as a credential and do not commit it.
 
-The last two sheet columns, Status and Notes, are left blank on purpose. They
-are yours to fill in by hand as you work a lead.
+To check a deployment without writing a row:
+
+```bash
+curl -s -X POST "<the /exec url>" -H "Content-Type: application/json" -d '{"probe":true}'
+```
+
+A healthy deployment answers `forbidden`. HTML back means the URL is wrong.
