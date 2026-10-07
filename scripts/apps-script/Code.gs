@@ -103,7 +103,7 @@ function verify(body) {
   var highest = 0;
   var all = DriveApp.getFolderById(JOBS_FOLDER_ID).getFolders();
   while (all.hasNext()) {
-    var m = /^J-\d{4}-(\d{3})/.exec(all.next().getName());
+    var m = /^J-\d{4}-(\d{3,})/.exec(all.next().getName());
     if (m) highest = Math.max(highest, parseInt(m[1], 10));
   }
 
@@ -162,7 +162,12 @@ function logQuote(body) {
     var row = sheet.getLastRow();
 
     var report;
-    if (!locked) {
+    if (body.spamFlag) {
+      // A bot hammering the form would otherwise fill 15 - Jobs and burn job
+      // numbers. The row and the email still arrive, so a real customer who
+      // tripped the flag (autofill has done it) gets a folder made by hand.
+      report = { folderError: 'skipped, flagged as possible spam' };
+    } else if (!locked) {
       report = { folderError: 'could not get the script lock, folder skipped' };
     } else {
       try {
@@ -198,7 +203,7 @@ function ensureHeaders(sheet) {
 function createJobFolder(body) {
   var parent = DriveApp.getFolderById(JOBS_FOLDER_ID);
   var year = Utilities.formatDate(new Date(), 'America/New_York', 'yyyy');
-  var pattern = new RegExp('^J-' + year + '-(\\d{3})');
+  var pattern = new RegExp('^J-' + year + '-(\\d{3,})');
 
   var highest = 0;
   var folders = parent.getFolders();

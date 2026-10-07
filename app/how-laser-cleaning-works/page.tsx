@@ -29,7 +29,7 @@ const VIDEO_IDS: { id: string; caption: string; credit: string }[] = [
 ];
 
 const VIDEO_DISCLAIMER =
-  'Example footage from other laser cleaning equipment, not our machine. Our own before-and-after videos from Charleston jobs will replace these starting October 2026.';
+  'Example footage from other laser cleaning equipment, not our machine. Our own before-and-after videos from Charleston jobs will replace these starting late October 2026.';
 
 function VideoSlot({ id, caption, credit }: { id: string; caption: string; credit: string }) {
   return (
@@ -320,7 +320,7 @@ export default function HowLaserCleaningWorksPage() {
           </p>
           <LaserProcessDiagram />
           <p className="mt-10 text-center text-sm italic text-gray-500 max-w-xl mx-auto">
-            Real before-and-after photos from our Charleston jobs coming October 2026.
+            Real before-and-after photos from our Charleston jobs coming late October 2026.
           </p>
         </div>
       </section>

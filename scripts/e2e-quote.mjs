@@ -14,9 +14,11 @@
  *   TEST_QUOTE_SHEET_WEBHOOK_URL      the TEST sheet's /exec URL
  *   TEST_QUOTE_SHEET_SECRET           its secret
  *
- * Side effects, all clearly marked [TEST]: two notification emails to quotes@,
- * two acknowledgements to delivered@resend.dev, two reminders 48 hours out,
- * and two job folders plus rows in the TEST sheet.
+ * Three submissions, the most the per IP rate limit allows in 10 minutes, so
+ * wait that long between runs. Side effects, all marked [TEST]: three
+ * notification emails to quotes@, three acknowledgements to
+ * delivered@resend.dev, three reminders 48 hours out, three rows in the TEST
+ * sheet and two job folders (the spam case gets none).
  */
 import { readFileSync } from 'node:fs';
 import { deflateSync } from 'node:zlib';
@@ -199,6 +201,18 @@ check('Photos folder empty when no photos sent', (folder2?.subfolders?.[SUBFOLDE
 const row2 = got2.rows[0] ?? {};
 check('blank How They Heard and Referred By', row2['How They Heard'] === '' && row2['Referred By'] === '', JSON.stringify(row2));
 check('row 2 Job Folder links to its folder', row2['Job Folder'] === folder2?.url);
+
+// Case 3: the honeypot is filled. The quote still goes through and gets a
+// row, but no job folder, so bots cannot fill 15 - Jobs.
+const name3 = `E2E Spam ${stamp}`;
+const sent3 = await submit(
+  { ...common, name: name3, street: '300 Test Lane', description: 'Automated spam case. Ignore.', extraField: 'bot' },
+  [],
+);
+check('spam flagged quote still accepted (200)', sent3.status === 200, `${sent3.status} ${sent3.body}`);
+const got3 = await waitFor(name3, (v) => v.rows.length > 0, 60000);
+check('spam flagged quote has a sheet row', got3.rows.length === 1 && got3.rows[0]['Spam Flag'] === 'flagged', JSON.stringify(got3.rows));
+check('spam flagged quote gets no job folder', got3.folders.length === 0, JSON.stringify(got3.folders));
 
 const failed = results.filter((ok) => !ok).length;
 console.log(`\n${results.length - failed}/${results.length} checks passed`);

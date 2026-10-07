@@ -542,7 +542,7 @@ function acknowledgementText(
     '',
     `Thanks for reaching out to ${SITE_NAME}. We have your request and will follow up within 24 hours.`,
     '',
-    'One thing to know up front: we are not operational yet. Equipment arrives in the fall and we expect to take our first Charleston jobs in October 2026. We will get you a price now and put you on the schedule for launch.',
+    'One thing to know up front: we are not operational yet. Equipment arrives in the fall and we expect to take our first Charleston jobs in late October 2026. We will get you a price now and put you on the schedule for launch.',
     '',
     'Here is what you sent us:',
     '',
@@ -623,7 +623,7 @@ function acknowledgementHtml(
                 <tr>
                   <td style="padding: 14px 16px; font-size: 14px; line-height: 1.6; color: #4b5563;">
                     One thing to know up front: we are not operational yet. Equipment arrives in the
-                    fall and we expect to take our first Charleston jobs in October 2026. We will get
+                    fall and we expect to take our first Charleston jobs in late October 2026. We will get
                     you a price now and put you on the schedule for launch.
                   </td>
                 </tr>
