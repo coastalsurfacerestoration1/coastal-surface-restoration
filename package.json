@@ -11,6 +11,7 @@
     "test": "vitest run",
     "check": "npm run typecheck && npm run lint && npm run test && npm run build",
     "e2e": "node scripts/e2e-quote.mjs",
+    "smoke": "node scripts/prod-smoke.mjs",
     "deploy:script:test": "node scripts/deploy-apps-script.mjs test"
   },
   "dependencies": {

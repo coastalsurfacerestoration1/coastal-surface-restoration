@@ -52,7 +52,16 @@ function optionalField(form: FormData, key: string): string {
  * be mistaken for a real lead in the quotes@ inbox. VERCEL_ENV is only ever
  * "production" on the live deployment.
  */
-const TEST_TAG = process.env.VERCEL_ENV === 'production' ? '' : '[TEST] ';
+const IS_PRODUCTION = process.env.VERCEL_ENV === 'production';
+const TEST_TAG = IS_PRODUCTION ? '' : '[TEST] ';
+
+/**
+ * Where Tyler's notification and reminder go. Outside production this can be
+ * pointed at a test address (quotes+test@, filtered out of the inbox) so test
+ * runs never land among real leads. Production ignores the override entirely,
+ * so a variable set in the wrong environment can never divert a real quote.
+ */
+const NOTIFY_TO = (!IS_PRODUCTION && process.env.QUOTE_NOTIFY_TO) || BUSINESS.email;
 
 const RATE_LIMIT = { max: 3, windowMs: 10 * 60 * 1000 };
 
@@ -356,7 +365,7 @@ export async function POST(req: Request) {
     // you page while nothing reaches the inbox.
     const { data, error } = await resend.emails.send({
       from: FROM,
-      to: BUSINESS.email,
+      to: NOTIFY_TO,
       replyTo: values.email,
       attachments: photos.length > 0 ? photos : undefined,
       subject: `${TEST_TAG}${suspectedSpam ? '[Possible spam] ' : ''}${outOfArea ? '[Outside area] ' : ''}New Quote Request -- ${singleLine(values.serviceType)} -- ${singleLine(values.name)}`,
@@ -389,7 +398,7 @@ export async function POST(req: Request) {
     // traceable: the id either appears in the Resend dashboard or it does not,
     // which distinguishes a delivery problem from looking at the wrong account.
     console.log(
-      `Quote accepted by Resend. id=${data?.id ?? 'none'} to=${BUSINESS.email} from=${FROM} photos=${photos.length}`,
+      `Quote accepted by Resend. id=${data?.id ?? 'none'} to=${NOTIFY_TO} from=${FROM} photos=${photos.length}`,
     );
   } catch (error) {
     console.error('Quote form error:', error);
@@ -462,7 +471,7 @@ export async function POST(req: Request) {
   try {
     const { error } = await resend.emails.send({
       from: FROM,
-      to: BUSINESS.email,
+      to: NOTIFY_TO,
       replyTo: values.email,
       scheduledAt: new Date(Date.now() + REMINDER_DELAY_MS).toISOString(),
       subject: `${TEST_TAG}Reminder: quote from ${singleLine(values.name)} is 2 days old`,

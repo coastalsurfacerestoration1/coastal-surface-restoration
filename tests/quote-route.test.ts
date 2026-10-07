@@ -187,6 +187,25 @@ describe('POST /api/quote', () => {
     expect(subjects.some((subject) => subject.includes('[TEST]'))).toBe(false);
   });
 
+  it('sends test notifications to the test address outside production', async () => {
+    vi.stubEnv('QUOTE_NOTIFY_TO', 'quotes+test@coastalsurfacerestoration.com');
+    const { POST } = await loadRoute('preview');
+    await POST(quote());
+
+    const toTyler = mocks.send.mock.calls.map(([email]) => email.to).filter((to) => to !== 'jane@example.com');
+    expect(toTyler).toEqual(['quotes+test@coastalsurfacerestoration.com', 'quotes+test@coastalsurfacerestoration.com']);
+  });
+
+  it('ignores the test address in production', async () => {
+    vi.stubEnv('QUOTE_NOTIFY_TO', 'quotes+test@coastalsurfacerestoration.com');
+    const { POST } = await loadRoute('production');
+    await POST(quote());
+
+    const recipients = mocks.send.mock.calls.map(([email]) => email.to);
+    expect(recipients).not.toContain('quotes+test@coastalsurfacerestoration.com');
+    expect(recipients).toContain('quotes@coastalsurfacerestoration.com');
+  });
+
   it('tells the customer late October', async () => {
     const { POST } = await loadRoute();
     await POST(quote());

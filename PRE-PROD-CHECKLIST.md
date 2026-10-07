@@ -39,16 +39,21 @@ preview → Tyler reviews the preview → merge to `main` (production).
       The site works with either script version, so this order is safe:
   - [ ] Pull the live script and diff it against the repo, in case it was
         edited by hand
-  - [ ] `node scripts/deploy-apps-script.mjs live --confirm-live`
-        (same `/exec` URL, so nothing in Vercel changes)
-  - [ ] Tyler runs `authorize` in the live script editor if Google asks for
-        new access
+  - [ ] `node scripts/deploy-apps-script.mjs live --confirm-live --push-only`
+        uploads the code without changing what the live web app serves
+  - [ ] Tyler runs `authorize` in the live script editor and allows any new
+        access. Skipping this and deploying first would make the live
+        webhook answer a Google sign in page, and every quote's row would
+        be lost until someone authorized it
+  - [ ] `node scripts/deploy-apps-script.mjs live --confirm-live --deploy-only`
+        switches the live deployment to it (same `/exec` URL, so nothing in
+        Vercel changes)
   - [ ] Probe it: `curl -sL "<live /exec>" -H "Content-Type: application/json" -d '{"probe":true}'`
         answers `forbidden`
 - [ ] Merge the branch into `main` and push
 - [ ] Production deployment shows **Ready** in Vercel. Poll slowly; fast
       polling of production trips Vercel's bot checkpoint and returns 403
-- [ ] The changed pages load on coastalsurfacerestoration.com
+- [ ] Work through POST-PROD-CHECKLIST.md, starting with `npm run smoke`
 - [ ] Watch the first real quote after release: email in quotes@, a row in
       the live sheet, and (once folders are live) a job folder in `15 - Jobs`
 - [ ] Delete the branch

@@ -6,6 +6,13 @@
  *   node scripts/deploy-apps-script.mjs test
  *   node scripts/deploy-apps-script.mjs live --confirm-live
  *
+ * When the new code needs a permission the old one did not, split it so the
+ * live web app never serves code nobody has authorized yet:
+ *
+ *   ... live --confirm-live --push-only     upload, deployment unchanged
+ *   (owner runs `authorize` in the script editor)
+ *   ... live --confirm-live --deploy-only   point the deployment at it
+ *
  * Per environment settings live in .env.apps-script.<env>.local, which is git
  * ignored because it holds the webhook secret:
  *
@@ -78,20 +85,31 @@ try {
   const clasp = (args) =>
     execFileSync('clasp', args, { cwd: build, encoding: 'utf8', shell: process.platform === 'win32' });
 
-  console.log(clasp(['push', '--force']).trim());
+  const pushOnly = process.argv.includes('--push-only');
+  const deployOnly = process.argv.includes('--deploy-only');
 
-  const description = `quote webhook ${new Date().toISOString()}`;
-  const args = ['create-deployment', '--description', JSON.stringify(description)];
-  if (config.DEPLOYMENT_ID) args.push('--deploymentId', config.DEPLOYMENT_ID);
-  const out = clasp(args).trim();
-  console.log(out);
+  if (!deployOnly) console.log(clasp(['push', '--force']).trim());
 
-  const id = config.DEPLOYMENT_ID || /(AKfy[\w-]+)/.exec(out)?.[1];
-  if (!id) throw new Error('Could not read the deployment id from clasp output');
-  if (!config.DEPLOYMENT_ID) {
-    console.log(`\nNew deployment. Add DEPLOYMENT_ID=${id} to ${configPath}.`);
+  if (pushOnly) {
+    // No process.exit here: the finally below has to delete the build folder,
+    // which holds the secret.
+    console.log('Pushed only. The web app still serves the previous version.');
+  } else {
+    // Deploys whatever was last pushed, so --deploy-only ships the code that
+    // --push-only uploaded and the owner has since authorized.
+    const description = `quote webhook ${new Date().toISOString()}`;
+    const args = ['create-deployment', '--description', JSON.stringify(description)];
+    if (config.DEPLOYMENT_ID) args.push('--deploymentId', config.DEPLOYMENT_ID);
+    const out = clasp(args).trim();
+    console.log(out);
+
+    const id = config.DEPLOYMENT_ID || /(AKfy[\w-]+)/.exec(out)?.[1];
+    if (!id) throw new Error('Could not read the deployment id from clasp output');
+    if (!config.DEPLOYMENT_ID) {
+      console.log(`\nNew deployment. Add DEPLOYMENT_ID=${id} to ${configPath}.`);
+    }
+    console.log(`Web app URL: https://script.google.com/macros/s/${id}/exec`);
   }
-  console.log(`Web app URL: https://script.google.com/macros/s/${id}/exec`);
 } finally {
   rmSync(build, { recursive: true, force: true });
 }
