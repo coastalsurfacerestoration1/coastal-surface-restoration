@@ -1,9 +1,9 @@
 /**
  * Apps Script web app behind the Quote Requests Log sheet.
  *
- * Paste this into Extensions, then Apps Script, on the sheet it should write
- * to. The same file runs on the live sheet and on the TEST copy; only the two
- * constants below differ between them. See QUOTE-PIPELINE.md for deploying.
+ * The same file runs on the live sheet and on the TEST copy. Deploy it with
+ * `node scripts/deploy-apps-script.mjs test|live`, which fills in the two
+ * placeholders below from a git-ignored env file. See QUOTE-PIPELINE.md.
  *
  * Runs as the sheet owner, so Drive access comes from that account. No
  * service account is involved.
@@ -11,11 +11,12 @@
 
 // Long random string. Must match QUOTE_SHEET_SECRET in Vercel for the
 // environment that points at this deployment.
-const SECRET = 'replace-with-a-long-random-string';
+const SECRET = '__SECRET__';
 
 // LIVE: 1py4OwKoqrxhwDcBn7IPpIt6kH9UyRfxF  ("15 - Jobs")
 // TEST: 1zDzvf3chhgm_BJUKCvQYBiXBWqfAG12Y  ("15 - Jobs (TEST)")
-const JOBS_FOLDER_ID = 'replace-with-the-jobs-folder-id';
+const JOBS_FOLDER_ID = '__JOBS_FOLDER_ID__';
+const TEST_JOBS_FOLDER_ID = '1zDzvf3chhgm_BJUKCvQYBiXBWqfAG12Y';
 
 const PHOTOS_SUBFOLDER = 'Photos (Before & After)';
 const JOB_SUBFOLDERS = [PHOTOS_SUBFOLDER, 'Quotes & Invoices', 'Signed Forms'];
@@ -44,7 +45,69 @@ function doPost(e) {
   if (body.action === 'photos') {
     return savePhotos(body);
   }
+  if (body.action === 'verify') {
+    return verify(body);
+  }
   return logQuote(body);
+}
+
+/**
+ * Run once from the editor after the first deploy, so Google asks for Drive
+ * and Sheets access. The web app runs as the owner and cannot ask on its own.
+ */
+function authorize() {
+  DriveApp.getFolderById(JOBS_FOLDER_ID).getName();
+  SpreadsheetApp.getActiveSpreadsheet().getName();
+}
+
+/**
+ * Test only. Reports the job folders and sheet row for one test customer name,
+ * so the end to end test can check what actually landed in Drive. Refuses to
+ * run anywhere but the TEST Jobs folder, so the live deployment never exposes
+ * customer folders through it.
+ */
+function verify(body) {
+  if (JOBS_FOLDER_ID !== TEST_JOBS_FOLDER_ID) return reply('forbidden');
+
+  var wanted = ' ' + clean(body.name) + ', ';
+  var folders = [];
+  var it = DriveApp.getFolderById(JOBS_FOLDER_ID).getFolders();
+  while (it.hasNext()) {
+    var folder = it.next();
+    if (folder.getName().indexOf(wanted) === -1) continue;
+
+    var subfolders = {};
+    var subs = folder.getFolders();
+    while (subs.hasNext()) {
+      var sub = subs.next();
+      var files = [];
+      var fileIt = sub.getFiles();
+      while (fileIt.hasNext()) {
+        var file = fileIt.next();
+        files.push({ name: file.getName(), mimeType: file.getMimeType(), size: file.getSize() });
+      }
+      subfolders[sub.getName()] = files;
+    }
+    folders.push({ name: folder.getName(), url: folder.getUrl(), subfolders: subfolders });
+  }
+
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+  var values = sheet.getDataRange().getValues();
+  var headers = values[0];
+  var rows = values.slice(1).filter(function (r) { return r[1] === body.name; }).map(function (r) {
+    var row = {};
+    headers.forEach(function (h, i) { row[h] = r[i]; });
+    return row;
+  });
+
+  var highest = 0;
+  var all = DriveApp.getFolderById(JOBS_FOLDER_ID).getFolders();
+  while (all.hasNext()) {
+    var m = /^J-\d{4}-(\d{3})/.exec(all.next().getName());
+    if (m) highest = Math.max(highest, parseInt(m[1], 10));
+  }
+
+  return reply('ok\n' + JSON.stringify({ folders: folders, rows: rows, highestJobNumber: highest }));
 }
 
 function reply(text) {
