@@ -322,40 +322,62 @@ out.
 
 ## Appendix: the Apps Script
 
-The source of truth is `scripts/quote-sheet.gs` in this repo. Edit it there,
-then paste it into the sheet. Only two constants differ between the live and
-TEST copies: `SECRET`, and `JOBS_FOLDER_ID`, whose live and TEST values are
-noted at the top of the file.
-
-To update an existing deployment **without changing its URL**:
-
-1. Open the sheet, then Extensions, then Apps Script.
-2. Replace the contents with `scripts/quote-sheet.gs`, keeping that sheet's
-   own `SECRET` and setting its `JOBS_FOLDER_ID`.
-3. Save, then Deploy, then Manage deployments, the pencil on the existing
-   deployment, Version: New version, Deploy. A brand new deployment would get a new URL and break
-   Vercel.
-4. The first deploy after adding Drive access asks you to authorize again.
-   Google warns the app is unverified because you wrote it. Choose Advanced,
-   then go to the project.
-
-To create one from scratch, for example on the TEST sheet:
-
-1. Extensions, then Apps Script, paste the file, set `SECRET` to a new long
-   random string and `JOBS_FOLDER_ID` to the TEST folder.
-2. Deploy, then New deployment, type Web app. Execute as: Me. Who has access:
-   Anyone. Authorize.
-3. Copy the web app URL, which ends in `/exec`.
-4. In Vercel, set `QUOTE_SHEET_WEBHOOK_URL` and `QUOTE_SHEET_SECRET` to those
-   values for the environments that should use it, then redeploy.
-
-"Who has access: Anyone" means anyone with the URL can POST, which is why the
-shared secret exists. Treat the URL as a credential and do not commit it.
-
-To check a deployment without writing a row:
+The source of truth is `scripts/apps-script/` in this repo. It is deployed with
+clasp, logged in as tyler@coastalsurfacerestoration.com, never pasted by hand:
 
 ```bash
-curl -s -X POST "<the /exec url>" -H "Content-Type: application/json" -d '{"probe":true}'
+node scripts/deploy-apps-script.mjs test                 # TEST sheet
+node scripts/deploy-apps-script.mjs live --confirm-live  # live sheet
 ```
 
-A healthy deployment answers `forbidden`. HTML back means the URL is wrong.
+The deploy fills in `SECRET` and `JOBS_FOLDER_ID` from
+`.env.apps-script.<env>.local` (git ignored), refuses a Jobs folder that does
+not match the environment, and updates the existing web app deployment so the
+`/exec` URL never changes.
+
+| | TEST | LIVE |
+|---|---|---|
+| Sheet | `Quote Requests Log (TEST)` | `Quote Requests Log` |
+| Script id | `1AHXi731LkWXMYVkQmwRP2o8moa_l9Hyl3JvP-YJEpa0zK84zvbn4YI1C` | not yet under clasp |
+| Jobs folder | `15 - Jobs (TEST)` | `15 - Jobs` |
+| Vercel env | Preview, Development | Production |
+
+A brand new script, or one that gains a new permission, has to be authorized
+once by hand: open it in the editor, pick `authorize` in the function
+dropdown, Run, and Allow. Until then the `/exec` URL answers with a Google
+sign in page instead of `forbidden`.
+
+**The live sheet is not under clasp yet.** Its bound script was pasted by hand
+in August. Bringing it under clasp means finding its script id (Extensions,
+Apps Script, Project Settings), putting it with the live secret and
+deployment id in `.env.apps-script.live.local`, and running the live deploy.
+Do that as the last step before merging a branch that needs the new script.
+
+To check a deployment without writing a row (note: no `-X POST`, which breaks
+on Google's redirect with a 411):
+
+```bash
+curl -sL "<the /exec url>" -H "Content-Type: application/json" -d '{"probe":true}'
+```
+
+A healthy deployment answers `forbidden`. HTML back means the URL is wrong or
+the script is not authorized yet.
+
+---
+
+## End to end test
+
+```bash
+node scripts/e2e-quote.mjs https://<branch preview>.vercel.app
+```
+
+Submits two quotes through the preview, one with two photos and both optional
+answers, one with neither, then reads back the TEST sheet and
+`15 - Jobs (TEST)` through the script's test only `verify` action. It checks
+the folder name and sequential number, the three subfolders, the photos in
+`Photos (Before & After)`, and columns Q, R and S. It refuses production URLs,
+and `verify` refuses to run on the live deployment.
+
+Needs `.env.test.local` (git ignored) with `VERCEL_AUTOMATION_BYPASS_SECRET`,
+`TEST_QUOTE_SHEET_WEBHOOK_URL` and `TEST_QUOTE_SHEET_SECRET`. Each run sends two
+`[TEST]` notifications to quotes@ and schedules two `[TEST]` reminders.
