@@ -271,3 +271,33 @@ export async function saveJobPhotos(
     return { sent: false, reason: `Photo upload failed: ${String(error)}` };
   }
 }
+
+/**
+ * Records a STOP or START against every row with this phone number, in the
+ * SMS Consent column, so the sheet agrees with what Twilio will now allow.
+ *
+ * Twilio enforces the opt-out on its own either way. This only keeps the
+ * sheet honest, so it never throws and a failure is only logged.
+ */
+export async function recordSmsConsent(phone: string, consent: 'yes' | 'no'): Promise<SmsResult & { rows?: number }> {
+  const url = process.env.QUOTE_SHEET_WEBHOOK_URL;
+  const secret = process.env.QUOTE_SHEET_SECRET;
+  if (!url || !secret) return { sent: false, reason: 'Quote sheet is not configured' };
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      redirect: 'follow',
+      body: JSON.stringify({ secret, action: 'consent', phone, consent }),
+    });
+    if (!res.ok) return { sent: false, reason: `Consent update ${res.status}` };
+
+    const [verdict, detail] = (await res.text().catch(() => '')).trim().split('\n');
+    if (verdict.trim() !== 'ok') return { sent: false, reason: `Consent update replied: ${verdict.slice(0, 120)}` };
+    const rows = Number(JSON.parse(detail || '{}').rows ?? 0);
+    return { sent: true, rows };
+  } catch (error) {
+    return { sent: false, reason: `Consent update failed: ${String(error)}` };
+  }
+}

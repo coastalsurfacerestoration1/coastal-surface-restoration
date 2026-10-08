@@ -48,8 +48,12 @@ export function appointmentText(
 ):
   | { ok: true; to: string; body: string }
   | { ok: false; reason: string; wait?: boolean } {
-  // The sheet stores "yes" or "no". A checkbox column would read true.
-  const consent = request.smsConsent === 'yes' || request.smsConsent === true;
+  // The sheet stores "yes" or "no", and a STOP or START reply later becomes
+  // "no (replied STOP 10/9/2026)" or "yes (replied START ...)". A checkbox
+  // column would read true.
+  const consent =
+    request.smsConsent === true ||
+    (typeof request.smsConsent === 'string' && /^yes\b/i.test(request.smsConsent.trim()));
   if (!consent) return { ok: false, reason: 'customer did not agree to texts on the quote form' };
 
   const phone = text(request.phone);

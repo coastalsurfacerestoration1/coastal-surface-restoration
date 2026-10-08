@@ -517,3 +517,31 @@ describe('appointment texts', () => {
     expect(triggers.sort()).toEqual(['onSheetEdit', 'sendDueReminders']);
   });
 });
+
+describe('recordConsent', () => {
+  it('marks SMS Consent on every row with that number, matching on the last ten digits', () => {
+    const { post, sheet } = load();
+    post(quote());
+    post(quote({ name: 'Same Person Again' }));
+    post(quote({ name: 'Someone Else', phone: '843-555-9999' }));
+
+    const { verdict, detail } = post({ secret: SECRET, action: 'consent', phone: '+18435552345', consent: 'no' });
+    expect(verdict).toBe('ok');
+    expect(detail).toEqual({ rows: 2 });
+    expect(sheet.rows.slice(1).map((r) => r[11])).toEqual([
+      'no (replied STOP 2026)',
+      'no (replied STOP 2026)',
+      'yes',
+    ]);
+
+    post({ secret: SECRET, action: 'consent', phone: '+18435552345', consent: 'yes' });
+    expect(sheet.rows[1][11]).toBe('yes (replied START 2026)');
+  });
+
+  it('refuses a bad number or value, and a wrong secret', () => {
+    const { post } = load();
+    expect(post({ secret: SECRET, action: 'consent', phone: '555', consent: 'no' }).text).toBe('bad request');
+    expect(post({ secret: SECRET, action: 'consent', phone: '+18435552345', consent: 'maybe' }).text).toBe('bad request');
+    expect(post({ secret: 'nope', action: 'consent', phone: '+18435552345', consent: 'no' }).text).toBe('forbidden');
+  });
+});

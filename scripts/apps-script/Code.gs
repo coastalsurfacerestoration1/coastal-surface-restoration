@@ -65,6 +65,9 @@ function doPost(e) {
   if (body.action === 'verify') {
     return verify(body);
   }
+  if (body.action === 'consent') {
+    return recordConsent(body);
+  }
   return logQuote(body);
 }
 
@@ -235,6 +238,35 @@ function askSite(cell, row, kind, confirmedJustNow, local) {
     cell.setValue('Waiting: could not reach the site, will retry (' + String(err).slice(0, 150) + ')');
   }
   return false;
+}
+
+/**
+ * Marks SMS Consent (column L) on every row with this phone number, after the
+ * customer texts STOP or START. Twilio enforces the opt-out by itself; this
+ * keeps the sheet saying the same thing. Matched on the last ten digits, since
+ * the sheet stores 843-555-0100 and Twilio sends +18435550100.
+ */
+function recordConsent(body) {
+  var digits = String(body.phone || '').replace(/\D/g, '').slice(-10);
+  if (digits.length !== 10 || (body.consent !== 'yes' && body.consent !== 'no')) {
+    return reply('bad request');
+  }
+  var stamp = Utilities.formatDate(new Date(), 'America/New_York', 'M/d/yyyy');
+  var value = body.consent === 'no' ? 'no (replied STOP ' + stamp + ')' : 'yes (replied START ' + stamp + ')';
+
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+  var last = sheet.getLastRow();
+  var changed = 0;
+  if (last >= 2) {
+    var phones = sheet.getRange(2, COL_PHONE, last - 1, 1).getValues();
+    for (var i = 0; i < phones.length; i++) {
+      if (String(phones[i][0]).replace(/\D/g, '').slice(-10) === digits) {
+        sheet.getRange(i + 2, COL_SMS_CONSENT).setValue(value);
+        changed++;
+      }
+    }
+  }
+  return reply('ok\n' + JSON.stringify({ rows: changed }));
 }
 
 /**
