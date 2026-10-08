@@ -83,7 +83,7 @@ describe('appointmentText timing', () => {
     expect(appointmentText(row(), at('2026-10-14T21:00'))).toEqual({
       ok: false,
       wait: true,
-      reason: 'waiting for texting hours, 8 AM to 9 PM',
+      reason: 'outside texting hours, goes out after 8 AM',
     });
     expect(appointmentText(row({ appointment: '2026-10-15T11:00' }), at('2026-10-15T07:59')).ok).toBe(false);
     expect(appointmentText(row({ appointment: '2026-10-15T11:00' }), at('2026-10-15T08:00')).ok).toBe(true);
@@ -149,7 +149,7 @@ describe('appointment confirmation', () => {
     expect(appointmentText(confirm(), at('2026-10-08T21:00'))).toEqual({
       ok: false,
       wait: true,
-      reason: 'waiting for texting hours, 8 AM to 9 PM',
+      reason: 'outside texting hours, goes out after 8 AM',
     });
   });
 

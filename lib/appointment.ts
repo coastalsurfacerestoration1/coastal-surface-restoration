@@ -72,7 +72,7 @@ export function appointmentText(
   // The confirmation is due as soon as the appointment is entered, apart from
   // quiet hours. Worded as Sample #2 on the registered A2P campaign.
   if (request.kind === 'confirmation') {
-    if (quiet) return { ok: false, wait: true, reason: 'waiting for texting hours, 8 AM to 9 PM' };
+    if (quiet) return { ok: false, wait: true, reason: 'outside texting hours, goes out after 8 AM' };
     const [date, clock] = shortDateAndTime(when);
     return {
       ok: true,
@@ -98,7 +98,7 @@ export function appointmentText(
   if (when.getTime() - now.getTime() < MIN_LEAD_MS) {
     return { ok: false, reason: 'too close to the appointment to send a reminder' };
   }
-  if (quiet) return { ok: false, wait: true, reason: 'waiting for texting hours, 8 AM to 9 PM' };
+  if (quiet) return { ok: false, wait: true, reason: 'outside texting hours, goes out after 8 AM' };
 
   const [day, time] = dayAndTime(when).split(' at ');
   const city = text(request.city);
