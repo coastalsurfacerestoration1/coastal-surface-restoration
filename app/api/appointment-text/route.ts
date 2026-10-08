@@ -4,15 +4,19 @@ import { appointmentText } from '@/lib/appointment';
 import { customerSmsEnabled, sendSms } from '@/lib/notify';
 
 /**
- * Sends the appointment text for one row of the Quote Requests Log.
+ * Sends the appointment reminder for one row of the Quote Requests Log.
  *
- * Called only by the sheet's Apps Script, when an Appointment cell is filled
- * in. It authenticates with the same QUOTE_SHEET_SECRET the site already uses
- * to call that script, so there is no new secret to manage, and each
+ * Called only by the sheet's Apps Script: when an Appointment cell is filled
+ * in, and then hourly for every row still waiting. This decides whether the
+ * reminder is due, so the timing rules live in one place, in Charleston time.
+ * It authenticates with the same QUOTE_SHEET_SECRET the site already uses to
+ * call that script, so there is no new secret to manage, and each
  * environment's sheet can only reach its own deployment.
  *
- * Always answers JSON `{ sent, reason? }`. The script writes the reason into
- * the row, so a text that did not go out says why right where Tyler is looking.
+ * Always answers JSON `{ sent, wait?, reason? }`. `wait` means not yet, ask
+ * again later; without it a refusal is final for that appointment. The script
+ * writes the reason into the row, so a text that did not go out says why right
+ * where Tyler is looking.
  */
 export async function POST(req: Request) {
   let body: Record<string, unknown>;
@@ -34,7 +38,7 @@ export async function POST(req: Request) {
 
   const message = appointmentText(body);
   if (!message.ok) {
-    return NextResponse.json({ sent: false, reason: message.reason });
+    return NextResponse.json({ sent: false, wait: message.wait === true, reason: message.reason });
   }
 
   const result = await sendSms(message.to, message.body);

@@ -36,13 +36,15 @@ const COL_CITY = 6; // F
 const COL_SMS_CONSENT = 12; // L
 const COL_JOB_FOLDER = 17; // Q
 const COL_APPOINTMENT = 20; // T, typed by Tyler, e.g. 10/15/2026 9:00 AM
-const COL_APPOINTMENT_TEXT = 21; // U, written by this script
+const COL_CONFIRMATION_TEXT = 21; // U, written by this script
+const COL_REMINDER_TEXT = 22; // V, written by this script
 const ADDED_HEADERS = [
   [17, 'Job Folder'],
   [18, 'How They Heard'],
   [19, 'Referred By'],
   [COL_APPOINTMENT, 'Appointment'],
-  [COL_APPOINTMENT_TEXT, 'Appointment Text'],
+  [COL_CONFIRMATION_TEXT, 'Confirmation Text'],
+  [COL_REMINDER_TEXT, 'Reminder Text'],
 ];
 
 function doPost(e) {
@@ -77,30 +79,52 @@ function authorize() {
 }
 
 /**
- * Sets up the edit trigger behind the appointment text, and the T and U
- * headers. Safe to run again: it replaces its own trigger rather than adding a
- * second one, which would send every text twice.
+ * Sets up the triggers behind the appointment reminder, and the T and U
+ * headers: one on edit, so a new appointment is checked straight away, and one
+ * hourly, which sends the reminders that have come due. Safe to run again: it
+ * replaces its own triggers rather than adding more, which would double send.
  *
- * An installable trigger, not a simple onEdit, because only an installable one
- * may call out to the site.
+ * Installable, not a simple onEdit, because only an installable trigger may
+ * call out to the site.
  */
 function installTriggers() {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   ScriptApp.getProjectTriggers().forEach(function (trigger) {
-    if (trigger.getHandlerFunction() === 'onSheetEdit') ScriptApp.deleteTrigger(trigger);
+    var handler = trigger.getHandlerFunction();
+    if (handler === 'onSheetEdit' || handler === 'sendDueReminders') ScriptApp.deleteTrigger(trigger);
   });
   ScriptApp.newTrigger('onSheetEdit').forSpreadsheet(spreadsheet).onEdit().create();
+  ScriptApp.newTrigger('sendDueReminders').timeBased().everyHours(1).create();
   ensureHeaders(spreadsheet.getSheets()[0]);
 }
 
 /**
- * Sends the appointment text when an Appointment cell (column T) is filled in.
+ * Hourly. Asks the site about every row whose reminder is still waiting, and
+ * the site sends the ones that are due: 5 PM the evening before, never
+ * outside 8 AM to 9 PM.
+ */
+function sendDueReminders() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+  var last = sheet.getLastRow();
+  if (last < 2) return;
+  var notes = sheet.getRange(2, COL_CONFIRMATION_TEXT, last - 1, 2).getValues();
+  for (var i = 0; i < notes.length; i++) {
+    if (/^Waiting/.test(String(notes[i][0])) || /^Waiting/.test(String(notes[i][1]))) {
+      sendAppointmentText(sheet, i + 2);
+    }
+  }
+}
+
+/**
+ * Handles both appointment texts when an Appointment cell (column T) is filled
+ * in: the confirmation straight away, and the reminder the evening before.
  *
- * Fires once per row: column U records "Sent" with the time, and a row that
- * says Sent is never texted again, even if the appointment is changed. A row
- * that says "Not sent: <reason>" is retried on the next edit of its T cell, so
- * fixing the problem and re-entering the time is all it takes. Edits made by
- * this script do not fire the trigger, so writing U cannot loop.
+ * Columns U (confirmation) and V (reminder) each say what happened:
+ * "Waiting: ..." until it is due, "Sent <time> for <appointment>" once it is,
+ * or "Not sent: <reason>". Each appointment time gets one of each. Re-entering
+ * the same time sends nothing new, while moving it to a new time confirms the
+ * new one and schedules a new reminder. Edits made by this script do not fire
+ * the trigger, so writing U and V cannot loop.
  */
 function onSheetEdit(e) {
   var range = e && e.range;
@@ -115,15 +139,27 @@ function onSheetEdit(e) {
 }
 
 function sendAppointmentText(sheet, row) {
-  var status = sheet.getRange(row, COL_APPOINTMENT_TEXT);
-  if (/^Sent/.test(String(status.getValue()))) return;
+  // The edit and hourly triggers can overlap. One at a time, so a row due
+  // right as it is edited is not texted twice.
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(30000)) return;
+  try {
+    checkReminder(sheet, row);
+  } finally {
+    lock.releaseLock();
+  }
+}
 
+function checkReminder(sheet, row) {
+  var confirmation = sheet.getRange(row, COL_CONFIRMATION_TEXT);
+  var reminder = sheet.getRange(row, COL_REMINDER_TEXT);
   var values = sheet.getRange(row, 1, 1, COL_APPOINTMENT).getValues()[0];
   var when = values[COL_APPOINTMENT - 1];
   if (when === '' || when === null) return;
 
   if (!(when instanceof Date) || isNaN(when.getTime())) {
-    status.setValue('Not sent: not a date and time. Type it like 10/15/2026 9:00 AM');
+    confirmation.setValue('Not sent: not a date and time. Type it like 10/15/2026 9:00 AM');
+    reminder.setValue('');
     return;
   }
   // The wall time exactly as typed, read in the spreadsheet's own time zone.
@@ -136,27 +172,51 @@ function sendAppointmentText(sheet, row) {
   // A bare date reads as midnight. Nobody books a midnight job, so it means
   // the time was left off, and a text saying 12:00 AM would be wrong.
   if (/T00:00$/.test(local)) {
-    status.setValue('Not sent: add a time, like 10/15/2026 9:00 AM');
+    confirmation.setValue('Not sent: add a time, like 10/15/2026 9:00 AM');
+    reminder.setValue('');
     return;
   }
 
+  var row_ = {
+    name: values[COL_NAME - 1],
+    phone: String(values[COL_PHONE - 1]),
+    street: values[COL_STREET - 1],
+    city: values[COL_CITY - 1],
+    smsConsent: values[COL_SMS_CONSENT - 1],
+    appointment: local,
+  };
+
+  // Confirmation first. If it goes out in this same pass, the site is told,
+  // so a reminder already due (booked the evening before) is skipped instead
+  // of landing a minute after the confirmation.
+  var justConfirmed = false;
+  if (!sentFor(confirmation, local)) {
+    justConfirmed = askSite(confirmation, row_, 'confirmation', false, local);
+  }
+  if (!sentFor(reminder, local)) {
+    askSite(reminder, row_, 'reminder', justConfirmed, local);
+  }
+}
+
+/** True when this status cell already records a text for this appointment. */
+function sentFor(cell, local) {
+  var note = String(cell.getValue());
+  return note.indexOf('Sent ') === 0 && note.indexOf(' for ' + local) !== -1;
+}
+
+/** Asks the site to send one text, writes the outcome, and says whether it went. */
+function askSite(cell, row, kind, confirmedJustNow, local) {
   var headers = {};
   if (VERCEL_BYPASS) headers['x-vercel-protection-bypass'] = VERCEL_BYPASS;
+  var payload = { secret: SECRET, kind: kind, confirmedJustNow: confirmedJustNow };
+  for (var key in row) payload[key] = row[key];
   try {
     var res = UrlFetchApp.fetch(SITE_URL + '/api/appointment-text', {
       method: 'post',
       contentType: 'application/json',
       headers: headers,
       muteHttpExceptions: true,
-      payload: JSON.stringify({
-        secret: SECRET,
-        name: values[COL_NAME - 1],
-        phone: String(values[COL_PHONE - 1]),
-        street: values[COL_STREET - 1],
-        city: values[COL_CITY - 1],
-        smsConsent: values[COL_SMS_CONSENT - 1],
-        appointment: local,
-      }),
+      payload: JSON.stringify(payload),
     });
     var result;
     try {
@@ -164,14 +224,17 @@ function sendAppointmentText(sheet, row) {
     } catch (err) {
       result = { sent: false, reason: 'site answered ' + res.getResponseCode() };
     }
-    status.setValue(
-      result.sent
-        ? 'Sent ' + Utilities.formatDate(new Date(), 'America/New_York', 'M/d/yyyy h:mm a')
-        : 'Not sent: ' + result.reason,
-    );
+    if (result.sent) {
+      cell.setValue('Sent ' + Utilities.formatDate(new Date(), 'America/New_York', 'M/d/yyyy h:mm a') +
+        ' for ' + local);
+      return true;
+    }
+    cell.setValue((result.wait ? 'Waiting: ' : 'Not sent: ') + result.reason);
   } catch (err) {
-    status.setValue('Not sent: ' + String(err).slice(0, 200));
+    // The site being unreachable is temporary, so keep it in the hourly check.
+    cell.setValue('Waiting: could not reach the site, will retry (' + String(err).slice(0, 150) + ')');
   }
+  return false;
 }
 
 /**

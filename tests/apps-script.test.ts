@@ -102,7 +102,12 @@ function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true }
   for (const name of existing) jobs.children.push(new FakeFolder(drive, `E${++drive.seq}`, name, jobs));
   const sheet = new FakeSheet();
   const fetches: { url: string; options: { payload: string; headers: Record<string, string> } }[] = [];
-  const site = { reply: '{"sent":true}' as string, code: 200, throws: false };
+  // The site's answer, either fixed or worked out from what the script sent.
+  const site = {
+    reply: '{"sent":true}' as string | ((body: Record<string, unknown>) => string),
+    code: 200,
+    throws: false,
+  };
   const triggers: string[] = [];
 
   const context = createContext({
@@ -110,7 +115,8 @@ function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true }
       fetch: (url: string, options: { payload: string; headers: Record<string, string> }) => {
         if (site.throws) throw new Error('Exception: DNS error');
         fetches.push({ url, options });
-        return { getContentText: () => site.reply, getResponseCode: () => site.code };
+        const reply = typeof site.reply === 'function' ? site.reply(JSON.parse(options.payload)) : site.reply;
+        return { getContentText: () => reply, getResponseCode: () => site.code };
       },
     },
     ScriptApp: {
@@ -118,6 +124,7 @@ function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true }
       deleteTrigger: (t: { getHandlerFunction: () => string }) => triggers.splice(triggers.indexOf(t.getHandlerFunction()), 1),
       newTrigger: (handler: string) => ({
         forSpreadsheet: () => ({ onEdit: () => ({ create: () => triggers.push(handler) }) }),
+        timeBased: () => ({ everyHours: () => ({ create: () => triggers.push(handler) }) }),
       }),
     },
     isNaN,
@@ -166,12 +173,12 @@ function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true }
   };
   // An edit to column T of one row, the way Sheets reports it.
   const editAppointment = (row: number, value: unknown) => {
-    while (sheet.rows[row - 1].length < 20) sheet.rows[row - 1].push('');
+    while (sheet.rows[row - 1].length < 22) sheet.rows[row - 1].push('');
     sheet.rows[row - 1][19] = value;
     context.onSheetEdit({
       range: { getSheet: () => sheet, getColumn: () => 20, getLastColumn: () => 20, getRow: () => row, getLastRow: () => row },
     });
-    return sheet.rows[row - 1][20];
+    return { confirmation: sheet.rows[row - 1][20], reminder: sheet.rows[row - 1][21] };
   };
   return { drive, jobs, sheet, post, fetches, site, triggers, editAppointment, context };
 }
@@ -361,68 +368,134 @@ describe('verify', () => {
   });
 });
 
-describe('appointment text', () => {
+describe('appointment texts', () => {
   // What Sheets hands the script for "10/15/2026 9:00 AM" typed into a sheet
   // set to Pacific: 9:00 AM PDT.
   const nineAm = () => new Date('2026-10-15T16:00:00Z');
+  const sent = (local: string) => `Sent 2026 for ${local}`;
+  /** The site as it behaves days ahead: confirm now, reminder later. */
+  const daysAhead = (body: Record<string, unknown>) =>
+    body.kind === 'confirmation'
+      ? '{"sent":true}'
+      : '{"sent":false,"wait":true,"reason":"reminder goes out Wed, Oct 14 at 5:00 PM"}';
+  const payloads = (fetches: { options: { payload: string } }[]) =>
+    fetches.map((f) => JSON.parse(f.options.payload));
 
-  it('sends the row to the site once, with the bypass header, and records it in U', () => {
-    const { post, fetches, editAppointment } = load();
+  it('confirms straight away and leaves the reminder waiting', () => {
+    const { post, fetches, site, editAppointment } = load();
     post(quote());
+    site.reply = daysAhead;
 
-    expect(editAppointment(2, nineAm())).toBe('Sent 2026');
-    expect(fetches).toHaveLength(1);
+    expect(editAppointment(2, nineAm())).toEqual({
+      confirmation: sent('2026-10-15T09:00'),
+      reminder: 'Waiting: reminder goes out Wed, Oct 14 at 5:00 PM',
+    });
     expect(fetches[0].url).toBe('https://preview.example/api/appointment-text');
     expect(fetches[0].options.headers).toEqual({ 'x-vercel-protection-bypass': 'bypass-token' });
-    expect(JSON.parse(fetches[0].options.payload)).toEqual({
-      secret: SECRET,
-      name: 'Jane Customer',
-      phone: '843-555-2345',
-      street: '1 King St',
-      city: 'Charleston',
-      smsConsent: 'yes',
-      // As typed, not shifted to 12:00 by the sheet being on Pacific time.
-      appointment: '2026-10-15T09:00',
-    });
-
-    // Changing the time later does not text the customer again.
-    editAppointment(2, new Date('2026-10-16T17:00:00Z'));
-    expect(fetches).toHaveLength(1);
+    expect(payloads(fetches)).toEqual([
+      {
+        secret: SECRET,
+        kind: 'confirmation',
+        confirmedJustNow: false,
+        name: 'Jane Customer',
+        phone: '843-555-2345',
+        street: '1 King St',
+        city: 'Charleston',
+        smsConsent: 'yes',
+        // As typed, not shifted to 12:00 by the sheet being on Pacific time.
+        appointment: '2026-10-15T09:00',
+      },
+      expect.objectContaining({ kind: 'reminder', confirmedJustNow: true }),
+    ]);
   });
 
-  it('passes the row consent through for the site to enforce', () => {
+  it('sends the reminder from the hourly run once it is due, and only once', () => {
+    const { post, fetches, site, sheet, editAppointment, context } = load();
+    post(quote());
+    post(quote({ name: 'No Appointment' }));
+    site.reply = daysAhead;
+    editAppointment(2, nineAm());
+
+    site.reply = '{"sent":true}';
+    context.sendDueReminders();
+    expect(sheet.rows[1][21]).toBe(sent('2026-10-15T09:00'));
+    // One call, the reminder: the confirmation was already sent and the other
+    // row has no appointment.
+    expect(payloads(fetches).slice(2)).toEqual([expect.objectContaining({ kind: 'reminder', confirmedJustNow: false })]);
+
+    context.sendDueReminders();
+    expect(fetches).toHaveLength(3);
+  });
+
+  it('sends nothing new when the same time is entered again', () => {
     const { post, fetches, site, editAppointment } = load();
+    post(quote());
+    site.reply = '{"sent":true}';
+    editAppointment(2, nineAm());
+    editAppointment(2, nineAm());
+    expect(fetches).toHaveLength(2);
+  });
+
+  it('confirms and reminds again when the appointment moves to a new time', () => {
+    const { post, fetches, site, editAppointment } = load();
+    post(quote());
+    site.reply = '{"sent":true}';
+    editAppointment(2, nineAm());
+    expect(editAppointment(2, new Date('2026-10-16T17:00:00Z'))).toEqual({
+      confirmation: sent('2026-10-16T10:00'),
+      reminder: sent('2026-10-16T10:00'),
+    });
+    expect(fetches).toHaveLength(4);
+  });
+
+  it('records the site refusing, and leaves final refusals out of the hourly run', () => {
+    const { post, fetches, site, editAppointment, context } = load();
     post(quote({ smsConsent: 'no' }));
     site.reply = '{"sent":false,"reason":"customer did not agree to texts on the quote form"}';
-    expect(editAppointment(2, nineAm())).toBe('Not sent: customer did not agree to texts on the quote form');
-    expect(JSON.parse(fetches[0].options.payload).smsConsent).toBe('no');
+    expect(editAppointment(2, nineAm())).toEqual({
+      confirmation: 'Not sent: customer did not agree to texts on the quote form',
+      reminder: 'Not sent: customer did not agree to texts on the quote form',
+    });
+    expect(payloads(fetches)[0].smsConsent).toBe('no');
+    context.sendDueReminders();
+    expect(fetches).toHaveLength(2);
   });
 
-  it('asks for a time instead of texting midnight, and retries once fixed', () => {
-    const { post, fetches, editAppointment } = load();
+  it('asks for a time instead of texting midnight, and carries on once fixed', () => {
+    const { post, fetches, site, editAppointment } = load();
     post(quote());
-    expect(editAppointment(2, new Date('2026-10-15T07:00:00Z'))).toMatch(/^Not sent: add a time/);
+    expect(editAppointment(2, new Date('2026-10-15T07:00:00Z')).confirmation).toMatch(/^Not sent: add a time/);
     expect(fetches).toHaveLength(0);
-    expect(editAppointment(2, nineAm())).toBe('Sent 2026');
+    site.reply = daysAhead;
+    expect(editAppointment(2, nineAm()).confirmation).toBe(sent('2026-10-15T09:00'));
   });
 
   it('flags text that is not a date and ignores a cleared cell', () => {
     const { post, fetches, editAppointment } = load();
     post(quote());
-    expect(editAppointment(2, 'next Tuesday')).toMatch(/^Not sent: not a date and time/);
-    expect(editAppointment(2, '')).toMatch(/^Not sent/);
+    expect(editAppointment(2, 'next Tuesday').confirmation).toMatch(/^Not sent: not a date and time/);
+    editAppointment(2, '');
     expect(fetches).toHaveLength(0);
   });
 
-  it('records a site failure on the row rather than throwing', () => {
-    const { post, site, editAppointment } = load();
+  it('keeps a row waiting when the site cannot be reached, rather than throwing', () => {
+    const { post, site, editAppointment, context, fetches } = load();
     post(quote());
     site.throws = true;
-    expect(editAppointment(2, nineAm())).toBe('Not sent: Error: Exception: DNS error');
+    expect(editAppointment(2, nineAm()).confirmation).toBe(
+      'Waiting: could not reach the site, will retry (Error: Exception: DNS error)',
+    );
     site.throws = false;
+    context.sendDueReminders();
+    expect(fetches.length).toBeGreaterThan(0);
+  });
+
+  it('records a site answer that is not JSON', () => {
+    const { post, site, editAppointment } = load();
+    post(quote());
     site.reply = '<html>sign in</html>';
     site.code = 401;
-    expect(editAppointment(2, nineAm())).toBe('Not sent: site answered 401');
+    expect(editAppointment(2, nineAm()).confirmation).toBe('Not sent: site answered 401');
   });
 
   it('ignores edits outside column T and on the header row', () => {
@@ -437,10 +510,10 @@ describe('appointment text', () => {
     expect(fetches).toHaveLength(0);
   });
 
-  it('installs exactly one edit trigger however often it runs', () => {
+  it('installs exactly one edit and one hourly trigger however often it runs', () => {
     const { triggers, context } = load();
     context.installTriggers();
     context.installTriggers();
-    expect(triggers).toEqual(['onSheetEdit']);
+    expect(triggers.sort()).toEqual(['onSheetEdit', 'sendDueReminders']);
   });
 });

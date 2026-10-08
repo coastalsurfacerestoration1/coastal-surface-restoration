@@ -21,6 +21,15 @@ const call = async (body: Record<string, unknown>) => {
   return { status: res.status, json: await res.json() };
 };
 
+/** Charleston wall time two hours from now, which is always due unless it is night. */
+const inTwoHours = () =>
+  new Intl.DateTimeFormat('sv-SE', {
+    timeZone: 'America/New_York',
+    year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+  })
+    .format(new Date(Date.now() + 2 * 3600 * 1000))
+    .replace(' ', 'T');
+
 const row = (extra: Record<string, unknown> = {}) => ({
   secret: SECRET,
   name: 'Jane Customer',
@@ -28,11 +37,14 @@ const row = (extra: Record<string, unknown> = {}) => ({
   street: '1810 Mepkin Rd',
   city: 'West Ashley',
   smsConsent: 'yes',
-  appointment: '2099-10-15T09:00',
+  // Inside today's reminder window whenever the test runs: two hours from now.
+  appointment: inTwoHours(),
   ...extra,
 });
 
 beforeEach(() => {
+  // Midday in Charleston, inside texting hours.
+  vi.useFakeTimers({ now: new Date('2026-10-14T16:00:00Z'), toFake: ['Date'] });
   vi.stubEnv('QUOTE_SHEET_SECRET', SECRET);
   mocks.customerSms = true;
   mocks.sendSms.mockResolvedValue({ sent: true });
@@ -41,6 +53,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  vi.useRealTimers();
   vi.clearAllMocks();
   vi.restoreAllMocks();
   vi.unstubAllEnvs();
@@ -67,7 +80,7 @@ describe('POST /api/appointment-text', () => {
 
   it('does not text without consent', async () => {
     const { json } = await call(row({ smsConsent: 'no' }));
-    expect(json).toEqual({ sent: false, reason: 'customer did not agree to texts on the quote form' });
+    expect(json).toEqual({ sent: false, wait: false, reason: 'customer did not agree to texts on the quote form' });
     expect(mocks.sendSms).not.toHaveBeenCalled();
   });
 
@@ -75,6 +88,12 @@ describe('POST /api/appointment-text', () => {
     mocks.customerSms = false;
     const { json } = await call(row());
     expect(json.sent).toBe(false);
+    expect(mocks.sendSms).not.toHaveBeenCalled();
+  });
+
+  it('tells the sheet to wait when the reminder is not due yet', async () => {
+    const { json } = await call(row({ appointment: '2026-10-20T09:00' }));
+    expect(json).toEqual({ sent: false, wait: true, reason: 'reminder goes out Mon, Oct 19 at 5:00 PM' });
     expect(mocks.sendSms).not.toHaveBeenCalled();
   });
 
