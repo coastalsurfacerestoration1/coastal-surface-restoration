@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
 import { sendGAEvent } from '@next/third-parties/google';
 import { ADDRESS_CITIES, OTHER_CITY } from '@/lib/address';
+import { suggestEmail } from '@/lib/email';
 import { placesEnabled } from '@/lib/google-places';
 import StreetAutocomplete from './StreetAutocomplete';
 
@@ -238,12 +239,18 @@ export default function QuotePage() {
     control,
     setValue,
     getValues,
-    formState: { errors },
+    formState: { errors, touchedFields },
   } = useForm<QuoteFormValues>({ defaultValues: { state: 'SC' } });
 
   const selectedCity = useWatch({ control, name: 'city' });
   const selectedHeard = useWatch({ control, name: 'howHeard' });
   const zip = useWatch({ control, name: 'zip' }) ?? '';
+  const email = useWatch({ control, name: 'email' }) ?? '';
+  // Offered once the customer leaves the field, not while they are still
+  // typing, where every half finished domain would look like a typo.
+  const emailSuggestion = touchedFields.email
+    ? suggestEmail(email.replace(/\s+/g, '').toLowerCase())
+    : null;
   // Soft signal only. An out of area job may still be worth taking, so this
   // never blocks the submission.
   const outOfArea = /^\d{5}$/.test(zip) && !zip.startsWith(LOCAL_ZIP_PREFIX);
@@ -412,6 +419,21 @@ export default function QuotePage() {
               />
               {errors.email && (
                 <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>
+              )}
+              {!errors.email && emailSuggestion && (
+                <p className="text-amber-400 text-sm mt-1" role="status">
+                  Did you mean{' '}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setValue('email', emailSuggestion, { shouldValidate: true, shouldDirty: true })
+                    }
+                    className="underline underline-offset-2 hover:text-amber-300"
+                  >
+                    {emailSuggestion}
+                  </button>
+                  ?
+                </p>
               )}
             </div>
             <div>

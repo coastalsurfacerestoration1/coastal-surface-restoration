@@ -2,6 +2,7 @@ import { Resend } from 'resend';
 import { NextResponse, after } from 'next/server';
 import { BUSINESS, SITE_NAME, SITE_URL } from '@/lib/seo';
 import { appendQuoteRow, customerSmsEnabled, saveJobPhotos, sendSms } from '@/lib/notify';
+import { domainAcceptsMail } from '@/lib/email-domain';
 
 const FROM = `${SITE_NAME} <quotes@coastalsurfacerestoration.com>`;
 
@@ -343,6 +344,16 @@ export async function POST(req: Request) {
 
   if (!EMAIL_PATTERN.test(values.email)) {
     return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
+  }
+
+  // A domain that cannot receive mail means the confirmation never arrives and
+  // Tyler has no way to reply, so it is worth one more look from the customer.
+  // Lookup failures pass: see domainAcceptsMail.
+  if (!(await domainAcceptsMail(values.email))) {
+    return NextResponse.json(
+      { error: 'That email address does not look like it can receive mail. Please check the part after the @.' },
+      { status: 400 },
+    );
   }
 
   if (!PHONE_PATTERN.test(values.phone.replace(/\D/g, ''))) {
