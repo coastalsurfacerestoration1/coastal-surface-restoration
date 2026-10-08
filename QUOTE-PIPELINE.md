@@ -294,6 +294,36 @@ they are blank.
 
 ---
 
+## Address autocomplete (added 2026-10-07)
+
+When someone types in the Street field, it suggests addresses from Google Places.
+Picking one fills Street, Apt, City, State and ZIP in the browser, so the
+server, the sheet columns and the job folder naming see exactly the same
+fields as before. An "Enter address manually" checkbox turns suggestions off.
+With no key, or if Google's script fails, the field is a plain input.
+
+- Google Cloud project `CSR Website` (`csr-website-511000`) under the
+  coastalsurfacerestoration.com organization, owned by
+  tyler@coastalsurfacerestoration.com. Billing account `01C5F6-23EBA5-E34CF3`
+  (started on the $300 / 90 day free trial; upgrade before it ends or the key
+  stops working).
+- APIs: Maps JavaScript API and Places API (New).
+- Two browser keys, each limited to those two APIs:
+  `CSR Website Production (browser)` for `coastalsurfacerestoration.com` and
+  `www.`, and `CSR Website Preview + localhost (browser)` for `*.vercel.app`
+  and `localhost:3000`. Google only allows a leading wildcard, so the preview
+  key cannot be narrowed to this project's previews.
+- Vercel: `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`, the production key in Production,
+  the preview key in Preview and Development. It is inlined at build time, so
+  a change needs a redeploy.
+- Cost: one lookup is one session, billed once when an address is picked.
+  The monthly free usage covers far more than our volume, so expect $0.
+- Budget `CSR Website $5 alert` emails the billing admin at $2.50, $4.50 and
+  $5, measured before credits so the trial credit cannot hide spend. Quota
+  caps were not editable on the trial account; revisit after upgrading.
+
+---
+
 ## Dev environment
 
 Production is `main`. Every change goes on a branch, gets checked on its
