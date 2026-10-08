@@ -1,8 +1,16 @@
 import { BUSINESS, SITE_NAME } from './seo';
 
 const ZONE = 'America/New_York';
-/** Characters in one GSM-7 text segment. */
-const SEGMENT = 160;
+/**
+ * The budget for one appointment text: two GSM-7 segments. A text longer than
+ * 160 characters is split into parts of 153, so two parts carry 306.
+ */
+const TWO_SEGMENTS = 306;
+/**
+ * Customers reply to the Quo business line, not the Twilio sender, which
+ * nobody reads. Tyler, 2026-10-07.
+ */
+const CHANGE_LINE = `To change this appointment, call or text ${BUSINESS.phone}.`;
 /**
  * When the reminder goes out, Charleston time: 8 AM on the day, unless the
  * appointment is before 10 AM, in which case 5 PM the evening before, so an
@@ -79,7 +87,8 @@ export function appointmentText(
       to: phone,
       body:
         `${SITE_NAME}: Your service appointment is confirmed for ${date} at ${clock}. ` +
-        `Questions? Call ${BUSINESS.phone} or visit coastalsurfacerestoration.com. Reply STOP to opt out.`,
+        `Questions? Call ${BUSINESS.phone} or visit coastalsurfacerestoration.com. ` +
+        `${CHANGE_LINE} Reply STOP to opt out.`,
     };
   }
 
@@ -104,19 +113,19 @@ export function appointmentText(
   const city = text(request.city);
   const compose = (place: string) =>
     `${SITE_NAME} here. Reminder: your appointment is scheduled for ${day} at ${time}, ` +
-    `${place}. Reply STOP to opt out.`;
+    `${place}. ${CHANGE_LINE} Reply STOP to opt out.`;
 
-  // Tyler's exact wording, 2026-10-07. It still has to be checked against the
-  // sample messages on the approved A2P campaign before it goes live.
+  // Tyler's exact wording, 2026-10-07, plus the change line. It still has to
+  // be checked against the sample messages on the approved A2P campaign.
   //
-  // The fixed words take about 124 of a segment's 160 characters, so the city
-  // is included only when it fits. The street alone still says where, and a
-  // second segment would double the cost of every one of these.
+  // With the change line the fixed words take about 180 characters, so this is
+  // always two segments. The city is dropped only if it would push past two,
+  // which takes an unusually long address. The street alone still says where.
   const withCity = city ? compose(`${street}, ${city}`) : '';
   return {
     ok: true,
     to: phone,
-    body: withCity && withCity.length <= SEGMENT ? withCity : compose(street),
+    body: withCity && withCity.length <= TWO_SEGMENTS ? withCity : compose(street),
   };
 }
 

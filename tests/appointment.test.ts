@@ -29,19 +29,29 @@ describe('appointmentText wording', () => {
       to: '843-555-2345',
       body:
         'Coastal Surface Restoration here. Reminder: your appointment is scheduled for ' +
-        'Thu, Oct 15 at 9:00 AM, 1810 Mepkin Rd, West Ashley. Reply STOP to opt out.',
+        'Thu, Oct 15 at 9:00 AM, 1810 Mepkin Rd, West Ashley. ' +
+        'To change this appointment, call or text 854-222-7790. Reply STOP to opt out.',
     });
   });
 
-  it('stays one GSM-7 segment even with a long address', () => {
+  it('stays within two GSM-7 segments and keeps the city for a long address', () => {
     const result = appointmentText(
       row({ street: '1234 Rivers Avenue, Unit 12B', city: "Sullivan's Island" }),
       EVENING_BEFORE,
     );
     if (!result.ok) throw new Error(result.reason);
     expect(result.body).toMatch(GSM7);
-    expect(result.body.length).toBeLessThanOrEqual(160);
-    expect(result.body).toContain('1234 Rivers Avenue, Unit 12B. Reply STOP');
+    expect(result.body.length).toBeLessThanOrEqual(306);
+    expect(result.body).toContain("1234 Rivers Avenue, Unit 12B, Sullivan's Island. To change");
+  });
+
+  it('drops the city only when it would push past two segments', () => {
+    // Sized so the street fits in two segments but street plus city does not.
+    const street = ('1234 Old Plantation Road Extension, Building 7, Suite 1200, Back Entrance by the Loading Dock ').padEnd(115, 'x');
+    const result = appointmentText(row({ street, city: "Sullivan's Island" }), EVENING_BEFORE);
+    if (!result.ok) throw new Error(result.reason);
+    expect(result.body).toContain(`${street}. To change`);
+    expect(result.body.length).toBeLessThanOrEqual(306);
   });
 
   it('reads the wall time as Charleston time, after daylight saving ends too', () => {
@@ -133,7 +143,8 @@ describe('appointment confirmation', () => {
       to: '843-555-2345',
       body:
         'Coastal Surface Restoration: Your service appointment is confirmed for 10/15/2026 at 9:00 AM. ' +
-        'Questions? Call 854-222-7790 or visit coastalsurfacerestoration.com. Reply STOP to opt out.',
+        'Questions? Call 854-222-7790 or visit coastalsurfacerestoration.com. ' +
+        'To change this appointment, call or text 854-222-7790. Reply STOP to opt out.',
     });
   });
 

@@ -66,7 +66,7 @@ describe('POST /api/appointment-text', () => {
     expect(json).toEqual({ sent: true });
     expect(mocks.sendSms).toHaveBeenCalledWith(
       '843-555-2345',
-      expect.stringMatching(/^Coastal Surface Restoration here\. Reminder: .* 1810 Mepkin Rd, West Ashley\. Reply STOP to opt out\.$/),
+      expect.stringMatching(/^Coastal Surface Restoration here\. Reminder: .* 1810 Mepkin Rd, West Ashley\. To change this appointment, call or text 854-222-7790\. Reply STOP to opt out\.$/),
     );
   });
 
