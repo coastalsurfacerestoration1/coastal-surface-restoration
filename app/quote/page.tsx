@@ -5,6 +5,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
 import { sendGAEvent } from '@next/third-parties/google';
+import { ADDRESS_CITIES, OTHER_CITY } from '@/lib/address';
+import { suggestEmail } from '@/lib/email';
+import { placesEnabled } from '@/lib/google-places';
+import StreetAutocomplete from './StreetAutocomplete';
 
 type QuoteFormValues = {
   name: string;
@@ -109,31 +113,6 @@ const SUBMIT_STAGES = [
   { after: 30000, text: 'Still working, thanks for waiting' },
 ] as const;
 
-const OTHER_CITY = 'Other / not listed';
-
-/**
- * Cities offered in the address dropdown.
- *
- * Deliberately not SERVICE_AREAS from lib/schema.ts: that list is the areas we
- * advertise, including neighborhoods like the Historic District that are not
- * mailing cities. This one has to match what a customer would write on an
- * envelope, so it lists municipalities and keeps an escape hatch for the rest.
- */
-const ADDRESS_CITIES = [
-  'Charleston',
-  'Mount Pleasant',
-  'North Charleston',
-  'West Ashley',
-  'James Island',
-  'Johns Island',
-  'Daniel Island',
-  'Folly Beach',
-  'Isle of Palms',
-  "Sullivan's Island",
-  'Summerville',
-  OTHER_CITY,
-];
-
 const HEARD_OTHER = 'Other';
 
 const HEARD_OPTIONS = [
@@ -166,6 +145,8 @@ export default function QuotePage() {
   const [photoNotice, setPhotoNotice] = useState<string | null>(null);
   const [optimizing, setOptimizing] = useState(false);
   const [stage, setStage] = useState(0);
+  // Turns address suggestions off. Local only, never sent with the quote.
+  const [manualAddress, setManualAddress] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Object URLs live until they are revoked. Removing a photo revokes its own,
@@ -256,12 +237,20 @@ export default function QuotePage() {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    setValue,
+    getValues,
+    formState: { errors, touchedFields },
   } = useForm<QuoteFormValues>({ defaultValues: { state: 'SC' } });
 
   const selectedCity = useWatch({ control, name: 'city' });
   const selectedHeard = useWatch({ control, name: 'howHeard' });
   const zip = useWatch({ control, name: 'zip' }) ?? '';
+  const email = useWatch({ control, name: 'email' }) ?? '';
+  // Offered once the customer leaves the field, not while they are still
+  // typing, where every half finished domain would look like a typo.
+  const emailSuggestion = touchedFields.email
+    ? suggestEmail(email.replace(/\s+/g, '').toLowerCase())
+    : null;
   // Soft signal only. An out of area job may still be worth taking, so this
   // never blocks the submission.
   const outOfArea = /^\d{5}$/.test(zip) && !zip.startsWith(LOCAL_ZIP_PREFIX);
@@ -431,6 +420,21 @@ export default function QuotePage() {
               {errors.email && (
                 <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>
               )}
+              {!errors.email && emailSuggestion && (
+                <p className="text-amber-400 text-sm mt-1" role="status">
+                  Did you mean{' '}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setValue('email', emailSuggestion, { shouldValidate: true, shouldDirty: true })
+                    }
+                    className="underline underline-offset-2 hover:text-amber-300"
+                  >
+                    {emailSuggestion}
+                  </button>
+                  ?
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -464,7 +468,7 @@ export default function QuotePage() {
             <label htmlFor="street" className="block text-sm font-medium text-gray-300 mb-2">
               Property Address <span className="text-[#397774]">*</span>
             </label>
-            <input
+            <StreetAutocomplete
               {...register('street', {
                 required: 'Street address is required',
                 validate: (value) =>
@@ -475,6 +479,23 @@ export default function QuotePage() {
               autoComplete="address-line1"
               className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
               placeholder="123 King Street"
+              manual={manualAddress}
+              onPick={(address) => {
+                const fill = { shouldValidate: true, shouldDirty: true };
+                setValue('street', address.street, fill);
+                // A unit the customer already typed is kept unless Google
+                // knows one for this address.
+                if (address.street2 || !getValues('street2')) {
+                  setValue('street2', address.street2, fill);
+                }
+                setValue('city', address.city, fill);
+                setValue('cityOther', address.cityOther, fill);
+                if (address.state) setValue('state', address.state, fill);
+                if (address.zip) setValue('zip', address.zip, fill);
+              }}
+              onPickUnparsed={(text) =>
+                setValue('street', text, { shouldValidate: true, shouldDirty: true })
+              }
             />
             {errors.street && (
               <p className="text-red-400 text-sm mt-1">{errors.street.message}</p>
@@ -490,6 +511,17 @@ export default function QuotePage() {
               className="mt-3 w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
               placeholder="Apt, suite, unit (optional)"
             />
+            {placesEnabled() && (
+              <label className="mt-2 flex items-center gap-2 text-sm text-gray-400">
+                <input
+                  type="checkbox"
+                  checked={manualAddress}
+                  onChange={(e) => setManualAddress(e.currentTarget.checked)}
+                  className="h-4 w-4 accent-[#397774]"
+                />
+                Enter address manually
+              </label>
+            )}
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

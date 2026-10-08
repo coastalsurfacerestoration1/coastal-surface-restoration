@@ -21,6 +21,11 @@ vi.mock('@/lib/notify', () => ({
   customerSmsEnabled: () => false,
 }));
 
+// No real DNS in unit tests. The check itself is covered in email.test.ts.
+vi.mock('@/lib/email-domain', () => ({
+  domainAcceptsMail: (email: string) => Promise.resolve(!email.endsWith('@no-mail.invalid')),
+}));
+
 vi.mock('next/server', () => ({
   NextResponse: { json: (body: unknown, init?: ResponseInit) => Response.json(body, init) },
   after: (callback: () => Promise<void>) => mocks.afterCallbacks.push(callback),
@@ -242,6 +247,15 @@ describe('POST /api/quote', () => {
     expect((await POST(quote({ email: 'jane at example' }))).status).toBe(400);
     expect((await POST(quote({ zip: '2940' }))).status).toBe(400);
     expect((await POST(quote({ name: '​ ​' }))).status).toBe(400);
+  });
+
+  it('refuses an email domain that cannot receive mail, before sending anything', async () => {
+    const { POST } = await loadRoute();
+    const res = await POST(quote({ email: 'jane@no-mail.invalid' }));
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toMatch(/after the @/);
+    expect(mocks.send).not.toHaveBeenCalled();
+    expect(mocks.appendQuoteRow).not.toHaveBeenCalled();
   });
 
   it('adds the optional unit to the street everywhere', async () => {
