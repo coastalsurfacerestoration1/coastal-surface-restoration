@@ -63,17 +63,36 @@ class FakeSheet {
   ];
   appendRow(values: unknown[]) { this.rows.push([...values]); }
   getLastRow() { return this.rows.length; }
-  getRange(row: number, col: number) {
+  getRange(row: number, col: number, numRows = 1, numCols = 1) {
     return {
       getValue: () => this.rows[row - 1]?.[col - 1] ?? '',
       setValue: (v: unknown) => { this.rows[row - 1][col - 1] = v; },
+      getValues: () =>
+        Array.from({ length: numRows }, (_, r) =>
+          Array.from({ length: numCols }, (_, c) => this.rows[row - 1 + r]?.[col - 1 + c] ?? ''),
+        ),
     };
   }
+  getIndex() { return 1; }
   getDataRange() {
     const width = Math.max(...this.rows.map((r) => r.length));
     return { getValues: () => this.rows.map((r) => Array.from({ length: width }, (_, i) => r[i] ?? '')) };
   }
 }
+
+/** What Utilities.formatDate gives for yyyy-MM-dd'T'HH:mm. */
+const wallTime = (date: Date, zone: string) =>
+  new Intl.DateTimeFormat('sv-SE', {
+    timeZone: zone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  })
+    .format(date)
+    .replace(' ', 'T');
 
 function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true } = {}) {
   const drive = new FakeDrive();
@@ -82,8 +101,33 @@ function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true }
   root.children.push(jobs);
   for (const name of existing) jobs.children.push(new FakeFolder(drive, `E${++drive.seq}`, name, jobs));
   const sheet = new FakeSheet();
+  const fetches: { url: string; options: { payload: string; headers: Record<string, string> } }[] = [];
+  // The site's answer, either fixed or worked out from what the script sent.
+  const site = {
+    reply: '{"sent":true}' as string | ((body: Record<string, unknown>) => string),
+    code: 200,
+    throws: false,
+  };
+  const triggers: string[] = [];
 
   const context = createContext({
+    UrlFetchApp: {
+      fetch: (url: string, options: { payload: string; headers: Record<string, string> }) => {
+        if (site.throws) throw new Error('Exception: DNS error');
+        fetches.push({ url, options });
+        const reply = typeof site.reply === 'function' ? site.reply(JSON.parse(options.payload)) : site.reply;
+        return { getContentText: () => reply, getResponseCode: () => site.code };
+      },
+    },
+    ScriptApp: {
+      getProjectTriggers: () => triggers.map((h) => ({ getHandlerFunction: () => h })),
+      deleteTrigger: (t: { getHandlerFunction: () => string }) => triggers.splice(triggers.indexOf(t.getHandlerFunction()), 1),
+      newTrigger: (handler: string) => ({
+        forSpreadsheet: () => ({ onEdit: () => ({ create: () => triggers.push(handler) }) }),
+        timeBased: () => ({ everyHours: () => ({ create: () => triggers.push(handler) }) }),
+      }),
+    },
+    isNaN,
     console: { error: () => {}, log: () => {} },
     JSON,
     String,
@@ -92,7 +136,14 @@ function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true }
     parseInt,
     Date,
     ContentService: { createTextOutput: (text: string) => ({ text }) },
-    SpreadsheetApp: { getActiveSpreadsheet: () => ({ getSheets: () => [sheet], getName: () => 'Log' }) },
+    SpreadsheetApp: {
+      getActiveSpreadsheet: () => ({
+        getSheets: () => [sheet],
+        getName: () => 'Log',
+        // The TEST copy really is set to Pacific, which is what this guards.
+        getSpreadsheetTimeZone: () => 'America/Los_Angeles',
+      }),
+    },
     DriveApp: {
       getFolderById: (id: string) => {
         const folder = drive.byId.get(id);
@@ -102,16 +153,17 @@ function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true }
     },
     LockService: { getScriptLock: () => ({ tryLock: () => lockFree, releaseLock: () => {} }) },
     Utilities: {
-      formatDate: () => '2026',
+      formatDate: (date: Date, zone: string, pattern: string) =>
+        pattern.includes("'T'") ? wallTime(date, zone) : '2026',
       base64Decode: (s: string) => Buffer.from(s, 'base64'),
       newBlob: (bytes: Buffer, mimeType: string, name: string) => ({ bytes, mimeType, name }),
     },
   });
 
-  const code = SOURCE.replace("'__SECRET__'", JSON.stringify(SECRET)).replace(
-    "'__JOBS_FOLDER_ID__'",
-    JSON.stringify(jobsId),
-  );
+  const code = SOURCE.replace("'__SECRET__'", JSON.stringify(SECRET))
+    .replace("'__JOBS_FOLDER_ID__'", JSON.stringify(jobsId))
+    .replace("'__SITE_URL__'", JSON.stringify('https://preview.example'))
+    .replace("'__VERCEL_BYPASS__'", JSON.stringify('bypass-token'));
   runInContext(code, context);
 
   const post = (body: unknown) => {
@@ -119,7 +171,16 @@ function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true }
     const [verdict, ...rest] = text.split('\n');
     return { verdict, detail: rest.length ? JSON.parse(rest.join('\n')) : null, text };
   };
-  return { drive, jobs, sheet, post };
+  // An edit to column T of one row, the way Sheets reports it.
+  const editAppointment = (row: number, value: unknown) => {
+    while (sheet.rows[row - 1].length < 22) sheet.rows[row - 1].push('');
+    sheet.rows[row - 1][19] = value;
+    context.onSheetEdit({
+      range: { getSheet: () => sheet, getColumn: () => 20, getLastColumn: () => 20, getRow: () => row, getLastRow: () => row },
+    });
+    return { confirmation: sheet.rows[row - 1][20], reminder: sheet.rows[row - 1][21] };
+  };
+  return { drive, jobs, sheet, post, fetches, site, triggers, editAppointment, context };
 }
 
 const quote = (extra: Record<string, unknown> = {}) => ({
@@ -304,5 +365,183 @@ describe('verify', () => {
   it('refuses to run on the live deployment', () => {
     const { post } = load({ jobsId: LIVE_JOBS });
     expect(post({ secret: SECRET, action: 'verify', name: 'Jane Customer' }).text).toBe('forbidden');
+  });
+});
+
+describe('appointment texts', () => {
+  // What Sheets hands the script for "10/15/2026 9:00 AM" typed into a sheet
+  // set to Pacific: 9:00 AM PDT.
+  const nineAm = () => new Date('2026-10-15T16:00:00Z');
+  const sent = (local: string) => `Sent 2026 for ${local}`;
+  /** The site as it behaves days ahead: confirm now, reminder later. */
+  const daysAhead = (body: Record<string, unknown>) =>
+    body.kind === 'confirmation'
+      ? '{"sent":true}'
+      : '{"sent":false,"wait":true,"reason":"reminder goes out Wed, Oct 14 at 5:00 PM"}';
+  const payloads = (fetches: { options: { payload: string } }[]) =>
+    fetches.map((f) => JSON.parse(f.options.payload));
+
+  it('confirms straight away and leaves the reminder waiting', () => {
+    const { post, fetches, site, editAppointment } = load();
+    post(quote());
+    site.reply = daysAhead;
+
+    expect(editAppointment(2, nineAm())).toEqual({
+      confirmation: sent('2026-10-15T09:00'),
+      reminder: 'Waiting: reminder goes out Wed, Oct 14 at 5:00 PM',
+    });
+    expect(fetches[0].url).toBe('https://preview.example/api/appointment-text');
+    expect(fetches[0].options.headers).toEqual({ 'x-vercel-protection-bypass': 'bypass-token' });
+    expect(payloads(fetches)).toEqual([
+      {
+        secret: SECRET,
+        kind: 'confirmation',
+        confirmedJustNow: false,
+        name: 'Jane Customer',
+        phone: '843-555-2345',
+        street: '1 King St',
+        city: 'Charleston',
+        smsConsent: 'yes',
+        // As typed, not shifted to 12:00 by the sheet being on Pacific time.
+        appointment: '2026-10-15T09:00',
+      },
+      expect.objectContaining({ kind: 'reminder', confirmedJustNow: true }),
+    ]);
+  });
+
+  it('sends the reminder from the hourly run once it is due, and only once', () => {
+    const { post, fetches, site, sheet, editAppointment, context } = load();
+    post(quote());
+    post(quote({ name: 'No Appointment' }));
+    site.reply = daysAhead;
+    editAppointment(2, nineAm());
+
+    site.reply = '{"sent":true}';
+    context.sendDueReminders();
+    expect(sheet.rows[1][21]).toBe(sent('2026-10-15T09:00'));
+    // One call, the reminder: the confirmation was already sent and the other
+    // row has no appointment.
+    expect(payloads(fetches).slice(2)).toEqual([expect.objectContaining({ kind: 'reminder', confirmedJustNow: false })]);
+
+    context.sendDueReminders();
+    expect(fetches).toHaveLength(3);
+  });
+
+  it('sends nothing new when the same time is entered again', () => {
+    const { post, fetches, site, editAppointment } = load();
+    post(quote());
+    site.reply = '{"sent":true}';
+    editAppointment(2, nineAm());
+    editAppointment(2, nineAm());
+    expect(fetches).toHaveLength(2);
+  });
+
+  it('confirms and reminds again when the appointment moves to a new time', () => {
+    const { post, fetches, site, editAppointment } = load();
+    post(quote());
+    site.reply = '{"sent":true}';
+    editAppointment(2, nineAm());
+    expect(editAppointment(2, new Date('2026-10-16T17:00:00Z'))).toEqual({
+      confirmation: sent('2026-10-16T10:00'),
+      reminder: sent('2026-10-16T10:00'),
+    });
+    expect(fetches).toHaveLength(4);
+  });
+
+  it('records the site refusing, and leaves final refusals out of the hourly run', () => {
+    const { post, fetches, site, editAppointment, context } = load();
+    post(quote({ smsConsent: 'no' }));
+    site.reply = '{"sent":false,"reason":"customer did not agree to texts on the quote form"}';
+    expect(editAppointment(2, nineAm())).toEqual({
+      confirmation: 'Not sent: customer did not agree to texts on the quote form',
+      reminder: 'Not sent: customer did not agree to texts on the quote form',
+    });
+    expect(payloads(fetches)[0].smsConsent).toBe('no');
+    context.sendDueReminders();
+    expect(fetches).toHaveLength(2);
+  });
+
+  it('asks for a time instead of texting midnight, and carries on once fixed', () => {
+    const { post, fetches, site, editAppointment } = load();
+    post(quote());
+    expect(editAppointment(2, new Date('2026-10-15T07:00:00Z')).confirmation).toMatch(/^Not sent: add a time/);
+    expect(fetches).toHaveLength(0);
+    site.reply = daysAhead;
+    expect(editAppointment(2, nineAm()).confirmation).toBe(sent('2026-10-15T09:00'));
+  });
+
+  it('flags text that is not a date and ignores a cleared cell', () => {
+    const { post, fetches, editAppointment } = load();
+    post(quote());
+    expect(editAppointment(2, 'next Tuesday').confirmation).toMatch(/^Not sent: not a date and time/);
+    editAppointment(2, '');
+    expect(fetches).toHaveLength(0);
+  });
+
+  it('keeps a row waiting when the site cannot be reached, rather than throwing', () => {
+    const { post, site, editAppointment, context, fetches } = load();
+    post(quote());
+    site.throws = true;
+    expect(editAppointment(2, nineAm()).confirmation).toBe(
+      'Waiting: could not reach the site, will retry (Error: Exception: DNS error)',
+    );
+    site.throws = false;
+    context.sendDueReminders();
+    expect(fetches.length).toBeGreaterThan(0);
+  });
+
+  it('records a site answer that is not JSON', () => {
+    const { post, site, editAppointment } = load();
+    post(quote());
+    site.reply = '<html>sign in</html>';
+    site.code = 401;
+    expect(editAppointment(2, nineAm()).confirmation).toBe('Not sent: site answered 401');
+  });
+
+  it('ignores edits outside column T and on the header row', () => {
+    const { post, fetches, sheet, context } = load();
+    post(quote());
+    context.onSheetEdit({
+      range: { getSheet: () => sheet, getColumn: () => 15, getLastColumn: () => 16, getRow: () => 2, getLastRow: () => 2 },
+    });
+    context.onSheetEdit({
+      range: { getSheet: () => sheet, getColumn: () => 20, getLastColumn: () => 20, getRow: () => 1, getLastRow: () => 1 },
+    });
+    expect(fetches).toHaveLength(0);
+  });
+
+  it('installs exactly one edit and one hourly trigger however often it runs', () => {
+    const { triggers, context } = load();
+    context.installTriggers();
+    context.installTriggers();
+    expect(triggers.sort()).toEqual(['onSheetEdit', 'sendDueReminders']);
+  });
+});
+
+describe('recordConsent', () => {
+  it('marks SMS Consent on every row with that number, matching on the last ten digits', () => {
+    const { post, sheet } = load();
+    post(quote());
+    post(quote({ name: 'Same Person Again' }));
+    post(quote({ name: 'Someone Else', phone: '843-555-9999' }));
+
+    const { verdict, detail } = post({ secret: SECRET, action: 'consent', phone: '+18435552345', consent: 'no' });
+    expect(verdict).toBe('ok');
+    expect(detail).toEqual({ rows: 2 });
+    expect(sheet.rows.slice(1).map((r) => r[11])).toEqual([
+      'no (replied STOP 2026)',
+      'no (replied STOP 2026)',
+      'yes',
+    ]);
+
+    post({ secret: SECRET, action: 'consent', phone: '+18435552345', consent: 'yes' });
+    expect(sheet.rows[1][11]).toBe('yes (replied START 2026)');
+  });
+
+  it('refuses a bad number or value, and a wrong secret', () => {
+    const { post } = load();
+    expect(post({ secret: SECRET, action: 'consent', phone: '555', consent: 'no' }).text).toBe('bad request');
+    expect(post({ secret: SECRET, action: 'consent', phone: '+18435552345', consent: 'maybe' }).text).toBe('bad request');
+    expect(post({ secret: 'nope', action: 'consent', phone: '+18435552345', consent: 'no' }).text).toBe('forbidden');
   });
 });

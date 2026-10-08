@@ -102,6 +102,18 @@ export function customerSmsEnabled(): boolean {
   return process.env.TWILIO_CUSTOMER_SMS === 'enabled';
 }
 
+/**
+ * Whether the "we received your quote request" text may go out, on top of
+ * customerSmsEnabled.
+ *
+ * Its own switch because, unlike the appointment texts, it is not in the
+ * approved A2P campaign's description or sample messages. It stays off in
+ * Production until the campaign is amended to cover it (Tyler, 2026-10-07).
+ */
+export function quoteConfirmationSmsEnabled(): boolean {
+  return customerSmsEnabled() && process.env.TWILIO_QUOTE_CONFIRMATION_SMS === 'enabled';
+}
+
 /** One quote, flattened for the spreadsheet. */
 export type QuoteRow = {
   timestamp: string;
@@ -269,5 +281,35 @@ export async function saveJobPhotos(
     return { sent: true };
   } catch (error) {
     return { sent: false, reason: `Photo upload failed: ${String(error)}` };
+  }
+}
+
+/**
+ * Records a STOP or START against every row with this phone number, in the
+ * SMS Consent column, so the sheet agrees with what Twilio will now allow.
+ *
+ * Twilio enforces the opt-out on its own either way. This only keeps the
+ * sheet honest, so it never throws and a failure is only logged.
+ */
+export async function recordSmsConsent(phone: string, consent: 'yes' | 'no'): Promise<SmsResult & { rows?: number }> {
+  const url = process.env.QUOTE_SHEET_WEBHOOK_URL;
+  const secret = process.env.QUOTE_SHEET_SECRET;
+  if (!url || !secret) return { sent: false, reason: 'Quote sheet is not configured' };
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      redirect: 'follow',
+      body: JSON.stringify({ secret, action: 'consent', phone, consent }),
+    });
+    if (!res.ok) return { sent: false, reason: `Consent update ${res.status}` };
+
+    const [verdict, detail] = (await res.text().catch(() => '')).trim().split('\n');
+    if (verdict.trim() !== 'ok') return { sent: false, reason: `Consent update replied: ${verdict.slice(0, 120)}` };
+    const rows = Number(JSON.parse(detail || '{}').rows ?? 0);
+    return { sent: true, rows };
+  } catch (error) {
+    return { sent: false, reason: `Consent update failed: ${String(error)}` };
   }
 }

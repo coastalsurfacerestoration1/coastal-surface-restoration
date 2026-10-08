@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
 import { NextResponse, after } from 'next/server';
 import { BUSINESS, SITE_NAME, SITE_URL } from '@/lib/seo';
-import { appendQuoteRow, customerSmsEnabled, saveJobPhotos, sendSms } from '@/lib/notify';
+import { appendQuoteRow, quoteConfirmationSmsEnabled, saveJobPhotos, sendSms } from '@/lib/notify';
 import { domainAcceptsMail } from '@/lib/email-domain';
 
 const FROM = `${SITE_NAME} <quotes@coastalsurfacerestoration.com>`;
@@ -576,7 +576,7 @@ export async function POST(req: Request) {
 
   // Customer text, which unlike the alert above needs their explicit consent
   // and an approved A2P 10DLC campaign. Both gates have to pass.
-  if (smsConsent && customerSmsEnabled()) {
+  if (smsConsent && quoteConfirmationSmsEnabled()) {
     // Wording is matched to the sample messages registered on the approved A2P
     // campaign. It identifies the business, discloses rates, and carries both
     // STOP and HELP, which the previous version was missing. The first name is

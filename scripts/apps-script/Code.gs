@@ -18,16 +18,33 @@ const SECRET = '__SECRET__';
 const JOBS_FOLDER_ID = '__JOBS_FOLDER_ID__';
 const TEST_JOBS_FOLDER_ID = '1zDzvf3chhgm_BJUKCvQYBiXBWqfAG12Y';
 
+// Where this sheet's site lives, for the appointment text. The live sheet calls
+// the live site and the TEST sheet calls a branch preview, which also needs
+// Vercel's protection bypass. Blank on live.
+const SITE_URL = '__SITE_URL__';
+const VERCEL_BYPASS = '__VERCEL_BYPASS__';
+
 const PHOTOS_SUBFOLDER = 'Photos (Before & After)';
 const JOB_SUBFOLDERS = [PHOTOS_SUBFOLDER, 'Quotes & Invoices', 'Signed Forms'];
 
 // 1-based columns. A to N are the form fields, O and P (Status, Notes) are
-// Tyler's to fill in by hand.
+// Tyler's to fill in by hand, and so is T, the appointment.
+const COL_NAME = 2; // B
+const COL_PHONE = 4; // D
+const COL_STREET = 5; // E
+const COL_CITY = 6; // F
+const COL_SMS_CONSENT = 12; // L
 const COL_JOB_FOLDER = 17; // Q
+const COL_APPOINTMENT = 20; // T, typed by Tyler, e.g. 10/15/2026 9:00 AM
+const COL_CONFIRMATION_TEXT = 21; // U, written by this script
+const COL_REMINDER_TEXT = 22; // V, written by this script
 const ADDED_HEADERS = [
   [17, 'Job Folder'],
   [18, 'How They Heard'],
   [19, 'Referred By'],
+  [COL_APPOINTMENT, 'Appointment'],
+  [COL_CONFIRMATION_TEXT, 'Confirmation Text'],
+  [COL_REMINDER_TEXT, 'Reminder Text'],
 ];
 
 function doPost(e) {
@@ -48,6 +65,9 @@ function doPost(e) {
   if (body.action === 'verify') {
     return verify(body);
   }
+  if (body.action === 'consent') {
+    return recordConsent(body);
+  }
   return logQuote(body);
 }
 
@@ -58,6 +78,195 @@ function doPost(e) {
 function authorize() {
   DriveApp.getFolderById(JOBS_FOLDER_ID).getName();
   SpreadsheetApp.getActiveSpreadsheet().getName();
+  installTriggers();
+}
+
+/**
+ * Sets up the triggers behind the appointment reminder, and the T and U
+ * headers: one on edit, so a new appointment is checked straight away, and one
+ * hourly, which sends the reminders that have come due. Safe to run again: it
+ * replaces its own triggers rather than adding more, which would double send.
+ *
+ * Installable, not a simple onEdit, because only an installable trigger may
+ * call out to the site.
+ */
+function installTriggers() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  ScriptApp.getProjectTriggers().forEach(function (trigger) {
+    var handler = trigger.getHandlerFunction();
+    if (handler === 'onSheetEdit' || handler === 'sendDueReminders') ScriptApp.deleteTrigger(trigger);
+  });
+  ScriptApp.newTrigger('onSheetEdit').forSpreadsheet(spreadsheet).onEdit().create();
+  ScriptApp.newTrigger('sendDueReminders').timeBased().everyHours(1).create();
+  ensureHeaders(spreadsheet.getSheets()[0]);
+}
+
+/**
+ * Hourly. Asks the site about every row whose reminder is still waiting, and
+ * the site sends the ones that are due: 5 PM the evening before, never
+ * outside 8 AM to 9 PM.
+ */
+function sendDueReminders() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+  var last = sheet.getLastRow();
+  if (last < 2) return;
+  var notes = sheet.getRange(2, COL_CONFIRMATION_TEXT, last - 1, 2).getValues();
+  for (var i = 0; i < notes.length; i++) {
+    if (/^Waiting/.test(String(notes[i][0])) || /^Waiting/.test(String(notes[i][1]))) {
+      sendAppointmentText(sheet, i + 2);
+    }
+  }
+}
+
+/**
+ * Handles both appointment texts when an Appointment cell (column T) is filled
+ * in: the confirmation straight away, and the reminder the evening before.
+ *
+ * Columns U (confirmation) and V (reminder) each say what happened:
+ * "Waiting: ..." until it is due, "Sent <time> for <appointment>" once it is,
+ * or "Not sent: <reason>". Each appointment time gets one of each. Re-entering
+ * the same time sends nothing new, while moving it to a new time confirms the
+ * new one and schedules a new reminder. Edits made by this script do not fire
+ * the trigger, so writing U and V cannot loop.
+ */
+function onSheetEdit(e) {
+  var range = e && e.range;
+  if (!range) return;
+  var sheet = range.getSheet();
+  if (sheet.getIndex() !== 1) return;
+  if (range.getColumn() > COL_APPOINTMENT || range.getLastColumn() < COL_APPOINTMENT) return;
+
+  for (var row = Math.max(2, range.getRow()); row <= range.getLastRow(); row++) {
+    sendAppointmentText(sheet, row);
+  }
+}
+
+function sendAppointmentText(sheet, row) {
+  // The edit and hourly triggers can overlap. One at a time, so a row due
+  // right as it is edited is not texted twice.
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(30000)) return;
+  try {
+    checkReminder(sheet, row);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function checkReminder(sheet, row) {
+  var confirmation = sheet.getRange(row, COL_CONFIRMATION_TEXT);
+  var reminder = sheet.getRange(row, COL_REMINDER_TEXT);
+  var values = sheet.getRange(row, 1, 1, COL_APPOINTMENT).getValues()[0];
+  var when = values[COL_APPOINTMENT - 1];
+  if (when === '' || when === null) return;
+
+  if (!(when instanceof Date) || isNaN(when.getTime())) {
+    confirmation.setValue('Not sent: not a date and time. Type it like 10/15/2026 9:00 AM');
+    reminder.setValue('');
+    return;
+  }
+  // The wall time exactly as typed, read in the spreadsheet's own time zone.
+  // A Date from a cell is an instant in that zone, and the sheet's zone is
+  // whatever the account was set to (the TEST copy is Pacific), so sending the
+  // instant would turn a typed 9:00 AM into noon in Charleston. The site reads
+  // this as Charleston time.
+  var zone = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
+  var local = Utilities.formatDate(when, zone, "yyyy-MM-dd'T'HH:mm");
+  // A bare date reads as midnight. Nobody books a midnight job, so it means
+  // the time was left off, and a text saying 12:00 AM would be wrong.
+  if (/T00:00$/.test(local)) {
+    confirmation.setValue('Not sent: add a time, like 10/15/2026 9:00 AM');
+    reminder.setValue('');
+    return;
+  }
+
+  var row_ = {
+    name: values[COL_NAME - 1],
+    phone: String(values[COL_PHONE - 1]),
+    street: values[COL_STREET - 1],
+    city: values[COL_CITY - 1],
+    smsConsent: values[COL_SMS_CONSENT - 1],
+    appointment: local,
+  };
+
+  // Confirmation first. If it goes out in this same pass, the site is told,
+  // so a reminder already due (booked the evening before) is skipped instead
+  // of landing a minute after the confirmation.
+  var justConfirmed = false;
+  if (!sentFor(confirmation, local)) {
+    justConfirmed = askSite(confirmation, row_, 'confirmation', false, local);
+  }
+  if (!sentFor(reminder, local)) {
+    askSite(reminder, row_, 'reminder', justConfirmed, local);
+  }
+}
+
+/** True when this status cell already records a text for this appointment. */
+function sentFor(cell, local) {
+  var note = String(cell.getValue());
+  return note.indexOf('Sent ') === 0 && note.indexOf(' for ' + local) !== -1;
+}
+
+/** Asks the site to send one text, writes the outcome, and says whether it went. */
+function askSite(cell, row, kind, confirmedJustNow, local) {
+  var headers = {};
+  if (VERCEL_BYPASS) headers['x-vercel-protection-bypass'] = VERCEL_BYPASS;
+  var payload = { secret: SECRET, kind: kind, confirmedJustNow: confirmedJustNow };
+  for (var key in row) payload[key] = row[key];
+  try {
+    var res = UrlFetchApp.fetch(SITE_URL + '/api/appointment-text', {
+      method: 'post',
+      contentType: 'application/json',
+      headers: headers,
+      muteHttpExceptions: true,
+      payload: JSON.stringify(payload),
+    });
+    var result;
+    try {
+      result = JSON.parse(res.getContentText());
+    } catch (err) {
+      result = { sent: false, reason: 'site answered ' + res.getResponseCode() };
+    }
+    if (result.sent) {
+      cell.setValue('Sent ' + Utilities.formatDate(new Date(), 'America/New_York', 'M/d/yyyy h:mm a') +
+        ' for ' + local);
+      return true;
+    }
+    cell.setValue((result.wait ? 'Waiting: ' : 'Not sent: ') + result.reason);
+  } catch (err) {
+    // The site being unreachable is temporary, so keep it in the hourly check.
+    cell.setValue('Waiting: could not reach the site, will retry (' + String(err).slice(0, 150) + ')');
+  }
+  return false;
+}
+
+/**
+ * Marks SMS Consent (column L) on every row with this phone number, after the
+ * customer texts STOP or START. Twilio enforces the opt-out by itself; this
+ * keeps the sheet saying the same thing. Matched on the last ten digits, since
+ * the sheet stores 843-555-0100 and Twilio sends +18435550100.
+ */
+function recordConsent(body) {
+  var digits = String(body.phone || '').replace(/\D/g, '').slice(-10);
+  if (digits.length !== 10 || (body.consent !== 'yes' && body.consent !== 'no')) {
+    return reply('bad request');
+  }
+  var stamp = Utilities.formatDate(new Date(), 'America/New_York', 'M/d/yyyy');
+  var value = body.consent === 'no' ? 'no (replied STOP ' + stamp + ')' : 'yes (replied START ' + stamp + ')';
+
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+  var last = sheet.getLastRow();
+  var changed = 0;
+  if (last >= 2) {
+    var phones = sheet.getRange(2, COL_PHONE, last - 1, 1).getValues();
+    for (var i = 0; i < phones.length; i++) {
+      if (String(phones[i][0]).replace(/\D/g, '').slice(-10) === digits) {
+        sheet.getRange(i + 2, COL_SMS_CONSENT).setValue(value);
+        changed++;
+      }
+    }
+  }
+  return reply('ok\n' + JSON.stringify({ rows: changed }));
 }
 
 /**
