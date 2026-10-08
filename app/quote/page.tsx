@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
 import { sendGAEvent } from '@next/third-parties/google';
 import { ADDRESS_CITIES, OTHER_CITY } from '@/lib/address';
+import { placesEnabled } from '@/lib/google-places';
 import StreetAutocomplete from './StreetAutocomplete';
 
 type QuoteFormValues = {
@@ -143,6 +144,8 @@ export default function QuotePage() {
   const [photoNotice, setPhotoNotice] = useState<string | null>(null);
   const [optimizing, setOptimizing] = useState(false);
   const [stage, setStage] = useState(0);
+  // Turns address suggestions off. Local only, never sent with the quote.
+  const [manualAddress, setManualAddress] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Object URLs live until they are revoked. Removing a photo revokes its own,
@@ -454,6 +457,7 @@ export default function QuotePage() {
               autoComplete="address-line1"
               className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
               placeholder="123 King Street"
+              manual={manualAddress}
               onPick={(address) => {
                 const fill = { shouldValidate: true, shouldDirty: true };
                 setValue('street', address.street, fill);
@@ -485,6 +489,17 @@ export default function QuotePage() {
               className="mt-3 w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
               placeholder="Apt, suite, unit (optional)"
             />
+            {placesEnabled() && (
+              <label className="mt-2 flex items-center gap-2 text-sm text-gray-400">
+                <input
+                  type="checkbox"
+                  checked={manualAddress}
+                  onChange={(e) => setManualAddress(e.currentTarget.checked)}
+                  className="h-4 w-4 accent-[#397774]"
+                />
+                Enter address manually
+              </label>
+            )}
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

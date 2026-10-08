@@ -16,6 +16,8 @@ type Props = ComponentPropsWithRef<'input'> & {
   onPick: (address: ParsedAddress) => void;
   /** Called with the suggestion's own text when Google has no street number for it. */
   onPickUnparsed: (text: string) => void;
+  /** The customer chose to type the address themselves. No lookups while set. */
+  manual?: boolean;
 };
 
 /**
@@ -31,7 +33,7 @@ type Props = ComponentPropsWithRef<'input'> & {
  * Billing is per session: every keystroke shares one token, and fetching the
  * picked place's details closes it, so a whole lookup is billed once.
  */
-export default function StreetAutocomplete({ onPick, onPickUnparsed, onChange, onBlur, onKeyDown, ...inputProps }: Props) {
+export default function StreetAutocomplete({ onPick, onPickUnparsed, manual = false, onChange, onBlur, onKeyDown, ...inputProps }: Props) {
   const [suggestions, setSuggestions] = useState<PlacePrediction[]>([]);
   const [active, setActive] = useState(-1);
   const [open, setOpen] = useState(false);
@@ -46,7 +48,7 @@ export default function StreetAutocomplete({ onPick, onPickUnparsed, onChange, o
   }, []);
 
   const listId = `${inputProps.id ?? 'street'}-suggestions`;
-  const showList = open && suggestions.length > 0;
+  const showList = !manual && open && suggestions.length > 0;
 
   const close = () => {
     setOpen(false);
@@ -106,7 +108,7 @@ export default function StreetAutocomplete({ onPick, onPickUnparsed, onChange, o
       <input
         {...inputProps}
         role="combobox"
-        aria-autocomplete="list"
+        aria-autocomplete={manual ? 'none' : 'list'}
         aria-expanded={showList}
         aria-controls={listId}
         aria-activedescendant={showList && active >= 0 ? `${listId}-${active}` : undefined}
@@ -114,6 +116,7 @@ export default function StreetAutocomplete({ onPick, onPickUnparsed, onChange, o
           onChange?.(e);
           const value = e.currentTarget.value;
           if (timer.current) clearTimeout(timer.current);
+          if (manual) return;
           timer.current = setTimeout(() => lookup(value), DEBOUNCE_MS);
         }}
         onBlur={(e) => {
