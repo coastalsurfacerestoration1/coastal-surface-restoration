@@ -28,7 +28,7 @@ const row = (extra: Record<string, unknown> = {}) => ({
   street: '1810 Mepkin Rd',
   city: 'West Ashley',
   smsConsent: 'yes',
-  appointment: new Date(Date.now() + 7 * 24 * 3600 * 1000).toISOString(),
+  appointment: '2099-10-15T09:00',
   ...extra,
 });
 

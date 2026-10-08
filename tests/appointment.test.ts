@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { appointmentText } from '@/lib/appointment';
 
 const NOW = new Date('2026-10-08T12:00:00Z');
-// 9:00 AM in Charleston on Thursday, October 15, 2026 (EDT, UTC-4).
-const WHEN = '2026-10-15T13:00:00.000Z';
+// Charleston wall time, as the sheet's script sends it.
+const WHEN = '2026-10-15T09:00';
 
 const row = (extra: Record<string, unknown> = {}) => ({
   name: 'Jane Customer',
@@ -41,8 +41,8 @@ describe('appointmentText', () => {
     expect(result.body).toContain('1234 Rivers Avenue, Unit 12B. Reply STOP');
   });
 
-  it('converts to Charleston time across daylight saving', () => {
-    const result = appointmentText(row({ appointment: '2026-11-12T19:30:00.000Z' }), NOW);
+  it('reads the wall time as Charleston time, on both sides of daylight saving', () => {
+    const result = appointmentText(row({ appointment: '2026-11-12T14:30' }), NOW);
     expect(result.ok && result.body).toContain('Thu, Nov 12 at 2:30 PM');
   });
 
@@ -55,11 +55,18 @@ describe('appointmentText', () => {
     expect(appointmentText(row({ smsConsent: true }), NOW).ok).toBe(true);
   });
 
+  it('treats an appointment later today as upcoming, judged in Charleston time', () => {
+    // 8:00 AM Charleston is 12:00 UTC, so 9:00 AM the same morning is still ahead.
+    expect(appointmentText(row({ appointment: '2026-10-08T09:00' }), NOW).ok).toBe(true);
+    expect(appointmentText(row({ appointment: '2026-10-08T07:30' }), NOW).ok).toBe(false);
+  });
+
   it('refuses a missing phone or street, a bad date and a past appointment', () => {
     expect(appointmentText(row({ phone: '' }), NOW).ok).toBe(false);
     expect(appointmentText(row({ street: '  ' }), NOW).ok).toBe(false);
     expect(appointmentText(row({ appointment: 'soon' }), NOW).ok).toBe(false);
-    expect(appointmentText(row({ appointment: '2026-10-01T13:00:00.000Z' }), NOW)).toEqual({
+    expect(appointmentText(row({ appointment: '2026-10-15T13:00:00.000Z' }), NOW).ok).toBe(false);
+    expect(appointmentText(row({ appointment: '2026-10-01T09:00' }), NOW)).toEqual({
       ok: false,
       reason: 'appointment is in the past',
     });

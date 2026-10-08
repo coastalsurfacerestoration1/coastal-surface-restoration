@@ -80,6 +80,20 @@ class FakeSheet {
   }
 }
 
+/** What Utilities.formatDate gives for yyyy-MM-dd'T'HH:mm. */
+const wallTime = (date: Date, zone: string) =>
+  new Intl.DateTimeFormat('sv-SE', {
+    timeZone: zone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  })
+    .format(date)
+    .replace(' ', 'T');
+
 function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true } = {}) {
   const drive = new FakeDrive();
   const root = new FakeFolder(drive, 'ROOT', 'CSR');
@@ -115,7 +129,14 @@ function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true }
     parseInt,
     Date,
     ContentService: { createTextOutput: (text: string) => ({ text }) },
-    SpreadsheetApp: { getActiveSpreadsheet: () => ({ getSheets: () => [sheet], getName: () => 'Log' }) },
+    SpreadsheetApp: {
+      getActiveSpreadsheet: () => ({
+        getSheets: () => [sheet],
+        getName: () => 'Log',
+        // The TEST copy really is set to Pacific, which is what this guards.
+        getSpreadsheetTimeZone: () => 'America/Los_Angeles',
+      }),
+    },
     DriveApp: {
       getFolderById: (id: string) => {
         const folder = drive.byId.get(id);
@@ -125,7 +146,8 @@ function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true }
     },
     LockService: { getScriptLock: () => ({ tryLock: () => lockFree, releaseLock: () => {} }) },
     Utilities: {
-      formatDate: () => '2026',
+      formatDate: (date: Date, zone: string, pattern: string) =>
+        pattern.includes("'T'") ? wallTime(date, zone) : '2026',
       base64Decode: (s: string) => Buffer.from(s, 'base64'),
       newBlob: (bytes: Buffer, mimeType: string, name: string) => ({ bytes, mimeType, name }),
     },
@@ -340,9 +362,9 @@ describe('verify', () => {
 });
 
 describe('appointment text', () => {
-  // 9:00 AM local. The sandbox runs in whatever zone the machine is in, and
-  // the script only looks at local hours, so build it in local time too.
-  const nineAm = () => new Date(2026, 9, 15, 9, 0);
+  // What Sheets hands the script for "10/15/2026 9:00 AM" typed into a sheet
+  // set to Pacific: 9:00 AM PDT.
+  const nineAm = () => new Date('2026-10-15T16:00:00Z');
 
   it('sends the row to the site once, with the bypass header, and records it in U', () => {
     const { post, fetches, editAppointment } = load();
@@ -359,11 +381,12 @@ describe('appointment text', () => {
       street: '1 King St',
       city: 'Charleston',
       smsConsent: 'yes',
-      appointment: nineAm().toISOString(),
+      // As typed, not shifted to 12:00 by the sheet being on Pacific time.
+      appointment: '2026-10-15T09:00',
     });
 
     // Changing the time later does not text the customer again.
-    editAppointment(2, new Date(2026, 9, 16, 10, 0));
+    editAppointment(2, new Date('2026-10-16T17:00:00Z'));
     expect(fetches).toHaveLength(1);
   });
 
@@ -378,7 +401,7 @@ describe('appointment text', () => {
   it('asks for a time instead of texting midnight, and retries once fixed', () => {
     const { post, fetches, editAppointment } = load();
     post(quote());
-    expect(editAppointment(2, new Date(2026, 9, 15))).toMatch(/^Not sent: add a time/);
+    expect(editAppointment(2, new Date('2026-10-15T07:00:00Z'))).toMatch(/^Not sent: add a time/);
     expect(fetches).toHaveLength(0);
     expect(editAppointment(2, nineAm())).toBe('Sent 2026');
   });

@@ -126,9 +126,16 @@ function sendAppointmentText(sheet, row) {
     status.setValue('Not sent: not a date and time. Type it like 10/15/2026 9:00 AM');
     return;
   }
+  // The wall time exactly as typed, read in the spreadsheet's own time zone.
+  // A Date from a cell is an instant in that zone, and the sheet's zone is
+  // whatever the account was set to (the TEST copy is Pacific), so sending the
+  // instant would turn a typed 9:00 AM into noon in Charleston. The site reads
+  // this as Charleston time.
+  var zone = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
+  var local = Utilities.formatDate(when, zone, "yyyy-MM-dd'T'HH:mm");
   // A bare date reads as midnight. Nobody books a midnight job, so it means
   // the time was left off, and a text saying 12:00 AM would be wrong.
-  if (when.getHours() === 0 && when.getMinutes() === 0) {
+  if (/T00:00$/.test(local)) {
     status.setValue('Not sent: add a time, like 10/15/2026 9:00 AM');
     return;
   }
@@ -148,7 +155,7 @@ function sendAppointmentText(sheet, row) {
         street: values[COL_STREET - 1],
         city: values[COL_CITY - 1],
         smsConsent: values[COL_SMS_CONSENT - 1],
-        appointment: when.toISOString(),
+        appointment: local,
       }),
     });
     var result;

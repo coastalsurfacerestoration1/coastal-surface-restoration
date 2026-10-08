@@ -11,7 +11,7 @@ export type AppointmentRequest = {
   street?: unknown;
   city?: unknown;
   smsConsent?: unknown;
-  /** ISO 8601, from the sheet's date cell. */
+  /** Charleston wall time as typed in the sheet, e.g. 2026-10-15T09:00. */
   appointment?: unknown;
 };
 
@@ -39,8 +39,8 @@ export function appointmentText(
   const street = text(request.street);
   if (!street) return { ok: false, reason: 'no street on the row' };
 
-  const when = new Date(text(request.appointment));
-  if (Number.isNaN(when.getTime())) return { ok: false, reason: 'appointment is not a date and time' };
+  const when = charlestonTime(text(request.appointment));
+  if (!when) return { ok: false, reason: 'appointment is not a date and time' };
   if (when.getTime() < now.getTime()) return { ok: false, reason: 'appointment is in the past' };
 
   const day = new Intl.DateTimeFormat('en-US', {
@@ -76,4 +76,39 @@ export function appointmentText(
     to: phone,
     body: withCity && withCity.length <= SEGMENT ? withCity : compose(street),
   };
+}
+
+/** Minutes Charleston is ahead of UTC at that instant, e.g. -240 in summer. */
+function zoneOffset(date: Date): number {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: ZONE,
+    hourCycle: 'h23',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).formatToParts(date);
+  const part = (type: string) => Number(parts.find((p) => p.type === type)?.value);
+  const asUtc = Date.UTC(part('year'), part('month') - 1, part('day'), part('hour'), part('minute'));
+  return Math.round((asUtc - Math.floor(date.getTime() / 60000) * 60000) / 60000);
+}
+
+const WALL_TIME = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/;
+
+/**
+ * The instant a Charleston wall time names, such as 2026-10-15T09:00.
+ *
+ * The offset is looked up at the guessed instant and then once more at the
+ * corrected one, which settles the daylight saving changeover days.
+ */
+function charlestonTime(value: string): Date | null {
+  const match = WALL_TIME.exec(value);
+  if (!match) return null;
+  const [, y, mo, d, h, mi] = match.map(Number);
+  const naive = Date.UTC(y, mo - 1, d, h, mi);
+  let instant = naive - zoneOffset(new Date(naive)) * 60000;
+  instant = naive - zoneOffset(new Date(instant)) * 60000;
+  const when = new Date(instant);
+  return Number.isNaN(when.getTime()) ? null : when;
 }
