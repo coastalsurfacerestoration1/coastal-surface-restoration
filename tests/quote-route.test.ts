@@ -19,7 +19,7 @@ vi.mock('@/lib/notify', () => ({
   appendQuoteRow: mocks.appendQuoteRow,
   saveJobPhotos: mocks.saveJobPhotos,
   sendSms: mocks.sendSms,
-  customerSmsEnabled: () => mocks.customerSms,
+  quoteConfirmationSmsEnabled: () => mocks.customerSms,
 }));
 
 // No real DNS in unit tests. The check itself is covered in email.test.ts.

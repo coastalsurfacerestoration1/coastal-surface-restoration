@@ -102,6 +102,18 @@ export function customerSmsEnabled(): boolean {
   return process.env.TWILIO_CUSTOMER_SMS === 'enabled';
 }
 
+/**
+ * Whether the "we received your quote request" text may go out, on top of
+ * customerSmsEnabled.
+ *
+ * Its own switch because, unlike the appointment texts, it is not in the
+ * approved A2P campaign's description or sample messages. It stays off in
+ * Production until the campaign is amended to cover it (Tyler, 2026-10-07).
+ */
+export function quoteConfirmationSmsEnabled(): boolean {
+  return customerSmsEnabled() && process.env.TWILIO_QUOTE_CONFIRMATION_SMS === 'enabled';
+}
+
 /** One quote, flattened for the spreadsheet. */
 export type QuoteRow = {
   timestamp: string;
