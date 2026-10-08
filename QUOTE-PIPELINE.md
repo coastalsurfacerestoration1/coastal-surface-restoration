@@ -324,6 +324,40 @@ With no key, or if Google's script fails, the field is a plain input.
 
 ---
 
+## Appointment text (added 2026-10-07)
+
+Typing a date and time into column **T, Appointment**, of the Quote Requests
+Log (e.g. `10/15/2026 9:00 AM`) texts the customer:
+
+> Coastal Surface Restoration here. Reminder: your appointment is scheduled for
+> Thu, Oct 15 at 9:00 AM, 1810 Mepkin Rd, West Ashley. Reply STOP to opt out.
+
+- An installable edit trigger (`onSheetEdit`, created by `authorize` /
+  `installTriggers`) calls `POST /api/appointment-text` with the row,
+  authenticated with the sheet's `QUOTE_SHEET_SECRET`.
+- The site sends only when the row's SMS Consent (L) is `yes` and
+  `TWILIO_CUSTOMER_SMS=enabled`, through the same Messaging Service, so STOP,
+  START and HELP behave exactly as for the confirmation text.
+- Column **U, Appointment Text**, gets `Sent <time>` or `Not sent: <reason>`.
+  A row that says Sent is never texted again, even if T changes. Clear U and
+  re-enter T to send again.
+- The time is the wall time as typed, whatever the spreadsheet's own time
+  zone (the TEST copy is Pacific). A date with no time is refused.
+- The city is dropped when it would push the text past one 160 character
+  segment.
+- `SITE_URL` (and `VERCEL_BYPASS` for TEST) in `.env.apps-script.<env>.local`
+  tell the script where the site is. For TEST it points at a branch preview.
+
+Going live needs the new scopes authorized on the live script, in this order:
+add `SITE_URL=https://coastalsurfacerestoration.com` to
+`.env.apps-script.live.local`, `--push-only`, Tyler runs `authorize` in the live
+script editor (this also installs the trigger), then `--deploy-only`.
+
+New quote alerts go to `ALERT_SMS_TO`, the Quo business number 854-222-7790
+in Production as of 2026-10-07.
+
+---
+
 ## Dev environment
 
 Production is `main`. Every change goes on a branch, gets checked on its
