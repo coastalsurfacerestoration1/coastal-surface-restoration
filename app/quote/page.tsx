@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
 import { sendGAEvent } from '@next/third-parties/google';
+import { ADDRESS_CITIES, OTHER_CITY } from '@/lib/address';
+import StreetAutocomplete from './StreetAutocomplete';
 
 type QuoteFormValues = {
   name: string;
@@ -108,31 +110,6 @@ const SUBMIT_STAGES = [
   { after: 12000, text: 'Finishing up' },
   { after: 30000, text: 'Still working, thanks for waiting' },
 ] as const;
-
-const OTHER_CITY = 'Other / not listed';
-
-/**
- * Cities offered in the address dropdown.
- *
- * Deliberately not SERVICE_AREAS from lib/schema.ts: that list is the areas we
- * advertise, including neighborhoods like the Historic District that are not
- * mailing cities. This one has to match what a customer would write on an
- * envelope, so it lists municipalities and keeps an escape hatch for the rest.
- */
-const ADDRESS_CITIES = [
-  'Charleston',
-  'Mount Pleasant',
-  'North Charleston',
-  'West Ashley',
-  'James Island',
-  'Johns Island',
-  'Daniel Island',
-  'Folly Beach',
-  'Isle of Palms',
-  "Sullivan's Island",
-  'Summerville',
-  OTHER_CITY,
-];
 
 const HEARD_OTHER = 'Other';
 
@@ -256,6 +233,8 @@ export default function QuotePage() {
     register,
     handleSubmit,
     control,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm<QuoteFormValues>({ defaultValues: { state: 'SC' } });
 
@@ -464,7 +443,7 @@ export default function QuotePage() {
             <label htmlFor="street" className="block text-sm font-medium text-gray-300 mb-2">
               Property Address <span className="text-[#397774]">*</span>
             </label>
-            <input
+            <StreetAutocomplete
               {...register('street', {
                 required: 'Street address is required',
                 validate: (value) =>
@@ -475,6 +454,22 @@ export default function QuotePage() {
               autoComplete="address-line1"
               className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors"
               placeholder="123 King Street"
+              onPick={(address) => {
+                const fill = { shouldValidate: true, shouldDirty: true };
+                setValue('street', address.street, fill);
+                // A unit the customer already typed is kept unless Google
+                // knows one for this address.
+                if (address.street2 || !getValues('street2')) {
+                  setValue('street2', address.street2, fill);
+                }
+                setValue('city', address.city, fill);
+                setValue('cityOther', address.cityOther, fill);
+                if (address.state) setValue('state', address.state, fill);
+                if (address.zip) setValue('zip', address.zip, fill);
+              }}
+              onPickUnparsed={(text) =>
+                setValue('street', text, { shouldValidate: true, shouldDirty: true })
+              }
             />
             {errors.street && (
               <p className="text-red-400 text-sm mt-1">{errors.street.message}</p>
