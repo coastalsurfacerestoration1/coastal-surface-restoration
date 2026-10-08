@@ -63,12 +63,17 @@ class FakeSheet {
   ];
   appendRow(values: unknown[]) { this.rows.push([...values]); }
   getLastRow() { return this.rows.length; }
-  getRange(row: number, col: number) {
+  getRange(row: number, col: number, numRows = 1, numCols = 1) {
     return {
       getValue: () => this.rows[row - 1]?.[col - 1] ?? '',
       setValue: (v: unknown) => { this.rows[row - 1][col - 1] = v; },
+      getValues: () =>
+        Array.from({ length: numRows }, (_, r) =>
+          Array.from({ length: numCols }, (_, c) => this.rows[row - 1 + r]?.[col - 1 + c] ?? ''),
+        ),
     };
   }
+  getIndex() { return 1; }
   getDataRange() {
     const width = Math.max(...this.rows.map((r) => r.length));
     return { getValues: () => this.rows.map((r) => Array.from({ length: width }, (_, i) => r[i] ?? '')) };
@@ -82,8 +87,26 @@ function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true }
   root.children.push(jobs);
   for (const name of existing) jobs.children.push(new FakeFolder(drive, `E${++drive.seq}`, name, jobs));
   const sheet = new FakeSheet();
+  const fetches: { url: string; options: { payload: string; headers: Record<string, string> } }[] = [];
+  const site = { reply: '{"sent":true}' as string, code: 200, throws: false };
+  const triggers: string[] = [];
 
   const context = createContext({
+    UrlFetchApp: {
+      fetch: (url: string, options: { payload: string; headers: Record<string, string> }) => {
+        if (site.throws) throw new Error('Exception: DNS error');
+        fetches.push({ url, options });
+        return { getContentText: () => site.reply, getResponseCode: () => site.code };
+      },
+    },
+    ScriptApp: {
+      getProjectTriggers: () => triggers.map((h) => ({ getHandlerFunction: () => h })),
+      deleteTrigger: (t: { getHandlerFunction: () => string }) => triggers.splice(triggers.indexOf(t.getHandlerFunction()), 1),
+      newTrigger: (handler: string) => ({
+        forSpreadsheet: () => ({ onEdit: () => ({ create: () => triggers.push(handler) }) }),
+      }),
+    },
+    isNaN,
     console: { error: () => {}, log: () => {} },
     JSON,
     String,
@@ -108,10 +131,10 @@ function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true }
     },
   });
 
-  const code = SOURCE.replace("'__SECRET__'", JSON.stringify(SECRET)).replace(
-    "'__JOBS_FOLDER_ID__'",
-    JSON.stringify(jobsId),
-  );
+  const code = SOURCE.replace("'__SECRET__'", JSON.stringify(SECRET))
+    .replace("'__JOBS_FOLDER_ID__'", JSON.stringify(jobsId))
+    .replace("'__SITE_URL__'", JSON.stringify('https://preview.example'))
+    .replace("'__VERCEL_BYPASS__'", JSON.stringify('bypass-token'));
   runInContext(code, context);
 
   const post = (body: unknown) => {
@@ -119,7 +142,16 @@ function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true }
     const [verdict, ...rest] = text.split('\n');
     return { verdict, detail: rest.length ? JSON.parse(rest.join('\n')) : null, text };
   };
-  return { drive, jobs, sheet, post };
+  // An edit to column T of one row, the way Sheets reports it.
+  const editAppointment = (row: number, value: unknown) => {
+    while (sheet.rows[row - 1].length < 20) sheet.rows[row - 1].push('');
+    sheet.rows[row - 1][19] = value;
+    context.onSheetEdit({
+      range: { getSheet: () => sheet, getColumn: () => 20, getLastColumn: () => 20, getRow: () => row, getLastRow: () => row },
+    });
+    return sheet.rows[row - 1][20];
+  };
+  return { drive, jobs, sheet, post, fetches, site, triggers, editAppointment, context };
 }
 
 const quote = (extra: Record<string, unknown> = {}) => ({
@@ -304,5 +336,88 @@ describe('verify', () => {
   it('refuses to run on the live deployment', () => {
     const { post } = load({ jobsId: LIVE_JOBS });
     expect(post({ secret: SECRET, action: 'verify', name: 'Jane Customer' }).text).toBe('forbidden');
+  });
+});
+
+describe('appointment text', () => {
+  // 9:00 AM local. The sandbox runs in whatever zone the machine is in, and
+  // the script only looks at local hours, so build it in local time too.
+  const nineAm = () => new Date(2026, 9, 15, 9, 0);
+
+  it('sends the row to the site once, with the bypass header, and records it in U', () => {
+    const { post, fetches, editAppointment } = load();
+    post(quote());
+
+    expect(editAppointment(2, nineAm())).toBe('Sent 2026');
+    expect(fetches).toHaveLength(1);
+    expect(fetches[0].url).toBe('https://preview.example/api/appointment-text');
+    expect(fetches[0].options.headers).toEqual({ 'x-vercel-protection-bypass': 'bypass-token' });
+    expect(JSON.parse(fetches[0].options.payload)).toEqual({
+      secret: SECRET,
+      name: 'Jane Customer',
+      phone: '843-555-2345',
+      street: '1 King St',
+      city: 'Charleston',
+      smsConsent: 'yes',
+      appointment: nineAm().toISOString(),
+    });
+
+    // Changing the time later does not text the customer again.
+    editAppointment(2, new Date(2026, 9, 16, 10, 0));
+    expect(fetches).toHaveLength(1);
+  });
+
+  it('passes the row consent through for the site to enforce', () => {
+    const { post, fetches, site, editAppointment } = load();
+    post(quote({ smsConsent: 'no' }));
+    site.reply = '{"sent":false,"reason":"customer did not agree to texts on the quote form"}';
+    expect(editAppointment(2, nineAm())).toBe('Not sent: customer did not agree to texts on the quote form');
+    expect(JSON.parse(fetches[0].options.payload).smsConsent).toBe('no');
+  });
+
+  it('asks for a time instead of texting midnight, and retries once fixed', () => {
+    const { post, fetches, editAppointment } = load();
+    post(quote());
+    expect(editAppointment(2, new Date(2026, 9, 15))).toMatch(/^Not sent: add a time/);
+    expect(fetches).toHaveLength(0);
+    expect(editAppointment(2, nineAm())).toBe('Sent 2026');
+  });
+
+  it('flags text that is not a date and ignores a cleared cell', () => {
+    const { post, fetches, editAppointment } = load();
+    post(quote());
+    expect(editAppointment(2, 'next Tuesday')).toMatch(/^Not sent: not a date and time/);
+    expect(editAppointment(2, '')).toMatch(/^Not sent/);
+    expect(fetches).toHaveLength(0);
+  });
+
+  it('records a site failure on the row rather than throwing', () => {
+    const { post, site, editAppointment } = load();
+    post(quote());
+    site.throws = true;
+    expect(editAppointment(2, nineAm())).toBe('Not sent: Error: Exception: DNS error');
+    site.throws = false;
+    site.reply = '<html>sign in</html>';
+    site.code = 401;
+    expect(editAppointment(2, nineAm())).toBe('Not sent: site answered 401');
+  });
+
+  it('ignores edits outside column T and on the header row', () => {
+    const { post, fetches, sheet, context } = load();
+    post(quote());
+    context.onSheetEdit({
+      range: { getSheet: () => sheet, getColumn: () => 15, getLastColumn: () => 16, getRow: () => 2, getLastRow: () => 2 },
+    });
+    context.onSheetEdit({
+      range: { getSheet: () => sheet, getColumn: () => 20, getLastColumn: () => 20, getRow: () => 1, getLastRow: () => 1 },
+    });
+    expect(fetches).toHaveLength(0);
+  });
+
+  it('installs exactly one edit trigger however often it runs', () => {
+    const { triggers, context } = load();
+    context.installTriggers();
+    context.installTriggers();
+    expect(triggers).toEqual(['onSheetEdit']);
   });
 });

@@ -20,6 +20,9 @@
  *   DEPLOYMENT_ID=...    the web app deployment to update (blank on first run)
  *   SECRET=...           same value as QUOTE_SHEET_SECRET in Vercel
  *   JOBS_FOLDER_ID=...   the 15 - Jobs folder this sheet files into
+ *   SITE_URL=...         the site the appointment text is sent through: the
+ *                        live domain for live, a branch preview for test
+ *   VERCEL_BYPASS=...    test only, Vercel's protection bypass for previews
  *
  * Needs clasp logged in as the sheet owner (`clasp login`).
  */
@@ -51,7 +54,7 @@ const config = Object.fromEntries(
     .map((line) => [line.slice(0, line.indexOf('=')).trim(), line.slice(line.indexOf('=') + 1).trim()]),
 );
 
-for (const key of ['SCRIPT_ID', 'SECRET', 'JOBS_FOLDER_ID']) {
+for (const key of ['SCRIPT_ID', 'SECRET', 'JOBS_FOLDER_ID', 'SITE_URL']) {
   if (!config[key]) {
     console.error(`${configPath} is missing ${key}`);
     process.exit(1);
@@ -66,12 +69,22 @@ if (config.JOBS_FOLDER_ID !== expectedFolder) {
   process.exit(1);
 }
 
+// The live sheet texts customers through the live site only, and never needs
+// a preview bypass. A preview URL here would send real appointment texts
+// through unreviewed code.
+if (env === 'live' && (config.SITE_URL !== 'https://coastalsurfacerestoration.com' || config.VERCEL_BYPASS)) {
+  console.error('For live, SITE_URL must be https://coastalsurfacerestoration.com and VERCEL_BYPASS blank.');
+  process.exit(1);
+}
+
 const build = mkdtempSync(join(tmpdir(), `quote-script-${env}-`));
 try {
   const code = readFileSync(join(root, 'scripts/apps-script/Code.gs'), 'utf8')
     .replace("'__SECRET__'", JSON.stringify(config.SECRET))
-    .replace("'__JOBS_FOLDER_ID__'", JSON.stringify(config.JOBS_FOLDER_ID));
-  if (code.includes('__SECRET__') || code.includes('__JOBS_FOLDER_ID__')) {
+    .replace("'__JOBS_FOLDER_ID__'", JSON.stringify(config.JOBS_FOLDER_ID))
+    .replace("'__SITE_URL__'", JSON.stringify(config.SITE_URL.replace(/\/+$/, '')))
+    .replace("'__VERCEL_BYPASS__'", JSON.stringify(config.VERCEL_BYPASS || ''));
+  if (/'__[A-Z_]+__'/.test(code)) {
     throw new Error('A placeholder was not replaced in Code.gs');
   }
   writeFileSync(join(build, 'Code.gs'), code);

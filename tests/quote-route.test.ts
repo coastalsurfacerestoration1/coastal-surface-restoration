@@ -5,6 +5,7 @@ const mocks = vi.hoisted(() => ({
   appendQuoteRow: vi.fn(),
   saveJobPhotos: vi.fn(),
   sendSms: vi.fn(),
+  customerSms: false,
   afterCallbacks: [] as (() => Promise<void>)[],
 }));
 
@@ -18,7 +19,7 @@ vi.mock('@/lib/notify', () => ({
   appendQuoteRow: mocks.appendQuoteRow,
   saveJobPhotos: mocks.saveJobPhotos,
   sendSms: mocks.sendSms,
-  customerSmsEnabled: () => false,
+  customerSmsEnabled: () => mocks.customerSms,
 }));
 
 // No real DNS in unit tests. The check itself is covered in email.test.ts.
@@ -83,6 +84,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  mocks.customerSms = false;
   vi.clearAllMocks();
   vi.restoreAllMocks();
   vi.unstubAllEnvs();
@@ -300,5 +302,39 @@ describe('POST /api/quote', () => {
     const ack = mocks.send.mock.calls.find(([email]) => email.to === 'jane@example.com')?.[0];
     expect(ack.text).toContain('late October 2026');
     expect(ack.html).toContain('late October 2026');
+  });
+
+  describe('customer confirmation text', () => {
+    const CONFIRMATION = /received your quote request.*Reply STOP to opt out, HELP for help\./;
+    const textsTo = (phone: string) =>
+      mocks.sendSms.mock.calls.filter(([to]) => to === phone).map(([, body]) => body as string);
+
+    it('goes out when the box is checked and customer texts are on', async () => {
+      mocks.customerSms = true;
+      const { POST } = await loadRoute();
+      expect((await POST(quote({ smsConsent: 'yes' }))).status).toBe(200);
+      expect(textsTo('843-555-2345')).toEqual([expect.stringMatching(CONFIRMATION)]);
+    });
+
+    it('does not go out when the box is unchecked', async () => {
+      mocks.customerSms = true;
+      const { POST } = await loadRoute();
+      expect((await POST(quote())).status).toBe(200);
+      expect(textsTo('843-555-2345')).toEqual([]);
+    });
+
+    it('does not go out when customer texts are off, even with consent', async () => {
+      const { POST } = await loadRoute();
+      await POST(quote({ smsConsent: 'yes' }));
+      expect(textsTo('843-555-2345')).toEqual([]);
+    });
+
+    it('treats anything but "yes" as no consent', async () => {
+      mocks.customerSms = true;
+      const { POST } = await loadRoute();
+      await POST(quote({ smsConsent: 'false' }));
+      await POST(quote({ smsConsent: 'on' }));
+      expect(textsTo('843-555-2345')).toEqual([]);
+    });
   });
 });

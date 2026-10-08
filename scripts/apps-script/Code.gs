@@ -18,16 +18,31 @@ const SECRET = '__SECRET__';
 const JOBS_FOLDER_ID = '__JOBS_FOLDER_ID__';
 const TEST_JOBS_FOLDER_ID = '1zDzvf3chhgm_BJUKCvQYBiXBWqfAG12Y';
 
+// Where this sheet's site lives, for the appointment text. The live sheet calls
+// the live site and the TEST sheet calls a branch preview, which also needs
+// Vercel's protection bypass. Blank on live.
+const SITE_URL = '__SITE_URL__';
+const VERCEL_BYPASS = '__VERCEL_BYPASS__';
+
 const PHOTOS_SUBFOLDER = 'Photos (Before & After)';
 const JOB_SUBFOLDERS = [PHOTOS_SUBFOLDER, 'Quotes & Invoices', 'Signed Forms'];
 
 // 1-based columns. A to N are the form fields, O and P (Status, Notes) are
-// Tyler's to fill in by hand.
+// Tyler's to fill in by hand, and so is T, the appointment.
+const COL_NAME = 2; // B
+const COL_PHONE = 4; // D
+const COL_STREET = 5; // E
+const COL_CITY = 6; // F
+const COL_SMS_CONSENT = 12; // L
 const COL_JOB_FOLDER = 17; // Q
+const COL_APPOINTMENT = 20; // T, typed by Tyler, e.g. 10/15/2026 9:00 AM
+const COL_APPOINTMENT_TEXT = 21; // U, written by this script
 const ADDED_HEADERS = [
   [17, 'Job Folder'],
   [18, 'How They Heard'],
   [19, 'Referred By'],
+  [COL_APPOINTMENT, 'Appointment'],
+  [COL_APPOINTMENT_TEXT, 'Appointment Text'],
 ];
 
 function doPost(e) {
@@ -58,6 +73,98 @@ function doPost(e) {
 function authorize() {
   DriveApp.getFolderById(JOBS_FOLDER_ID).getName();
   SpreadsheetApp.getActiveSpreadsheet().getName();
+  installTriggers();
+}
+
+/**
+ * Sets up the edit trigger behind the appointment text, and the T and U
+ * headers. Safe to run again: it replaces its own trigger rather than adding a
+ * second one, which would send every text twice.
+ *
+ * An installable trigger, not a simple onEdit, because only an installable one
+ * may call out to the site.
+ */
+function installTriggers() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  ScriptApp.getProjectTriggers().forEach(function (trigger) {
+    if (trigger.getHandlerFunction() === 'onSheetEdit') ScriptApp.deleteTrigger(trigger);
+  });
+  ScriptApp.newTrigger('onSheetEdit').forSpreadsheet(spreadsheet).onEdit().create();
+  ensureHeaders(spreadsheet.getSheets()[0]);
+}
+
+/**
+ * Sends the appointment text when an Appointment cell (column T) is filled in.
+ *
+ * Fires once per row: column U records "Sent" with the time, and a row that
+ * says Sent is never texted again, even if the appointment is changed. A row
+ * that says "Not sent: <reason>" is retried on the next edit of its T cell, so
+ * fixing the problem and re-entering the time is all it takes. Edits made by
+ * this script do not fire the trigger, so writing U cannot loop.
+ */
+function onSheetEdit(e) {
+  var range = e && e.range;
+  if (!range) return;
+  var sheet = range.getSheet();
+  if (sheet.getIndex() !== 1) return;
+  if (range.getColumn() > COL_APPOINTMENT || range.getLastColumn() < COL_APPOINTMENT) return;
+
+  for (var row = Math.max(2, range.getRow()); row <= range.getLastRow(); row++) {
+    sendAppointmentText(sheet, row);
+  }
+}
+
+function sendAppointmentText(sheet, row) {
+  var status = sheet.getRange(row, COL_APPOINTMENT_TEXT);
+  if (/^Sent/.test(String(status.getValue()))) return;
+
+  var values = sheet.getRange(row, 1, 1, COL_APPOINTMENT).getValues()[0];
+  var when = values[COL_APPOINTMENT - 1];
+  if (when === '' || when === null) return;
+
+  if (!(when instanceof Date) || isNaN(when.getTime())) {
+    status.setValue('Not sent: not a date and time. Type it like 10/15/2026 9:00 AM');
+    return;
+  }
+  // A bare date reads as midnight. Nobody books a midnight job, so it means
+  // the time was left off, and a text saying 12:00 AM would be wrong.
+  if (when.getHours() === 0 && when.getMinutes() === 0) {
+    status.setValue('Not sent: add a time, like 10/15/2026 9:00 AM');
+    return;
+  }
+
+  var headers = {};
+  if (VERCEL_BYPASS) headers['x-vercel-protection-bypass'] = VERCEL_BYPASS;
+  try {
+    var res = UrlFetchApp.fetch(SITE_URL + '/api/appointment-text', {
+      method: 'post',
+      contentType: 'application/json',
+      headers: headers,
+      muteHttpExceptions: true,
+      payload: JSON.stringify({
+        secret: SECRET,
+        name: values[COL_NAME - 1],
+        phone: String(values[COL_PHONE - 1]),
+        street: values[COL_STREET - 1],
+        city: values[COL_CITY - 1],
+        smsConsent: values[COL_SMS_CONSENT - 1],
+        appointment: when.toISOString(),
+      }),
+    });
+    var result;
+    try {
+      result = JSON.parse(res.getContentText());
+    } catch (err) {
+      result = { sent: false, reason: 'site answered ' + res.getResponseCode() };
+    }
+    status.setValue(
+      result.sent
+        ? 'Sent ' + Utilities.formatDate(new Date(), 'America/New_York', 'M/d/yyyy h:mm a')
+        : 'Not sent: ' + result.reason,
+    );
+  } catch (err) {
+    status.setValue('Not sent: ' + String(err).slice(0, 200));
+  }
 }
 
 /**
