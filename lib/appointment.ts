@@ -38,6 +38,28 @@ export type AppointmentRequest = {
   kind?: unknown;
   /** The confirmation for this appointment went out in this same pass. */
   confirmedJustNow?: unknown;
+  /**
+   * "walkthrough" for a site visit to look at and measure the project, from
+   * column W. Anything else is the job itself, column T, which is also what a
+   * script from before walkthroughs existed means.
+   */
+  type?: unknown;
+};
+
+/** The words that differ between a walkthrough and a job. */
+const WORDING = {
+  job: {
+    confirmed: 'Your service appointment is confirmed',
+    confirmedAfter: '',
+    reminder: 'your appointment is scheduled',
+    reminderAfter: '',
+  },
+  walkthrough: {
+    confirmed: 'Your site visit is confirmed',
+    confirmedAfter: ' We will come by to look at and measure the project.',
+    reminder: 'your site visit is scheduled',
+    reminderAfter: ' We will look at and measure the project.',
+  },
 };
 
 const text = (value: unknown) =>
@@ -76,6 +98,7 @@ export function appointmentText(
 
   const hour = charlestonHour(now);
   const quiet = hour < QUIET_BEFORE || hour >= QUIET_FROM;
+  const words = request.type === 'walkthrough' ? WORDING.walkthrough : WORDING.job;
 
   // The confirmation is due as soon as the appointment is entered, apart from
   // quiet hours. Worded as Sample #2 on the registered A2P campaign.
@@ -86,7 +109,7 @@ export function appointmentText(
       ok: true,
       to: phone,
       body:
-        `${SITE_NAME}: Your service appointment is confirmed for ${date} at ${clock}. ` +
+        `${SITE_NAME}: ${words.confirmed} for ${date} at ${clock}.${words.confirmedAfter} ` +
         `Questions? Call ${BUSINESS.phone} or visit coastalsurfacerestoration.com. ` +
         `${CHANGE_LINE} Reply STOP to opt out.`,
     };
@@ -112,8 +135,8 @@ export function appointmentText(
   const [day, time] = dayAndTime(when).split(' at ');
   const city = text(request.city);
   const compose = (place: string) =>
-    `${SITE_NAME} here. Reminder: your appointment is scheduled for ${day} at ${time}, ` +
-    `${place}. ${CHANGE_LINE} Reply STOP to opt out.`;
+    `${SITE_NAME} here. Reminder: ${words.reminder} for ${day} at ${time}, ` +
+    `${place}.${words.reminderAfter} ${CHANGE_LINE} Reply STOP to opt out.`;
 
   // Tyler's exact wording, 2026-10-07, plus the change line. It still has to
   // be checked against the sample messages on the approved A2P campaign.

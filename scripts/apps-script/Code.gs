@@ -28,23 +28,41 @@ const PHOTOS_SUBFOLDER = 'Photos (Before & After)';
 const JOB_SUBFOLDERS = [PHOTOS_SUBFOLDER, 'Quotes & Invoices', 'Signed Forms'];
 
 // 1-based columns. A to N are the form fields, O and P (Status, Notes) are
-// Tyler's to fill in by hand, and so is T, the appointment.
+// Tyler's to fill in by hand, and so are T and W, the two appointment dates.
+// Other scripts and agents read this sheet by position, so columns are only
+// ever added on the right, never moved.
 const COL_NAME = 2; // B
 const COL_PHONE = 4; // D
 const COL_STREET = 5; // E
 const COL_CITY = 6; // F
 const COL_SMS_CONSENT = 12; // L
 const COL_JOB_FOLDER = 17; // Q
-const COL_APPOINTMENT = 20; // T, typed by Tyler, e.g. 10/15/2026 9:00 AM
+const COL_APPOINTMENT = 20; // T, the job date, typed by Tyler, e.g. 10/15/2026 9:00 AM
 const COL_CONFIRMATION_TEXT = 21; // U, written by this script
 const COL_REMINDER_TEXT = 22; // V, written by this script
+const COL_WALKTHROUGH = 23; // W, the walkthrough (site visit) date, typed by Tyler
+const COL_WALKTHROUGH_CONFIRMATION = 24; // X, written by this script
+const COL_WALKTHROUGH_REMINDER = 25; // Y, written by this script
 const ADDED_HEADERS = [
   [17, 'Job Folder'],
   [18, 'How They Heard'],
   [19, 'Referred By'],
-  [COL_APPOINTMENT, 'Appointment'],
+  [COL_APPOINTMENT, 'Job Date'],
   [COL_CONFIRMATION_TEXT, 'Confirmation Text'],
   [COL_REMINDER_TEXT, 'Reminder Text'],
+  [COL_WALKTHROUGH, 'Walkthrough'],
+  [COL_WALKTHROUGH_CONFIRMATION, 'Walkthrough Confirmation Text'],
+  [COL_WALKTHROUGH_REMINDER, 'Walkthrough Reminder Text'],
+];
+
+// A customer can have a walkthrough to measure and quote, and later a job.
+// Each has its own date column and its own two status columns, and the site
+// words the texts to fit. Neither one ever reads or writes the other's cells.
+const APPOINTMENTS = [
+  { type: 'job', label: 'job date', when: COL_APPOINTMENT,
+    confirmation: COL_CONFIRMATION_TEXT, reminder: COL_REMINDER_TEXT },
+  { type: 'walkthrough', label: 'walkthrough', when: COL_WALKTHROUGH,
+    confirmation: COL_WALKTHROUGH_CONFIRMATION, reminder: COL_WALKTHROUGH_REMINDER },
 ];
 
 function doPost(e) {
@@ -82,7 +100,7 @@ function authorize() {
 }
 
 /**
- * Sets up the triggers behind the appointment reminder, and the T and U
+ * Sets up the triggers behind the appointment texts, and the T to Y
  * headers: one on edit, so a new appointment is checked straight away, and one
  * hourly, which sends the reminders that have come due. Safe to run again: it
  * replaces its own triggers rather than adding more, which would double send.
@@ -110,55 +128,73 @@ function sendDueReminders() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
   var last = sheet.getLastRow();
   if (last < 2) return;
-  var notes = sheet.getRange(2, COL_CONFIRMATION_TEXT, last - 1, 2).getValues();
+  // U to Y in one read: both types' status cells, with W between them.
+  var first = COL_CONFIRMATION_TEXT;
+  var notes = sheet.getRange(2, first, last - 1, COL_WALKTHROUGH_REMINDER - first + 1).getValues();
   for (var i = 0; i < notes.length; i++) {
-    if (/^Waiting/.test(String(notes[i][0])) || /^Waiting/.test(String(notes[i][1]))) {
-      sendAppointmentText(sheet, i + 2);
-    }
+    APPOINTMENTS.forEach(function (slot) {
+      if (/^Waiting/.test(String(notes[i][slot.confirmation - first])) ||
+          /^Waiting/.test(String(notes[i][slot.reminder - first]))) {
+        sendAppointmentText(sheet, i + 2, slot);
+      }
+    });
   }
 }
 
 /**
- * Handles both appointment texts when an Appointment cell (column T) is filled
- * in: the confirmation straight away, and the reminder the evening before.
+ * Handles both texts for an appointment when its date cell is filled in: the
+ * confirmation straight away, and the reminder before it. Job Date (T) reports
+ * in U and V, Walkthrough (W) in X and Y.
  *
- * Columns U (confirmation) and V (reminder) each say what happened:
- * "Waiting: ..." until it is due, "Sent <time> for <appointment>" once it is,
- * or "Not sent: <reason>". Each appointment time gets one of each. Re-entering
- * the same time sends nothing new, while moving it to a new time confirms the
- * new one and schedules a new reminder. Edits made by this script do not fire
- * the trigger, so writing U and V cannot loop.
+ * Each status cell says what happened: "Waiting: ..." until it is due,
+ * "Sent <time> for <appointment>" once it is, "Not sent: <reason>", or
+ * "Cancelled: ..." when the date is cleared before it went. Each appointment
+ * time gets one of each. Re-entering the same time sends nothing new, while
+ * moving it to a new time confirms the new one and schedules a new reminder.
+ * Edits made by this script do not fire the trigger, so writing the status
+ * cells cannot loop.
  */
 function onSheetEdit(e) {
   var range = e && e.range;
   if (!range) return;
   var sheet = range.getSheet();
   if (sheet.getIndex() !== 1) return;
-  if (range.getColumn() > COL_APPOINTMENT || range.getLastColumn() < COL_APPOINTMENT) return;
 
-  for (var row = Math.max(2, range.getRow()); row <= range.getLastRow(); row++) {
-    sendAppointmentText(sheet, row);
-  }
+  APPOINTMENTS.forEach(function (slot) {
+    if (range.getColumn() > slot.when || range.getLastColumn() < slot.when) return;
+    for (var row = Math.max(2, range.getRow()); row <= range.getLastRow(); row++) {
+      sendAppointmentText(sheet, row, slot);
+    }
+  });
 }
 
-function sendAppointmentText(sheet, row) {
+function sendAppointmentText(sheet, row, slot) {
   // The edit and hourly triggers can overlap. One at a time, so a row due
   // right as it is edited is not texted twice.
   var lock = LockService.getScriptLock();
   if (!lock.tryLock(30000)) return;
   try {
-    checkReminder(sheet, row);
+    checkReminder(sheet, row, slot);
   } finally {
     lock.releaseLock();
   }
 }
 
-function checkReminder(sheet, row) {
-  var confirmation = sheet.getRange(row, COL_CONFIRMATION_TEXT);
-  var reminder = sheet.getRange(row, COL_REMINDER_TEXT);
-  var values = sheet.getRange(row, 1, 1, COL_APPOINTMENT).getValues()[0];
-  var when = values[COL_APPOINTMENT - 1];
-  if (when === '' || when === null) return;
+function checkReminder(sheet, row, slot) {
+  var confirmation = sheet.getRange(row, slot.confirmation);
+  var reminder = sheet.getRange(row, slot.reminder);
+  var values = sheet.getRange(row, 1, 1, slot.when).getValues()[0];
+  var when = values[slot.when - 1];
+  if (when === '' || when === null) {
+    // Cleared. Whatever had not gone out yet never will, and the hourly run
+    // stops asking. What already went out stays on record.
+    [confirmation, reminder].forEach(function (cell) {
+      if (/^Waiting/.test(String(cell.getValue()))) {
+        cell.setValue('Cancelled: ' + slot.label + ' cleared, nothing sent');
+      }
+    });
+    return;
+  }
 
   if (!(when instanceof Date) || isNaN(when.getTime())) {
     confirmation.setValue('Not sent: not a date and time. Type it like 10/15/2026 9:00 AM');
@@ -187,6 +223,7 @@ function checkReminder(sheet, row) {
     city: values[COL_CITY - 1],
     smsConsent: values[COL_SMS_CONSENT - 1],
     appointment: local,
+    type: slot.type,
   };
 
   // Confirmation first. If it goes out in this same pass, the site is told,

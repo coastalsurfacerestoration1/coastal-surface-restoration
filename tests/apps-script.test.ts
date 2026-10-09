@@ -171,16 +171,20 @@ function load({ jobsId = TEST_JOBS, existing = [] as string[], lockFree = true }
     const [verdict, ...rest] = text.split('\n');
     return { verdict, detail: rest.length ? JSON.parse(rest.join('\n')) : null, text };
   };
-  // An edit to column T of one row, the way Sheets reports it.
-  const editAppointment = (row: number, value: unknown) => {
-    while (sheet.rows[row - 1].length < 22) sheet.rows[row - 1].push('');
-    sheet.rows[row - 1][19] = value;
+  // An edit to one date cell, the way Sheets reports it, and the two status
+  // cells to its right afterwards.
+  const editDate = (row: number, col: number, value: unknown) => {
+    while (sheet.rows[row - 1].length < 25) sheet.rows[row - 1].push('');
+    sheet.rows[row - 1][col - 1] = value;
     context.onSheetEdit({
-      range: { getSheet: () => sheet, getColumn: () => 20, getLastColumn: () => 20, getRow: () => row, getLastRow: () => row },
+      range: { getSheet: () => sheet, getColumn: () => col, getLastColumn: () => col, getRow: () => row, getLastRow: () => row },
     });
-    return { confirmation: sheet.rows[row - 1][20], reminder: sheet.rows[row - 1][21] };
+    return { confirmation: sheet.rows[row - 1][col], reminder: sheet.rows[row - 1][col + 1] };
   };
-  return { drive, jobs, sheet, post, fetches, site, triggers, editAppointment, context };
+  // Column T, the job date, and column W, the walkthrough.
+  const editAppointment = (row: number, value: unknown) => editDate(row, 20, value);
+  const editWalkthrough = (row: number, value: unknown) => editDate(row, 23, value);
+  return { drive, jobs, sheet, post, fetches, site, triggers, editAppointment, editWalkthrough, context };
 }
 
 const quote = (extra: Record<string, unknown> = {}) => ({
@@ -404,6 +408,7 @@ describe('appointment texts', () => {
         smsConsent: 'yes',
         // As typed, not shifted to 12:00 by the sheet being on Pacific time.
         appointment: '2026-10-15T09:00',
+        type: 'job',
       },
       expect.objectContaining({ kind: 'reminder', confirmedJustNow: true }),
     ]);
@@ -470,12 +475,26 @@ describe('appointment texts', () => {
     expect(editAppointment(2, nineAm()).confirmation).toBe(sent('2026-10-15T09:00'));
   });
 
-  it('flags text that is not a date and ignores a cleared cell', () => {
+  it('flags text that is not a date and sends nothing for a cleared cell', () => {
     const { post, fetches, editAppointment } = load();
     post(quote());
     expect(editAppointment(2, 'next Tuesday').confirmation).toMatch(/^Not sent: not a date and time/);
     editAppointment(2, '');
     expect(fetches).toHaveLength(0);
+  });
+
+  it('cancels a waiting reminder when the date is cleared, keeps what was sent, and stops asking', () => {
+    const { post, fetches, site, editAppointment, context } = load();
+    post(quote());
+    site.reply = daysAhead;
+    editAppointment(2, nineAm());
+    expect(editAppointment(2, '')).toEqual({
+      confirmation: sent('2026-10-15T09:00'),
+      reminder: 'Cancelled: job date cleared, nothing sent',
+    });
+    site.reply = '{"sent":true}';
+    context.sendDueReminders();
+    expect(fetches).toHaveLength(2);
   });
 
   it('keeps a row waiting when the site cannot be reached, rather than throwing', () => {
@@ -510,11 +529,147 @@ describe('appointment texts', () => {
     expect(fetches).toHaveLength(0);
   });
 
+  it('ignores edits to the status columns between and after the two dates', () => {
+    const { post, fetches, sheet, context } = load();
+    post(quote());
+    for (const col of [21, 22, 24, 25]) {
+      context.onSheetEdit({
+        range: { getSheet: () => sheet, getColumn: () => col, getLastColumn: () => col, getRow: () => 2, getLastRow: () => 2 },
+      });
+    }
+    expect(fetches).toHaveLength(0);
+  });
+
   it('installs exactly one edit and one hourly trigger however often it runs', () => {
     const { triggers, context } = load();
     context.installTriggers();
     context.installTriggers();
     expect(triggers.sort()).toEqual(['onSheetEdit', 'sendDueReminders']);
+  });
+});
+
+describe('walkthrough and job on one row', () => {
+  const nineAm = () => new Date('2026-10-15T16:00:00Z');
+  const elevenAm = () => new Date('2026-10-15T18:00:00Z');
+  const sent = (local: string) => `Sent 2026 for ${local}`;
+  const payloads = (fetches: { options: { payload: string } }[]) =>
+    fetches.map((f) => JSON.parse(f.options.payload));
+  /** Confirm now, remind later, whichever type. */
+  const daysAhead = (body: Record<string, unknown>) =>
+    body.kind === 'confirmation'
+      ? '{"sent":true}'
+      : `{"sent":false,"wait":true,"reason":"reminder for ${body.type} later"}`;
+
+  it('texts a walkthrough from column W and reports in X and Y, leaving T to V alone', () => {
+    const { post, fetches, site, sheet, editWalkthrough } = load();
+    post(quote());
+    site.reply = daysAhead;
+    expect(editWalkthrough(2, nineAm())).toEqual({
+      confirmation: sent('2026-10-15T09:00'),
+      reminder: 'Waiting: reminder for walkthrough later',
+    });
+    expect(payloads(fetches).map((p) => [p.type, p.kind])).toEqual([
+      ['walkthrough', 'confirmation'],
+      ['walkthrough', 'reminder'],
+    ]);
+    expect(sheet.rows[1].slice(19, 22)).toEqual(['', '', '']);
+  });
+
+  it('keeps each type to its own status, both on the same day', () => {
+    const { post, fetches, site, sheet, editAppointment, editWalkthrough, context } = load();
+    post(quote());
+    site.reply = daysAhead;
+    editWalkthrough(2, nineAm());
+    editAppointment(2, elevenAm());
+    expect(sheet.rows[1].slice(20, 25)).toEqual([
+      sent('2026-10-15T11:00'),
+      'Waiting: reminder for job later',
+      nineAm(),
+      sent('2026-10-15T09:00'),
+      'Waiting: reminder for walkthrough later',
+    ]);
+    expect(fetches).toHaveLength(4);
+
+    // Both reminders come due: one text each, and never twice.
+    site.reply = '{"sent":true}';
+    context.sendDueReminders();
+    expect(payloads(fetches).slice(4).map((p) => [p.type, p.kind, p.appointment])).toEqual([
+      ['job', 'reminder', '2026-10-15T11:00'],
+      ['walkthrough', 'reminder', '2026-10-15T09:00'],
+    ]);
+    context.sendDueReminders();
+    expect(fetches).toHaveLength(6);
+  });
+
+  it('does not let sending or clearing one type touch the other', () => {
+    const { post, fetches, site, sheet, editAppointment, editWalkthrough } = load();
+    post(quote());
+    site.reply = daysAhead;
+    editWalkthrough(2, nineAm());
+    editAppointment(2, elevenAm());
+    expect(editWalkthrough(2, '')).toEqual({
+      confirmation: sent('2026-10-15T09:00'),
+      reminder: 'Cancelled: walkthrough cleared, nothing sent',
+    });
+    expect(sheet.rows[1].slice(20, 22)).toEqual([sent('2026-10-15T11:00'), 'Waiting: reminder for job later']);
+    // Re-entering the job time only asks again about the job reminder still
+    // waiting; no second confirmation, and the walkthrough stays cancelled.
+    editAppointment(2, elevenAm());
+    expect(payloads(fetches).slice(4).map((p) => `${p.type} ${p.kind}`)).toEqual(['job reminder']);
+    expect(sheet.rows[1][24]).toBe('Cancelled: walkthrough cleared, nothing sent');
+  });
+
+  it('carries a migrated confirmation over: no second confirmation, reminder still scheduled', () => {
+    const { post, fetches, site, sheet, editWalkthrough } = load();
+    post(quote());
+    while (sheet.rows[1].length < 25) sheet.rows[1].push('');
+    // What the migration writes into X and Y before the date goes into W.
+    sheet.rows[1][23] = 'Sent 10/9/2026 8:00 AM for 2026-10-15T09:00';
+    sheet.rows[1][24] = 'Waiting: reminder goes out Wed, Oct 14 at 5:00 PM';
+    site.reply = daysAhead;
+    editWalkthrough(2, nineAm());
+    expect(payloads(fetches).map((p) => p.kind)).toEqual(['reminder']);
+    expect(sheet.rows[1][23]).toBe('Sent 10/9/2026 8:00 AM for 2026-10-15T09:00');
+  });
+
+  it('flags a walkthrough typed as words, without touching the job columns', () => {
+    const { post, fetches, sheet, editWalkthrough } = load();
+    post(quote());
+    expect(editWalkthrough(2, 'Monday morning').confirmation).toMatch(/^Not sent: not a date and time/);
+    expect(fetches).toHaveLength(0);
+    expect(sheet.rows[1].slice(19, 22)).toEqual(['', '', '']);
+  });
+
+  it('handles a paste across both date columns as both types', () => {
+    const { post, fetches, site, sheet, context } = load();
+    post(quote());
+    while (sheet.rows[1].length < 25) sheet.rows[1].push('');
+    sheet.rows[1][19] = elevenAm();
+    sheet.rows[1][22] = nineAm();
+    site.reply = daysAhead;
+    context.onSheetEdit({
+      range: { getSheet: () => sheet, getColumn: () => 20, getLastColumn: () => 25, getRow: () => 2, getLastRow: () => 2 },
+    });
+    expect(payloads(fetches).map((p) => `${p.type} ${p.kind}`)).toEqual([
+      'job confirmation',
+      'job reminder',
+      'walkthrough confirmation',
+      'walkthrough reminder',
+    ]);
+  });
+
+  it('adds the Job Date and walkthrough headers on a fresh sheet without renaming existing ones', () => {
+    const { sheet, context } = load();
+    sheet.rows[0][19] = 'Appointment';
+    context.installTriggers();
+    expect(sheet.rows[0].slice(19, 25)).toEqual([
+      'Appointment',
+      'Confirmation Text',
+      'Reminder Text',
+      'Walkthrough',
+      'Walkthrough Confirmation Text',
+      'Walkthrough Reminder Text',
+    ]);
   });
 });
 
