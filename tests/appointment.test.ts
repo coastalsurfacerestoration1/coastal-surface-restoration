@@ -28,7 +28,7 @@ describe('appointmentText wording', () => {
       ok: true,
       to: '843-555-2345',
       body:
-        'Coastal Surface Restoration here. Reminder: your appointment is scheduled for ' +
+        'Coastal Surface Restoration: Reminder: your appointment is scheduled for ' +
         'Thu, Oct 15 at 9:00 AM, 1810 Mepkin Rd, West Ashley. ' +
         'To change this appointment, call or text 854-222-7790. Reply STOP to opt out.',
     });
@@ -185,28 +185,36 @@ describe('reminder after a fresh confirmation', () => {
 describe('walkthrough texts', () => {
   const walk = (extra: Record<string, unknown> = {}) => row({ type: 'walkthrough', ...extra });
 
-  it('confirms a walkthrough as a site visit to look at and measure, with the change line', () => {
+  it('confirms a walkthrough as a site visit appointment, in the approved wording', () => {
     expect(appointmentText(walk({ kind: 'confirmation' }), at('2026-10-08T10:00'))).toEqual({
       ok: true,
       to: '843-555-2345',
       body:
-        'Coastal Surface Restoration: Your site visit is confirmed for 10/15/2026 at 9:00 AM. ' +
-        'We will come by to look at and measure the project. ' +
-        'Questions? Call 854-222-7790 or visit coastalsurfacerestoration.com. ' +
+        'Coastal Surface Restoration: Your site visit appointment is confirmed for 10/15/2026 at 9:00 AM. ' +
+        'We will look at and measure the project for your quote. ' +
         'To change this appointment, call or text 854-222-7790. Reply STOP to opt out.',
     });
   });
 
-  it('reminds about the site visit, not a job or service appointment', () => {
-    const result = appointmentText(walk(), EVENING_BEFORE);
-    expect(result).toEqual({
+  it('reminds about the site visit appointment, in the approved wording', () => {
+    expect(appointmentText(walk(), EVENING_BEFORE)).toEqual({
       ok: true,
       to: '843-555-2345',
       body:
-        'Coastal Surface Restoration here. Reminder: your site visit is scheduled for ' +
-        'Thu, Oct 15 at 9:00 AM, 1810 Mepkin Rd, West Ashley. We will look at and measure the project. ' +
+        'Coastal Surface Restoration: Reminder, your site visit appointment is ' +
+        'Thu, Oct 15 at 9:00 AM at 1810 Mepkin Rd, West Ashley. ' +
+        'We will look at and measure the project for your quote. ' +
         'To change this appointment, call or text 854-222-7790. Reply STOP to opt out.',
     });
+  });
+
+  it('starts every text the same way', () => {
+    for (const type of ['job', 'walkthrough']) {
+      for (const [kind, now] of [['confirmation', at('2026-10-08T10:00')], ['reminder', EVENING_BEFORE]] as const) {
+        const result = appointmentText(row({ type, kind }), now);
+        expect(result.ok && result.body).toMatch(/^Coastal Surface Restoration: /);
+      }
+    }
   });
 
   it('never says job or service appointment, and stays GSM-7 within two segments', () => {

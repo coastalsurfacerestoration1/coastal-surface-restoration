@@ -46,19 +46,31 @@ export type AppointmentRequest = {
   type?: unknown;
 };
 
-/** The words that differ between a walkthrough and a job. */
+/**
+ * The four texts. Every one starts "Coastal Surface Restoration:" and ends
+ * with the change line and STOP. The job confirmation is Sample #2 on the
+ * registered A2P campaign; the rest are the campaign's "appointment
+ * confirmations/reminders" kept close to it. Tyler's exact wording, 2026-10-09.
+ */
 const WORDING = {
   job: {
-    confirmed: 'Your service appointment is confirmed',
-    confirmedAfter: '',
-    reminder: 'your appointment is scheduled',
-    reminderAfter: '',
+    confirmation: (date: string, clock: string) =>
+      `${SITE_NAME}: Your service appointment is confirmed for ${date} at ${clock}. ` +
+      `Questions? Call ${BUSINESS.phone} or visit coastalsurfacerestoration.com. ` +
+      `${CHANGE_LINE} Reply STOP to opt out.`,
+    reminder: (day: string, time: string, place: string) =>
+      `${SITE_NAME}: Reminder: your appointment is scheduled for ${day} at ${time}, ` +
+      `${place}. ${CHANGE_LINE} Reply STOP to opt out.`,
   },
   walkthrough: {
-    confirmed: 'Your site visit is confirmed',
-    confirmedAfter: ' We will come by to look at and measure the project.',
-    reminder: 'your site visit is scheduled',
-    reminderAfter: ' We will look at and measure the project.',
+    confirmation: (date: string, clock: string) =>
+      `${SITE_NAME}: Your site visit appointment is confirmed for ${date} at ${clock}. ` +
+      `We will look at and measure the project for your quote. ` +
+      `${CHANGE_LINE} Reply STOP to opt out.`,
+    reminder: (day: string, time: string, place: string) =>
+      `${SITE_NAME}: Reminder, your site visit appointment is ${day} at ${time} at ${place}. ` +
+      `We will look at and measure the project for your quote. ` +
+      `${CHANGE_LINE} Reply STOP to opt out.`,
   },
 };
 
@@ -101,18 +113,10 @@ export function appointmentText(
   const words = request.type === 'walkthrough' ? WORDING.walkthrough : WORDING.job;
 
   // The confirmation is due as soon as the appointment is entered, apart from
-  // quiet hours. Worded as Sample #2 on the registered A2P campaign.
+  // quiet hours.
   if (request.kind === 'confirmation') {
     if (quiet) return { ok: false, wait: true, reason: 'outside texting hours, goes out after 8 AM' };
-    const [date, clock] = shortDateAndTime(when);
-    return {
-      ok: true,
-      to: phone,
-      body:
-        `${SITE_NAME}: ${words.confirmed} for ${date} at ${clock}.${words.confirmedAfter} ` +
-        `Questions? Call ${BUSINESS.phone} or visit coastalsurfacerestoration.com. ` +
-        `${CHANGE_LINE} Reply STOP to opt out.`,
-    };
+    return { ok: true, to: phone, body: words.confirmation(...shortDateAndTime(when)) };
   }
 
   // Before the reminder is due it waits, and the sheet's hourly check asks
@@ -134,13 +138,8 @@ export function appointmentText(
 
   const [day, time] = dayAndTime(when).split(' at ');
   const city = text(request.city);
-  const compose = (place: string) =>
-    `${SITE_NAME} here. Reminder: ${words.reminder} for ${day} at ${time}, ` +
-    `${place}.${words.reminderAfter} ${CHANGE_LINE} Reply STOP to opt out.`;
+  const compose = (place: string) => words.reminder(day, time, place);
 
-  // Tyler's exact wording, 2026-10-07, plus the change line. It still has to
-  // be checked against the sample messages on the approved A2P campaign.
-  //
   // With the change line the fixed words take about 180 characters, so this is
   // always two segments. The city is dropped only if it would push past two,
   // which takes an unusually long address. The street alone still says where.
