@@ -286,6 +286,16 @@ describe('logQuote', () => {
     expect(sheet.rows).toHaveLength(2);
   });
 
+  it('logs a quote refused as out of area with its reason, but makes no folder', () => {
+    const { post, sheet, jobs } = load();
+    const { verdict, detail } = post(quote({ outOfArea: 'blocked, 22 mi from West Ashley', blocked: true }));
+    expect(verdict).toBe('ok');
+    expect(detail.folderError).toBe('skipped, refused as out of area');
+    expect(jobs.children).toHaveLength(0);
+    expect(sheet.rows[1][12]).toBe('blocked, 22 mi from West Ashley');
+    expect(sheet.rows[1][16]).toBe('');
+  });
+
   it('keeps the row when the lock is busy', () => {
     const { post, sheet, jobs } = load({ lockFree: false });
     const { verdict, detail } = post(quote());

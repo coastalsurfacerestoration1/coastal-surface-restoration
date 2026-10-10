@@ -100,7 +100,7 @@ async function verify(name) {
   return JSON.parse(rest.join('\n'));
 }
 
-async function submit(fields, photos) {
+async function submit(fields, photos, expectedStatus = 200) {
   const form = new FormData();
   for (const [key, value] of Object.entries(fields)) form.append(key, value);
   photos.forEach((bytes, i) => form.append('photos', new Blob([bytes], { type: 'image/png' }), `p${i}.png`));
@@ -112,7 +112,7 @@ async function submit(fields, photos) {
   const result = { status: res.status, body: await res.text() };
   // Everything after a rejected submission would only report on nothing, so
   // stop here rather than print a page of meaningless failures.
-  if (result.status !== 200) {
+  if (result.status !== expectedStatus) {
     console.log(`FAIL  submission for ${fields.name} was refused: ${result.status} ${result.body}`);
     process.exit(1);
   }
@@ -229,6 +229,35 @@ check('spam flagged quote still accepted (200)', sent3.status === 200, `${sent3.
 const got3 = await waitFor(name3, (v) => v.rows.length > 0, 60000);
 check('spam flagged quote has a sheet row', got3.rows.length === 1 && got3.rows[0]['Spam Flag'] === 'flagged', JSON.stringify(got3.rows));
 check('spam flagged quote gets no job folder', got3.folders.length === 0, JSON.stringify(got3.folders));
+
+// Service area, by ZIP. Edisto (29438) is about 22 miles out: refused, but
+// still logged for Tyler with no job folder. New York is dropped outright.
+const OUT_OF_AREA = 'That address is outside our service area';
+const name4 = `E2E Edisto ${stamp}`;
+const sent4 = await submit(
+  { ...common, name: name4, street: '400 Test Lane', city: 'Edisto Island', zip: '29438', description: 'Automated out of area case, 22 miles. Ignore.' },
+  [],
+  400,
+);
+check('20 to 50 miles is refused with the service area message', sent4.body.includes(OUT_OF_AREA), sent4.body);
+const got4 = await waitFor(name4, (v) => v.rows.length > 0, 60000);
+check(
+  '20 to 50 miles still logs a row marked blocked',
+  got4.rows.length === 1 && got4.rows[0]['Out of Area'] === 'blocked, 22 mi from West Ashley',
+  JSON.stringify(got4.rows),
+);
+check('20 to 50 miles gets no job folder', got4.folders.length === 0, JSON.stringify(got4.folders));
+
+const name5 = `E2E Far ${stamp}`;
+const sent5 = await submit(
+  { ...common, name: name5, street: '500 Test Lane', city: 'New York', state: 'NY', zip: '10001', description: 'Automated far case. Ignore.' },
+  [],
+  400,
+);
+check('past 50 miles is refused with the service area message', sent5.body.includes(OUT_OF_AREA), sent5.body);
+await new Promise((resolve) => setTimeout(resolve, 15000));
+const got5 = await verify(name5);
+check('past 50 miles leaves no row and no folder', got5.rows.length === 0 && got5.folders.length === 0, JSON.stringify(got5));
 
 const failed = results.filter((ok) => !ok).length;
 console.log(`\n${results.length - failed}/${results.length} checks passed`);

@@ -413,6 +413,10 @@ function logQuote(body) {
       // numbers. The row and the email still arrive, so a real customer who
       // tripped the flag (autofill has done it) gets a folder made by hand.
       report = { folderError: 'skipped, flagged as possible spam' };
+    } else if (body.blocked) {
+      // Refused as out of area. The row is the record; a job number would
+      // only be burned on a job that is not happening.
+      report = { folderError: 'skipped, refused as out of area' };
     } else if (!locked) {
       report = { folderError: 'could not get the script lock, folder skipped' };
     } else {

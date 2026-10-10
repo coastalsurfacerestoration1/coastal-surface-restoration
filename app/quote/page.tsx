@@ -8,6 +8,7 @@ import { sendGAEvent } from '@next/third-parties/google';
 import { ADDRESS_CITIES, OTHER_CITY } from '@/lib/address';
 import { suggestEmail } from '@/lib/email';
 import { placesEnabled } from '@/lib/google-places';
+import { OUT_OF_AREA_MESSAGE, checkServiceArea } from '@/lib/service-area';
 import StreetAutocomplete from './StreetAutocomplete';
 
 type QuoteFormValues = {
@@ -251,9 +252,13 @@ export default function QuotePage() {
   const emailSuggestion = touchedFields.email
     ? suggestEmail(email.replace(/\s+/g, '').toLowerCase())
     : null;
-  // Soft signal only. An out of area job may still be worth taking, so this
-  // never blocks the submission.
-  const outOfArea = /^\d{5}$/.test(zip) && !zip.startsWith(LOCAL_ZIP_PREFIX);
+  // The same distance check the server makes, shown as soon as the ZIP is
+  // complete so nobody fills in the rest first. The server is what enforces
+  // it; the button stays live. A ZIP the table cannot place gets the old soft
+  // warning and goes through.
+  const area = /^\d{5}$/.test(zip) ? checkServiceArea(zip) : null;
+  const refused = area?.verdict === 'near' || area?.verdict === 'far';
+  const outOfArea = area?.verdict === 'unknown' && !zip.startsWith(LOCAL_ZIP_PREFIX);
 
   const onSubmit = async (data: QuoteFormValues) => {
     // Back to the first line before the timers are armed, so a second attempt
@@ -604,6 +609,12 @@ export default function QuotePage() {
                 <p className="text-red-400 text-sm mt-1">{errors.cityOther.message}</p>
               )}
             </div>
+          )}
+
+          {refused && (
+            <p className="text-red-400 text-sm" role="alert">
+              {OUT_OF_AREA_MESSAGE}
+            </p>
           )}
 
           {outOfArea && (
