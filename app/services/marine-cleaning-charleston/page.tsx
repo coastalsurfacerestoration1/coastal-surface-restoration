@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Laser Marine Cleaning in Charleston, SC',
   description:
-    'Laser cleaning for boats, trailers, and marine hardware in Charleston, SC. Remove rust, corrosion, and oxidation from fittings and dock equipment without chemicals or abrasives. Free estimates.',
+    'Laser cleaning for marine metal hardware in Charleston, SC. We remove rust and corrosion from props, shafts, cleats, rails, winches, trailers, and dock hardware without chemicals or abrasives. Free estimates.',
   path: '/services/marine-cleaning-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function MarineCleaningPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Marine Cleaning',
-          description: 'Laser cleaning for boats, trailers, and marine hardware in Charleston, SC. Remove rust, corrosion, and oxidation from fittings and dock equipment without chemicals or abrasives. Free estimates.',
+          description: 'Laser cleaning for marine metal hardware in Charleston, SC. We remove rust and corrosion from props, shafts, cleats, rails, winches, trailers, and dock hardware without chemicals or abrasives. Free estimates.',
           path: '/services/marine-cleaning-charleston',
           serviceType: 'Marine cleaning',
         })}
@@ -43,7 +43,7 @@ export default function MarineCleaningPage() {
             Laser Marine Cleaning in Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Salt water and Lowcountry humidity are relentless on marine metal. Rust, corrosion, and oxidation take hold on fittings, trailers, and hardware fast. Laser cleaning strips it all back to clean metal without chemicals, abrasives, or the runoff you cannot use near the water.
+            Salt water and Lowcountry humidity are hard on marine metal. Rust and corrosion take hold fast on props, shafts, cleats, rails, winches, and through-hull fittings. Laser cleaning takes that corrosion back to clean metal without chemicals or abrasives, and without runoff you cannot use near the water. This is metal hardware work only. Hulls, gelcoat, and antifouling paint on fiberglass are outside what we do.
           </p>
           <Link
             href="/quote"
@@ -97,12 +97,16 @@ export default function MarineCleaningPage() {
                 desc: 'Anchors, chain, shackles, and rigging hardware cleaned of rust and marine buildup without weakening the metal.',
               },
               {
+                title: 'Props, Shafts & Through-Hull Fittings',
+                desc: 'Bronze and stainless props, shafts, struts, and through-hull fittings taken back to clean metal, with the beam kept on the fitting and off the hull around it.',
+              },
+              {
                 title: 'Engine & Mechanical Parts',
                 desc: 'Brackets, mounts, and metal components where corrosion needs to come off without warping thin material.',
               },
               {
                 title: 'Aluminum & Stainless Surfaces',
-                desc: 'Oxidized aluminum and tea-stained stainless returned to a clean surface, ready for polish, coating, or reuse.',
+                desc: 'The laser takes oxidized aluminum and tea-stained stainless back to a clean surface. On 316 stainless we recommend re-passivation after cleaning to restore its corrosion resistance.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">
@@ -179,7 +183,7 @@ export default function MarineCleaningPage() {
               {
                 step: '02',
                 title: 'Surface Preparation',
-                desc: 'We set up safety perimeters and protect surrounding surfaces, gel coat, and fittings before beginning work.',
+                desc: 'We set up safety perimeters and mask the gelcoat and fiberglass around each fitting before work starts. The laser only ever works on the metal, never the hull.',
               },
               {
                 step: '03',
@@ -194,7 +198,7 @@ export default function MarineCleaningPage() {
               {
                 step: '05',
                 title: 'Protection Guidance',
-                desc: "Bare metal will corrode again in a saltwater environment. We can advise on protective coatings and a maintenance schedule to keep hardware in service longer.",
+                desc: 'Bare metal corrodes again in salt water. For 316 stainless we recommend re-passivation after cleaning, and for other metals we can advise on protective coatings and a maintenance schedule.',
               },
             ].map((item) => (
               <div key={item.step} className="flex gap-6 items-start">
@@ -251,7 +255,7 @@ export default function MarineCleaningPage() {
           {
             q: 'Is it safe on aluminum and stainless?',
             a:
-              'Yes, with settings adjusted for the metal. Aluminum and the lower stainless grades common on marine hardware both behave differently than steel, so we test a small area first and confirm the result with you before working through the piece.',
+              'Yes, with settings adjusted for the metal. Aluminum and the lower stainless grades common on marine hardware both behave differently than steel, so we test a small area first and confirm the result with you before working through the piece. On 316 stainless we also recommend re-passivation afterward, which restores the passive layer that resists salt corrosion.',
           },
           {
             q: 'What about corrosion in hard to reach fittings?',

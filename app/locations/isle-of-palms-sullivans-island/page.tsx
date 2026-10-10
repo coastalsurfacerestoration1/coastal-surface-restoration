@@ -230,7 +230,7 @@ export default function IsleOfPalmsSullivansPage() {
           {
             q: 'Does stainless steel really rust out here?',
             a:
-              'Yes. The lower stainless grades used on a lot of railing and marine hardware pit and tea-stain in front-line salt exposure. It is not a sign of a defective part, it is the grade meeting an environment it was not specified for.',
+              'Yes. The lower stainless grades used on a lot of railing and marine hardware pit and tea-stain in front-line salt exposure. It is not a sign of a defective part, it is the grade meeting an environment it was not specified for. Even 316 benefits from re-passivation after cleaning, which restores its corrosion resistance.',
           },
           {
             q: 'Can you schedule around rental turnovers?',

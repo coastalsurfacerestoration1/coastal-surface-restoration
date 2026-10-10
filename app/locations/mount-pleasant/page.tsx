@@ -102,7 +102,7 @@ export default function MountPleasantPage() {
               },
               {
                 title: 'Brick, Masonry & Hardscape',
-                desc: 'Efflorescence on brick, staining on stonework, and rust bleed on masonry columns and steps. Cleaned without pressure washing forcing water into the joints.',
+                desc: 'Mildew and algae staining on brick and stonework, and rust bleed on masonry columns and steps. The laser cleans it without forcing water into the joints the way a pressure washer does.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">

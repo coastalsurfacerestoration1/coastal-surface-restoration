@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Laser Graffiti Removal in Charleston, SC',
   description:
-    'Laser graffiti removal in Charleston, SC. Remove spray paint from historic brick, masonry, metal, and concrete without ghosting, chemicals, or pressure washing damage. Safe for historic surfaces. Free estimates.',
+    'Laser graffiti removal in Charleston, SC. We remove spray paint from historic brick, metal, and concrete without chemicals or pressure washing damage. A test patch comes first, before any quote. Free estimates.',
   path: '/services/graffiti-removal-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function GraffitiRemovalPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Graffiti Removal',
-          description: 'Laser graffiti removal in Charleston, SC. Remove spray paint from historic brick, masonry, metal, and concrete without ghosting, chemicals, or pressure washing damage. Safe for historic surfaces. Free estimates.',
+          description: 'Laser graffiti removal in Charleston, SC. We remove spray paint from historic brick, metal, and concrete without chemicals or pressure washing damage. A test patch comes first, before any quote. Free estimates.',
           path: '/services/graffiti-removal-charleston',
           serviceType: 'Graffiti removal',
         })}
@@ -43,7 +43,7 @@ export default function GraffitiRemovalPage() {
             Laser Graffiti Removal in Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Removing graffiti from historic brick and masonry is where most methods fail. Pressure washing and chemical strippers pull paint off the surface but leave a shadow behind, and on soft historic brick they cause permanent damage. Laser cleaning removes the paint completely, with no ghosting and no harm to the surface underneath.
+            Removing graffiti from historic brick and masonry is where most methods fail. Pressure washing and chemical strippers pull paint off the surface but leave a shadow behind, and on soft historic brick they cause permanent damage. Laser cleaning lifts the paint without harming the surface underneath, and dark spray paints usually come off without a ghost. Results vary by paint, so we test a patch first and show you the result before quoting the full job.
           </p>
           <Link
             href="/quote"
@@ -67,7 +67,7 @@ export default function GraffitiRemovalPage() {
             Charleston&apos;s historic district is full of soft, hand-made brick, lime mortar, and stucco that these methods can destroy. The city&apos;s own graffiti abatement guidance warns against aggressive removal on historic masonry for exactly this reason. Once the surface is gouged or shadowed, the damage is permanent.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            Laser cleaning removes only the paint layer. Our pulsed fiber laser vaporizes the spray paint and stops at the original surface, so there is no ghosting, no etching, and no chemical residue. It is the safest method available for graffiti on historic and heritage surfaces, and it works on modern surfaces just as well.
+            Laser cleaning removes only the paint layer. The pulsed fiber laser vaporizes the spray paint and stops at the original surface, with no etching and no chemical residue. How well it works depends on the paint. Black and other dark spray paints respond well. Silver, metallic, and some red paints resist removal at settings that are safe for brick and stone, and turning the power up past that point would mark the wall. That is why every graffiti job starts with a test patch, and you see the result before we quote the full job.
           </p>
         </div>
       </section>
@@ -174,7 +174,7 @@ export default function GraffitiRemovalPage() {
               {
                 step: '01',
                 title: 'On-Site Assessment',
-                desc: 'We inspect the tagged surface in person, identify the material and paint type, and confirm laser cleaning is the right approach for the specific surface.',
+                desc: 'We inspect the tagged surface in person, identify the material and the paint, and run a small test patch. You see that result before we quote the full job.',
               },
               {
                 step: '02',
@@ -189,7 +189,7 @@ export default function GraffitiRemovalPage() {
               {
                 step: '04',
                 title: 'Surface Inspection',
-                desc: 'We inspect the cleaned area for any remaining shadow and confirm a clean, ghost-free result before completing the job. Before and after photos are taken for your records.',
+                desc: 'We check the cleaned area in raking light for any remaining shadow before finishing, and send you before and after photos for your records.',
               },
               {
                 step: '05',
@@ -249,6 +249,11 @@ export default function GraffitiRemovalPage() {
               'Ghosting comes from methods that either drive pigment deeper into the surface or clean an area so aggressively that it no longer matches the wall around it. Lifting the paint off the surface is what makes a clean result possible on porous masonry.',
           },
           {
+            q: 'Does it work on every color of spray paint?',
+            a:
+              'No, and it is better to know that before you pay for anything. Dark spray paints come off well. Silver, metallic, and some reds resist removal at the settings that are safe for brick and stone. We test a patch first and show you the result before quoting the full job.',
+          },
+          {
             q: 'Is it safe on historic brick and stucco?',
             a:
               "Yes, and this is the case where other methods do the most damage. The City of Charleston's own graffiti guidance warns against aggressive removal on historic masonry. A dry, non-contact method avoids gouging the surface and leaves no chemical residue in the wall.",
@@ -272,7 +277,7 @@ export default function GraffitiRemovalPage() {
         items={[
           {
             title: 'Brick and Masonry Cleaning',
-            desc: 'Efflorescence and soiling on historic brick, stucco, and stone without pressure washing damage.',
+            desc: 'The laser takes soot and biological staining off historic brick and mortar, with no pressure washing damage.',
             href: '/services/brick-cleaning-charleston',
           },
           {
@@ -287,10 +292,10 @@ export default function GraffitiRemovalPage() {
       <section className="py-8 lg:py-12 bg-[#1a3958] border-t border-[#397774]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
-            Get the graffiti gone without the shadow
+            See a test patch before you commit
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Free estimates for all jobs. Send us a photo of the tagged surface and we will assess it and follow up within 24 hours.
+            Free estimates. Send us a photo of the tagged surface and we will follow up within 24 hours, then test a patch on site before quoting the full job.
           </p>
           <Link
             href="/quote"

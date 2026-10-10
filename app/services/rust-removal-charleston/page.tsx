@@ -98,7 +98,7 @@ export default function RustRemovalPage() {
               },
               {
                 title: 'Painted & Coated Surfaces',
-                desc: 'Old paint, powder coat, and failing coatings stripped back to bare metal without gouging or chemical residue.',
+                desc: 'We strip old paint, powder coat, and failing coatings back to bare metal without gouging or chemical residue. On galvanized steel, plan on a zinc-rich primer before repainting, since stripping takes some of the zinc with it.',
               },
               {
                 title: 'Antique Metal & Tools',
@@ -167,6 +167,9 @@ export default function RustRemovalPage() {
 
           <p className="text-gray-400 leading-relaxed mb-6">
             The same control is what makes the process suited to detailed work. Paint sitting in the crevices of a forged railing, in threads, or in the recesses of a casting is exactly where blasting either fails to reach or erodes the detail trying. Laser cleaning follows the shape of the piece, so ornamental ironwork, hardware, and fabricated assemblies come out with their profile intact.
+          </p>
+          <p className="text-gray-400 leading-relaxed mb-6">
+            Galvanized steel needs one more step. Stripping paint from a galvanized railing or gate takes some of the zinc layer with it, so we recommend a zinc-rich primer before repainting. That applies to the galvanized railings common on Daniel Island and in newer Mount Pleasant construction.
           </p>
           <p className="text-gray-400 leading-relaxed mb-8">
             There is also nothing left behind to deal with. No solvent runoff, which matters on any property near Charleston&apos;s waterways and tidal creeks, and no spent abrasive to collect and haul away. Work happens where the piece sits, and the surface it leaves is a better foundation for the next coating than a blasted or hand-scraped one, because adhesion depends on a clean profile rather than a roughened one.
@@ -340,7 +343,7 @@ export default function RustRemovalPage() {
           {
             q: 'Can you remove paint as well as rust?',
             a:
-              'Yes. The same process lifts old coatings, and it can often be dialed in to take one layer at a time. That is useful when you want to remove a failed topcoat without stripping sound primer, or when you need to see what is under old paint before deciding how to proceed.',
+              'Yes. The same process lifts old coatings, and it can often be dialed in to take one layer at a time. That is useful when you want to remove a failed topcoat without stripping sound primer, or when you need to see what is under old paint before deciding how to proceed. On galvanized steel, stripping takes some of the zinc layer too, so we recommend a zinc-rich primer before repainting.',
           },
           {
             q: 'Can you remove lead paint?',

@@ -33,7 +33,7 @@ const workTypes = [
     title: 'Brick, Stucco & Masonry',
     href: '/services/brick-cleaning-charleston',
     shows:
-      'Soiling and efflorescence gone with the fired brick skin still on the brick. Pressure washed masonry looks clean too, at the cost of the surface that was protecting it.',
+      'Soot and soiling gone with the fired brick skin still on the brick. Pressure washed masonry looks clean too, at the cost of the surface that was protecting it.',
   },
   {
     title: 'Rust & Failed Coatings',
@@ -45,7 +45,7 @@ const workTypes = [
     title: 'Graffiti on Historic Surfaces',
     href: '/services/graffiti-removal-charleston',
     shows:
-      'Tags off porous brick and stucco without a shadow left where the paint was. Ghosting is the usual failure here, so these comparisons are shot in raking light where it would show.',
+      'Tags off porous brick and stucco without a shadow left where the paint was. Ghosting is the usual failure here, so these comparisons are shot in raking light where it would show. Dark paints, mostly. Silver and metallic tags are the hard ones, which is why every graffiti job starts with a test patch.',
   },
   {
     title: 'Rental Railings & Exterior Metal',

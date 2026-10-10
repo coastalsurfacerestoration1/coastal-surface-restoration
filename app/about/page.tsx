@@ -35,7 +35,7 @@ export default function AboutPage() {
             <span className="text-[#397774]">Built to Last.</span>
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            Coastal Surface Restoration is a mobile laser cleaning company serving Charleston and the Lowcountry. We specialize in removing rust, paint, efflorescence, and marine buildup without chemicals, abrasives, or damage to original materials.
+            Coastal Surface Restoration is a mobile laser cleaning company serving Charleston and the Lowcountry. We specialize in removing rust, paint, soot, and corrosion from metal and masonry, with no chemicals or abrasives and no harm to the original material.
           </p>
         </div>
       </section>

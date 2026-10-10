@@ -102,7 +102,7 @@ export default function VacationRentalPage() {
               },
               {
                 title: 'Brick & Masonry',
-                desc: 'Efflorescence, staining, and grime on brick and stucco removed without pressure washing damage.',
+                desc: 'The laser lifts mildew and grime from brick and stucco without pressure washing damage.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">

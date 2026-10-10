@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Laser Brick & Masonry Cleaning in Charleston, SC',
   description:
-    'Laser brick and masonry cleaning in Charleston, SC. Remove efflorescence, grime, and staining from historic brick, stone, and stucco without pressure washing damage or chemicals. Free estimates.',
+    'Laser brick and masonry cleaning in Charleston, SC. Remove paint, soot, grime, and biological staining from historic brick and mortar without pressure washing damage or chemicals. Free estimates.',
   path: '/services/brick-cleaning-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function BrickCleaningPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Brick and Masonry Cleaning',
-          description: 'Laser brick and masonry cleaning in Charleston, SC. Remove efflorescence, grime, and staining from historic brick, stone, and stucco without pressure washing damage or chemicals. Free estimates.',
+          description: 'Laser brick and masonry cleaning in Charleston, SC. Remove paint, soot, grime, and biological staining from historic brick and mortar without pressure washing damage or chemicals. Free estimates.',
           path: '/services/brick-cleaning-charleston',
           serviceType: 'Masonry cleaning',
         })}
@@ -43,7 +43,7 @@ export default function BrickCleaningPage() {
             Laser Brick and Masonry Cleaning in Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Charleston&apos;s historic brick is soft, hand-made, and easy to ruin. Pressure washing blasts away the fired surface and opens the brick to water damage. Laser cleaning lifts efflorescence, grime, and staining while leaving the original masonry and mortar completely intact.
+            Charleston&apos;s historic brick is soft, hand-made, and easy to ruin. Pressure washing blasts away the fired surface and opens the brick to water damage. Laser cleaning lifts paint, soot, grime, and biological staining while leaving the original masonry and mortar intact.
           </p>
           <Link
             href="/quote"
@@ -64,10 +64,10 @@ export default function BrickCleaningPage() {
             The brick on Charleston&apos;s historic homes was fired in the 1700s and 1800s with a hard outer skin that protects the softer core. Once that skin is gone, the brick absorbs water, spalls, and deteriorates. High-pressure washing strips that skin in seconds, and it drives water and detergent deep into the wall and the lime mortar joints.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
-            Efflorescence, the white crystalline haze that appears on brick and stucco, comes from salts migrating to the surface. Scrubbing it with acid can etch the masonry and leave a burn mark, and it often comes right back because the underlying moisture issue was never addressed.
+            Efflorescence, the white crystalline haze on brick and stucco, is salt carried to the surface by water moving through the wall. It is a moisture problem first. Acid scrubbing etches the masonry and the salt comes back, and it would come back after a laser cleaning too, because neither one stops the water. When efflorescence is the issue, we look for where the moisture is coming from and tell you plainly, rather than sell a cleaning that will not hold.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            Laser cleaning removes surface contamination without water, chemicals, or abrasion. The pulsed fiber laser targets the grime, efflorescence, or staining and stops at the masonry surface, so the original brick skin and mortar are preserved. It is a controlled, gentle process suited to exactly the kind of irreplaceable masonry Charleston is known for.
+            Laser cleaning removes surface contamination without water, chemicals, or abrasion. The pulsed fiber laser targets the paint or staining and stops at the masonry surface, so the original brick skin and mortar stay intact. It suits exactly the kind of irreplaceable masonry the Charleston peninsula is known for.
           </p>
         </div>
       </section>
@@ -85,8 +85,8 @@ export default function BrickCleaningPage() {
                 desc: 'Hand-made and soft historic brick on homes and commercial buildings throughout the Charleston peninsula, cleaned without stripping the fired surface.',
               },
               {
-                title: 'Efflorescence Removal',
-                desc: 'The white crystalline haze on brick, block, and stucco removed at the surface without acid etching or burn marks.',
+                title: 'Paint on Brick',
+                desc: 'The laser lifts old paint and overspray from brick and mortar one layer at a time, so the fired brick skin underneath survives. On painted masonry we test a patch first.',
               },
               {
                 title: 'Brick Stoops & Steps',
@@ -129,7 +129,7 @@ export default function BrickCleaningPage() {
               },
               {
                 method: 'Acid Cleaning',
-                problem: 'Etches and burns masonry, discolors brick, and often fails to stop efflorescence from returning. Creates hazardous runoff.',
+                problem: 'Etches and burns masonry and discolors brick, and it leaves hazardous runoff behind.',
                 safe: false,
               },
               {
@@ -184,7 +184,7 @@ export default function BrickCleaningPage() {
               {
                 step: '03',
                 title: 'Laser Cleaning',
-                desc: 'Our 300W JPT MOPA pulsed fiber laser removes grime, efflorescence, and staining layer by layer. Parameters are tuned to the specific masonry so the surface is preserved.',
+                desc: 'Our 300W JPT MOPA pulsed fiber laser removes paint and staining layer by layer, with settings matched to the specific masonry so the surface stays intact.',
               },
               {
                 step: '04',
@@ -194,7 +194,7 @@ export default function BrickCleaningPage() {
               {
                 step: '05',
                 title: 'Moisture Guidance',
-                desc: 'If recurring efflorescence points to a moisture issue, we will flag it so the underlying cause can be addressed and the problem does not simply return.',
+                desc: 'White salt bloom (efflorescence) usually means water is moving through the wall. We point out where the moisture is likely coming from instead of cleaning something that will be back in a month.',
               },
             ].map((item) => (
               <div key={item.step} className="flex gap-6 items-start">
@@ -244,9 +244,9 @@ export default function BrickCleaningPage() {
               'Yes, and it addresses the specific risk with soft handmade brick. The fired outer skin protects the softer core, and pressure washing strips that skin away. Laser cleaning lifts surface soiling without removing the skin and without forcing water into the wall or the mortar joints.',
           },
           {
-            q: 'Can you remove efflorescence?',
+            q: 'Do you remove efflorescence?',
             a:
-              'Yes. Efflorescence is salt deposit carried to the surface by moisture moving through the masonry, and the laser removes the deposit itself. If the underlying moisture path is not addressed the salts will return, so we will tell you when what you actually have is a water problem.',
+              'Usually not as a cleaning job. Efflorescence is salt that water carries out of the masonry, so it is a moisture problem first. A laser can lift the deposit, but the salt returns as long as the water keeps moving, and charging you for that would not be honest. We look for the moisture source, tell you what we see, and recommend fixing that first.',
           },
           {
             q: 'Will it damage lime mortar joints?',
@@ -272,7 +272,7 @@ export default function BrickCleaningPage() {
         items={[
           {
             title: 'Graffiti Removal',
-            desc: 'Spray paint lifted from brick and masonry without ghost outlines or surface gouging.',
+            desc: 'The laser lifts spray paint from brick and masonry without surface gouging. Results vary by paint color, so we test a patch first.',
             href: '/services/graffiti-removal-charleston',
           },
           {

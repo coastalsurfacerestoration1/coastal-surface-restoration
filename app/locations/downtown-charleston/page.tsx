@@ -86,11 +86,11 @@ export default function DowntownCharlestonPage() {
               },
               {
                 title: 'Historic Brick & Stucco',
-                desc: 'Efflorescence, atmospheric soiling, biological growth, and paint overspray on soft handmade brick and original stucco, without eroding the fired surface or opening mortar joints.',
+                desc: 'The laser lifts paint overspray and decades of soot and biological growth from soft handmade peninsula brick and original stucco, without eroding the fired surface or opening mortar joints.',
               },
               {
                 title: 'Graffiti on Historic Surfaces',
-                desc: 'Tags on brick, stone, and painted walls where solvent removal leaves a permanent ghost outline. Laser lifts the paint without driving it deeper into porous masonry.',
+                desc: 'Tags on brick, stone, and painted walls where solvent removal leaves a permanent ghost outline. The laser lifts the paint without driving it deeper into porous masonry. Dark paints respond best, so every job starts with a test patch you see before we quote.',
               },
               {
                 title: 'Shutters, Doors & Hardware',
@@ -209,12 +209,12 @@ export default function DowntownCharlestonPage() {
               },
               {
                 title: 'Brick & Masonry Cleaning',
-                desc: 'Efflorescence, staining, and soiling on soft historic brick and original stucco.',
+                desc: 'The laser takes soot and biological staining off soft historic brick and original stucco.',
                 href: '/services/brick-cleaning-charleston',
               },
               {
                 title: 'Graffiti Removal',
-                desc: 'Tag removal on historic masonry without the ghosting that chemical methods leave behind.',
+                desc: 'Tag removal on historic masonry, starting with a test patch you see before we quote.',
                 href: '/services/graffiti-removal-charleston',
               },
             ].map((s) => (

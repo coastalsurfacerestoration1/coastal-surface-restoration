@@ -334,9 +334,9 @@ export default function HowLaserCleaningWorksPage() {
               { title: 'Rust and Corrosion', desc: 'Surface rust, scale, oxidation, and flash rust from iron, steel, and aluminum. Deep pitting is a separate issue and cannot be reversed by any cleaning method.' },
               { title: 'Paint and Coatings', desc: 'Old paint, primer, powder coating, varnish, and clear coats. The laser lifts the coating cleanly so a fresh finish has bare, ready-to-coat metal underneath.' },
               { title: 'Grease, Oil, and Tar', desc: 'Baked-on grease, cutting fluid, road tar, and industrial residue. Common on tools, trailers, and shop equipment.' },
-              { title: 'Graffiti', desc: 'Spray paint and marker on brick, stone, and metal. Removed without the ghost outline that solvents leave behind on porous surfaces.' },
+              { title: 'Graffiti', desc: 'Spray paint and marker on brick, stone, and metal, lifted without the ghost outline solvents leave on porous surfaces. Dark paints respond best and silver or metallic paints can resist, so we test a patch before quoting.' },
               { title: 'Marine Growth', desc: 'Salt buildup, calcium deposits, biological staining, and light oxidation on marine hardware, trailers, and dock fittings.' },
-              { title: 'Efflorescence and Soiling', desc: 'Mineral deposits, atmospheric soiling, and biological staining on historic brick, stucco, and stone without opening mortar joints. Heavy or recurring efflorescence often points to a moisture problem in the wall itself, and that has to be addressed separately.' },
+              { title: 'Soot and Biological Staining', desc: 'The laser removes atmospheric soot and grime, plus algae and mildew staining, from historic brick, stucco, and stone without opening mortar joints. White salt bloom (efflorescence) is usually a moisture problem in the wall, so we assess it and tell you plainly rather than sell a cleaning that will not hold.' },
             ].map((item) => (
               <div key={item.title} className="bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6">
                 <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
@@ -460,8 +460,8 @@ export default function HowLaserCleaningWorksPage() {
               { title: 'Historic Ironwork', desc: 'Charleston gates, railings, and antique iron.', href: '/services/historic-ironwork-restoration-charleston' },
               { title: 'Rust and Paint Removal', desc: 'Iron, steel, and aluminum stripped clean.', href: '/services/rust-removal-charleston' },
               { title: 'Marine Cleaning', desc: 'Boat trailers, dock hardware, and fittings.', href: '/services/marine-cleaning-charleston' },
-              { title: 'Brick and Masonry', desc: 'Efflorescence and soiling on historic surfaces.', href: '/services/brick-cleaning-charleston' },
-              { title: 'Graffiti Removal', desc: 'Tag removal without ghost outlines on masonry.', href: '/services/graffiti-removal-charleston' },
+              { title: 'Brick and Masonry', desc: 'Paint and biological staining on brick and mortar.', href: '/services/brick-cleaning-charleston' },
+              { title: 'Graffiti Removal', desc: 'Tag removal on masonry, with a test patch before any quote.', href: '/services/graffiti-removal-charleston' },
               { title: 'Antiques and Hardware', desc: 'Heirloom pieces where the patina must survive.', href: '/services/antique-restoration-charleston' },
             ].map((s) => (
               <Link

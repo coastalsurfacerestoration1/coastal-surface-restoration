@@ -38,7 +38,7 @@ const services: Service[] = [
   {
     Icon: CleatIcon,
     title: 'Marine Cleaning',
-    desc: 'Boat fittings, trailers, marine hardware, and dock equipment. Remove rust and marine growth without harsh chemicals near Charleston\'s waterways.',
+    desc: "Props, shafts, cleats, rails, winches, and through-hull fittings, plus trailers and dock hardware. Metal only. We take the rust and corrosion off without harsh chemicals near Charleston's waterways.",
     href: '/services/marine-cleaning-charleston',
     live: true,
   },
@@ -59,14 +59,14 @@ const services: Service[] = [
   {
     Icon: BrickIcon,
     title: 'Brick & Masonry Cleaning',
-    desc: 'Efflorescence, staining, and grime removal from brick, stone, and concrete without pressure washing damage.',
+    desc: 'The laser lifts paint, soot, grime, and biological staining from brick and mortar without pressure washing damage.',
     href: '/services/brick-cleaning-charleston',
     live: true,
   },
   {
     Icon: SprayIcon,
     title: 'Graffiti Removal',
-    desc: 'Clean graffiti from brick, metal, and concrete surfaces without leaving ghost marks or surface damage.',
+    desc: 'The laser lifts spray paint from brick, metal, and concrete without surface damage. Results vary by paint color, so every job starts with a test patch.',
     href: '/services/graffiti-removal-charleston',
     live: true,
   },

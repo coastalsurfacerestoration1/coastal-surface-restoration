@@ -23,7 +23,7 @@ const SERVICES: [string, string, string][] = [
   [
     'Brick & Masonry Cleaning',
     '/services/brick-cleaning-charleston',
-    'Efflorescence and soiling removed from historic brick, stucco, and stone without pressure washing damage',
+    'Laser removal of paint, soot, grime, and biological staining from brick and mortar, with no pressure washing damage',
   ],
   [
     'Graffiti Removal',

@@ -86,7 +86,7 @@ export default function CommercialExteriorPage() {
               },
               {
                 title: 'Gates, Doors & Roll-Up Shutters',
-                desc: 'Iron gates, steel doors, and roll-up security shutters cleaned of rust, grime, and graffiti.',
+                desc: 'Rust and grime come off iron gates, steel doors, and roll-up security shutters. For graffiti on them, we test a patch first and show you the result before quoting.',
               },
               {
                 title: 'Signage & Fixtures',
@@ -98,7 +98,7 @@ export default function CommercialExteriorPage() {
               },
               {
                 title: 'Facades & Masonry',
-                desc: 'Brick, stucco, and stone facades cleaned of grime, efflorescence, and staining without pressure washing damage.',
+                desc: 'The laser cleans soot, grime, paint, and biological staining off brick and stucco facades without pressure washing damage.',
               },
               {
                 title: 'Property Management Portfolios',
@@ -258,7 +258,7 @@ export default function CommercialExteriorPage() {
           },
           {
             title: 'Graffiti Removal',
-            desc: 'Tags lifted from brick, metal, and painted surfaces without the ghost outlines solvents leave behind.',
+            desc: 'The laser lifts tags from brick, metal, and painted surfaces without the ghost outlines solvents leave. We test a patch first and show you the result before quoting.',
             href: '/services/graffiti-removal-charleston',
           },
         ]}

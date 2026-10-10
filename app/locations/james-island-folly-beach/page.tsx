@@ -102,7 +102,7 @@ export default function JamesIslandFollyBeachPage() {
               },
               {
                 title: 'Graffiti & Commercial Surfaces',
-                desc: 'Tag removal and surface cleaning on commercial frontage around Center Street and the Folly business district, including brick, block, and painted metal.',
+                desc: 'Tag removal and surface cleaning on commercial frontage around Center Street and the Folly business district, on brick, block, and painted metal. Every graffiti job starts with a test patch.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">
