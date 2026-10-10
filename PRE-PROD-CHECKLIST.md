@@ -71,6 +71,51 @@ preview → Tyler reviews the preview → merge to `main` (production).
 
 ---
 
+## Release: walkthrough texts + service area (feature/walkthrough-texts, 2026-10-10)
+
+Before anything goes live, record what we would roll back to:
+
+- [ ] Current Production deployment: `coastal-surface-restoration-96x86i2dn.vercel.app`
+      (main at 133d921). Confirm it is still the one marked Current in Vercel.
+- [ ] Current live Apps Script version: **@4** ("quote webhook 2026-10-08"),
+      deployment `AKfycbwD0t...3f7rOw`. Confirm with
+      `clasp list-deployments <live script id>`.
+
+Order (script first, as in section 3; the new script works with the old site,
+but the new site with the old script would give out of area quotes job folders):
+
+1. Pre-prod checks in section 1 done, both TEST reminders verified on Tyler's
+   phone with "Sent" in Y20 and V20.
+2. Live Apps Script: `--push-only`, then `--deploy-only` onto the existing
+   deployment (same `/exec` URL). Not within 10 minutes of the top of the
+   hour, never Mon 10/12 7:00 to 8:15 AM. Probe answers `forbidden`. No new
+   Google permissions are expected; if the editor asks, Tyler authorizes.
+3. Merge to `main`, wait for Production Ready.
+4. Rename the live T header to "Job Date".
+5. POST-PROD-CHECKLIST.md and `npm run smoke`. Service area in production:
+   type 29438 and then 29492 into the live form's ZIP field and check the
+   message shows, then clears, without submitting. Submit one test quote with
+   ZIP 10001 only (it is dropped: a sheet row, no email, folder or text), then
+   delete that row. No in-area test submissions in production.
+
+### Rollback, if either feature misbehaves in production
+
+1. **Site:** Vercel, Deployments, `coastal-surface-restoration-96x86i2dn`,
+   Instant Rollback (or `vercel rollback coastal-surface-restoration-96x86i2dn.vercel.app`).
+   Takes seconds, no git change. Quotes go back to flag-not-refuse; the job
+   reminder goes back to the "here." wording.
+2. **Apps Script:** live script, Deploy, Manage deployments, edit the web app
+   deployment, pick version **4**, Deploy. Same URL, so nothing in Vercel
+   changes. Old @4 ignores column W, so any walkthrough dates typed after the
+   release stop texting; their X/Y cells keep whatever they last said.
+3. Roll back both together. The old site with the new script is safe; the new
+   site with the old script gives refused quotes job folders.
+4. Then fix forward on a branch: revert the merge commit, or only the service
+   area commits (4377e54, 5d7e11d and the follow up), and go through this
+   checklist again.
+
+---
+
 ## First release with job folders (this branch)
 
 One-time steps, because the live sheet's script was pasted by hand in August

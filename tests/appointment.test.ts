@@ -28,8 +28,8 @@ describe('appointmentText wording', () => {
       ok: true,
       to: '843-555-2345',
       body:
-        'Coastal Surface Restoration here. Reminder: your appointment is scheduled for ' +
-        'Thu, Oct 15 at 9:00 AM, 1810 Mepkin Rd, West Ashley. ' +
+        'Coastal Surface Restoration: Reminder, your appointment is ' +
+        'Thu, Oct 15 at 9:00 AM at 1810 Mepkin Rd, West Ashley. ' +
         'To change this appointment, call or text 854-222-7790. Reply STOP to opt out.',
     });
   });
@@ -47,7 +47,7 @@ describe('appointmentText wording', () => {
 
   it('drops the city only when it would push past two segments', () => {
     // Sized so the street fits in two segments but street plus city does not.
-    const street = ('1234 Old Plantation Road Extension, Building 7, Suite 1200, Back Entrance by the Loading Dock ').padEnd(115, 'x');
+    const street = ('1234 Old Plantation Road Extension, Building 7, Suite 1200, Back Entrance by the Loading Dock ').padEnd(132, 'x');
     const result = appointmentText(row({ street, city: "Sullivan's Island" }), EVENING_BEFORE);
     if (!result.ok) throw new Error(result.reason);
     expect(result.body).toContain(`${street}. To change`);
@@ -179,5 +179,80 @@ describe('reminder after a fresh confirmation', () => {
 
   it('still waits for its own time when booked days ahead', () => {
     expect(appointmentText(row({ confirmedJustNow: true }), at('2026-10-08T10:00'))).toMatchObject({ wait: true });
+  });
+});
+
+describe('walkthrough texts', () => {
+  const walk = (extra: Record<string, unknown> = {}) => row({ type: 'walkthrough', ...extra });
+
+  it('confirms a walkthrough as a site visit appointment, in the approved wording', () => {
+    expect(appointmentText(walk({ kind: 'confirmation' }), at('2026-10-08T10:00'))).toEqual({
+      ok: true,
+      to: '843-555-2345',
+      body:
+        'Coastal Surface Restoration: Your site visit appointment is confirmed for 10/15/2026 at 9:00 AM. ' +
+        'We will look at and measure the project for your quote. ' +
+        'To change this appointment, call or text 854-222-7790. Reply STOP to opt out.',
+    });
+  });
+
+  it('reminds about the site visit appointment, in the approved wording', () => {
+    expect(appointmentText(walk(), EVENING_BEFORE)).toEqual({
+      ok: true,
+      to: '843-555-2345',
+      body:
+        'Coastal Surface Restoration: Reminder, your site visit appointment is ' +
+        'Thu, Oct 15 at 9:00 AM at 1810 Mepkin Rd, West Ashley. ' +
+        'We will look at and measure the project for your quote. ' +
+        'To change this appointment, call or text 854-222-7790. Reply STOP to opt out.',
+    });
+  });
+
+  it('starts every text the same way', () => {
+    for (const type of ['job', 'walkthrough']) {
+      for (const [kind, now] of [['confirmation', at('2026-10-08T10:00')], ['reminder', EVENING_BEFORE]] as const) {
+        const result = appointmentText(row({ type, kind }), now);
+        expect(result.ok && result.body).toMatch(/^Coastal Surface Restoration: /);
+      }
+    }
+  });
+
+  it('never says job or service appointment, and stays GSM-7 within two segments', () => {
+    const long = { street: '1234 Rivers Avenue, Unit 12B', city: "Sullivan's Island" };
+    for (const result of [
+      appointmentText(walk({ kind: 'confirmation', ...long }), at('2026-10-08T10:00')),
+      appointmentText(walk(long), EVENING_BEFORE),
+    ]) {
+      if (!result.ok) throw new Error(result.reason);
+      expect(result.body).not.toMatch(/\bjob\b|service appointment/i);
+      expect(result.body).toMatch(GSM7);
+      expect(result.body.length).toBeLessThanOrEqual(306);
+    }
+  });
+
+  it('keeps the job wording for a job and for a request with no type', () => {
+    const job = appointmentText(row({ type: 'job', kind: 'confirmation' }), at('2026-10-08T10:00'));
+    const old = appointmentText(row({ kind: 'confirmation' }), at('2026-10-08T10:00'));
+    expect(job).toEqual(old);
+    expect(job.ok && job.body).toContain('Your service appointment is confirmed');
+  });
+
+  it('follows the same consent, quiet hours, past and timing rules as a job', () => {
+    expect(appointmentText(walk({ smsConsent: 'no', kind: 'confirmation' }), at('2026-10-08T10:00')).ok).toBe(false);
+    expect(appointmentText(walk({ kind: 'confirmation' }), at('2026-10-08T21:00'))).toMatchObject({ wait: true });
+    expect(appointmentText(walk({ kind: 'confirmation' }), at('2026-10-16T10:00'))).toEqual({
+      ok: false,
+      reason: 'appointment is in the past',
+    });
+    // 9 AM is before 10 AM, so 5 PM the evening before; 11 AM is 8 AM the same day.
+    expect(appointmentText(walk(), at('2026-10-14T16:59'))).toMatchObject({
+      wait: true,
+      reason: 'reminder goes out Wed, Oct 14 at 5:00 PM',
+    });
+    expect(appointmentText(walk({ appointment: '2026-10-12T11:00' }), at('2026-10-12T07:59'))).toMatchObject({
+      wait: true,
+      reason: 'reminder goes out Mon, Oct 12 at 8:00 AM',
+    });
+    expect(appointmentText(walk({ appointment: '2026-10-12T11:00' }), at('2026-10-12T08:00')).ok).toBe(true);
   });
 });

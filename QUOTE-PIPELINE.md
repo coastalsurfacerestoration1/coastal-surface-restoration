@@ -324,6 +324,33 @@ With no key, or if Google's script fails, the field is a plain input.
 
 ---
 
+## Service area check (added 2026-10-09)
+
+**Rule change.** Until 2026-10-09 an out of area quote was flagged, never
+refused ("Tyler's call, not the form's"). Tyler replaced that with the tiered
+block below: the form now refuses anything more than 20 miles out, and nothing
+is dropped silently, since every refusal still leaves a sheet row.
+
+Every quote's ZIP is placed at its US Census centroid (`lib/zip-centroids.ts`,
+generated from the 2020 ZCTA Gazetteer, public domain) and measured to the
+nearest of the eight service towns (`lib/service-area.ts`). No API key, no
+cost, and the address goes nowhere.
+
+| Distance | What happens |
+|---|---|
+| Within 20 miles | Normal quote. |
+| 20 to 50 miles | Customer refused with the message below. Tyler still gets the email, subject `[Blocked: out of area]`, and a sheet row with Out of Area (M) = `blocked, 22 mi from West Ashley`. No job folder, alert text, 2 day reminder, or anything to the customer. |
+| Past 50 miles | Refused. Only a sheet row is kept: Out of Area (M) = `dropped, 56 mi`, or `dropped, more than 60 mi` past the edge of the data table. No email, job folder, or text, and the photos are not read. |
+| ZIP not in the Census table (PO box ZIPs like 29402) | Let through, flagged `[Outside area]` the old way if not 294xx. |
+
+Customer message, both refusals: "That address is outside our service area,
+which covers about 20 miles around Charleston. Call or text 854-222-7790 and
+we can talk about it." The form shows it as soon as a 5 digit ZIP is typed;
+the server is what enforces it. Examples: Edisto 29438 is 22 mi (blocked,
+logged), Beaufort 29902 is 49 mi (blocked, logged), Orangeburg 29118 is 56
+mi and Hilton Head 29910 is further (dropped, row only). To change the radii, edit `SERVICE_RADIUS_MILES` and
+`DROP_BEYOND_MILES`.
+
 ## Customer texts (added 2026-10-07)
 
 All customer texts go out only when the row's SMS Consent (L) starts with
@@ -339,30 +366,60 @@ The sequence:
    consented. *That confirmation is not in the campaign's description or
    samples; whether to amend the campaign before enabling it in Production is
    still open.*
-2. **Tyler types the appointment into column T, Appointment** (e.g.
-   `10/15/2026 9:00 AM`). The customer gets the confirmation, worded as the
-   campaign's Sample #2 plus the change line. Status in **U, Confirmation
-   Text**.
-3. **Reminder.** 8 AM on the appointment day, or 5 PM the evening before for an
+2. **Tyler types an appointment date** (e.g. `10/15/2026 9:00 AM`) into one
+   of two columns (added 2026-10-09):
+   - **W, Walkthrough**: the site visit to look at and measure for a quote.
+     Statuses in **X** (confirmation) and **Y** (reminder).
+   - **T, Job Date** (header was "Appointment"): the job itself. Statuses in
+     **U** (confirmation) and **V** (reminder).
+   A row can have both. Each type has its own status cells and never touches
+   the other's.
+3. **Confirmation** goes out as soon as the date is entered.
+4. **Reminder.** 8 AM on the appointment day, or 5 PM the evening before for an
    appointment before 10 AM. Skipped when booked so late that the
-   confirmation just went out, or less than an hour ahead. Status in **V,
-   Reminder Text**.
+   confirmation just went out, or less than an hour ahead.
 
-Both texts end with "To change this appointment, call or text 854-222-7790."
-(the Quo line; nobody reads replies to the Twilio number) and run two GSM-7
-segments. The reminder drops the city only past 306 characters.
+The four texts (Tyler's wording, 2026-10-09). The job confirmation is the
+campaign's Sample #2; the rest are covered by the campaign description
+("appointment confirmations/reminders to customers who request service") and
+kept close to it. No campaign amendment, by decision.
+
+- Walkthrough confirmation: "Coastal Surface Restoration: Your site visit
+  appointment is confirmed for 10/15/2026 at 9:00 AM. We will look at and
+  measure the project for your quote. To change this appointment, call or text
+  854-222-7790. Reply STOP to opt out."
+- Walkthrough reminder: "Coastal Surface Restoration: Reminder, your site
+  visit appointment is Thu, Oct 15 at 9:00 AM at 1810 Mepkin Rd, West Ashley.
+  We will look at and measure the project for your quote. To change this
+  appointment, call or text 854-222-7790. Reply STOP to opt out."
+- Job confirmation: "Coastal Surface Restoration: Your service appointment is
+  confirmed for 10/15/2026 at 9:00 AM. Questions? Call 854-222-7790 or visit
+  coastalsurfacerestoration.com. To change this appointment, call or text
+  854-222-7790. Reply STOP to opt out."
+- Job reminder: "Coastal Surface Restoration: Reminder, your appointment is
+  Thu, Oct 15 at 9:00 AM at 1810 Mepkin Rd, West Ashley. To change
+  this appointment, call or text 854-222-7790. Reply STOP to opt out."
+
+All four end with the change line (the Quo line; nobody reads replies to the
+Twilio number) and stay within two GSM-7 segments. A reminder drops the city
+only past 306 characters.
 
 How it runs:
 
 - The sheet's script has two installable triggers, created by `authorize` /
-  `installTriggers`: on edit (checks a row when T changes) and hourly
-  (`sendDueReminders`, checks every row whose U or V says Waiting). Both call
-  `POST /api/appointment-text`, authenticated with `QUOTE_SHEET_SECRET`, and
-  the site decides what is due.
-- U and V read `Waiting: ...`, `Sent <time> for <appointment>` or
-  `Not sent: <reason>`. Re-entering the same time sends nothing. Moving it to
-  a new time confirms and reminds again. To force a resend, clear U or V and
-  re-enter T.
+  `installTriggers`: on edit (checks a row when T or W changes) and hourly
+  (`sendDueReminders`, checks every row whose U, V, X or Y says Waiting). Both
+  call `POST /api/appointment-text` with `type` `job` or `walkthrough`,
+  authenticated with `QUOTE_SHEET_SECRET`, and the site decides what is due
+  and how it is worded. A request with no type is a job.
+- Status cells read `Waiting: ...`, `Sent <time> for <appointment>`,
+  `Not sent: <reason>`, or `Cancelled: <type> cleared, nothing sent` when the
+  date is cleared before a text went (what was sent stays on record).
+  Re-entering the same time sends nothing. Moving it to a new time confirms
+  and reminds again. To force a resend, clear the status cell and re-enter
+  the date.
+- Columns are only ever added on the right. Agents and other scripts read the
+  sheet by position; agent-owned columns start at Z.
 - The time is the wall time as typed, whatever the spreadsheet's own zone
   (both sheets are on Pacific).
 - `SITE_URL` (and `VERCEL_BYPASS` for TEST) in `.env.apps-script.<env>.local`

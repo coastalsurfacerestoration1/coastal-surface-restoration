@@ -338,3 +338,68 @@ describe('POST /api/quote', () => {
     });
   });
 });
+
+describe('service area', () => {
+  const MESSAGE =
+    'That address is outside our service area, which covers about 20 miles around Charleston. ' +
+    'Call or text 854-222-7790 and we can talk about it.';
+
+  it('takes a quote within 20 miles of a service town as usual', async () => {
+    const { POST } = await loadRoute();
+    const res = await POST(quote({ zip: '29492', city: 'Daniel Island' }));
+    expect(res.status).toBe(200);
+    expect(mocks.appendQuoteRow).toHaveBeenCalledWith(expect.objectContaining({ outOfArea: false }));
+    expect(mocks.send.mock.calls[0][0].subject).not.toMatch(/Blocked|Outside area/);
+  });
+
+  it('refuses 20 to 50 miles out, but still emails Tyler and logs a row with no folder', async () => {
+    const { POST } = await loadRoute();
+    const res = await POST(quote({ zip: '29438', city: 'Edisto Island' }, 1));
+
+    expect(res.status).toBe(400);
+    expect(await res.json()).toEqual({ error: MESSAGE });
+    // One email: Tyler's, marked. No reminder and no acknowledgement to the customer.
+    expect(mocks.send).toHaveBeenCalledTimes(1);
+    const email = mocks.send.mock.calls[0][0];
+    expect(email.subject).toContain('[Blocked: out of area] ');
+    expect(email.html).toContain('about 22 miles from West Ashley, past the 20 mile service area');
+    expect(email.attachments).toHaveLength(1);
+    expect(mocks.appendQuoteRow).toHaveBeenCalledWith(
+      expect.objectContaining({ zip: '29438', outOfArea: 'blocked, 22 mi from West Ashley', blocked: true }),
+    );
+    expect(mocks.sendSms).not.toHaveBeenCalled();
+  });
+
+  it('still tells a refused customer to call when the email to Tyler fails', async () => {
+    const { POST } = await loadRoute();
+    mocks.send.mockResolvedValue({ data: null, error: { message: 'down' } });
+    const res = await POST(quote({ zip: '29902', city: 'Beaufort' }));
+    expect(res.status).toBe(400);
+    expect(await res.json()).toEqual({ error: MESSAGE });
+  });
+
+  it('refuses past 50 miles with only a sheet row: no email, no folder, no text', async () => {
+    const { POST } = await loadRoute();
+    for (const [zip, note] of [['29118', 'dropped, 56 mi'], ['10001', 'dropped, more than 60 mi']]) {
+      const res = await POST(quote({ zip }, 1));
+      expect(res.status).toBe(400);
+      expect(await res.json()).toEqual({ error: MESSAGE });
+      expect(mocks.appendQuoteRow).toHaveBeenLastCalledWith(
+        expect.objectContaining({ zip, outOfArea: note, blocked: true, photos: 1 }),
+      );
+    }
+    expect(mocks.send).not.toHaveBeenCalled();
+    expect(mocks.sendSms).not.toHaveBeenCalled();
+  });
+
+  it('lets through a ZIP it cannot place, flagged the old way when it is not 294', async () => {
+    const { POST } = await loadRoute();
+    // 29402 is PO boxes only, so it has no Census centroid.
+    expect((await POST(quote({ zip: '29402' }))).status).toBe(200);
+    expect(mocks.appendQuoteRow).toHaveBeenLastCalledWith(expect.objectContaining({ outOfArea: false }));
+
+    expect((await POST(quote({ zip: '99999' }))).status).toBe(200);
+    expect(mocks.appendQuoteRow).toHaveBeenLastCalledWith(expect.objectContaining({ outOfArea: true }));
+    expect(mocks.send.mock.calls.at(-3)?.[0].subject ?? '').toContain('[Outside area] ');
+  });
+});

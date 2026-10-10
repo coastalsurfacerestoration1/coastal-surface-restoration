@@ -3,6 +3,7 @@ import { NextResponse, after } from 'next/server';
 import { BUSINESS, SITE_NAME, SITE_URL } from '@/lib/seo';
 import { appendQuoteRow, quoteConfirmationSmsEnabled, saveJobPhotos, sendSms } from '@/lib/notify';
 import { domainAcceptsMail } from '@/lib/email-domain';
+import { FAR_TABLE_MILES, OUT_OF_AREA_MESSAGE, SERVICE_RADIUS_MILES, checkServiceArea } from '@/lib/service-area';
 
 const FROM = `${SITE_NAME} <quotes@coastalsurfacerestoration.com>`;
 
@@ -292,9 +293,10 @@ const PHONE_PATTERN = /^[2-9]\d{2}[2-9]\d{6}$/;
 const STATE_PATTERN = /^[A-Za-z]{2}$/;
 const ZIP_PATTERN = /^\d{5}$/;
 /**
- * Every ZIP in the Charleston tri-county area begins 294. A submission outside
- * it is flagged in the notification rather than refused: an out of area job may
- * still be worth taking, and that is Tyler's call to make, not the form's.
+ * Every ZIP in the Charleston tri-county area begins 294. Now only the
+ * fallback for a ZIP the service area table cannot place: such a quote is
+ * flagged, not refused. Everything else goes through checkServiceArea, which
+ * refuses past 20 miles (Tyler, 2026-10-09; it used to be flag, not refuse).
  */
 const LOCAL_ZIP_PREFIX = '294';
 
@@ -380,6 +382,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Please enter a five digit ZIP code.' }, { status: 400 });
   }
 
+  // Distance from the nearest service town, by ZIP. Past 50 miles the request
+  // is refused with only a sheet row kept, below; 20 to 50 miles it is refused
+  // too, but Tyler still gets the email. Either way the customer is told the
+  // same thing.
+  const area = checkServiceArea(values.zip);
+  const blocked = area.verdict === 'near';
+
   // Optional second address line, apartment or unit. Attached only after the
   // street itself has passed its checks, then folded into it from here on, so
   // the sheet, the email and the folder name all carry it without a new column.
@@ -402,6 +411,21 @@ export async function POST(req: Request) {
   const howHeard = optionalField(form, 'howHeard');
   const referredBy = optionalField(form, 'referredBy');
 
+  // Past 50 miles: refused, with a sheet row as the only record, so nothing
+  // disappears silently. No email, folder or text, and the photos are never
+  // read. After the rate limit, so a bot cannot use it to flood the sheet.
+  if (area.verdict === 'far') {
+    const distance = area.miles ? `${area.miles} mi` : `more than ${FAR_TABLE_MILES} mi`;
+    const logged = await appendQuoteRow({
+      ...sheetRow(values, form.getAll('photos').length, smsConsent, howHeard, referredBy, suspectedSpam),
+      outOfArea: `dropped, ${distance}`,
+      blocked: true,
+    });
+    if (!logged.sent) console.warn(`Dropped quote not written to the sheet: ${logged.reason}`);
+    console.warn(`Quote dropped, out of area: ZIP ${values.zip}, ${distance}.`);
+    return NextResponse.json({ error: OUT_OF_AREA_MESSAGE }, { status: 400 });
+  }
+
   const result = await readPhotos(form);
   if ('error' in result) {
     return NextResponse.json({ error: result.error }, { status: 400 });
@@ -421,15 +445,24 @@ export async function POST(req: Request) {
 
   const addressLine = `${values.street}, ${values.city}, ${values.state.toUpperCase()} ${values.zip}`;
   const safeAddressLine = escapeHtml(addressLine);
-  const outOfArea = !values.zip.startsWith(LOCAL_ZIP_PREFIX);
+  // A ZIP the table cannot place falls back to the old prefix check, flagged
+  // and let through.
+  const outOfArea = blocked || (area.verdict === 'unknown' && !values.zip.startsWith(LOCAL_ZIP_PREFIX));
+  const blockedNote =
+    area.verdict === 'near'
+      ? `ZIP ${values.zip} is about ${area.miles} miles from ${area.town}, past the ${SERVICE_RADIUS_MILES} mile service area. ` +
+        `The form refused it and told them to call or text ${BUSINESS.phone}. Nothing was sent to the customer.`
+      : '';
 
   const spamRow = suspectedSpam
     ? `<tr><td style="padding: 8px 0; color: #666;"><strong>Flag</strong></td><td style="padding: 8px 0; color: #b45309;">The hidden anti-spam field was filled. Usually a bot, but an autofill extension can do it too, so check before discarding.</td></tr>`
     : '';
 
-  const outOfAreaRow = outOfArea
-    ? `<tr><td style="padding: 8px 0; color: #666;"><strong>Heads up</strong></td><td style="padding: 8px 0; color: #b45309;">ZIP ${escapeHtml(values.zip)} is outside the usual Charleston service area.</td></tr>`
-    : '';
+  const outOfAreaRow = blocked
+    ? `<tr><td style="padding: 8px 0; color: #666;"><strong>Blocked</strong></td><td style="padding: 8px 0; color: #b91c1c;">${escapeHtml(blockedNote)}</td></tr>`
+    : outOfArea
+      ? `<tr><td style="padding: 8px 0; color: #666;"><strong>Heads up</strong></td><td style="padding: 8px 0; color: #b45309;">ZIP ${escapeHtml(values.zip)} is outside the usual Charleston service area.</td></tr>`
+      : '';
 
   const photoRow =
     photos.length > 0
@@ -456,7 +489,7 @@ export async function POST(req: Request) {
       to: NOTIFY_TO,
       replyTo: values.email,
       attachments: photos.length > 0 ? photos : undefined,
-      subject: `${TEST_TAG}${suspectedSpam ? '[Possible spam] ' : ''}${outOfArea ? '[Outside area] ' : ''}New Quote Request -- ${singleLine(values.serviceType)} -- ${singleLine(values.name)}`,
+      subject: `${TEST_TAG}${suspectedSpam ? '[Possible spam] ' : ''}${blocked ? '[Blocked: out of area] ' : outOfArea ? '[Outside area] ' : ''}New Quote Request -- ${singleLine(values.serviceType)} -- ${singleLine(values.name)}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #0e273e;">New Quote Request</h2>
@@ -479,6 +512,8 @@ export async function POST(req: Request) {
 
     if (error) {
       console.error('Quote form error, Resend rejected the send:', error);
+      // A refused quote tells the customer to call either way.
+      if (blocked) return NextResponse.json({ error: OUT_OF_AREA_MESSAGE }, { status: 400 });
       return NextResponse.json({ error: 'Failed to send' }, { status: 500 });
     }
 
@@ -490,7 +525,22 @@ export async function POST(req: Request) {
     );
   } catch (error) {
     console.error('Quote form error:', error);
+    if (blocked) return NextResponse.json({ error: OUT_OF_AREA_MESSAGE }, { status: 400 });
     return NextResponse.json({ error: 'Failed to send' }, { status: 500 });
+  }
+
+  // Refused as out of area: on the record in the sheet, with no job folder,
+  // and nothing else. No alert text, no 2 day reminder, and nothing to the
+  // customer beyond the message on the form.
+  if (blocked) {
+    const logged = await appendQuoteRow({
+      ...sheetRow(values, photos.length, smsConsent, howHeard, referredBy, suspectedSpam),
+      outOfArea: `blocked, ${area.miles} mi from ${area.town}`,
+      blocked: true,
+    });
+    if (!logged.sent) console.warn(`Refused quote not written to the sheet: ${logged.reason}`);
+    console.warn(`Quote refused but logged, out of area: ZIP ${values.zip}, ${area.miles} mi from ${area.town}.`);
+    return NextResponse.json({ error: OUT_OF_AREA_MESSAGE }, { status: 400 });
   }
 
   // The customer acknowledgement is best effort. Tyler already has the lead at
@@ -517,22 +567,8 @@ export async function POST(req: Request) {
   // so the sheet stays a complete record of what came through the form rather
   // than only the ones that looked clean.
   const logged = await appendQuoteRow({
-    timestamp: new Date().toISOString(),
-    name: values.name,
-    email: values.email,
-    phone: values.phone,
-    street: values.street,
-    city: values.city,
-    state: values.state.toUpperCase(),
-    zip: values.zip,
-    service: values.serviceType,
-    description: values.description,
-    photos: photos.length,
-    smsConsent,
+    ...sheetRow(values, photos.length, smsConsent, howHeard, referredBy, suspectedSpam),
     outOfArea,
-    spamFlag: suspectedSpam,
-    howHeard,
-    referredBy,
   });
   if (!logged.sent) console.warn(`Quote not written to the sheet: ${logged.reason}`);
 
@@ -611,6 +647,34 @@ export async function POST(req: Request) {
   }
 
   return NextResponse.json({ success: true });
+}
+
+/** The sheet row, apart from Out of Area, which depends on how the quote went. */
+function sheetRow(
+  values: Record<Field, string>,
+  photos: number,
+  smsConsent: boolean,
+  howHeard: string,
+  referredBy: string,
+  spamFlag: boolean,
+) {
+  return {
+    timestamp: new Date().toISOString(),
+    name: values.name,
+    email: values.email,
+    phone: values.phone,
+    street: values.street,
+    city: values.city,
+    state: values.state.toUpperCase(),
+    zip: values.zip,
+    service: values.serviceType,
+    description: values.description,
+    photos,
+    smsConsent,
+    spamFlag,
+    howHeard,
+    referredBy,
+  };
 }
 
 function reminderText(values: Record<Field, string>, addressLine: string): string {

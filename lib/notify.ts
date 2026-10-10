@@ -128,7 +128,10 @@ export type QuoteRow = {
   description: string;
   photos: number;
   smsConsent: boolean;
-  outOfArea: boolean;
+  /** true for "yes", or the reason in words when the quote was refused. */
+  outOfArea: boolean | string;
+  /** Refused as out of area. Logged for the record, but no job folder. */
+  blocked?: boolean;
   spamFlag: boolean;
   /** Optional on the form. Empty string when not answered. */
   howHeard: string;
@@ -192,7 +195,8 @@ export async function appendQuoteRow(row: QuoteRow): Promise<SheetResult> {
         secret,
         ...row,
         smsConsent: row.smsConsent ? 'yes' : 'no',
-        outOfArea: row.outOfArea ? 'yes' : '',
+        outOfArea: typeof row.outOfArea === 'string' ? row.outOfArea : row.outOfArea ? 'yes' : '',
+        blocked: row.blocked === true,
         spamFlag: row.spamFlag ? 'flagged' : '',
       }),
     });
