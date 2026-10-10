@@ -378,15 +378,17 @@ describe('service area', () => {
     expect(await res.json()).toEqual({ error: MESSAGE });
   });
 
-  it('refuses and drops anything past 50 miles: no email, no row, no text', async () => {
+  it('refuses past 50 miles with only a sheet row: no email, no folder, no text', async () => {
     const { POST } = await loadRoute();
-    for (const zip of ['29910', '10001']) {
-      const res = await POST(quote({ zip }));
+    for (const [zip, note] of [['29118', 'dropped, 56 mi'], ['10001', 'dropped, more than 60 mi']]) {
+      const res = await POST(quote({ zip }, 1));
       expect(res.status).toBe(400);
       expect(await res.json()).toEqual({ error: MESSAGE });
+      expect(mocks.appendQuoteRow).toHaveBeenLastCalledWith(
+        expect.objectContaining({ zip, outOfArea: note, blocked: true, photos: 1 }),
+      );
     }
     expect(mocks.send).not.toHaveBeenCalled();
-    expect(mocks.appendQuoteRow).not.toHaveBeenCalled();
     expect(mocks.sendSms).not.toHaveBeenCalled();
   });
 

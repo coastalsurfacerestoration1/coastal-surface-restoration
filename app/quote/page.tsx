@@ -471,7 +471,8 @@ export default function QuotePage() {
 
           <div>
             <label htmlFor="street" className="block text-sm font-medium text-gray-300 mb-2">
-              Property Address <span className="text-[#397774]">*</span>
+              Project Address <span className="text-[#397774]">*</span>{' '}
+              <span className="text-gray-500 font-normal">(where the work is, not a mailing address)</span>
             </label>
             <StreetAutocomplete
               {...register('street', {

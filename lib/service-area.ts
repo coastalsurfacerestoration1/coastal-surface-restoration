@@ -19,6 +19,11 @@ import { KNOWN, NEAR } from './zip-centroids';
  */
 export const SERVICE_RADIUS_MILES = 20;
 export const DROP_BEYOND_MILES = 50;
+/**
+ * The data file only carries coordinates out to here, to keep it small enough
+ * for the form. Past it a real ZIP is known to be far without an exact figure.
+ */
+export const FAR_TABLE_MILES = 60;
 
 /** Rough centers of the towns in SERVICE_AREAS (lib/schema.ts). */
 const TOWNS: readonly (readonly [string, number, number])[] = [

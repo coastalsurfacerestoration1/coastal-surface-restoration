@@ -326,6 +326,11 @@ With no key, or if Google's script fails, the field is a plain input.
 
 ## Service area check (added 2026-10-09)
 
+**Rule change.** Until 2026-10-09 an out of area quote was flagged, never
+refused ("Tyler's call, not the form's"). Tyler replaced that with the tiered
+block below: the form now refuses anything more than 20 miles out, and nothing
+is dropped silently, since every refusal still leaves a sheet row.
+
 Every quote's ZIP is placed at its US Census centroid (`lib/zip-centroids.ts`,
 generated from the 2020 ZCTA Gazetteer, public domain) and measured to the
 nearest of the eight service towns (`lib/service-area.ts`). No API key, no
@@ -335,15 +340,15 @@ cost, and the address goes nowhere.
 |---|---|
 | Within 20 miles | Normal quote. |
 | 20 to 50 miles | Customer refused with the message below. Tyler still gets the email, subject `[Blocked: out of area]`, and a sheet row with Out of Area (M) = `blocked, 22 mi from West Ashley`. No job folder, alert text, 2 day reminder, or anything to the customer. |
-| Past 50 miles | Refused and dropped: no email, no row. |
+| Past 50 miles | Refused. Only a sheet row is kept: Out of Area (M) = `dropped, 56 mi`, or `dropped, more than 60 mi` past the edge of the data table. No email, job folder, or text, and the photos are not read. |
 | ZIP not in the Census table (PO box ZIPs like 29402) | Let through, flagged `[Outside area]` the old way if not 294xx. |
 
 Customer message, both refusals: "That address is outside our service area,
 which covers about 20 miles around Charleston. Call or text 854-222-7790 and
 we can talk about it." The form shows it as soon as a 5 digit ZIP is typed;
 the server is what enforces it. Examples: Edisto 29438 is 22 mi (blocked,
-logged), Beaufort 29902 is 49 mi (blocked, logged), Hilton Head 29910 is
-dropped. To change the radii, edit `SERVICE_RADIUS_MILES` and
+logged), Beaufort 29902 is 49 mi (blocked, logged), Orangeburg 29118 is 56
+mi and Hilton Head 29910 is further (dropped, row only). To change the radii, edit `SERVICE_RADIUS_MILES` and
 `DROP_BEYOND_MILES`.
 
 ## Customer texts (added 2026-10-07)

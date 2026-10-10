@@ -231,7 +231,8 @@ check('spam flagged quote has a sheet row', got3.rows.length === 1 && got3.rows[
 check('spam flagged quote gets no job folder', got3.folders.length === 0, JSON.stringify(got3.folders));
 
 // Service area, by ZIP. Edisto (29438) is about 22 miles out: refused, but
-// still logged for Tyler with no job folder. New York is dropped outright.
+// still logged for Tyler with no job folder. New York is dropped: a sheet row
+// and nothing else.
 const OUT_OF_AREA = 'That address is outside our service area';
 const name4 = `E2E Edisto ${stamp}`;
 const sent4 = await submit(
@@ -255,9 +256,13 @@ const sent5 = await submit(
   400,
 );
 check('past 50 miles is refused with the service area message', sent5.body.includes(OUT_OF_AREA), sent5.body);
-await new Promise((resolve) => setTimeout(resolve, 15000));
-const got5 = await verify(name5);
-check('past 50 miles leaves no row and no folder', got5.rows.length === 0 && got5.folders.length === 0, JSON.stringify(got5));
+const got5 = await waitFor(name5, (v) => v.rows.length > 0, 60000);
+check(
+  'past 50 miles keeps only a sheet row marked dropped',
+  got5.rows.length === 1 && got5.rows[0]['Out of Area'] === 'dropped, more than 60 mi',
+  JSON.stringify(got5.rows),
+);
+check('past 50 miles gets no job folder', got5.folders.length === 0, JSON.stringify(got5.folders));
 
 const failed = results.filter((ok) => !ok).length;
 console.log(`\n${results.length - failed}/${results.length} checks passed`);
