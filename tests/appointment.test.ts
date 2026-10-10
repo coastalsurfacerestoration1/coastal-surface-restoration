@@ -28,8 +28,8 @@ describe('appointmentText wording', () => {
       ok: true,
       to: '843-555-2345',
       body:
-        'Coastal Surface Restoration: Reminder: your appointment is scheduled for ' +
-        'Thu, Oct 15 at 9:00 AM, 1810 Mepkin Rd, West Ashley. ' +
+        'Coastal Surface Restoration: Reminder, your appointment is ' +
+        'Thu, Oct 15 at 9:00 AM at 1810 Mepkin Rd, West Ashley. ' +
         'To change this appointment, call or text 854-222-7790. Reply STOP to opt out.',
     });
   });
@@ -47,7 +47,7 @@ describe('appointmentText wording', () => {
 
   it('drops the city only when it would push past two segments', () => {
     // Sized so the street fits in two segments but street plus city does not.
-    const street = ('1234 Old Plantation Road Extension, Building 7, Suite 1200, Back Entrance by the Loading Dock ').padEnd(115, 'x');
+    const street = ('1234 Old Plantation Road Extension, Building 7, Suite 1200, Back Entrance by the Loading Dock ').padEnd(132, 'x');
     const result = appointmentText(row({ street, city: "Sullivan's Island" }), EVENING_BEFORE);
     if (!result.ok) throw new Error(result.reason);
     expect(result.body).toContain(`${street}. To change`);

@@ -369,8 +369,8 @@ kept close to it. No campaign amendment, by decision.
   confirmed for 10/15/2026 at 9:00 AM. Questions? Call 854-222-7790 or visit
   coastalsurfacerestoration.com. To change this appointment, call or text
   854-222-7790. Reply STOP to opt out."
-- Job reminder: "Coastal Surface Restoration: Reminder: your appointment is
-  scheduled for Thu, Oct 15 at 9:00 AM, 1810 Mepkin Rd, West Ashley. To change
+- Job reminder: "Coastal Surface Restoration: Reminder, your appointment is
+  Thu, Oct 15 at 9:00 AM at 1810 Mepkin Rd, West Ashley. To change
   this appointment, call or text 854-222-7790. Reply STOP to opt out."
 
 All four end with the change line (the Quo line; nobody reads replies to the

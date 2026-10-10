@@ -59,8 +59,8 @@ const WORDING = {
       `Questions? Call ${BUSINESS.phone} or visit coastalsurfacerestoration.com. ` +
       `${CHANGE_LINE} Reply STOP to opt out.`,
     reminder: (day: string, time: string, place: string) =>
-      `${SITE_NAME}: Reminder: your appointment is scheduled for ${day} at ${time}, ` +
-      `${place}. ${CHANGE_LINE} Reply STOP to opt out.`,
+      `${SITE_NAME}: Reminder, your appointment is ${day} at ${time} at ${place}. ` +
+      `${CHANGE_LINE} Reply STOP to opt out.`,
   },
   walkthrough: {
     confirmation: (date: string, clock: string) =>

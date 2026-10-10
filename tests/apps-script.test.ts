@@ -9,6 +9,7 @@
 import { readFileSync } from 'node:fs';
 import { createContext, runInContext } from 'node:vm';
 import { describe, expect, it } from 'vitest';
+import { appointmentText } from '@/lib/appointment';
 
 const LIVE_JOBS = '1py4OwKoqrxhwDcBn7IPpIt6kH9UyRfxF';
 const TEST_JOBS = '1zDzvf3chhgm_BJUKCvQYBiXBWqfAG12Y';
@@ -656,6 +657,46 @@ describe('walkthrough and job on one row', () => {
       'walkthrough confirmation',
       'walkthrough reminder',
     ]);
+  });
+
+  it("sends Stephanie Mount's job reminder exactly once, Mon 10/12 at 8 AM, from her live U and V", () => {
+    // Her row as it stands in production on 10/9, left on T/U/V by decision.
+    // The site here is the real lib/appointment.ts, run at each hourly check.
+    const { post, fetches, site, sheet, context } = load();
+    post(quote({ name: 'Stephanie Mount', phone: '843-817-2667', street: '4401 Belle Oaks Drive', city: 'North Charleston' }));
+    while (sheet.rows[1].length < 25) sheet.rows[1].push('');
+    sheet.rows[1][19] = new Date('2026-10-12T18:00:00Z'); // 10/12/2026 11:00 AM in the Pacific sheet
+    sheet.rows[1][20] = 'Sent 10/9/2026 8:29 AM for 2026-10-12T11:00';
+    sheet.rows[1][21] = 'Waiting: reminder goes out Mon, Oct 12 at 8:00 AM';
+
+    let now = new Date();
+    const texts: { at: string; body: string }[] = [];
+    site.reply = (body) => {
+      const result = appointmentText(body, now);
+      if (result.ok) texts.push({ at: now.toISOString(), body: result.body });
+      return JSON.stringify(result.ok ? { sent: true } : { sent: false, wait: result.wait === true, reason: result.reason });
+    };
+    // Every hour from Friday 9:05 PM through Monday 12:05 PM, Charleston time.
+    for (let t = Date.parse('2026-10-09T21:05:00-04:00'); t <= Date.parse('2026-10-12T12:05:00-04:00'); t += 3600_000) {
+      now = new Date(t);
+      context.sendDueReminders();
+    }
+
+    expect(texts).toEqual([
+      {
+        at: new Date('2026-10-12T08:05:00-04:00').toISOString(),
+        body:
+          'Coastal Surface Restoration: Reminder, your appointment is Mon, Oct 12 at 11:00 AM at ' +
+          '4401 Belle Oaks Drive, North Charleston. To change this appointment, call or text 854-222-7790. ' +
+          'Reply STOP to opt out.',
+      },
+    ]);
+    // Only the job reminder was ever asked about, and nothing after it went.
+    expect(payloads(fetches).every((p) => p.type === 'job' && p.kind === 'reminder')).toBe(true);
+    expect(payloads(fetches).at(-1)).toMatchObject({ appointment: '2026-10-12T11:00' });
+    expect(sheet.rows[1][20]).toBe('Sent 10/9/2026 8:29 AM for 2026-10-12T11:00');
+    expect(sheet.rows[1][21]).toBe(sent('2026-10-12T11:00'));
+    expect(sheet.rows[1].slice(22, 25)).toEqual(['', '', '']);
   });
 
   it('adds the Job Date and walkthrough headers on a fresh sheet without renaming existing ones', () => {
