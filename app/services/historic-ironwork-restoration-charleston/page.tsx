@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Historic Ironwork Restoration in Charleston, SC',
   description:
-    'Laser cleaning for historic ironwork, wrought iron gates, and antique metalwork in Charleston, SC. Chemical-free, non-abrasive restoration safe for Philip Simmons gates and irreplaceable historic pieces. Free estimates.',
+    'Laser rust and paint removal for iron and steel gates and railings in Charleston, SC. No blast media, no chemicals, test spot first. Pre-1978 paint needs a negative lead test. Free estimates.',
   path: '/services/historic-ironwork-restoration-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function HistoricIronworkPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Historic Ironwork Restoration',
-          description: 'Laser cleaning for historic ironwork, wrought iron gates, and antique metalwork in Charleston, SC. Chemical-free, non-abrasive restoration safe for Philip Simmons gates and irreplaceable historic pieces. Free estimates.',
+          description: 'Laser rust and paint removal for iron and steel gates and railings in Charleston, SC. No blast media, no chemicals, test spot first. Pre-1978 paint needs a negative lead test. Free estimates.',
           path: '/services/historic-ironwork-restoration-charleston',
           serviceType: 'Historic restoration',
         })}
@@ -43,7 +43,7 @@ export default function HistoricIronworkPage() {
             Laser Restoration for Charleston&apos;s Historic Ironwork
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Charleston has one of the most significant collections of historic ironwork in the Southeast: wrought iron gates, railings, and decorative metalwork that date back hundreds of years. Restoring these pieces requires a method that removes rust and oxidation without touching the original material underneath. Laser cleaning is the only method that does this.
+            Charleston has one of the best collections of historic ironwork in the Southeast, and salt air is hard on all of it. Laser cleaning lifts rust and failed paint without blast media or chemicals, set to stop at the metal, with a test spot first. True pre-1900 wrought iron gets extra testing.
           </p>
           <Link
             href="/quote"
@@ -58,16 +58,16 @@ export default function HistoricIronworkPage() {
       <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
-            Preserving Charleston&apos;s Irreplaceable Ironwork Legacy
+            Charleston Ironwork, From Mild Steel to True Wrought Iron
           </h2>
           <p className="text-gray-400 leading-relaxed mb-6">
-            Charleston&apos;s historic district contains some of the most celebrated ironwork in North America. From the Sword Gates on Legare Street to the intricate pieces created by master blacksmith Philip Simmons, these works represent centuries of craftsmanship that cannot be replaced.
+            Charleston&apos;s historic district contains some of the most celebrated ironwork in North America. It runs from Philip Simmons-era gates to 1960s mild steel railings in West Ashley, and most of what we see is mild steel. Ironwork on individually listed landmarks belongs with a conservator, not with us.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
-            The challenge with restoring historic ironwork is that traditional cleaning methods all risk damaging or destroying the original surface. Sandblasting, chemical stripping, and wire brushing each take something off the piece that cannot be put back. For pieces that are 100, 150, or 200 years old, that risk is simply too high.
+            The challenge with restoring historic ironwork is that traditional cleaning methods all risk damaging or destroying the original surface. Sandblasting, chemical stripping, and wire brushing each take something off the piece that cannot be put back. On a gate that has stood since the 1800s, that risk is too high.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            Laser cleaning changes this equation. Our pulsed fiber laser targets only the rust, paint, or oxidation layer, leaving the original iron completely intact. The result is a clean, restored surface that preserves the character and patina of historic pieces while stopping further deterioration.
+            A pulsed fiber laser can be set to lift rust and paint and stop at the iron, and a test spot shows how the surface responds before we quote. Cleaned iron looks matte and a little different. It also flash-rusts overnight here, so primer or a stable finish goes on the same day.
           </p>
         </div>
       </section>
@@ -81,24 +81,24 @@ export default function HistoricIronworkPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[
               {
-                title: 'Wrought Iron Gates',
-                desc: 'Entrance gates, garden gates, and passage gates throughout the historic district, South of Broad, and the Charleston Peninsula. Safe for antique pieces of any age.',
+                title: 'Iron & Steel Gates',
+                desc: 'Entrance, garden and passage gates on the peninsula and in Mount Pleasant. True pre-1900 wrought iron is test first, and painted gates on pre-1978 homes need a negative lead test.',
               },
               {
                 title: 'Iron Railings & Fences',
-                desc: 'Perimeter fencing, stair railings, balcony railings, and decorative ironwork on historic homes and commercial properties.',
+                desc: 'Stair, balcony and perimeter railings, quoted per linear foot. On homes built before 1978 the paint needs a negative lead test first.',
               },
               {
                 title: 'Church & Institutional Ironwork',
-                desc: 'Gates, railings, and decorative metalwork at historic churches, institutional buildings, and landmarks throughout the Charleston area.',
+                desc: 'Gates and railings at churches and institutions that are not individually listed landmarks. Painted metal at schools or child-care buildings needs a negative lead test.',
               },
               {
                 title: 'Decorative Hardware',
-                desc: 'Door hardware, hinges, knockers, light fixtures, and any decorative iron or steel element on historic structures.',
+                desc: 'Hinges, knockers, shutter dogs and other iron or steel hardware, best done off the building on the bench. Plated or brass-tone pieces are not a fit.',
               },
               {
                 title: 'Garden Features',
-                desc: "Iron benches, planters, arbors, trellises, and garden ornaments common in Charleston's historic residential gardens.",
+                desc: 'Cast iron and steel benches, urns, planters and ornaments from Charleston courtyard gardens. Cast aluminum pieces we cannot promise yet.',
               },
               {
                 title: 'Antique & Heirloom Pieces',
@@ -134,7 +134,7 @@ export default function HistoricIronworkPage() {
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'Targets only the contaminant layer. Original iron surface is untouched. No chemicals, no abrasion, no risk to surrounding materials or structures.',
+                problem: 'Set to lift the coating and stop at the iron. No chemicals, no abrasion. Brick, glass and sealant next to the iron are shielded, since the beam can mark them.',
                 safe: true,
               },
             ].map((item) => (
@@ -174,12 +174,12 @@ export default function HistoricIronworkPage() {
               {
                 step: '01',
                 title: 'On-Site Assessment',
-                desc: 'We inspect the ironwork in person, assess the type and extent of rust or oxidation, and confirm laser cleaning is appropriate for the specific piece and its condition.',
+                desc: 'We look at the ironwork in person, check whether the property is individually listed and whether the paint predates 1978, and confirm laser cleaning fits the piece.',
               },
               {
                 step: '02',
                 title: 'Surface Preparation',
-                desc: 'We set up safety perimeters and protect surrounding surfaces including brickwork, stonework, and plantings before beginning work.',
+                desc: 'A controlled laser area goes up with eyewear, brick, stone and plantings get shielded, and a test spot is run for your sign-off.',
               },
               {
                 step: '03',
@@ -189,12 +189,12 @@ export default function HistoricIronworkPage() {
               {
                 step: '04',
                 title: 'Surface Inspection',
-                desc: 'We inspect the cleaned surface and confirm the result before completing the job. Before and after photos are taken for your records.',
+                desc: 'The cleaned surface is checked with you and photographed before and after.',
               },
               {
                 step: '05',
-                title: 'Painter Referral (if needed)',
-                desc: "Bare iron in Charleston's salt air environment will begin to re-rust without a protective coating. We work with local painting contractors and can refer you to a trusted partner for same-day primer application.",
+                title: 'Same-Day Primer',
+                desc: 'Bare iron flash-rusts overnight in Charleston humidity, so primer goes on the same day. Have your painter lined up, or ask for a referral to a local painter we work with.',
               },
             ].map((item) => (
               <div key={item.step} className="flex gap-6 items-start">
@@ -219,7 +219,7 @@ export default function HistoricIronworkPage() {
               Lead paint on older ironwork
             </h3>
             <p className="text-gray-400 text-sm leading-relaxed">
-              A lot of Charleston housing stock predates 1978, which means the coating on a gate, a railing, or a section of fence may contain lead. Any surface that might have lead paint is assessed before work starts. Where lead is present or suspected, the job is coordinated with a contractor certified under the EPA Renovation, Repair and Painting rule, or referred out entirely. That call is made before a quote, not after the work has started.
+              A lot of Charleston housing stock predates 1978, which means the coating on a gate, a railing, or a section of fence may contain lead. We do not laser paint on pre-1978 homes or child-occupied buildings unless a lead test on that paint comes back negative. If lead is present or suspected, the job goes to a firm certified under the EPA Renovation, Repair and Painting rule. That call happens before a quote, not after work starts.
             </p>
           </div>
         </div>
@@ -230,12 +230,10 @@ export default function HistoricIronworkPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Service Area</h2>
           <p className="text-gray-400 leading-relaxed mb-8">
-            We serve historic properties throughout Charleston and the Lowcountry. All work is performed on-site, so there is no need to remove gates, railings, or fixtures from their original location.
+            We serve historic properties throughout Charleston and the Lowcountry. Most work happens on site, so gates and railings stay where they are. Small hardware is often better done on the bench.
           </p>
           <ServiceAreaChips
             areas={[
-              'South of Broad',
-              'Historic District',
               'Downtown Charleston',
               'Harleston Village',
               'Ansonborough',
@@ -257,7 +255,7 @@ export default function HistoricIronworkPage() {
           {
             q: 'Is laser cleaning safe for historic wrought iron?',
             a:
-              "Yes, it is one of the gentler options available. Corrosion and coatings come off without mechanical contact, so tool marks, hand-forged texture, and maker's details survive the process. Nothing abrasive touches the surface and no chemical soaks into the metal.",
+              'It can be, with the right settings and a test spot first. True pre-1900 wrought iron has a fibrous grain and forge texture that responds differently from mild steel, and too much energy can mark it. We test a small area, show you, and only then quote.',
           },
           {
             q: 'Will it damage the patina on antique ironwork?',
@@ -267,17 +265,17 @@ export default function HistoricIronworkPage() {
           {
             q: 'Do you work on properties under Board of Architectural Review oversight?',
             a:
-              'We work throughout the historic district and are familiar with the constraints. Work on a designated property should be cleared with the BAR or your preservation consultant first, and we can provide a written description of the method for that submission.',
+              'Yes, for district properties that are not individually listed. Clear the work with the BAR or your preservation consultant first, and we can write up the method for that submission. Individually listed landmarks go to a conservator.',
           },
           {
             q: 'How does this compare to sandblasting historic iron?',
             a:
-              'Sandblasting removes base metal along with rust, rounds off crisp forged edges, and drives media into joints and surrounding masonry. On irreplaceable ironwork that damage cannot be undone. Laser cleaning removes only the surface layer and leaves the original profile intact.',
+              'Sandblasting removes base metal along with rust, rounds off crisp forged edges, and drives media into joints and surrounding masonry. On irreplaceable ironwork that damage cannot be undone. Laser cleaning, at settings proven on a test spot, removes the surface layer and keeps the original profile.',
           },
           {
             q: 'Can you clean ironwork that is still mounted?',
             a:
-              'Yes, and usually that is preferable. Gates, railings, balconies, and fence panels are cleaned in place, which avoids the risk of damage during removal and reinstallation and avoids disturbing the masonry the ironwork is set into.',
+              'Usually, yes. We clean gates, railings and fence panels in place, with the brick, glass and sealant around them shielded. Sealant beads are cut back by hand, and iron set in soft historic brick or lime mortar gets hand work at the joint.',
           },
         ]}
       />
@@ -288,12 +286,12 @@ export default function HistoricIronworkPage() {
         items={[
           {
             title: 'Antique and Hardware Restoration',
-            desc: 'Heirloom hardware and decorative metalwork cleaned with the patina preserved.',
+            desc: 'Heirloom hardware and metalwork, with a test area first to decide how much patina stays.',
             href: '/services/antique-restoration-charleston',
           },
           {
             title: 'Rust and Paint Removal',
-            desc: 'Corrosion and failed coatings lifted from iron, steel, and aluminum.',
+            desc: 'Corrosion and failed coatings lifted from iron and steel, test spot first.',
             href: '/services/rust-removal-charleston',
           },
         ]}
@@ -306,7 +304,7 @@ export default function HistoricIronworkPage() {
             Restore your historic ironwork the right way
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Free estimates for all jobs. Send us a photo of the piece and we will assess it and follow up within 24 hours.
+            Free estimates for all jobs. Send us a photo of the piece and we will assess it and follow up within one business day.
           </p>
           <Link
             href="/quote"
