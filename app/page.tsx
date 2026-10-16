@@ -68,7 +68,7 @@ export default function Home() {
                 </Link>
                 <Link
                   href="/services"
-                  className="rounded border border-[#397774]/50 px-8 py-4 text-center text-lg font-bold text-[#397774] transition-colors hover:border-[#397774] hover:bg-[#397774]/10"
+                  className="rounded border border-[#8fd3cd]/60 px-8 py-4 text-center text-lg font-bold text-[#8fd3cd] transition-colors hover:border-[#8fd3cd] hover:bg-[#397774]/20"
                 >
                   See Our Services
                 </Link>
