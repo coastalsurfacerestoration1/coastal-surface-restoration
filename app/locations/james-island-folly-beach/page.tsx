@@ -9,7 +9,7 @@ import RelatedItemsSection from '@/app/components/RelatedItemsSection';
 export const metadata = pageMetadata({
   title: 'Laser Cleaning on James Island & Folly Beach, SC',
   description:
-    'Mobile laser cleaning for James Island and Folly Beach. Dock and boat lift hardware, marsh-front railings, trailers, and exterior metal cleaned on site with no chemicals or runoff. Free estimates.',
+    'Mobile laser cleaning for James Island and Folly Beach. Boat trailers, marsh-front railings, gate hardware and removed marine parts cleaned on land with no chemicals or blast media. Free estimates.',
   path: '/locations/james-island-folly-beach',
 });
 
@@ -26,7 +26,7 @@ export default function JamesIslandFollyBeachPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Cleaning on James Island and Folly Beach',
-          description: 'Mobile laser cleaning for James Island and Folly Beach. Dock and boat lift hardware, marsh-front railings, trailers, and exterior metal cleaned on site with no chemicals or runoff. Free estimates.',
+          description: 'Mobile laser cleaning for James Island and Folly Beach. Boat trailers, marsh-front railings, gate hardware and removed marine parts cleaned on land with no chemicals or blast media. Free estimates.',
           path: '/locations/james-island-folly-beach',
           serviceType: 'Laser cleaning',
           areaServed: ['James Island', 'Folly Beach'],
@@ -43,7 +43,7 @@ export default function JamesIslandFollyBeachPage() {
             Laser Cleaning on James Island and Folly Beach
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            This is the tidal creek side of Charleston. Docks, boat lifts, trailers, and marsh-front hardware sitting in brackish water and salt air, on properties that get used hard and year round. We remove rust and corrosion right where the equipment sits, with no chemicals, no blasting media, and nothing running off into the creek.
+            This is the tidal creek side of Charleston. Trailers, railings and marsh-front hardware sit in brackish air and get used hard year round. We remove the rust on land, with no chemicals and no blast media.
           </p>
           <Link
             href="/quote"
@@ -64,10 +64,10 @@ export default function JamesIslandFollyBeachPage() {
             James Island and Folly sit in and around tidal marsh. Properties along Clark Sound, the Stono, the Folly River, and the creeks running through Riverland Terrace and Lighthouse Point get a constant cycle of salt-laden humidity, tidal wetting, and drying. That cycle is harder on metal than straight ocean exposure in some ways, because hardware spends more time damp and less time drying out completely.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
-            It also means most of the metal here is functional rather than decorative. Boat lifts, davits, dock ladders, trailer frames, gate hardware, and outboard brackets. When those corrode it is not just an appearance problem, it is a piece of equipment you are trusting with a boat.
+            It also means most of the metal here is functional rather than decorative. Trailer frames, axles, gate hardware, railings, and outboard brackets. When those corrode it is not just an appearance problem, it is equipment you are trusting with a boat.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            Cleaning that hardware in place matters here more than anywhere else we work. Blasting a boat lift means either tenting it over the water or dismantling it, and chemical stripping over a tidal creek is a non-starter. Laser cleaning is dry and contained at the surface, so it can be done on a working dock without anything reaching the water below.
+            Dock and lift work over the water is not something we take on. Trailers, railings and any hardware that can come off the dock are a good fit, cleaned on land.
           </p>
         </div>
       </section>
@@ -81,28 +81,28 @@ export default function JamesIslandFollyBeachPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[
               {
-                title: 'Boat Lifts & Davits',
-                desc: 'Lift frames, cradles, motor housings, and mounting hardware cleaned in place on the dock. Corrosion comes off without blasting media dropping into the creek or into the lift mechanism.',
+                title: 'Stainless & Bronze Boat Hardware',
+                desc: 'Rails, cleats, stanchions and bronze fittings off the boat or with it on the hard. Tea staining and verdigris come off clean.',
               },
               {
-                title: 'Dock Hardware & Ladders',
-                desc: 'Cleats, ladders, hinges, gangway hardware, brackets, and railings on private docks throughout Clark Sound, the Stono, and the Folly River.',
+                title: 'Removed Marine Parts',
+                desc: 'Windlass housings, brackets, anchors and trailer parts brought ashore, stripped of paint and rust and primed the same day.',
               },
               {
                 title: 'Trailers & Towing Hardware',
-                desc: 'Boat trailer frames, axles, springs, hitches, and jacks. Anything that gets backed down the ramp at Riverland Drive and comes back out wet with salt.',
+                desc: 'Painted steel trailer frames, axles, springs, hitches and jacks; galvanized trailers are tested first. Anything that gets backed down the ramp at Riverland Drive and comes back out wet with salt.',
               },
               {
                 title: 'Marsh-Front Railings & Exterior Metal',
-                desc: 'Deck rails, stair rails, screened porch frames, gutters, and structural strapping on homes that back up to marsh and take the humidity year round.',
+                desc: 'Steel deck rails and stair rails, gate hardware and light fixtures on homes that back up to marsh and take the humidity year round.',
               },
               {
                 title: 'Older Cottage Hardware',
-                desc: 'Original hinges, latches, shutter hardware, and light fixtures on the older Riverland Terrace and Folly cottages, where the pieces are worth keeping rather than replacing.',
+                desc: 'Original hinges, latches and shutter hardware on older Riverland Terrace and Folly cottages, best removed for the bench. Pre-1978 paint is lead-tested first.',
               },
               {
                 title: 'Graffiti & Commercial Surfaces',
-                desc: 'Tag removal and surface cleaning on commercial frontage around Center Street and the Folly business district, on brick, block, and painted metal. Every graffiti job starts with a test patch.',
+                desc: 'Dark tag removal on hard brick and block around Center Street and the Folly business district. Every graffiti job starts with a test patch.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">
@@ -114,33 +114,33 @@ export default function JamesIslandFollyBeachPage() {
         </div>
       </section>
 
-      {/* Working On The Water */}
+      {/* Working on a creek-front property */}
       <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-10">
-            Working on a Dock or Creek-Front Property
+            Working on a Creek-Front Property
           </h2>
           <div className="space-y-6">
             {[
               {
                 step: '01',
                 title: 'Photo Estimate',
-                desc: 'Send photos of the lift, dock, or hardware. For dock work it helps to include a wide shot as well as close-ups so we can see access, walkway length, and how far out the working area sits.',
+                desc: 'Send photos of the trailer, railing, or hardware. A wide shot plus close-ups helps us see access and where the work sits.',
               },
               {
                 step: '02',
-                title: 'Tide-Aware Scheduling',
-                desc: 'Some dock and lift work is much easier at a particular stage of tide. We plan the visit around that rather than showing up and working around whatever the water is doing.',
+                title: 'Weather-Aware Scheduling',
+                desc: 'The laser does not run in rain, so we plan the visit around the forecast.',
               },
               {
                 step: '03',
                 title: 'Portable Setup',
-                desc: 'The system is a backpack laser unit and a portable generator, so we can carry it out a long dock walkway. No compressor, no blast pot, no hoses run from the driveway.',
+                desc: 'The system is a backpack laser unit with a portable generator and small air compressor. No blast pot and no water hoses.',
               },
               {
                 step: '04',
-                title: 'Nothing in the Water',
-                desc: 'Dry process, no chemicals, no abrasive media, no rinse water. There is no runoff to contain and nothing that can end up in the marsh or the creek.',
+                title: 'No Runoff',
+                desc: 'Dry process, no chemicals, no blast media, no rinse water. Dust and fume are extracted and vacuumed up on land, away from the marsh.',
               },
               {
                 step: '05',
@@ -196,13 +196,13 @@ export default function JamesIslandFollyBeachPage() {
       <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-10">
-            Services Most Requested Here
+            Services for James Island and Folly
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
               {
                 title: 'Marine Cleaning',
-                desc: 'Lifts, davits, dock hardware, and trailers cleaned on site with nothing entering the water.',
+                desc: 'Trailers and removed boat hardware cleaned on land.',
                 href: '/services/marine-cleaning-charleston',
               },
               {
@@ -212,7 +212,7 @@ export default function JamesIslandFollyBeachPage() {
               },
               {
                 title: 'Vacation Rental Restoration',
-                desc: 'Exterior resets for the rental cottages and beach houses on Folly and the creek side.',
+                desc: 'Railing and hardware work for rental cottages on Folly and the creek side.',
                 href: '/services/vacation-rental-cleaning-charleston',
               },
             ].map((s) => (
@@ -238,19 +238,19 @@ export default function JamesIslandFollyBeachPage() {
         path='/locations/james-island-folly-beach'
         items={[
           {
-            q: 'Can you clean a boat lift without taking it apart?',
+            q: 'Do you work on boat lifts or docks?',
             a:
-              'Yes. Lift frames, cradles, and mounting hardware are cleaned in place on the dock. There is no blasting media to drop into the creek or work into the lift mechanism, which is the usual reason this work gets deferred.',
+              'No. Nothing over the water. Lift parts or hardware that can be removed and brought ashore can be cleaned on land.',
           },
           {
             q: 'Does anything get into the water?',
             a:
-              'No. The process is dry and contained at the surface, with no chemicals and no abrasive media. That is what makes it workable on a dock over a tidal creek, where blasting and chemical stripping are not realistic options.',
+              'No liquids. The process is dry, with no chemicals or blast media, and all work is done on land. Dust and fume are extracted and vacuumed up.',
           },
           {
-            q: 'Do you schedule around the tide?',
+            q: 'Do you work in the rain?',
             a:
-              'Yes. Some dock and lift work is far easier at a particular stage of tide, so we plan the visit around it rather than working around whatever the water happens to be doing when we arrive.',
+              'No. The laser runs dry, so we schedule around the forecast and reschedule if weather turns.',
           },
           {
             q: 'Why does hardware corrode so fast on the marsh side?',
@@ -260,7 +260,7 @@ export default function JamesIslandFollyBeachPage() {
           {
             q: 'What do you work on around James Island and Folly?',
             a:
-              'Boat lifts and davits, dock hardware and ladders, trailers and towing hardware, marsh-front railings and exterior metal, older cottage hardware, and graffiti on commercial frontage around Center Street.',
+              'Trailers and towing hardware, stainless and bronze boat hardware on land, marsh-front railings, older cottage hardware, and dark graffiti around Center Street.',
           },
         ]}
       />
@@ -271,12 +271,12 @@ export default function JamesIslandFollyBeachPage() {
         items={[
           {
             title: 'Downtown Charleston',
-            desc: 'Historic ironwork, brick, and stucco on the peninsula, with no runoff into courtyards or storm drains.',
+            desc: 'Iron gates, railings and cast hardware on the peninsula, with no runoff into courtyards or storm drains.',
             href: '/locations/downtown-charleston',
           },
           {
             title: 'Mount Pleasant',
-            desc: 'Salt-driven corrosion on Old Village hardware, Wando dock equipment, and Carolina Park exterior metal.',
+            desc: 'Salt-driven corrosion on Old Village hardware, boat trailers, and Carolina Park exterior metal.',
             href: '/locations/mount-pleasant',
           },
           {
@@ -294,7 +294,7 @@ export default function JamesIslandFollyBeachPage() {
             Serving James Island and Folly Beach
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Free estimates on every job. Send a photo of the lift, dock hardware, or trailer and we will tell you what laser cleaning can do for it, usually within 24 hours.
+            Free estimates on every job. Send a photo of the trailer, railing, or hardware and we will tell you what laser cleaning can do for it, usually within one business day.
           </p>
           <Link
             href="/quote"

@@ -5,7 +5,7 @@ import Breadcrumbs from '@/app/components/Breadcrumbs';
 export const metadata = pageMetadata({
   title: 'Service Areas in Charleston & the Lowcountry',
   description:
-    'Coastal Surface Restoration serves downtown Charleston, Mount Pleasant, Isle of Palms, Sullivan\'s Island, James Island, and Folly Beach with mobile laser cleaning. All work performed on site.',
+    'Coastal Surface Restoration serves downtown Charleston, Mount Pleasant, Isle of Palms, Sullivan\'s Island, James Island, and Folly Beach with mobile laser cleaning. Work is done on site, with small parts cleaned on our bench.',
   path: '/locations',
 });
 
@@ -14,28 +14,28 @@ const areas = [
     name: 'Downtown Charleston',
     href: '/locations/downtown-charleston',
     tagline: 'The historic peninsula',
-    desc: 'Historic ironwork, soft handmade brick, and original stucco on properties where the material cannot be replaced. A dry method with no runoff into courtyards or storm drains.',
-    spots: ['South of Broad', 'French Quarter', 'Harleston Village', 'King Street'],
+    desc: 'Rust on iron gates, railings and cast iron hardware, with a test spot first. Soft handmade brick, lime mortar and listed landmarks are not taken.',
+    spots: ['Ansonborough', 'French Quarter', 'Harleston Village', 'King Street'],
   },
   {
     name: 'Mount Pleasant',
     href: '/locations/mount-pleasant',
     tagline: 'East Cooper',
-    desc: 'Old Village historic homes and newer construction alike, all carrying the same salt corrosion load. Boat trailers, dock hardware, gates, railings, and exterior fixtures.',
-    spots: ['Old Village', 'Shem Creek', "I'On", 'Park West'],
+    desc: 'Old Village historic homes and newer construction alike, all carrying the same salt corrosion load. Boat trailers, marine stainless on land, gates, railings, and exterior fixtures.',
+    spots: ['Old Village', 'Carolina Park', "I'On", 'Park West'],
   },
   {
     name: "Isle of Palms & Sullivan's Island",
     href: '/locations/isle-of-palms-sullivans-island',
     tagline: 'The barrier islands',
-    desc: 'The heaviest salt exposure in the Lowcountry. Exterior railings, outdoor showers, hurricane shutters, and hardware, with scheduling that works around rental turnover.',
-    spots: ['Wild Dunes', 'Palm Boulevard', 'Middle Street', 'IOP Marina'],
+    desc: 'The heaviest salt exposure in the Lowcountry. Steel and stainless railings, gate latches, light fixtures and shutter hardware, scheduled around rental turnover.',
+    spots: ['Wild Dunes', 'Palm Boulevard', 'Middle Street', 'Breach Inlet'],
   },
   {
     name: 'James Island & Folly Beach',
     href: '/locations/james-island-folly-beach',
     tagline: 'The tidal creeks',
-    desc: 'Marsh-front and creek-front corrosion on working hardware. Boat lifts, davits, dock ladders, and trailers cleaned in place with nothing entering the water.',
+    desc: 'Marsh-front corrosion on working hardware. Trailers, marsh-front railings and gate hardware, and removed marine parts cleaned on land.',
     spots: ['Riverland Terrace', 'Lighthouse Point', 'Center Street', 'Clark Sound'],
   },
 ];
@@ -60,7 +60,7 @@ export default function LocationsPage() {
             Service Areas
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            We are a mobile service. The laser system is a backpack unit and a portable generator, so the work happens at your property, at your dock, or in your driveway. Nothing gets hauled to a shop.
+            We are a mobile service. The laser is a backpack unit run off a portable generator and air compressor, so most work happens at your property or in your driveway. Small parts can go to our bench.
           </p>
         </div>
       </section>
@@ -106,7 +106,7 @@ export default function LocationsPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Not on the List?</h2>
           <p className="text-gray-400 leading-relaxed mb-8">
-            The four areas above are where most of our work happens, but we cover the greater Charleston area and the Lowcountry. If you are nearby, ask. For larger jobs we travel further.
+            We also cover West Ashley, North Charleston, Daniel Island and Summerville. If you are nearby, ask.
           </p>
           <div className="flex flex-wrap gap-3">
             {[
@@ -114,14 +114,6 @@ export default function LocationsPage() {
               'North Charleston',
               'West Ashley',
               'Summerville',
-              'Johns Island',
-              'Kiawah Island',
-              'Seabrook Island',
-              'Awendaw',
-              'Hanahan',
-              'Goose Creek',
-              'Ravenel',
-              'Wadmalaw Island',
             ].map((area) => (
               <span key={area} className="bg-[#0e273e] border border-[#397774]/20 text-gray-300 px-4 py-2 rounded text-sm">
                 {area}
@@ -138,7 +130,7 @@ export default function LocationsPage() {
             Serving Charleston and the Lowcountry
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Free estimates on every job. Send a photo of what needs work along with your location and we will tell you what laser cleaning can do for it, usually within 24 hours.
+            Free estimates on every job. Send a photo of what needs work along with your location and we will tell you what laser cleaning can do for it, usually within one business day.
           </p>
           <Link
             href="/quote"

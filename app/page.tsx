@@ -6,20 +6,20 @@ import { CleatIcon, IronScrollIcon, RailingIcon } from './components/icons';
 const specialties = [
   {
     Icon: IronScrollIcon,
-    title: 'Historic Restoration',
-    desc: "Iron gates, brick stoops, wrought iron railings, church gates, and wood shutters. Preserve Charleston's historic character without damaging original materials.",
+    title: 'Ironwork and Railings',
+    desc: 'Rust and failed paint off iron gates, steel railings, and cast iron caps and hardware, with a test spot first. Paint on pre-1978 homes needs a negative lead test first, and listed landmarks are not taken.',
     href: '/services/historic-ironwork-restoration-charleston',
   },
   {
     Icon: CleatIcon,
     title: 'Marine Cleaning',
-    desc: "Props, shafts, cleats, rails, winches, and through-hull fittings, plus trailers and dock hardware. Metal only. We take the rust and corrosion off without harsh chemicals near Charleston's waterways.",
+    desc: 'Stainless rails, cleats, bronze deck hardware and trailer parts, on land or with the boat on the hard. Props and shafts are removed and tested first. No work over the water.',
     href: '/services/marine-cleaning-charleston',
   },
   {
     Icon: RailingIcon,
     title: 'Vacation Rental Restoration',
-    desc: "Keep your Isle of Palms, Sullivan's Island, or Folly Beach property in top condition. Recurring maintenance available for property managers.",
+    desc: "Rusted stair rails, gate latches and light fixtures on rental homes in Isle of Palms, Sullivan's Island and Folly Beach, booked around turnover days.",
     href: '/services/vacation-rental-cleaning-charleston',
   },
 ];
@@ -31,7 +31,7 @@ const credentials = [
   // phrasing used everywhere else on the site.
   { label: 'ANSI Z136.1', detail: 'Laser Safety Officer, trained to ANSI Z136.1' },
   { label: '$1M / $2M', detail: 'General liability coverage' },
-  { label: 'Fully mobile', detail: 'We work at your property' },
+  { label: 'Mobile', detail: 'On site, or on our bench for small parts' },
   { label: 'Free estimates', detail: 'Quoted from photos, no obligation' },
 ];
 
@@ -51,12 +51,13 @@ export default function Home() {
               <h1 className="font-display text-6xl font-bold leading-[0.95] tracking-tight text-white sm:text-7xl lg:text-8xl">
                 Laser precision.
                 <br />
-                <span className="text-[#397774]">Zero damage.</span>
+                <span className="text-[#397774]">We remove the rust, not the iron.</span>
               </h1>
               <p className="mt-7 max-w-xl text-lg leading-relaxed text-gray-300">
-                We remove rust, paint, and corrosion from historic ironwork,
-                marine hardware, and exterior metal without touching the
-                material underneath. No chemicals, no abrasives, no water.
+                We remove rust and old paint from iron gates, steel railings,
+                cast iron, and marine stainless and bronze, set to stop at the
+                metal. A test spot comes first. No chemicals, no blast media, no
+                water.
               </p>
               <div className="mt-9 flex flex-col gap-4 sm:flex-row">
                 <Link
@@ -73,7 +74,7 @@ export default function Home() {
                 </Link>
               </div>
               <p className="mt-4 text-sm text-gray-400">
-                Free estimates. No obligation. Reply within 24 hours.
+                Free estimates. No obligation. Reply within one business day.
               </p>
             </div>
 
@@ -151,7 +152,7 @@ export default function Home() {
             The difference
           </p>
           <h2 className="font-display mb-5 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-            Every method removes the rust. Only one stops there.
+            Every method removes the rust. The laser is set to stop at the metal.
           </h2>
           <p className="mb-12 max-w-2xl leading-relaxed text-gray-400">
             Rust sits on top of the metal you are trying to keep. The question
@@ -170,9 +171,9 @@ export default function Home() {
           </h2>
           <p className="mx-auto mt-5 mb-10 max-w-xl leading-relaxed text-gray-400">
             Tell us what needs work and we will tell you what laser cleaning can
-            do for it, usually within 24 hours. Free estimates on every job.
-            Serving Charleston, Mount Pleasant, Isle of Palms,
-            Sullivan&apos;s Island, James Island, and Folly Beach.
+            do for it, usually within one business day. Free estimates on every
+            job. Serving Charleston, Mount Pleasant, North Charleston, Daniel
+            Island, West Ashley, James Island, and the islands.
           </p>
           <Link
             href="/quote"
