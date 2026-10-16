@@ -21,11 +21,6 @@ const VIDEO_IDS: { id: string; caption: string; credit: string }[] = [
     caption: 'How laser cleaning works',
     credit: 'P-Laser',
   },
-  {
-    id: 'JRzg3i7o-IA',
-    caption: 'Removing decades of rust from a car body',
-    credit: 'Insider Cars',
-  },
 ];
 
 const VIDEO_DISCLAIMER =

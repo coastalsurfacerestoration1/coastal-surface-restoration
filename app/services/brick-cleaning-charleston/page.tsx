@@ -249,7 +249,7 @@ export default function BrickCleaningPage() {
           {
             q: 'Will it damage lime mortar joints?',
             a:
-              'Lime mortar is softer than the brick around it and is the first thing to fail under pressure washing. We keep the beam off lime mortar joints and mask them. Any coating that crosses a joint is finished by hand.',
+              "We don't take lime mortar work. Brick laid in soft lime mortar, which is most pre-1900 Charleston brick, goes to a masonry conservator. On modern brick with cement mortar we mask the joints and keep the beam on the brick face.",
           },
           {
             q: 'Can you clean painted brick?',

@@ -48,7 +48,7 @@ export default function Home() {
               <p className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-[#397774]">
                 Charleston, SC &amp; the Lowcountry
               </p>
-              <h1 className="font-display text-6xl font-bold leading-[0.95] tracking-tight text-white sm:text-7xl lg:text-8xl">
+              <h1 className="font-display text-6xl font-bold leading-[0.95] tracking-tight text-white sm:text-7xl">
                 Laser precision.
                 <br />
                 <span className="text-[#397774]">We remove the rust, not the iron.</span>

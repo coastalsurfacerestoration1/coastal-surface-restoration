@@ -48,7 +48,7 @@ export default function AboutPage() {
               <h2 className="text-3xl font-bold text-white mb-6">Why Laser Cleaning?</h2>
               <div className="space-y-4 text-gray-400 leading-relaxed">
                 <p>
-                  Charleston&apos;s historic architecture, coastal climate, and salt air create a perfect storm for rust, oxidation, and surface degradation. Traditional cleaning methods like sandblasting, chemical stripping, and pressure washing often cause more damage than they fix on the iron gates, railings and cast hardware that define this city&apos;s streets.
+                  Charleston&apos;s salt air and humidity are hard on iron and steel, and rust, oxidation and failing paint follow. Traditional cleaning methods like sandblasting, chemical stripping, and pressure washing often cause more damage than they fix on the iron gates, railings and cast hardware that define this city&apos;s streets.
                 </p>
                 <p>
                   Laser cleaning changes that equation entirely. A pulsed fiber laser breaks up rust and paint and lifts them off as dust and fume, set to stop at the metal. No blast media to sweep. No chemicals near Charleston&apos;s waterways. Glass, sealant and siding nearby get masked.
@@ -82,7 +82,7 @@ export default function AboutPage() {
             {/* Trained, not certified. The credential is ANSI Z136.1 training
                 through the LIA, and this heading was the largest text on the
                 page still calling it certification. */}
-            <h2 className="text-3xl font-bold text-white mb-4">Trained. Insured. Ready.</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">Trained to ANSI Z136.1 and insured for $1M per occurrence.</h2>
             {/* Says only what can be evidenced. The previous wording claimed
                 "certifications" plural, which overstated an ANSI Z136.1
                 training credential and implied others that are not held, EPA
