@@ -8,42 +8,42 @@ const SERVICES: [string, string, string][] = [
   [
     'Rust & Paint Removal',
     '/services/rust-removal-charleston',
-    'Corrosion and failed coatings removed from iron, steel, and aluminum without abrasives or chemicals',
+    'Rust and failed paint removed from iron and steel after a test spot, with no blast media or chemicals',
   ],
   [
-    'Historic Ironwork Restoration',
+    'Ironwork and Railings',
     '/services/historic-ironwork-restoration-charleston',
-    'Wrought iron gates, railings, and antique metalwork cleaned without removing base metal or forged detail',
+    'Steel and iron railings, gates and fences cleaned after a test spot, priced per linear foot. Pre-1978 paint and individually listed properties are declined',
   ],
   [
     'Marine Cleaning',
     '/services/marine-cleaning-charleston',
-    'Boat trailers, dock hardware, and marine fittings cleaned dockside with nothing discharged into the water',
-  ],
-  [
-    'Brick & Masonry Cleaning',
-    '/services/brick-cleaning-charleston',
-    'Laser removal of paint, soot, grime, and biological staining from brick and mortar, with no pressure washing damage',
+    'Stainless and bronze hardware, trailers and removed parts cleaned on land or on the hard, never over water',
   ],
   [
     'Graffiti Removal',
     '/services/graffiti-removal-charleston',
-    'Spray paint removed from masonry, metal, and concrete without ghosting or surface gouging',
+    'Dark spray paint tags on hard, non-historic brick, block and metal after a test patch. Red and yellow get a test patch first and may leave a stain. Silver or metallic paint on masonry is declined',
   ],
   [
-    'Vacation Rental Restoration',
+    'Rental Property Railings',
     '/services/vacation-rental-cleaning-charleston',
-    'Railings, hardware, and entryways maintained on a turnover-friendly schedule for rental properties',
+    'Rust on railings, gates and exterior hardware at rental properties, scheduled around guest turnovers',
   ],
   [
-    'Antique & Hardware Restoration',
+    'Antiques, Tools and Car Parts',
     '/services/antique-restoration-charleston',
-    'Rust and old finishes lifted from antiques and heirlooms while preserving patina and maker marks',
+    'Rust and old paint removed from vintage tools, hinges, cast iron and classic car parts after a test spot',
   ],
   [
-    'Commercial Exterior Cleaning',
+    'Commercial Metalwork',
     '/services/commercial-exterior-cleaning-charleston',
-    'Storefronts, signage, and exterior metal restored outside business hours with no runoff or downtime',
+    'Steel and stainless railings, gates and fixtures at businesses, scheduled outside business hours',
+  ],
+  [
+    'Stainless Steel',
+    '/services/rust-removal-charleston',
+    'Weld heat tint and tea staining removed from 304 and 316 stainless rails, frames and fittings',
   ],
 ];
 
@@ -65,7 +65,7 @@ export function GET() {
 
 > Mobile laser cleaning and surface restoration serving Charleston, South Carolina and the surrounding Lowcountry. Rust, paint, graffiti, and corrosion are removed on site using a pulsed fiber laser, with no chemicals, no abrasive blasting media, and no water runoff.
 
-Laser cleaning removes the contaminant layer while leaving the underlying material intact, which makes it suited to historic brick, lime mortar, original stucco, and irreplaceable wrought iron. The equipment is portable, so work is performed at the property, at the dock, or in the driveway rather than at a shop.
+The laser is set to remove the coating and stop at the base material, and every job starts with a test spot. It works best on rust and paint on iron and steel, stainless weld tint, and marine hardware on land. Historic soft brick, lime mortar, stucco and pre-1978 paint are declined. The equipment is portable, so work happens at the property or in the driveway, never over water.
 
 ## Key facts
 
@@ -74,9 +74,9 @@ Laser cleaning removes the contaminant layer while leaving the underlying materi
 - Email: ${BUSINESS.email}
 - Hours: Saturday and Sunday 8:00 AM to 9:00 PM, Monday to Friday 4:00 PM to 9:00 PM
 - Service model: mobile, service-area business with no walk-in storefront
-- Pricing: free estimates on every job, quoted per project
-- Estimates: send photos of the piece and pricing follows, usually within 24 hours
-- Credentials: licensed and insured, Laser Safety Officer trained to ANSI Z136.1 through the Laser Institute of America
+- Pricing: free estimates, quoted per object, per job or per linear foot for railings, $400 minimum
+- Estimates: send photos of the piece and pricing follows within one business day
+- Credentials: general liability insured; business licensed in Charleston, Mount Pleasant and North Charleston; owner trained to ANSI Z136.1 through the Laser Institute of America and acts as Laser Safety Officer
 - Service areas: ${SERVICE_AREAS.join(', ')}
 
 ## Services
@@ -96,11 +96,13 @@ ${LOCATIONS.map(([name, path]) => `- [${name}](${SITE_URL}${path}): laser cleani
 - [About](${SITE_URL}/about): background on the business and its founder, Tyler Scherzer
 - [Contact](${SITE_URL}/contact): phone, email, hours, and frequently asked questions
 - [Request a quote](${SITE_URL}/quote): free estimate request form
-- [Gallery](${SITE_URL}/gallery): before and after project photos
+- [Gallery](${SITE_URL}/gallery): bench test photos and illustrations, with project photos added as jobs are completed
 
 ## Notes
 
-- Laser cleaning is not pressure washing, sandblasting, or chemical stripping. It is a dry, non-contact process, which is why it is used where those methods would damage the surface or create runoff.
+- Laser cleaning is not pressure washing, sandblasting, or chemical stripping. It is a dry, non-contact process with no blast media to clean up. Removed coating becomes dust and fume, which is extracted and HEPA cleaned.
+- Not offered: efflorescence, boat hulls and gelcoat, any work over water, interior wood, pre-1978 paint unless lead tested, individually listed historic properties, soft historic brick and lime mortar, car body panels, sealed or epoxy floors.
+- Pricing: quoted per object, per job, or per linear foot for railings, with a $400 minimum. Never per square foot.
 - Bare steel left uncoated in coastal salt air will begin to flash rust, so exterior work is timed so a protective coating can follow.
 `;
 

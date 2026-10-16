@@ -137,7 +137,7 @@ function normalize(field: Field, raw: string): string {
  * How long after a quote lands before Tyler gets a reminder about it.
  *
  * The reminder goes to him, not the customer. The acknowledgement already
- * promises that he will make contact within 24 hours, so a nudge aimed at the
+ * promises that he will make contact within one business day, so a nudge aimed at the
  * customer would either duplicate a call he already made or advertise that he
  * did not make one. This is the safety net for the second case without
  * involving the customer in it.
@@ -701,9 +701,9 @@ function acknowledgementText(
   return [
     `Hi ${values.name},`,
     '',
-    `Thanks for reaching out to ${SITE_NAME}. We have your request and will follow up within 24 hours.`,
+    `Thanks for reaching out to ${SITE_NAME}. We have your request and will follow up within one business day.`,
     '',
-    'One thing to know up front: we are not operational yet. Equipment arrives in the fall and we expect to take our first Charleston jobs in late October 2026. We will get you a price now and put you on the schedule for launch.',
+    'One thing to know up front: we are booking our first Charleston jobs now, starting in late October 2026. We will get you a price now and put you on the schedule.',
     '',
     'Here is what you sent us:',
     '',
@@ -776,16 +776,15 @@ function acknowledgementHtml(
                 We got your request
               </p>
               <p style="margin: 0 0 18px; font-size: 15px; line-height: 1.6; color: #4b5563;">
-                Hi ${safe.name}, thanks for reaching out. We will follow up within 24 hours.
+                Hi ${safe.name}, thanks for reaching out. We will follow up within one business day.
               </p>
 
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
                      style="background: #f4f7f8; border-left: 3px solid #397774; margin: 0 0 24px;">
                 <tr>
                   <td style="padding: 14px 16px; font-size: 14px; line-height: 1.6; color: #4b5563;">
-                    One thing to know up front: we are not operational yet. Equipment arrives in the
-                    fall and we expect to take our first Charleston jobs in late October 2026. We will get
-                    you a price now and put you on the schedule for launch.
+                    One thing to know up front: we are booking our first Charleston jobs now, starting
+                    in late October 2026. We will get you a price now and put you on the schedule.
                   </td>
                 </tr>
               </table>

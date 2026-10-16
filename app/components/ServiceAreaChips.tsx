@@ -12,8 +12,6 @@ import Link from 'next/link';
 const AREA_HREF: Record<string, string> = {
   // Downtown / peninsula neighborhoods
   'Downtown Charleston': '/locations/downtown-charleston',
-  'Historic District': '/locations/downtown-charleston',
-  'South of Broad': '/locations/downtown-charleston',
   'Charleston Peninsula': '/locations/downtown-charleston',
   'French Quarter': '/locations/downtown-charleston',
   'Harleston Village': '/locations/downtown-charleston',
@@ -21,11 +19,9 @@ const AREA_HREF: Record<string, string> = {
   'Radcliffeborough': '/locations/downtown-charleston',
   'King Street': '/locations/downtown-charleston',
   'Upper Peninsula': '/locations/downtown-charleston',
-  'Charleston Harbor': '/locations/downtown-charleston',
   // Mount Pleasant and adjacent
   'Mount Pleasant': '/locations/mount-pleasant',
   'Old Village': '/locations/mount-pleasant',
-  'Shem Creek': '/locations/mount-pleasant',
   'Wando': '/locations/mount-pleasant',
   // Barrier islands
   'Isle of Palms': '/locations/isle-of-palms-sullivans-island',
@@ -39,8 +35,6 @@ const AREA_HREF: Record<string, string> = {
 /** Default list, used when a page does not pass its own. */
 export const DEFAULT_AREAS = [
   'Downtown Charleston',
-  'Historic District',
-  'South of Broad',
   'Mount Pleasant',
   'West Ashley',
   'James Island',
