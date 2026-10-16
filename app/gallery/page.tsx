@@ -5,7 +5,7 @@ import Breadcrumbs from '@/app/components/Breadcrumbs';
 export const metadata = pageMetadata({
   title: 'Before & After Gallery',
   description:
-    'Before and after results from mobile laser cleaning in Charleston, SC. Historic ironwork, marine hardware, brick, and masonry restored without chemicals or abrasives. First project photos posting this fall.',
+    'Before and after photos from Charleston laser cleaning jobs will post here as jobs finish: railings, stainless and bronze marine hardware, and classic car parts. Free estimates.',
   path: '/gallery',
 });
 
@@ -18,40 +18,40 @@ export const metadata = pageMetadata({
  */
 const workTypes = [
   {
-    title: 'Historic Iron Gates & Railings',
+    title: 'Iron and Steel Gates & Railings',
     href: '/services/historic-ironwork-restoration-charleston',
     shows:
-      'Corrosion and failed paint lifted off forged detail, with the tool marks and profile still intact underneath. The comparison that matters here is the edge of a scroll or a picket, where blasting would have rounded it over.',
+      'Rust and failed paint lifted off pickets and scrolls, with the profile and edges still crisp underneath. Look at the edge of a scroll, where blasting would round it over.',
   },
   {
-    title: 'Boat Trailers & Marine Hardware',
+    title: 'Marine Stainless & Bronze Hardware',
     href: '/services/marine-cleaning-charleston',
     shows:
-      'Frames, axles, and fittings taken back to clean metal while still assembled. Look at the threads, bearings, and tight corners, which are the places blasting media ends up and never fully leaves.',
+      'Cleats, rails and portlights cleaned on land or on the bench. Look at the tea staining on stainless and the green crust on bronze, and the bright metal underneath.',
   },
   {
-    title: 'Brick, Stucco & Masonry',
-    href: '/services/brick-cleaning-charleston',
+    title: 'Classic Car & Vintage Parts',
+    href: '/services/antique-restoration-charleston',
     shows:
-      'Soot and soiling gone with the fired brick skin still on the brick. Pressure washed masonry looks clean too, at the cost of the surface that was protecting it.',
+      'Brackets, hubs, manifolds and old hand tools taken back to bare metal on the bench. Look at casting marks and stamped numbers, which survive.',
   },
   {
     title: 'Rust & Failed Coatings',
     href: '/services/rust-removal-charleston',
     shows:
-      'Heavy scale removed down to sound metal, ready for coating. Worth watching the depth of pitting before and after, since the base metal should be no thinner than when we started.',
+      'Heavy scale removed down to sound metal, ready for coating. Worth watching the depth of pitting before and after, since the laser is set to stop at sound metal, not cut into it.',
   },
   {
-    title: 'Graffiti on Historic Surfaces',
-    href: '/services/graffiti-removal-charleston',
+    title: 'Stainless Heat Tint & Tea Staining',
+    href: '/services/rust-removal-charleston',
     shows:
-      'Tags off porous brick and stucco without a shadow left where the paint was. Ghosting is the usual failure here, so these comparisons are shot in raking light where it would show. Dark paints, mostly. Silver and metallic tags are the hard ones, which is why every graffiti job starts with a test patch.',
+      'Weld discoloration and brown salt bloom off stainless rails and frames. Look at the weld line, where the straw and blue bands should be gone and the grain unchanged.',
   },
   {
     title: 'Rental Railings & Exterior Metal',
     href: '/services/vacation-rental-cleaning-charleston',
     shows:
-      'Rust streaking cleaned off railings, stair hardware, and light fixtures on island properties. These are the details that read as neglect in a listing photo.',
+      'Rust stripped from steel railings and stair hardware on island rentals, primed the same day. These are the details that read as neglect in a listing photo.',
   },
 ];
 
@@ -91,8 +91,8 @@ export default function GalleryPage() {
               First Photos Post This Fall
             </h2>
             <p className="text-gray-400 leading-relaxed mb-4">
-              Equipment setup is in its final stages and we expect to take our
-              first Charleston jobs in late October 2026. Photos will go up here as
+              Bench testing is under way and we expect to finish our first
+              Charleston jobs in late October 2026. Photos will go up here as
               those jobs are completed, with the neighborhood, the material, and
               what was actually done to it.
             </p>
@@ -161,7 +161,7 @@ export default function GalleryPage() {
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto leading-relaxed">
             Send a photo of what needs work and we will tell you what laser
-            cleaning can do for it, usually within 24 hours.
+            cleaning can do for it, usually within one business day.
           </p>
           <Link
             href="/quote"

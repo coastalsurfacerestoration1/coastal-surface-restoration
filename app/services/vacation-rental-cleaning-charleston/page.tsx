@@ -43,7 +43,7 @@ export default function VacationRentalPage() {
             Laser Cleaning for Charleston Vacation Rentals
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            On the islands, salt air rusts railings, corrodes hardware, and dulls fixtures faster than anywhere inland. For a rental, that damage shows up in the photos and the reviews. We keep Isle of Palms, Sullivan&apos;s Island, and Folly Beach properties looking their best, on a schedule that fits your turnovers.
+            On the islands, salt air rusts railings, corrodes hardware, and dulls fixtures faster than anywhere inland. For a rental, that damage shows up in the photos and the reviews. We clean rental railings and hardware on Isle of Palms, Sullivan&apos;s Island and Folly Beach, scheduled around your turnovers.
           </p>
           <Link
             href="/quote"
@@ -64,7 +64,7 @@ export default function VacationRentalPage() {
             A vacation rental lives and dies by its curb appeal and its photos. Rusted railings, corroded light fixtures, stained entryways, and a weathered exterior cost you bookings and show up in guest reviews. On a coastal property, that decline is constant, and touching it up between every guest is not realistic.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
-            We work with individual owners and with property management companies handling multiple units. Laser cleaning restores metal and masonry surfaces without chemicals, water, or mess, which means we can work around your calendar and leave a property guest-ready without a wet, chemical-heavy cleanup.
+            This page is for individual owners and for property managers with several units. A laser cleans metal with no chemicals or water, so the work fits around your calendar.
           </p>
           <p className="text-gray-400 leading-relaxed">
             For managers with a portfolio, we can set up a recurring maintenance schedule so railings, fixtures, and entryways are handled on a regular cadence instead of only when they have already gotten bad.
@@ -82,27 +82,27 @@ export default function VacationRentalPage() {
             {[
               {
                 title: 'Railings & Balconies',
-                desc: 'Rusted iron and steel railings, balcony rails, and stair rails restored so they look sharp in listing photos and stay safe for guests.',
+                desc: 'Rust and failed paint stripped from steel railings and stair rails, primed the same day so they are ready to paint. Homes built before 1978 need a lead test first.',
               },
               {
                 title: 'Exterior Light Fixtures & Hardware',
-                desc: 'Corroded fixtures, house numbers, door hardware, and fasteners cleaned back to a clean finish.',
+                desc: 'Solid brass, bronze and stainless fixtures, house numbers and door hardware cleaned, tested on a hidden spot first. Plated and aluminum pieces we decline.',
               },
               {
                 title: 'Entryways & Steps',
-                desc: 'Brick stoops, steps, and entry surfaces cleaned of grime, salt staining, and biological growth for a strong first impression.',
+                desc: 'Rust stains and paint drips on hard brick or unsealed concrete entry steps, tested on a patch first.',
               },
               {
                 title: 'Outdoor Furniture & Fixtures',
-                desc: 'Metal patio furniture frames, grills, gates, and outdoor fixtures restored without harsh chemicals near pools and decks.',
+                desc: 'Steel and iron patio furniture, grill grates and gates cleaned with no chemicals near the pool.',
               },
               {
-                title: 'Docks & Waterfront Features',
-                desc: 'Dock hardware, railings, and metalwork on waterfront rentals cleaned of rust and marine buildup.',
+                title: 'Stainless Rails & Fixtures',
+                desc: 'Tea staining off stainless cable rails, posts and light fixtures, the brown bloom island salt air leaves.',
               },
               {
                 title: 'Brick & Masonry',
-                desc: 'The laser lifts mildew and grime from brick and stucco without pressure washing damage.',
+                desc: 'Paint overspray on hard brick and unsealed concrete, small areas, test first. Mildew and stucco we do not quote yet.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">
@@ -123,12 +123,12 @@ export default function VacationRentalPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
-                title: 'No Mess to Clean Up',
-                desc: 'No water, no sand, no chemical runoff. The property is left clean and guest-ready, not soaked and roped off.',
+                title: 'No Water or Blast Media',
+                desc: 'No sand to sweep out of the pool and no chemical runoff. We extract the dust and fume and vacuum before we leave.',
               },
               {
                 title: 'Works Around Turnovers',
-                desc: 'A dry, self-contained process that can be scheduled between bookings without disrupting your cleaning crew.',
+                desc: 'Scheduled between bookings. The work area is roped off and no one, crew included, is inside it while the laser runs.',
               },
               {
                 title: 'Recurring Maintenance',
@@ -157,14 +157,13 @@ export default function VacationRentalPage() {
               "Sullivan's Island",
               'Folly Beach',
               'Wild Dunes',
-              'Kiawah Island',
-              'Seabrook Island',
+              'West Ashley',
+              'Summerville',
               'Mount Pleasant',
               'Downtown Charleston',
               'James Island',
               'Daniel Island',
-              'Edisto Beach',
-              'Dewees Island',
+              'North Charleston',
             ]}
             variant="onLight"
           />
@@ -177,43 +176,48 @@ export default function VacationRentalPage() {
           {
             q: 'Can you work around guest turnovers?',
             a:
-              'Yes, that is how most rental work is scheduled. The process is dry, with no cure time, no odor, and no wet surface afterward, so an area is usable again as soon as we finish. That makes a turnover window workable.',
+              'Yes, that is how most rental work is scheduled. The process is dry, so polished brass or stainless is usable as soon as we finish. Stripped steel needs primer the same day, so plan for paint dry time. That makes a turnover window workable.',
           },
           {
             q: 'Do you offer recurring maintenance for rental properties?',
             a:
-              'Yes. Island properties corrode on a predictable cycle, so scheduled visits keep railings and hardware from reaching the point of replacement. We can quote a recurring schedule for a single property or a managed portfolio.',
+              'Yes. Island salt air stains stainless and brass on a predictable cycle, so scheduled visits keep them clean between repaints. We can quote a recurring schedule for a single property or a managed portfolio.',
           },
           {
             q: 'Will guests notice any smell or residue?',
             a:
-              'No. There are no chemicals involved and no blasting media to sweep up. The process leaves a small amount of fine residue that is wiped down before we leave, and nothing a guest would notice on arrival.',
+              'Not if we finish a day ahead. Burning paint has a smell while we work, so we run fume extraction, vacuum the dust with a HEPA vacuum and bag any paint chips before we leave.',
           },
           {
             q: 'What does this actually fix in listing photos?',
             a:
-              'Rust streaks running down stucco and siding, corroded railings and stair hardware, stained entry steps, and dulled light fixtures. Those are the details that read as neglect in photos even when the interior is spotless.',
+              'Corroded steel railings and stair hardware, tea-stained stainless rails, and dull solid brass or bronze fixtures. Those are the details that read as neglect in photos even when the interior is spotless.',
+          },
+          {
+            q: 'What about older painted railings and trim?',
+            a:
+              'Painted surfaces on homes built before 1978 need a lead test before we start. We do not laser paint on pre-1978 homes or child-occupied buildings unless a lead test comes back negative; we refer it to an EPA RRP certified firm.',
           },
           {
             q: 'Do you work with property management companies?',
             a:
-              'Yes. We can cover multiple properties on one schedule and coordinate access with your existing turnover crews, so the owner does not need to be present.',
+              'Yes. We can cover multiple properties on one schedule and coordinate access with your turnover crew so the owner does not need to be there. We need a signed work authorization before the first visit.',
           },
         ]}
       />
 
       <RelatedItemsSection
         heading="Related Services"
-        intro="Waterfront rental properties usually need more than one thing done at a time. These are the services most often bundled with rental maintenance."
+        intro="Island rental properties usually need more than one thing done at a time. These services often fit the same visit."
         items={[
           {
             title: 'Marine Cleaning',
-            desc: 'Dock hardware, boat trailers, and waterfront fittings cleaned on site.',
+            desc: 'Stainless and bronze boat hardware cleaned on land or on the bench.',
             href: '/services/marine-cleaning-charleston',
           },
           {
             title: 'Rust and Paint Removal',
-            desc: 'Salt-driven corrosion removed from outdoor metal on any rental property.',
+            desc: 'Salt rust removed from steel and iron railings, gates and hardware, ready for primer.',
             href: '/services/rust-removal-charleston',
           },
         ]}
@@ -226,7 +230,7 @@ export default function VacationRentalPage() {
             Keep your rental guest-ready
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Managing multiple properties? Ask about a recurring maintenance schedule. Send us a photo or your property details and we will follow up within 24 hours.
+            Managing multiple properties? Ask about a recurring maintenance schedule. Send us a photo or your property details and we will follow up within one business day.
           </p>
           <Link
             href="/quote"
