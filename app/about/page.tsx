@@ -35,7 +35,7 @@ export default function AboutPage() {
             <span className="text-[#397774]">Built to Last.</span>
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            Coastal Surface Restoration is a mobile laser cleaning company serving Charleston and the Lowcountry. We specialize in removing rust, paint, efflorescence, and marine buildup without chemicals, abrasives, or damage to original materials.
+            Coastal Surface Restoration is a mobile laser cleaning company serving Charleston and the Lowcountry. We remove rust and old paint from iron, steel and marine hardware, with no chemicals or blast media and a test spot before every job.
           </p>
         </div>
       </section>
@@ -48,21 +48,21 @@ export default function AboutPage() {
               <h2 className="text-3xl font-bold text-white mb-6">Why Laser Cleaning?</h2>
               <div className="space-y-4 text-gray-400 leading-relaxed">
                 <p>
-                  Charleston&apos;s historic architecture, coastal climate, and salt air create a perfect storm for rust, oxidation, and surface degradation. Traditional cleaning methods like sandblasting, chemical stripping, and pressure washing often cause more damage than they fix on the delicate ironwork, brick, and wood that define this city&apos;s character.
+                  Charleston&apos;s salt air and humidity are hard on iron and steel, and rust, oxidation and failing paint follow. Traditional cleaning methods like sandblasting, chemical stripping, and pressure washing often cause more damage than they fix on the iron gates, railings and cast hardware that define this city&apos;s streets.
                 </p>
                 <p>
-                  Laser cleaning changes that equation entirely. A pulsed fiber laser removes contaminants at the molecular level, leaving the substrate completely intact. No media to clean up. No chemicals near Charleston&apos;s waterways. No collateral damage to surrounding materials.
+                  Laser cleaning changes that equation entirely. A pulsed fiber laser breaks up rust and paint and lifts them off as dust and fume, set to stop at the metal. No blast media to sweep. No chemicals near Charleston&apos;s waterways. Glass, sealant and siding nearby get masked.
                 </p>
                 <p>
-                  We built Coastal Surface Restoration around this technology specifically because Charleston deserves better than the alternatives.
+                  Tyler Scherzer started Coastal Surface Restoration to bring this method to Charleston&apos;s iron, steel and marine hardware.
                 </p>
               </div>
             </div>
             <div className="space-y-4">
               {[
-                { number: '300W', label: 'JPT MOPA Pulsed Fiber Laser', desc: 'Industrial-grade laser source used by restoration professionals worldwide.' },
-                { number: '0', label: 'Chemicals Used', desc: 'Every job is completed without chemical solvents, acids, or abrasive media.' },
-                { number: '100%', label: 'Mobile Service', desc: 'We come to your property. No transport required for antiques or fixtures.' },
+                { number: '300W', label: 'JPT MOPA Pulsed Fiber Laser', desc: 'Chihalo CF-300 backpack unit with a JPT 300 W MOPA source, 1064 nm, Class 4.' },
+                { number: '0', label: 'Chemicals Used', desc: 'The laser itself uses no chemical solvents, acids, or blast media.' },
+                { number: 'On site', label: 'Mobile Service', desc: 'We come to your property. Small parts and hardware can also go to our bench.' },
               ].map((stat) => (
                 <div key={stat.label} className="bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6">
                   <div className="text-[#397774] text-3xl font-bold mb-1">{stat.number}</div>
@@ -82,7 +82,7 @@ export default function AboutPage() {
             {/* Trained, not certified. The credential is ANSI Z136.1 training
                 through the LIA, and this heading was the largest text on the
                 page still calling it certification. */}
-            <h2 className="text-3xl font-bold text-white mb-4">Trained. Insured. Ready.</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">Trained to ANSI Z136.1 and insured for $1M per occurrence.</h2>
             {/* Says only what can be evidenced. The previous wording claimed
                 "certifications" plural, which overstated an ANSI Z136.1
                 training credential and implied others that are not held, EPA
@@ -101,11 +101,11 @@ export default function AboutPage() {
               // wholesaler, so the name on the paperwork is not necessarily
               // the entity on the declarations page. Add it back only once the
               // agent confirms it.
-              { Icon: ShieldIcon, title: 'Fully Insured', desc: 'Commercial General Liability coverage. $1M per occurrence / $2M aggregate.' },
+              { Icon: ShieldIcon, title: 'General Liability Insured', desc: 'Commercial General Liability coverage. $1M per occurrence / $2M aggregate.' },
               // Describes what the service suits, not what has been done. The
               // old title, "Historic District Experience", implied a job
               // history that does not exist yet.
-              { Icon: IronScrollIcon, title: "Built for Charleston's Historic District", desc: "Familiar with the unique requirements of working in Charleston's historic district and on protected structures." },
+              { Icon: IronScrollIcon, title: 'Historic District Ready', desc: 'Works on district homes that are not individually listed, with a written method for BAR files. We do not laser paint on pre-1978 homes or child-occupied buildings unless a lead test comes back negative; we refer it to an EPA RRP certified firm.' },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6 text-center">
                 <item.Icon className="h-12 w-12 text-[#397774] mb-4 mx-auto" />
@@ -122,10 +122,10 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold text-white mb-4">Service Area</h2>
-            <p className="text-gray-400">Based in Charleston, SC. We serve the entire Lowcountry region.</p>
+            <p className="text-gray-400">Based in Charleston, SC, serving the peninsula, East Cooper, the islands, West Ashley, North Charleston and Summerville.</p>
           </div>
           <div className="flex flex-wrap justify-center gap-3">
-            {['Downtown Charleston', 'Mount Pleasant', 'Isle of Palms', "Sullivan's Island", 'James Island', 'Folly Beach', 'West Ashley', 'North Charleston', 'Summerville', 'Goose Creek'].map((area) => (
+            {['Downtown Charleston', 'Mount Pleasant', 'Isle of Palms', "Sullivan's Island", 'James Island', 'Folly Beach', 'West Ashley', 'North Charleston', 'Summerville', 'Daniel Island'].map((area) => (
               <span key={area} className="bg-[#1a3958] border border-[#397774]/20 text-gray-300 px-4 py-2 rounded text-sm">
                 {area}
               </span>
@@ -138,7 +138,7 @@ export default function AboutPage() {
       <section className="py-8 lg:py-12 bg-[#1a3958] border-t border-[#397774]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to get started?</h2>
-          <p className="text-gray-400 mb-8">Free estimates for all jobs. We respond within 24 hours.</p>
+          <p className="text-gray-400 mb-8">Free estimates for all jobs. We respond within one business day.</p>
           <Link href="/quote" className="bg-[#397774] text-white px-10 py-4 rounded font-bold text-lg hover:bg-[#2a5c5a] transition-colors">
             Request a Free Quote
           </Link>

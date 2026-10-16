@@ -128,14 +128,14 @@ const HEARD_OPTIONS = [
 const LOCAL_ZIP_PREFIX = '294';
 
 const services = [
-  'Rust & Paint Removal',
-  'Historic Property Restoration',
-  'Marine Hardware Cleaning',
-  'Brick & Masonry Cleaning',
-  'Graffiti Removal',
-  'Antique Hardware Restoration',
-  'Vacation Rental Maintenance',
-  'Other / Not Sure',
+  'Rust removal: railings, gates, furniture',
+  'Paint removal from steel and iron (test spot first)',
+  'Stainless steel: weld tint and tea staining',
+  'Marine hardware on land (stainless and bronze)',
+  'Classic car parts, cast iron and vintage tools',
+  'Solid brass fixtures (test first)',
+  'Graffiti on hard masonry (test first)',
+  'Other / Not sure',
 ];
 
 export default function QuotePage() {
@@ -349,7 +349,7 @@ export default function QuotePage() {
             Request a Quote
           </h1>
           <p className="text-gray-400 text-lg">
-            Tell us about your project and we will get back to you within 24 hours.
+            Tell us about your project and we will get back to you within one business day.
           </p>
         </div>
 
@@ -710,7 +710,7 @@ export default function QuotePage() {
               {...register('description', { required: 'Please describe your project' })}
               rows={5}
               className="w-full bg-[#0e273e] border border-[#397774]/40 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#397774] transition-colors resize-none"
-              placeholder="Describe what you need cleaned or restored. Include material type, approximate size, and any details that will help us give you an accurate quote."
+              placeholder="Describe the item or surface, what it is made of, what is on it (rust, paint, staining), rough size, and the year the building was built if it is painted."
             />
             {errors.description && (
               <p className="text-red-400 text-sm mt-1">{errors.description.message}</p>
@@ -853,7 +853,7 @@ export default function QuotePage() {
           </button>
 
           <p className="text-gray-500 text-xs text-center">
-            We respond within 24 hours. Serving Charleston and the Lowcountry.
+            We respond within one business day. Serving Charleston and the Lowcountry.
           </p>
         </form>
         </div>

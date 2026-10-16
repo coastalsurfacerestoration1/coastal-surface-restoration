@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Commercial Exterior Laser Cleaning in Charleston, SC',
   description:
-    'Laser cleaning for commercial exteriors in Charleston, SC. Restore storefronts, railings, gates, signage, and metal fixtures without chemicals, water, or downtime. Free estimates for businesses and property managers.',
+    'Laser cleaning for commercial exteriors in Charleston, SC. Rust and paint off storefront railings and gates, heat tint and tea staining off stainless handrails, and solid brass pulls cleaned, with no chemicals or water. Free estimates for businesses and property managers.',
   path: '/services/commercial-exterior-cleaning-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function CommercialExteriorPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Commercial Exterior Laser Cleaning',
-          description: 'Laser cleaning for commercial exteriors in Charleston, SC. Restore storefronts, railings, gates, signage, and metal fixtures without chemicals, water, or downtime. Free estimates for businesses and property managers.',
+          description: 'Laser cleaning for commercial exteriors in Charleston, SC. Rust and paint off storefront railings and gates, heat tint and tea staining off stainless handrails, and solid brass pulls cleaned, with no chemicals or water. Free estimates for businesses and property managers.',
           path: '/services/commercial-exterior-cleaning-charleston',
           serviceType: 'Commercial exterior cleaning',
         })}
@@ -43,7 +43,7 @@ export default function CommercialExteriorPage() {
             Commercial Exterior Laser Cleaning in Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Your storefront is the first thing customers see. Rusted railings, corroded fixtures, and a weathered facade quietly cost you foot traffic. Laser cleaning restores commercial metal and masonry without chemicals, water, or the downtime of a full shutdown.
+            Your storefront is the first thing customers see. Rusted railings, corroded fixtures, and a weathered facade quietly cost you foot traffic. A laser takes rust and old paint off steel railings and gates, and stain off stainless handrails, with no chemicals or water. We rope off a small work area and keep the rest of the entrance open.
           </p>
           <Link
             href="/quote"
@@ -67,7 +67,7 @@ export default function CommercialExteriorPage() {
             The problem with maintaining a commercial exterior is usually the disruption. Pressure washing means water everywhere and closed-off walkways. Chemical cleaning means fumes, runoff, and warning signs during business hours. Neither is a good look while you are trying to serve customers.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            Laser cleaning is dry, self-contained, and precise. There is no water, no chemical runoff, and no mess to rope off, so we can work around your hours and leave the entrance customer-ready. It is a clean, low-disruption way to keep a commercial property looking its best.
+            Laser cleaning is dry, self-contained, and precise. There is no water or chemical runoff. We rope off the work area with eyewear rules, extract the dust and fume, and vacuum before we leave. It is a clean, low-disruption way to keep a commercial property looking its best.
           </p>
         </div>
       </section>
@@ -82,27 +82,27 @@ export default function CommercialExteriorPage() {
             {[
               {
                 title: 'Storefront Metal & Railings',
-                desc: 'Entry railings, handrails, window frames, and metal trim on retail and restaurant storefronts throughout Charleston.',
+                desc: 'Steel entry railings and stainless handrails on retail and restaurant storefronts. Aluminum window frames we do not quote yet.',
               },
               {
                 title: 'Gates, Doors & Roll-Up Shutters',
-                desc: 'Iron gates, steel doors, and roll-up security shutters cleaned of rust, grime, and graffiti.',
+                desc: 'Rust and old paint come off iron gates and steel doors. Galvanized and aluminum shutters we check on site first. For graffiti on them, we test a patch first and show you the result before quoting.',
               },
               {
                 title: 'Signage & Fixtures',
-                desc: 'Metal signage, brackets, light fixtures, house numbers, and exterior hardware restored to a clean finish.',
+                desc: 'Steel brackets, solid brass and bronze plaques, pulls and house numbers, tested on a hidden spot first. Brass-plated and aluminum pieces we decline.',
               },
               {
                 title: 'Patio & Outdoor Furniture',
-                desc: 'Metal patio furniture frames, railings, and fixtures for restaurants and hospitality outdoor spaces.',
+                desc: 'Steel and iron patio furniture, rails and grill grates for restaurant patios.',
               },
               {
-                title: 'Facades & Masonry',
-                desc: 'Brick, stucco, and stone facades cleaned of grime, efflorescence, and staining without pressure washing damage.',
+                title: 'Stainless & Brass Entrances',
+                desc: 'Heat tint and tea staining off stainless handrails, and failed lacquer and tarnish off solid brass door pulls, tested first.',
               },
               {
                 title: 'Property Management Portfolios',
-                desc: 'Recurring exterior maintenance across multiple units or locations, handled on a schedule that fits your operations.',
+                desc: 'Stainless and brass entrances cleaned on a set schedule, quoted per location.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">
@@ -124,15 +124,15 @@ export default function CommercialExteriorPage() {
             {[
               {
                 title: 'Low Disruption',
-                desc: 'Dry and self-contained. No water, no roped-off walkways, no fumes. We work around your hours and your customers.',
+                desc: 'Dry, with no water on the sidewalk. We rope off a small area, run fume extraction and work around your hours.',
               },
               {
                 title: 'No Chemical Runoff',
-                desc: 'Nothing to wash into storm drains or Charleston\'s waterways. A clean process that keeps you compliant and mess-free.',
+                desc: 'Nothing to wash into storm drains or the harbor. Dust and paint chips are vacuumed and bagged before we leave.',
               },
               {
                 title: 'Scheduled Maintenance',
-                desc: 'Set a recurring cadence so your exterior is maintained before it declines, protecting your curb appeal year round.',
+                desc: 'Set a recurring cadence so stainless and brass get cleaned before stains set in.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6">
@@ -165,7 +165,7 @@ export default function CommercialExteriorPage() {
               {
                 step: '03',
                 title: 'Laser Cleaning',
-                desc: 'Our 300W JPT MOPA pulsed fiber laser removes rust, grime, and graffiti from metal and masonry with safety perimeters in place.',
+                desc: 'Our 300W JPT MOPA pulsed fiber laser removes rust, old paint and dark graffiti from metal, and tested spots on hard brick, with the work area roped off.',
               },
               {
                 step: '04',
@@ -201,7 +201,6 @@ export default function CommercialExteriorPage() {
             areas={[
               'King Street',
               'Downtown Charleston',
-              'Historic District',
               'Upper Peninsula',
               'Mount Pleasant',
               'West Ashley',
@@ -211,6 +210,7 @@ export default function CommercialExteriorPage() {
               'Summerville',
               'Isle of Palms',
               "Sullivan's Island",
+              'Folly Beach',
             ]}
           />
         </div>
@@ -222,7 +222,7 @@ export default function CommercialExteriorPage() {
           {
             q: 'Can you work outside of business hours?',
             a:
-              'Yes. Storefront and restaurant work is usually scheduled early morning, at night, or on a closed day. There is no wet surface, cure time, or chemical odor afterward, so the space is ready to open as soon as we finish.',
+              'Yes. We schedule early morning, evening or on a closed day, in daylight or with full work lighting. Bare steel gets primed the same day, so plan for paint dry time if we strip a railing.',
           },
           {
             q: 'Do you need water or drainage access?',
@@ -232,12 +232,12 @@ export default function CommercialExteriorPage() {
           {
             q: 'Can you handle multiple properties under one contract?',
             a:
-              'Yes. For property managers and multi-site operators we can quote a portfolio and set a recurring schedule, so exterior metal and signage stay ahead of corrosion rather than being addressed once it is visible from the street.',
+              'Yes. For property managers and multi-site operators we can quote a portfolio and set a recurring schedule, so stainless and brass are cleaned on a set cadence instead of after stains show from the street.',
           },
           {
             q: 'What commercial surfaces does this work on?',
             a:
-              'Storefront metal and railings, roll-up shutters and gates, signage and fixtures, patio furniture, awning frames, and masonry facades. Anything on the exterior where corrosion or soiling affects how the property presents.',
+              'Steel railings and gates, stainless handrails, solid brass pulls and plaques, steel patio furniture and grill grates. Aluminum, plated finishes and whole facades we do not take.',
           },
           {
             q: 'Do you provide documentation for property records?',
@@ -249,16 +249,16 @@ export default function CommercialExteriorPage() {
 
       <RelatedItemsSection
         heading="Related Services"
-        intro="Commercial jobs rarely stop at one surface. These are the services most often bundled with a storefront or property job."
+        intro="Commercial jobs rarely stop at one surface. These services often fit the same visit."
         items={[
           {
             title: 'Rust and Paint Removal',
-            desc: 'Iron, steel, and aluminum stripped clean for railings, gates, and signage.',
+            desc: 'Iron and steel stripped to clean metal for railings and gates, ready for primer the same day.',
             href: '/services/rust-removal-charleston',
           },
           {
             title: 'Graffiti Removal',
-            desc: 'Tags lifted from brick, metal, and painted surfaces without the ghost outlines solvents leave behind.',
+            desc: 'The laser lifts dark tags from steel and hard modern brick. Some colors leave a shadow, which the test patch shows. We test a patch first and show you the result before quoting.',
             href: '/services/graffiti-removal-charleston',
           },
         ]}
@@ -271,7 +271,7 @@ export default function CommercialExteriorPage() {
             Keep your storefront sharp
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Managing one location or many? Ask about a recurring maintenance schedule. Send us photos or your property details and we will follow up within 24 hours.
+            Managing one location or many? Ask about a recurring maintenance schedule. Send us photos or your property details and we will follow up within one business day.
           </p>
           <Link
             href="/quote"

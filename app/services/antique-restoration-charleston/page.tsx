@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Laser Antique & Hardware Restoration in Charleston, SC',
   description:
-    'Laser cleaning for antiques, hardware, tools, and heirloom metalwork in Charleston, SC. Remove rust, tarnish, and old finishes without damaging the original surface or patina. Free estimates.',
+    'Laser cleaning for antique hardware, vintage tools, cast iron and classic car parts in Charleston, SC. Rust and old paint removed, with a test area first to set how much patina stays. Free estimates.',
   path: '/services/antique-restoration-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function AntiqueRestorationPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Antique and Hardware Restoration',
-          description: 'Laser cleaning for antiques, hardware, tools, and heirloom metalwork in Charleston, SC. Remove rust, tarnish, and old finishes without damaging the original surface or patina. Free estimates.',
+          description: 'Laser cleaning for antique hardware, vintage tools, cast iron and classic car parts in Charleston, SC. Rust and old paint removed, with a test area first to set how much patina stays. Free estimates.',
           path: '/services/antique-restoration-charleston',
           serviceType: 'Antique restoration',
         })}
@@ -43,7 +43,7 @@ export default function AntiqueRestorationPage() {
             Laser Restoration for Antiques and Heirloom Metalwork
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            With antiques, the surface is the value. Aggressive cleaning that removes rust also removes the detail, the maker&apos;s marks, and the patina that make a piece worth keeping. Laser cleaning lifts corrosion and old finishes with the precision to preserve exactly what should stay.
+            With antiques, the surface is the value. Aggressive cleaning that removes rust also removes the detail, the maker&apos;s marks, and the patina that make a piece worth keeping. Laser cleaning lifts rust and old paint while leaving more of the surface than a wire wheel or a dip, and a test area shows how a piece responds first.
           </p>
           <Link
             href="/quote"
@@ -58,16 +58,16 @@ export default function AntiqueRestorationPage() {
       <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
-            Precision Where It Matters Most
+            Detail Work on Small Metal Pieces
           </h2>
           <p className="text-gray-400 leading-relaxed mb-6">
             Antique hardware, tools, and decorative metalwork carry their history on the surface. Casting marks, tooling, engraving, and the fine detail of period craftsmanship are the difference between a restored piece and a ruined one. Sandblasting, wire wheels, and chemical dips do not know the difference, and they take it all.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
-            Laser cleaning is controllable down to a level no mechanical or chemical method can match. The pulsed fiber laser removes rust, tarnish, and old coatings layer by layer, and the operator can dial the effect to lift contamination while leaving original detail and desirable patina intact.
+            A pulsed fiber laser removes rust and old coatings in thin passes, and the settings can be turned down for delicate work. Too much energy can darken brass or mark steel, so a test area comes first and sets how far to go.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            For a family heirloom, an antique fixture, or a collection piece, that control is the whole point. It is the difference between conserving a piece and simply cleaning it.
+            For a family heirloom or a vintage tool, that control is the point. For museum-grade conservation work, a trained conservator is the right call, and we will say so.
           </p>
         </div>
       </section>
@@ -82,7 +82,7 @@ export default function AntiqueRestorationPage() {
             {[
               {
                 title: 'Antique Hardware',
-                desc: 'Door hardware, hinges, knockers, locks, and drawer pulls where preserving the original finish and marks is the priority.',
+                desc: 'Iron and solid brass hinges, knockers, locks and pulls. Brass gets a test first and hand finishing after; plated hardware is not a fit.',
               },
               {
                 title: 'Vintage Tools',
@@ -90,19 +90,19 @@ export default function AntiqueRestorationPage() {
               },
               {
                 title: 'Decorative Metalwork',
-                desc: 'Frames, sconces, andirons, fireplace tools, and decorative iron and brass pieces restored with the detail intact.',
+                desc: 'Andirons, fireplace tools, iron frames and sconces. Solid brass pieces are test first with hand finishing; plated or brass-tone pieces are not a fit.',
               },
               {
                 title: 'Light Fixtures & Lamps',
-                desc: 'Antique lanterns, lamp bases, and metal fixtures cleaned of tarnish and old coatings without damaging the original surface.',
+                desc: 'Solid brass lamp bases and iron or copper lanterns, test first. Lamp parts plated over steel or zinc are not a fit, and a magnet check comes first.',
               },
               {
                 title: 'Cast Iron',
-                desc: 'Cookware, garden pieces, and cast iron objects cleaned of rust and buildup while preserving the casting surface.',
+                desc: 'Garden urns, bench ends, finials and other cast iron, cleaned of rust and old paint. Cast iron cookware gets a test first.',
               },
               {
                 title: 'Family Heirlooms',
-                desc: 'One-of-a-kind pieces where the goal is careful conservation, handled with a test area and your approval before full work.',
+                desc: 'One-of-a-kind pieces, handled with a test area and your approval before any full cleaning.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">
@@ -134,7 +134,7 @@ export default function AntiqueRestorationPage() {
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'Controllable down to the layer. Removes rust, tarnish, and coatings while preserving original detail and desirable patina. No abrasion, no chemicals.',
+                problem: 'Adjustable pass by pass. Removes rust and old paint, with a test area first to set how much patina stays. No abrasion, no chemicals.',
                 safe: true,
               },
             ].map((item) => (
@@ -179,12 +179,12 @@ export default function AntiqueRestorationPage() {
               {
                 step: '02',
                 title: 'Test Area',
-                desc: 'We clean a small, discreet area first so you can see and approve the result before we work on the whole piece.',
+                desc: 'A small, out-of-sight area gets cleaned first so you can see and approve the result.',
               },
               {
                 step: '03',
                 title: 'Laser Cleaning',
-                desc: 'Our 300W JPT MOPA pulsed fiber laser removes rust, tarnish, and coatings with precise control, leaving original detail intact.',
+                desc: 'Our 300W JPT MOPA pulsed fiber laser removes rust, tarnish and coatings at the settings the test area proved out.',
               },
               {
                 step: '04',
@@ -221,7 +221,7 @@ export default function AntiqueRestorationPage() {
           {
             q: 'Will laser cleaning devalue my antique?',
             a:
-              "It should not, and preserving value is the reason to use it. Aggressive cleaning destroys the maker's marks, tool work, and patina that carry the value. The process is adjustable and we agree on how far to take it before starting. If a piece should not be cleaned at all, we will say so.",
+              "It can, if it goes too far, which is why we agree on how far to go and test a small area first. Rust removal usually helps a piece; stripping original finish or patina can hurt its value. If a piece should not be cleaned at all, we will say so.",
           },
           {
             q: 'Can you keep the patina and remove only the rust?',
@@ -231,7 +231,7 @@ export default function AntiqueRestorationPage() {
           {
             q: 'What kinds of pieces do you work on?',
             a:
-              'Antique hardware, hinges and latches, vintage tools, cast iron, decorative metalwork, lamps and light fixtures, and family heirlooms. Anything where the surface itself is part of what makes the piece worth keeping.',
+              'Iron and steel hardware, vintage tools, cast iron, classic car brackets and castings, and small solid brass pieces after a test. Not plated hardware, chrome or car body panels.',
           },
           {
             q: 'Do I need to bring the piece to you?',
@@ -252,12 +252,12 @@ export default function AntiqueRestorationPage() {
         items={[
           {
             title: 'Rust and Paint Removal',
-            desc: 'Corrosion and failed coatings lifted from iron, steel, and aluminum without abrasives or chemicals.',
+            desc: 'Corrosion and failed coatings lifted from iron and steel without abrasives or chemicals.',
             href: '/services/rust-removal-charleston',
           },
           {
             title: 'Historic Ironwork Restoration',
-            desc: 'Wrought iron gates and railings cleaned without erasing forged detail or maker marks.',
+            desc: 'Iron and steel gates and railings, set to keep forged detail and maker marks.',
             href: '/services/historic-ironwork-restoration-charleston',
           },
         ]}
@@ -270,7 +270,7 @@ export default function AntiqueRestorationPage() {
             Restore the piece, keep the history
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Free estimates for all jobs. Send us a photo of the piece and we will assess it and follow up within 24 hours.
+            Free estimates for all jobs. Send us a photo of the piece and we will assess it and follow up within one business day.
           </p>
           <Link
             href="/quote"

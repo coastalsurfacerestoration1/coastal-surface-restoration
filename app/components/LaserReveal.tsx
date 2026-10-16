@@ -324,7 +324,7 @@ export default function LaserReveal() {
         </span>
       </div>
       <figcaption className="mt-3 text-center text-xs text-gray-500">
-        Illustration, not a photograph. Real project photos post this fall.
+        Illustration, not a photograph. Project photos replace it once the first jobs are done.
       </figcaption>
     </figure>
   );

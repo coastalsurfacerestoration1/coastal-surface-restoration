@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Laser Marine Cleaning in Charleston, SC',
   description:
-    'Laser cleaning for boats, trailers, and marine hardware in Charleston, SC. Remove rust, corrosion, and oxidation from fittings and dock equipment without chemicals or abrasives. Free estimates.',
+    'Laser cleaning for marine metal hardware in Charleston, SC. Stainless and bronze boat hardware cleaned on land or on the hard: tea staining, weld tint, verdigris and rust, with no chemicals or blast media. Free estimates.',
   path: '/services/marine-cleaning-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function MarineCleaningPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Marine Cleaning',
-          description: 'Laser cleaning for boats, trailers, and marine hardware in Charleston, SC. Remove rust, corrosion, and oxidation from fittings and dock equipment without chemicals or abrasives. Free estimates.',
+          description: 'Laser cleaning for marine metal hardware in Charleston, SC. Stainless and bronze boat hardware cleaned on land or on the hard: tea staining, weld tint, verdigris and rust, with no chemicals or blast media. Free estimates.',
           path: '/services/marine-cleaning-charleston',
           serviceType: 'Marine cleaning',
         })}
@@ -43,7 +43,7 @@ export default function MarineCleaningPage() {
             Laser Marine Cleaning in Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Salt water and Lowcountry humidity are relentless on marine metal. Rust, corrosion, and oxidation take hold on fittings, trailers, and hardware fast. Laser cleaning strips it all back to clean metal without chemicals, abrasives, or the runoff you cannot use near the water.
+            Salt water and Lowcountry humidity are hard on marine metal. Tea staining on stainless rails, verdigris on bronze cleats and rust on steel brackets build up fast. Laser cleaning takes that back to clean metal without chemicals or blast media. The work happens on land, with parts off the boat or the boat on the hard. Hulls, gelcoat, and antifouling paint on fiberglass are outside what we do.
           </p>
           <Link
             href="/quote"
@@ -61,13 +61,13 @@ export default function MarineCleaningPage() {
             Built for a Saltwater Environment
           </h2>
           <p className="text-gray-400 leading-relaxed mb-6">
-            Charleston Harbor, the Ashley and Cooper rivers, Shem Creek, and the marinas of Mount Pleasant and the islands put metal under constant attack. Chlorides accelerate rust, galvanic corrosion eats at dissimilar metals, and oxidation dulls every exposed surface. Keeping marine hardware in service means removing that corrosion without making things worse.
+            Salt air off the harbor and the Ashley and Cooper rivers is hard on boat metal. Chlorides accelerate rust, galvanic corrosion eats at dissimilar metals, and oxidation dulls every exposed surface. Keeping marine hardware in service means removing that corrosion without making things worse.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
             Sandblasting warps thin stainless and aluminum and leaves grit in every crevice. Chemical strippers create runoff that has no place near the water. Wire wheels only reach flat surfaces and miss the pitted areas where corrosion hides.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            Laser cleaning removes only the rust, corrosion, and oxidation layer and stops at the clean metal underneath. There is no grit, no chemical bath, and no water, so there is nothing to contain and nothing to wash into the harbor. It is a clean process in a place where clean matters.
+            Laser cleaning is set to remove the rust, corrosion, and oxidation layer and stop at the clean metal underneath. There is no grit, no chemical bath and no water, so nothing washes into the harbor. The removed corrosion turns to dust and fume, which we capture with extraction and HEPA-vacuum.
           </p>
         </div>
       </section>
@@ -82,27 +82,31 @@ export default function MarineCleaningPage() {
             {[
               {
                 title: 'Boat Trailers',
-                desc: 'Frames, axles, brackets, and fasteners on aluminum and steel trailers corroded from repeated saltwater launches.',
+                desc: 'Steel trailer brackets, axles and fasteners rusted from saltwater launches. Galvanized parts get a test spot first; aluminum trailers we cannot promise yet.',
               },
               {
                 title: 'Deck Hardware & Fittings',
-                desc: 'Cleats, rails, stanchions, winches, hinges, and stainless fittings that have rusted, stained, or lost their finish.',
+                desc: 'Stainless rails, stanchions and cleats with tea staining, and bronze chocks and portlights with verdigris, cleaned off the boat or on the hard.',
               },
               {
-                title: 'Dock & Slip Hardware',
-                desc: 'Brackets, cleats, ladders, and fasteners on private docks and marina slips throughout the Charleston area.',
+                title: 'Removed Steel & Cast Parts',
+                desc: 'Windlass housings, brackets and anchor parts brought to us off the boat, stripped of paint and rust and ready for primer.',
               },
               {
                 title: 'Anchors, Chain & Ground Tackle',
-                desc: 'Anchors, chain, shackles, and rigging hardware cleaned of rust and marine buildup without weakening the metal.',
+                desc: 'Steel anchors, shackles and hardware with rust and old paint, cleaned off the boat. Galvanized chain loses zinc when stripped, so it is test first.',
+              },
+              {
+                title: 'Props, Shafts & Through-Hull Fittings',
+                desc: 'Bronze props, shafts and struts removed or with the boat on the hard, test spot first. Heavy antifouling paint gets scraped first, and the beam never fires with gelcoat in its path.',
               },
               {
                 title: 'Engine & Mechanical Parts',
-                desc: 'Brackets, mounts, and metal components where corrosion needs to come off without warping thin material.',
+                desc: 'Steel and cast brackets and mounts off the engine. Aluminum outboard parts we cannot promise yet.',
               },
               {
-                title: 'Aluminum & Stainless Surfaces',
-                desc: 'Oxidized aluminum and tea-stained stainless returned to a clean surface, ready for polish, coating, or reuse.',
+                title: 'Stainless Tea Staining & Weld Tint',
+                desc: 'Tea staining and weld heat tint on 304 and 316 stainless come off to a clean surface, and we recommend passivation after. Aluminum results we cannot promise yet.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">
@@ -134,7 +138,7 @@ export default function MarineCleaningPage() {
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'Targets only the rust, corrosion, and oxidation. Base metal is untouched. No grit, no chemicals, no water, and nothing washed into the water.',
+                problem: 'Set to lift rust, tea staining and oxide and stop at the metal. No grit, no chemicals, no water, and nothing washed into the harbor.',
                 safe: true,
               },
             ].map((item) => (
@@ -174,27 +178,27 @@ export default function MarineCleaningPage() {
               {
                 step: '01',
                 title: 'On-Site Assessment',
-                desc: 'We inspect the hardware in person, identify the metal and the extent of corrosion, and confirm laser cleaning is the right approach. Work can be done dockside or at your location.',
+                desc: 'We inspect the hardware in person, identify the metal and the extent of corrosion, and confirm laser cleaning is the right approach. Work is done on land: at your home, at a boatyard with the boat on the hard, or with the hardware brought to us.',
               },
               {
                 step: '02',
                 title: 'Surface Preparation',
-                desc: 'We set up safety perimeters and protect surrounding surfaces, gel coat, and fittings before beginning work.',
+                desc: 'A controlled laser area goes up with eyewear. Parts come off the boat where they can, and if gelcoat or teak sits in the beam path, the laser does not fire.',
               },
               {
                 step: '03',
                 title: 'Laser Cleaning',
-                desc: 'Our 300W JPT MOPA pulsed fiber laser removes rust, corrosion, and oxidation layer by layer. Parameters are tuned to stainless, aluminum, or steel so the base metal is left intact.',
+                desc: 'Our 300W JPT MOPA pulsed fiber laser removes rust, corrosion, and oxidation layer by layer. Settings are matched to stainless, bronze or steel and checked on a test spot first.',
               },
               {
                 step: '04',
                 title: 'Surface Inspection',
-                desc: 'We inspect the cleaned surface and confirm the result before completing the job. Before and after photos are taken for your records.',
+                desc: 'The cleaned surface is checked with you and photographed before and after.',
               },
               {
                 step: '05',
                 title: 'Protection Guidance',
-                desc: "Bare metal will corrode again in a saltwater environment. We can advise on protective coatings and a maintenance schedule to keep hardware in service longer.",
+                desc: 'Bare metal corrodes again in salt water. For 316 stainless we recommend re-passivation after cleaning, and for other metals we can advise on protective coatings and a maintenance schedule.',
               },
             ].map((item) => (
               <div key={item.step} className="flex gap-6 items-start">
@@ -214,19 +218,19 @@ export default function MarineCleaningPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Service Area</h2>
           <p className="text-gray-400 leading-relaxed mb-8">
-            We serve boat owners, marinas, and dock owners throughout Charleston Harbor and the Lowcountry, with dockside service wherever access allows.
+            We serve boat owners, boatyards and marine shops across the Charleston area, working on land: at your home, on the hard, or with hardware brought to us.
           </p>
           <ServiceAreaChips
             areas={[
-              'Charleston Harbor',
-              'Shem Creek',
+              'North Charleston',
+              'Summerville',
               'Mount Pleasant',
               'Isle of Palms',
               "Sullivan's Island",
               'Daniel Island',
               'James Island',
               'Folly Beach',
-              'Wando',
+              'Old Village',
               'West Ashley',
               'Downtown Charleston',
               'Wild Dunes',
@@ -241,29 +245,29 @@ export default function MarineCleaningPage() {
           {
             q: 'Can you clean a boat trailer without removing the wheels or bearings?',
             a:
-              'Yes. There is no blasting media to work into bearings, brake hardware, or threads, which is the usual reason trailers get stripped down before cleaning. The trailer can be cleaned assembled, on site, and put straight back into service.',
+              'Usually, yes. There is no blast media to pack into bearings, brakes or threads, so the trailer can stay assembled. Bare steel needs primer the same day, and galvanized parts get a test spot first.',
           },
           {
             q: 'Do you work dockside?',
             a:
-              'Yes. The system runs off a portable generator, so we work at private docks and in marina slips throughout the area. Nothing is discharged into the water, which is what makes this practical over a creek or a marsh.',
+              'No. We do not work on docks, piers or boats in the water. Hardware can come off the boat to us, or we can work with the boat on a trailer or on the hard at a yard that allows it.',
           },
           {
             q: 'Is it safe on aluminum and stainless?',
             a:
-              'Yes, with settings adjusted for the metal. Aluminum and the lower stainless grades common on marine hardware both behave differently than steel, so we test a small area first and confirm the result with you before working through the piece.',
+              'On stainless, yes, with a test spot first; tea staining and weld tint are some of the best work this laser does. Aluminum is still unproven for us, so we will not promise a result on it. On 316 stainless we also recommend re-passivation afterward, which restores the passive layer that resists salt corrosion.',
           },
           {
             q: 'What about corrosion in hard to reach fittings?',
             a:
-              'Detail work is where the method has an advantage. The beam can be directed into recesses, around fasteners, and along weld seams without masking or disassembling the surrounding area.',
+              'Detail work is where the method has an advantage. The beam reaches around fasteners and along weld seams with no media to pack in. Gelcoat, teak, glass and sealant nearby still need the part removed or shielded.',
           },
         ]}
       />
 
       <RelatedItemsSection
         heading="Related Services"
-        intro="Marine work sits next to two other things we do regularly on the same properties: waterfront rentals and general rust removal on gear."
+        intro="Marine hardware pairs with two other services on waterfront properties: rental property metalwork and general rust removal."
         items={[
           {
             title: 'Vacation Rental Restoration',
@@ -285,7 +289,7 @@ export default function MarineCleaningPage() {
             Keep your marine hardware in service
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Free estimates for all jobs. Send us a photo of the hardware and we will assess it and follow up within 24 hours.
+            Free estimates for all jobs. Send us a photo of the hardware and we will assess it and follow up within one business day.
           </p>
           <Link
             href="/quote"

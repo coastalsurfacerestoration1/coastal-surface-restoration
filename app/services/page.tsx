@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import {
   BoltIcon,
-  BrickIcon,
   CleatIcon,
   IronScrollIcon,
   RailingIcon,
@@ -15,7 +14,7 @@ import Breadcrumbs from '@/app/components/Breadcrumbs';
 export const metadata = pageMetadata({
   title: 'Services',
   description:
-    'Mobile laser cleaning services in Charleston, SC. Rust removal, historic restoration, marine cleaning, brick cleaning, graffiti removal, and more.',
+    'Mobile laser cleaning in Charleston, SC: rust and paint off iron and steel, stainless and bronze boat hardware, antique tools and parts, and test-first graffiti removal.',
   path: '/services',
 });
 
@@ -31,56 +30,49 @@ const services: Service[] = [
   {
     Icon: IronScrollIcon,
     title: 'Historic Restoration',
-    desc: 'Iron gates, brick stoops, wrought iron railings, church gates, wood shutters. Preserve Charleston\'s historic character without damaging original materials.',
+    desc: "Iron and steel gates, railings and church fences in Charleston's historic neighborhoods, test spot first. Pre-1978 paint needs a negative lead test.",
     href: '/services/historic-ironwork-restoration-charleston',
     live: true,
   },
   {
     Icon: CleatIcon,
     title: 'Marine Cleaning',
-    desc: 'Boat fittings, trailers, marine hardware, and dock equipment. Remove rust and marine growth without harsh chemicals near Charleston\'s waterways.',
+    desc: 'Stainless rails and cleats, bronze fittings and steel trailer parts, cleaned on land or on the hard. Metal only, never hulls, docks or boats in the water.',
     href: '/services/marine-cleaning-charleston',
     live: true,
   },
   {
     Icon: RailingIcon,
     title: 'Vacation Rental Restoration',
-    desc: 'Keep your Isle of Palms, Sullivan\'s Island, or Folly Beach property in top condition. Recurring maintenance contracts available for property managers.',
+    desc: "Salt-rusted railings, gates and outdoor furniture at Isle of Palms, Sullivan's Island and Folly Beach rentals, scheduled between guests. Recurring service for property managers.",
     href: '/services/vacation-rental-cleaning-charleston',
     live: true,
   },
   {
     Icon: BoltIcon,
     title: 'Rust & Paint Removal',
-    desc: 'Remove rust, old paint, and coatings from iron, steel, and metal surfaces without abrasives or chemicals.',
+    desc: 'Rust, old paint and coatings off iron and steel, plus weld tint and tea staining on stainless. No blast media or chemicals, test spot first.',
     href: '/services/rust-removal-charleston',
-    live: true,
-  },
-  {
-    Icon: BrickIcon,
-    title: 'Brick & Masonry Cleaning',
-    desc: 'Efflorescence, staining, and grime removal from brick, stone, and concrete without pressure washing damage.',
-    href: '/services/brick-cleaning-charleston',
     live: true,
   },
   {
     Icon: SprayIcon,
     title: 'Graffiti Removal',
-    desc: 'Clean graffiti from brick, metal, and concrete surfaces without leaving ghost marks or surface damage.',
+    desc: 'Dark spray-paint tags on hard, non-historic brick, block and metal, test patch first. Silver paint on masonry is not a fit, and red or yellow may leave a stain.',
     href: '/services/graffiti-removal-charleston',
     live: true,
   },
   {
     Icon: UrnIcon,
     title: 'Antique & Hardware Restoration',
-    desc: 'Restore antique hardware, frames, tools, and decorative metal pieces to their original condition.',
+    desc: 'Rust and old paint off antique hardware, vintage tools, cast iron and classic car parts, with a test area first to set how much patina stays.',
     href: '/services/antique-restoration-charleston',
     live: true,
   },
   {
     Icon: StorefrontIcon,
     title: 'Commercial Exteriors',
-    desc: 'Storefronts, railings, gates, signage, and metal fixtures for retail, restaurants, and property managers. Low-disruption cleaning that works around your hours.',
+    desc: 'Steel railings, gates, security grates and patio furniture at Charleston storefronts and restaurants, scheduled around your hours with a closed-off work area.',
     href: '/services/commercial-exterior-cleaning-charleston',
     live: true,
   },
@@ -109,7 +101,7 @@ export default function ServicesPage() {
             Our Services
           </h1>
           <p className="text-gray-400 text-lg max-w-xl mx-auto">
-            Mobile laser cleaning for historic, marine, and property restoration across Charleston and the Lowcountry. No chemicals. No abrasives. No mess.
+            Mobile laser cleaning for iron, steel, boat hardware and antiques across Charleston and the Lowcountry. No chemicals, no blast media, and the dust gets captured and cleaned up.
           </p>
         </div>
       </section>

@@ -31,7 +31,7 @@ export default function ContactPage() {
             Contact Us
           </h1>
           <p className="text-gray-400 text-lg max-w-xl mx-auto">
-            Questions about a project? Ready to schedule? We respond to every inquiry within 24 hours.
+            Questions about a project? Ready to schedule? We respond to every inquiry within one business day.
           </p>
         </div>
       </section>
@@ -59,7 +59,7 @@ export default function ContactPage() {
                 <div>
                   <div className="text-[#397774] font-semibold text-sm uppercase tracking-wider mb-1">Email</div>
                   <div className="text-white font-bold group-hover:text-[#397774] transition-colors break-all">{BUSINESS.email}</div>
-                  <div className="text-gray-400 text-sm mt-1">We respond within 24 hours</div>
+                  <div className="text-gray-400 text-sm mt-1">We respond within one business day</div>
                 </div>
               </a>
 
@@ -89,10 +89,10 @@ export default function ContactPage() {
               <div>
                 <h2 className="text-2xl font-bold text-white mb-4">Want a Free Estimate?</h2>
                 <p className="text-gray-400 mb-6 leading-relaxed">
-                  The fastest way to get a quote is through our online form. Tell us about your project and we will follow up with pricing within 24 hours.
+                  The fastest way to get a quote is through our online form. Tell us about your project and we will follow up with pricing within one business day.
                 </p>
                 <ul className="space-y-3 mb-8">
-                  {['No obligation', 'Response within 24 hours', 'On-site estimates available'].map((item) => (
+                  {['No obligation', 'Response within one business day', 'On-site estimates available'].map((item) => (
                     <li key={item} className="flex items-center gap-3 text-gray-300 text-sm">
                       <span className="text-[#397774] font-bold">✓</span>
                       {item}
@@ -113,7 +113,7 @@ export default function ContactPage() {
         items={[
           {
             q: 'How quickly can you schedule a job?',
-            a: 'Most jobs can be scheduled within 1-2 weeks. For urgent projects, contact us directly by phone and we will do our best to accommodate.',
+            a: 'Jobs are usually scheduled within two weeks. For urgent projects, contact us directly by phone and we will do our best to accommodate.',
           },
           {
             q: 'Do I need to be present during the job?',
@@ -121,11 +121,11 @@ export default function ContactPage() {
           },
           {
             q: 'What is your service area?',
-            a: "We serve Charleston and the surrounding Lowcountry including Mount Pleasant, Isle of Palms, Sullivan's Island, James Island, Folly Beach, West Ashley, and Summerville.",
+            a: "We serve Charleston and the surrounding Lowcountry including Mount Pleasant, North Charleston, Daniel Island, Isle of Palms, Sullivan's Island, James Island, Folly Beach, West Ashley, and Summerville.",
           },
           {
             q: 'Is laser cleaning safe for historic materials?',
-            a: 'Yes, it is one of the safest methods available for historic surfaces. The laser removes only the contaminant layer without affecting the underlying material.',
+            a: 'It depends on the material. Iron, steel and solid brass get a test spot first. Soft handmade brick, lime mortar, pre-1978 paint and individually listed properties are declined.',
           },
         ]}
       />

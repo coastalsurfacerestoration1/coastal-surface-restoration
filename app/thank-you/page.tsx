@@ -42,7 +42,7 @@ export default function ThankYouPage() {
             Thanks. We will be in touch.
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-10 max-w-xl mx-auto">
-            Your quote request is in. We review every project personally and follow up within 24 hours, usually sooner.
+            Your quote request is in. We review every project personally and follow up within one business day, usually sooner.
           </p>
 
           <div className="bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6 sm:p-8 mb-10 text-left">
@@ -57,7 +57,7 @@ export default function ThankYouPage() {
                 {
                   step: '02',
                   title: 'You get a follow-up',
-                  desc: 'Within 24 hours, by email or phone depending on what you provided. If we need more photos or a site visit, we will say so.',
+                  desc: 'Within one business day, by email or phone depending on what you provided. If we need more photos or a site visit, we will say so.',
                 },
                 {
                   step: '03',

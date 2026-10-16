@@ -16,6 +16,8 @@ export const BUSINESS_ID = `${SITE_URL}/#business`;
 export const SERVICE_AREAS = [
   'Charleston',
   'Mount Pleasant',
+  'North Charleston',
+  'Daniel Island',
   'Isle of Palms',
   "Sullivan's Island",
   'James Island',
@@ -43,7 +45,7 @@ export function localBusinessSchema() {
     logo: `${SITE_URL}/logo-icon.png`,
     image: `${SITE_URL}/opengraph-image`,
     description:
-      "Charleston's mobile laser cleaning specialist for historic, marine, and property restoration. Rust, paint, graffiti, and corrosion removed on site with no chemicals, no abrasives, and no water runoff.",
+      "Charleston's laser cleaning specialists. Rust and paint removed from iron and steel, weld tint from stainless, and corrosion from marine hardware on land. No chemicals, no blast media, test spot first.",
     telephone: '+1-854-222-7790',
     email: BUSINESS.email,
     priceRange: '$$',
@@ -55,8 +57,8 @@ export function localBusinessSchema() {
       addressCountry: 'US',
     },
     // Downtown Charleston, used as the midpoint of the service area rather
-    // than as a location customers visit. The radius reaches Summerville,
-    // the furthest city we advertise.
+    // than as a location customers visit. The radius just reaches
+    // Summerville, about 22 miles out and the furthest city we advertise.
     geo: {
       '@type': 'GeoCoordinates',
       latitude: 32.7765,
@@ -69,7 +71,7 @@ export function localBusinessSchema() {
         latitude: 32.7765,
         longitude: -79.9311,
       },
-      geoRadius: '40000',
+      geoRadius: '36000',
     },
     areaServed: SERVICE_AREAS.map((name) => ({
       '@type': 'City',
@@ -103,10 +105,10 @@ export function localBusinessSchema() {
     knowsAbout: [
       'Laser cleaning',
       'Rust removal',
-      'Historic ironwork restoration',
+      'Paint removal from steel',
+      'Stainless steel weld tint removal',
       'Marine hardware cleaning',
-      'Brick and masonry cleaning',
-      'Graffiti removal',
+      'Cast iron and vintage tool restoration',
     ],
     // Add the Google Business Profile URL here once the listing is verified.
     sameAs: [...BUSINESS.socials],

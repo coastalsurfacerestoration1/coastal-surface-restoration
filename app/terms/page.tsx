@@ -129,10 +129,10 @@ export default function TermsPage() {
               <span className="text-white">You confirm that you own the property or have permission to authorize this work.</span> If you rent, manage, or share the property, getting approval from the owner, landlord, HOA, or board is your responsibility. In Charleston&apos;s historic districts, some exterior work needs approval from the Board of Architectural Review. We are glad to talk through what the work involves, but we cannot obtain those approvals for you.
             </p>
             <p>
-              Laser cleaning requires a controlled work zone. Our operators are trained to ANSI Z136.1 through the Laser Institute of America, and we set up the area accordingly. Please keep people and pets outside the marked zone while we are running, and do not look directly at the work area. If we cannot establish a safe zone, we will stop and reschedule.
+              Laser cleaning requires a controlled work zone. The owner runs every job, is trained to ANSI Z136.1 through the Laser Institute of America, acts as Laser Safety Officer, and sets up the area accordingly. Please keep people and pets outside the marked zone while we are running, and do not look directly at the work area. If we cannot establish a safe zone, we will stop and reschedule.
             </p>
             <p>
-              Tell us in advance about anything we should know: fragile or historically significant material, previous repairs, lead paint, fresh coatings, security cameras, or alarm systems.
+              Tell us in advance about anything we should know: fragile or historically significant material, previous repairs, fresh coatings, security cameras, or alarm systems. Paint on buildings from before 1978 is treated as lead paint and declined unless a lead test shows otherwise.
             </p>
           </Section>
 
@@ -201,7 +201,7 @@ export default function TermsPage() {
               We stand behind our work. If something is not right, tell us within 7 days and we will come back and make it right at no charge.
             </p>
             <p>
-              What we can promise is that we will do the work carefully, with trained operators and settings appropriate for your surface. What we cannot promise is a specific cosmetic result on every material. Laser cleaning removes rust, coatings, and contamination from the surface. It does not repair what is underneath. Cleaning sometimes reveals pitting, prior repairs, mismatched patches, or thin spots that the dirt or paint was hiding. That is the condition of the material rather than damage from the work, and we will point it out when we see it.
+              What we can promise is that we will do the work carefully, with a trained operator and settings tested on your surface. What we cannot promise is a specific cosmetic result on every material. Laser cleaning removes rust, coatings, and contamination from the surface. It does not repair what is underneath. Cleaning sometimes reveals pitting, prior repairs, mismatched patches, or thin spots that the dirt or paint was hiding. That is the condition of the material rather than damage from the work, and we will point it out when we see it.
             </p>
             <p>
               We are insured. If we damage your property through our own negligence, we will make it right through our insurance. Please report any damage to us within 7 days of the appointment so we can document it while the circumstances are still clear.

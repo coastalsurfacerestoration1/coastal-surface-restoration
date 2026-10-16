@@ -7,12 +7,16 @@ import Faq from '@/app/components/Faq';
 import RelatedItemsSection from '@/app/components/RelatedItemsSection';
 import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 
-export const metadata = pageMetadata({
-  title: 'Laser Brick & Masonry Cleaning in Charleston, SC',
-  description:
-    'Laser brick and masonry cleaning in Charleston, SC. Remove efflorescence, grime, and staining from historic brick, stone, and stucco without pressure washing damage or chemicals. Free estimates.',
-  path: '/services/brick-cleaning-charleston',
-});
+// Unpublished: the route stays live, but search engines are told to skip it.
+export const metadata = {
+  ...pageMetadata({
+    title: 'Laser Cleaning for Modern Brick in Charleston, SC',
+    description:
+      'Soot, overspray and dark graffiti lifted from hard-fired modern brick, small areas only, after a signed test patch. Historic soft brick is referred to a conservator.',
+    path: '/services/brick-cleaning-charleston',
+  }),
+  robots: { index: false, follow: false },
+};
 
 export default function BrickCleaningPage() {
   return (
@@ -26,8 +30,8 @@ export default function BrickCleaningPage() {
       />
       <JsonLd
         data={serviceSchema({
-          name: 'Laser Brick and Masonry Cleaning',
-          description: 'Laser brick and masonry cleaning in Charleston, SC. Remove efflorescence, grime, and staining from historic brick, stone, and stucco without pressure washing damage or chemicals. Free estimates.',
+          name: 'Laser Cleaning for Modern Brick',
+          description: 'Soot, overspray and dark graffiti lifted from hard-fired modern brick, small areas only, after a signed test patch. Historic soft brick is referred to a conservator.',
           path: '/services/brick-cleaning-charleston',
           serviceType: 'Masonry cleaning',
         })}
@@ -40,10 +44,10 @@ export default function BrickCleaningPage() {
             Brick & Masonry Cleaning
           </p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">
-            Laser Brick and Masonry Cleaning in Charleston
+            Laser Cleaning for Modern Brick in Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Charleston&apos;s historic brick is soft, hand-made, and easy to ruin. Pressure washing blasts away the fired surface and opens the brick to water damage. Laser cleaning lifts efflorescence, grime, and staining while leaving the original masonry and mortar completely intact.
+            Charleston&apos;s handmade historic brick is soft and easy to ruin, and we do not laser it. We work on hard-fired brick from about 1950 on: fireplace soot, paint overspray and dark tags, small areas, with a test patch you approve first.
           </p>
           <Link
             href="/quote"
@@ -58,16 +62,16 @@ export default function BrickCleaningPage() {
       <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
-            Why Historic Brick Needs a Gentler Method
+            Why We Refer Historic Brick Out
           </h2>
           <p className="text-gray-400 leading-relaxed mb-6">
-            The brick on Charleston&apos;s historic homes was fired in the 1700s and 1800s with a hard outer skin that protects the softer core. Once that skin is gone, the brick absorbs water, spalls, and deteriorates. High-pressure washing strips that skin in seconds, and it drives water and detergent deep into the wall and the lime mortar joints.
+            Brick on the peninsula&apos;s older homes was fired in the 1700s and 1800s with a hard skin over a soft core. Once that skin is gone the brick soaks up water and spalls. Laser heat can gray or glaze it too, so we send that work to a masonry conservator.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
-            Efflorescence, the white crystalline haze that appears on brick and stucco, comes from salts migrating to the surface. Scrubbing it with acid can etch the masonry and leave a burn mark, and it often comes right back because the underlying moisture issue was never addressed.
+            Efflorescence, the white crystalline haze on brick and stucco, is salt carried to the surface by water moving through the wall. It is a moisture problem first. Acid scrubbing etches the masonry and the salt comes back, and it would come back after a laser cleaning too, because neither one stops the water. We do not take efflorescence jobs. We can dry brush a spot and point out where the water is likely getting in, so you can call a mason.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            Laser cleaning removes surface contamination without water, chemicals, or abrasion. The pulsed fiber laser targets the grime, efflorescence, or staining and stops at the masonry surface, so the original brick skin and mortar are preserved. It is a controlled, gentle process suited to exactly the kind of irreplaceable masonry Charleston is known for.
+            Laser cleaning removes surface contamination without water, chemicals, or abrasion. On hard-fired brick the laser can lift soot and some paint, but too much energy grays or glazes the face. We test a 6 by 6 inch patch first and stop at the first color shift.
           </p>
         </div>
       </section>
@@ -81,28 +85,28 @@ export default function BrickCleaningPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[
               {
-                title: 'Historic Brick Facades',
-                desc: 'Hand-made and soft historic brick on homes and commercial buildings throughout the Charleston peninsula, cleaned without stripping the fired surface.',
+                title: 'Fireplace Surrounds',
+                desc: 'Soot and smoke film on brick or stone fireplace surrounds and chimney breasts, tested on a small patch first.',
               },
               {
-                title: 'Efflorescence Removal',
-                desc: 'The white crystalline haze on brick, block, and stucco removed at the surface without acid etching or burn marks.',
+                title: 'Paint on Brick',
+                desc: 'Small areas of latex overspray or spills on hard-fired brick, with the laser plus other methods. Test patch first. We do not take brick that was already chemically stripped, or paint on pre-1978 homes.',
               },
               {
                 title: 'Brick Stoops & Steps',
-                desc: 'Entrance stoops, steps, and thresholds cleaned of grime, biological growth, and staining common in the humid Lowcountry.',
+                desc: 'Rust stains and paint drips on hard-fired brick steps, tested on a patch first. Marble and limestone thresholds go to a stone conservator.',
               },
               {
                 title: 'Stone & Stucco',
-                desc: 'Natural stone facades, stucco, and render cleaned of dirt, algae, and staining without damaging the finish.',
+                desc: 'Not offered yet. We have not tested stucco or natural stone enough to quote it, and old painted stucco may contain lead.',
               },
               {
                 title: 'Chimneys',
-                desc: 'Exterior chimney brick cleaned of soot, smoke staining, and grime.',
+                desc: 'Soot and smoke staining on hard-fired chimney brick, tested on a patch first. Historic soft brick chimneys are referred out.',
               },
               {
                 title: 'Garden & Retaining Walls',
-                desc: 'Brick and stone garden walls, retaining walls, and hardscape features cleaned of moss, mildew, and buildup.',
+                desc: 'Dark graffiti or paint drips on a section of a hard brick or block wall. Whole-wall cleaning goes to a pressure washing crew.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">
@@ -129,12 +133,12 @@ export default function BrickCleaningPage() {
               },
               {
                 method: 'Acid Cleaning',
-                problem: 'Etches and burns masonry, discolors brick, and often fails to stop efflorescence from returning. Creates hazardous runoff.',
+                problem: 'Etches and burns masonry and discolors brick, and it leaves hazardous runoff behind.',
                 safe: false,
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'Removes only the surface contamination and stops at the masonry. No water, no acid, no abrasion. The original brick skin and mortar are preserved.',
+                problem: 'No water, no acid and no blast media. On hard-fired brick it can stop at the face if the settings are right, which is why a test patch comes first. Not for soft historic brick.',
                 safe: true,
               },
             ].map((item) => (
@@ -153,7 +157,7 @@ export default function BrickCleaningPage() {
                   <span className={`text-xs px-2 py-0.5 rounded font-semibold ${
                     item.safe ? 'bg-[#397774]/20 text-[#397774]' : 'bg-red-900/30 text-red-400'
                   }`}>
-                    {item.safe ? 'Recommended' : 'Risk to Historic Masonry'}
+                    {item.safe ? 'Hard brick only' : 'Can damage brick'}
                   </span>
                 </div>
                 <p className="text-gray-400 text-sm leading-relaxed">{item.problem}</p>
@@ -179,12 +183,12 @@ export default function BrickCleaningPage() {
               {
                 step: '02',
                 title: 'Test Patch',
-                desc: 'On historic masonry we clean a small, discreet test area first so you can see the result and approve it before we proceed.',
+                desc: 'On hard-fired brick we clean a 6 by 6 inch test patch under a signed authorization, and you approve the result before any quote.',
               },
               {
                 step: '03',
                 title: 'Laser Cleaning',
-                desc: 'Our 300W JPT MOPA pulsed fiber laser removes grime, efflorescence, and staining layer by layer. Parameters are tuned to the specific masonry so the surface is preserved.',
+                desc: 'Our 300W JPT MOPA pulsed fiber laser removes soot and paint in light passes at the setting the test patch proved, and we stop at the first color change.',
               },
               {
                 step: '04',
@@ -194,7 +198,7 @@ export default function BrickCleaningPage() {
               {
                 step: '05',
                 title: 'Moisture Guidance',
-                desc: 'If recurring efflorescence points to a moisture issue, we will flag it so the underlying cause can be addressed and the problem does not simply return.',
+                desc: 'We do not take efflorescence (white salt bloom) jobs. If we see it, we point out where the water is likely getting in so you can call a mason.',
               },
             ].map((item) => (
               <div key={item.step} className="flex gap-6 items-start">
@@ -214,20 +218,14 @@ export default function BrickCleaningPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Service Area</h2>
           <p className="text-gray-400 leading-relaxed mb-8">
-            We clean brick and masonry for historic homes, commercial buildings, and residential properties throughout Charleston and the Lowcountry.
+            We work on modern hard-fired brick at homes and businesses around Charleston, Mount Pleasant, West Ashley, James Island and North Charleston.
           </p>
           <ServiceAreaChips
             areas={[
-              'South of Broad',
-              'Historic District',
-              'Downtown Charleston',
-              'Harleston Village',
-              'Ansonborough',
-              'Radcliffeborough',
-              'Mount Pleasant',
               'West Ashley',
-              'James Island',
               'North Charleston',
+              'Mount Pleasant',
+              'James Island',
               'Daniel Island',
               'Summerville',
             ]}
@@ -241,43 +239,43 @@ export default function BrickCleaningPage() {
           {
             q: "Is laser cleaning safe for Charleston's historic brick?",
             a:
-              'Yes, and it addresses the specific risk with soft handmade brick. The fired outer skin protects the softer core, and pressure washing strips that skin away. Laser cleaning lifts surface soiling without removing the skin and without forcing water into the wall or the mortar joints.',
+              'Not for soft handmade brick, so we do not take it. Pre-1900 peninsula brick and lime mortar go to a masonry conservator. We work on hard-fired brick from about 1950 on, and only after a test patch.',
           },
           {
-            q: 'Can you remove efflorescence?',
+            q: 'Do you remove efflorescence?',
             a:
-              'Yes. Efflorescence is salt deposit carried to the surface by moisture moving through the masonry, and the laser removes the deposit itself. If the underlying moisture path is not addressed the salts will return, so we will tell you when what you actually have is a water problem.',
+              'No. Efflorescence is salt that water carries out of the masonry, so it is a moisture problem first. A laser can lift the deposit, but the salt returns as long as the water keeps moving, and charging you for that would not be honest. We can dry brush a spot and tell you where the water is likely coming from.',
           },
           {
             q: 'Will it damage lime mortar joints?',
             a:
-              'Lime mortar is softer than the brick around it and is the first thing to fail under pressure washing. Because the process is dry and non-contact, the joints are not eroded and no water is driven into them.',
+              "We don't take lime mortar work. Brick laid in soft lime mortar, which is most pre-1900 Charleston brick, goes to a masonry conservator. On modern brick with cement mortar we mask the joints and keep the beam on the brick face.",
           },
           {
             q: 'Can you clean painted brick?',
             a:
-              'Often yes. Removing paint from masonry is slower than removing it from metal, and the result depends on the paint type and how deeply it soaked in. We test a patch first so you can see the realistic outcome before committing to a full elevation.',
+              'Sometimes, on small areas of hard-fired brick, using the laser plus other methods. Brick that was already chemically stripped, and paint on pre-1978 homes, we decline. Whole walls go to a masonry restoration company.',
           },
           {
             q: 'Do you clean stucco and stone as well?',
             a:
-              'Yes. Stucco, cast stone, and concrete all respond, with settings adjusted per material. Stucco in particular benefits from a dry method, since pressure washing drives water in behind the render.',
+              'Not yet. We have not tested stucco or cast stone enough to quote them. Unsealed concrete with paint overspray is something we do take.',
           },
         ]}
       />
 
       <RelatedItemsSection
         heading="Related Services"
-        intro="Brick and masonry rarely need only one thing done. These are the services most often booked alongside a brick cleaning job."
+        intro="Other work that often sits on the same building as the brick."
         items={[
           {
             title: 'Graffiti Removal',
-            desc: 'Spray paint lifted from brick and masonry without ghost outlines or surface gouging.',
+            desc: 'Dark tags on hard, non-historic brick and block, tested on a patch first. Silver and metallic paint on masonry we decline.',
             href: '/services/graffiti-removal-charleston',
           },
           {
             title: 'Commercial Exterior Cleaning',
-            desc: 'Storefronts and mixed-material facades restored outside business hours.',
+            desc: 'Storefront railings, stainless handrails and metal fixtures, scheduled around your hours.',
             href: '/services/commercial-exterior-cleaning-charleston',
           },
         ]}
@@ -287,10 +285,10 @@ export default function BrickCleaningPage() {
       <section className="py-8 lg:py-12 bg-[#1a3958] border-t border-[#397774]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
-            Clean your brick without damaging it
+            See a test patch on your brick first
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Free estimates for all jobs. Send us a photo of the masonry and we will assess it and follow up within 24 hours.
+            Free estimates for all jobs. Send us a photo of the masonry and we will assess it and follow up within one business day.
           </p>
           <Link
             href="/quote"

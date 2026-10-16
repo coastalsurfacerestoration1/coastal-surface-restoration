@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Laser Rust & Paint Removal in Charleston, SC',
   description:
-    'Laser rust and paint removal in Charleston, SC. Chemical-free, non-abrasive cleaning for iron, steel, marine hardware, and metal surfaces. No sandblasting, no chemicals, no substrate damage. Free estimates.',
+    'Laser rust and paint removal in Charleston, SC. Chemical-free laser cleaning for iron and steel railings, gates and parts, plus stainless and bronze boat hardware. No blast media, test spot first. Free estimates.',
   path: '/services/rust-removal-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function RustRemovalPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Rust and Paint Removal',
-          description: 'Laser rust and paint removal in Charleston, SC. Chemical-free, non-abrasive cleaning for iron, steel, marine hardware, and metal surfaces. No sandblasting, no chemicals, no substrate damage. Free estimates.',
+          description: 'Laser rust and paint removal in Charleston, SC. Chemical-free laser cleaning for iron and steel railings, gates and parts, plus stainless and bronze boat hardware. No blast media, test spot first. Free estimates.',
           path: '/services/rust-removal-charleston',
           serviceType: 'Rust removal',
         })}
@@ -43,7 +43,7 @@ export default function RustRemovalPage() {
             Laser Rust and Paint Removal in Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Charleston&apos;s salt air and humidity are hard on metal. Rust, flaking paint, and oxidation show up fast on iron, steel, and marine hardware. Laser cleaning strips it all away without abrasives, chemicals, or damage to the metal underneath, leaving a clean surface ready for coating or reuse.
+            Charleston&apos;s salt air and humidity are hard on metal. Rust, flaking paint, and oxidation show up fast on iron, steel, and marine hardware. Laser cleaning lifts it without abrasives or chemicals, set to stop at the metal, and leaves a clean surface that needs primer the same day.
           </p>
           <Link
             href="/quote"
@@ -58,16 +58,16 @@ export default function RustRemovalPage() {
       <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
-            Rust Removal Without the Collateral Damage
+            Rust Removal Without Blast Media or Chemicals
           </h2>
           <p className="text-gray-400 leading-relaxed mb-6">
-            Traditional rust removal forces a tradeoff. Sandblasting cuts into the metal and warps thin material. Chemical strippers create hazardous runoff and can pit the surface. Wire wheels and grinders leave gouges and only reach flat areas. For anything detailed, thin, or valuable, those methods do as much harm as good.
+            Traditional rust removal forces a tradeoff. Sandblasting cuts into the metal and warps thin material. Chemical strippers create hazardous runoff and can pit the surface. Wire wheels and grinders leave gouges and struggle in tight detail. For anything detailed, thin, or valuable, those methods do as much harm as good.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
-            Laser cleaning removes only the rust, paint, or oxidation layer. Our pulsed fiber laser vaporizes the contaminant and stops at the clean metal beneath it, so the base material is left intact. There is no grit, no chemical bath, and no water, which means no mess to contain and no waste to dispose of on your property.
+            The laser is set to vaporize the contaminant and stop at the metal, and a test spot confirms the setting first. There is no grit, no chemical bath and no water. The removed coating turns to dust and fume, which we capture with extraction and clean up with a HEPA vacuum.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            The result is a uniformly clean surface with the original profile preserved. For bare steel and iron, that clean surface is also the ideal foundation for primer and paint, which is why laser prep produces longer-lasting coatings than blasted or hand-cleaned metal.
+            The result is clean metal with its original profile. On bare steel and iron that surface is ready for primer, and it needs it the same day, because bare steel flash-rusts overnight in Charleston humidity. Laser prep is the step before the coating.
           </p>
         </div>
       </section>
@@ -81,24 +81,24 @@ export default function RustRemovalPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[
               {
-                title: 'Iron Gates, Railings & Fencing',
-                desc: 'Wrought iron gates, stair and balcony railings, and perimeter fencing on homes and commercial properties across the Charleston area.',
+                title: 'Steel & Iron Gates, Railings & Fencing',
+                desc: 'Steel and iron gates, stair and balcony railings and fencing from West Ashley to Daniel Island, quoted per linear foot. Pre-1978 paint needs a negative lead test.',
               },
               {
                 title: 'Steel & Fabricated Metal',
-                desc: 'Structural steel, brackets, beams, fabricated parts, and welded assemblies that need rust and mill scale removed before coating or repair.',
+                desc: 'Brackets, fabricated parts and welded assemblies before coating, plus weld heat tint on stainless. Tight mill scale gets a test spot first.',
               },
               {
                 title: 'Marine & Trailer Hardware',
-                desc: 'Boat trailers, fittings, cleats, brackets, and dock hardware corroded by salt water and Lowcountry humidity.',
+                desc: 'Stainless and bronze cleats, rails and fittings off the boat or on the hard, plus steel trailer parts. No work on docks or over water.',
               },
               {
                 title: 'Machinery & Equipment',
-                desc: 'Rusted tools, machine frames, automotive and equipment parts where a clean surface is needed without warping thin metal.',
+                desc: 'Vintage tools, cast and forged classic car parts, brackets and machine parts. Not body panels, chrome or thin stamped sheet metal.',
               },
               {
                 title: 'Painted & Coated Surfaces',
-                desc: 'Old paint, powder coat, and failing coatings stripped back to bare metal without gouging or chemical residue.',
+                desc: 'Old paint and failing coatings come off steel and iron after a test spot. Powder coat is test first. Stripping galvanized steel takes zinc with it, so plan on a zinc-rich primer; if the galvanizing must stay intact, laser is the wrong tool.',
               },
               {
                 title: 'Antique Metal & Tools',
@@ -140,22 +140,22 @@ export default function RustRemovalPage() {
             Stripping paint usually means choosing which kind of damage you are willing to accept. Chemical strippers soften everything they touch, run into seams and joints, and leave residue that the next coat has to bond through. Media blasting drives grit into the surface and rounds off the detail it passes over. Both are all or nothing: they take the entire coating system down to bare substrate whether that is what the piece needed or not.
           </p>
           <p className="text-gray-400 leading-relaxed mb-10">
-            A pulsed fiber laser removes coating by absorption rather than by force, which makes the depth controllable. Each pass lifts a measured amount, so the work can stop at whatever layer the job actually calls for. On a piece where the topcoat has failed but the primer underneath is still sound, that difference decides whether you are recoating or rebuilding the whole finish.
+            A pulsed fiber laser removes coating by absorption rather than by force, which makes the depth controllable. Each pass can be set lighter or heavier. Whether the beam can stop cleanly at a sound primer depends on the paint system, and a test spot tells us before we quote. When it works, you recoat instead of rebuilding the whole finish.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
             {[
               {
                 title: 'Topcoat Only',
-                desc: 'Lift a chalked, faded, or failing topcoat and leave intact primer in place. The piece is ready to recoat without starting again from bare metal.',
+                desc: 'Where a test spot shows the topcoat lifts and the primer holds, we stop at the primer. If the layers will not separate cleanly, you hear that before the quote.',
               },
               {
                 title: 'Down to Primer',
-                desc: 'Take the finish back to a sound, known layer. Useful when you need to see the condition of what is underneath before deciding how far to go.',
+                desc: 'Take the finish back to a sound layer on a test spot first, so you can see what is underneath before deciding how far to go.',
               },
               {
                 title: 'Back to Bare Metal',
-                desc: 'A full strip where the whole coating system has failed, leaving clean metal with no embedded grit and no chemical residue to interfere with the new finish.',
+                desc: 'A full strip where the whole coating has failed, leaving clean metal with no grit or chemical residue. Bare steel needs primer the same day.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">
@@ -168,8 +168,11 @@ export default function RustRemovalPage() {
           <p className="text-gray-400 leading-relaxed mb-6">
             The same control is what makes the process suited to detailed work. Paint sitting in the crevices of a forged railing, in threads, or in the recesses of a casting is exactly where blasting either fails to reach or erodes the detail trying. Laser cleaning follows the shape of the piece, so ornamental ironwork, hardware, and fabricated assemblies come out with their profile intact.
           </p>
+          <p className="text-gray-400 leading-relaxed mb-6">
+            Galvanized steel needs one more step. Stripping paint from a galvanized railing or gate takes zinc with it, so a zinc-rich primer goes on before paint. If you need the galvanizing kept intact, laser stripping is not the right method. That applies to the galvanized railings common on Daniel Island and in newer Mount Pleasant construction.
+          </p>
           <p className="text-gray-400 leading-relaxed mb-8">
-            There is also nothing left behind to deal with. No solvent runoff, which matters on any property near Charleston&apos;s waterways and tidal creeks, and no spent abrasive to collect and haul away. Work happens where the piece sits, and the surface it leaves is a better foundation for the next coating than a blasted or hand-scraped one, because adhesion depends on a clean profile rather than a roughened one.
+            There is no solvent runoff, which matters on any property near Charleston&apos;s tidal creeks, and no spent abrasive to haul away. The paint comes off as dust and fume, so we run extraction and HEPA-vacuum the area before leaving. Bare steel flash-rusts overnight in this humidity, so primer goes on the same day the metal is cleaned.
           </p>
 
           {/* Lead paint. Stated plainly rather than left out, because a
@@ -185,7 +188,7 @@ export default function RustRemovalPage() {
               Lead paint on older surfaces
             </h3>
             <p className="text-gray-400 text-sm leading-relaxed">
-              A lot of Charleston housing stock predates 1978, which means the coating on a shutter, a railing, or a door may contain lead. Any surface that might have lead paint is assessed before work starts. Where lead is present or suspected, the job is coordinated with a contractor certified under the EPA Renovation, Repair and Painting rule, or referred out entirely. That call is made before a quote, not after the work has started.
+              A lot of Charleston housing stock predates 1978, which means the coating on a shutter, a railing, or a door may contain lead. We do not laser paint on pre-1978 homes or child-occupied buildings unless a lead test on that paint comes back negative. If lead is present or suspected, the job goes to a firm certified under the EPA Renovation, Repair and Painting rule. That call happens before a quote, not after work starts.
             </p>
           </div>
 
@@ -218,7 +221,7 @@ export default function RustRemovalPage() {
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'Targets only the rust, paint, or oxidation layer. Base metal is untouched. No grit, no chemicals, no water, and no waste left on site.',
+                problem: 'Set to lift the rust, paint or oxidation and stop at the metal, with a test spot first. No grit, no chemicals, no water. Dust and fume are captured and HEPA-cleaned.',
                 safe: true,
               },
             ].map((item) => (
@@ -263,7 +266,7 @@ export default function RustRemovalPage() {
               {
                 step: '02',
                 title: 'Surface Preparation',
-                desc: 'We set up safety perimeters and protect surrounding surfaces and plantings before beginning work.',
+                desc: 'A controlled laser area goes up with signage and eyewear, glass, sealant and plantings get covered, and a test spot is run for your sign-off.',
               },
               {
                 step: '03',
@@ -273,12 +276,12 @@ export default function RustRemovalPage() {
               {
                 step: '04',
                 title: 'Surface Inspection',
-                desc: 'We inspect the cleaned surface and confirm the result before completing the job. Before and after photos are taken for your records.',
+                desc: 'The cleaned surface is checked with you and photographed before and after.',
               },
               {
                 step: '05',
-                title: 'Coating Referral (if needed)',
-                desc: "Bare steel and iron will flash rust in Charleston's salt air without a protective coating. We work with local painting contractors and can refer you to a trusted partner for same-day primer application.",
+                title: 'Same-Day Primer',
+                desc: 'Bare steel and iron flash-rust overnight in Charleston humidity, so primer goes on the same day. Have your painter lined up, or ask for a referral to a local painter we work with.',
               },
             ].map((item) => (
               <div key={item.step} className="flex gap-6 items-start">
@@ -303,8 +306,6 @@ export default function RustRemovalPage() {
           <ServiceAreaChips
             areas={[
               'Downtown Charleston',
-              'Historic District',
-              'South of Broad',
               'Mount Pleasant',
               'Isle of Palms',
               "Sullivan's Island",
@@ -325,32 +326,32 @@ export default function RustRemovalPage() {
           {
             q: 'How much does laser rust removal cost in Charleston?',
             a:
-              'Pricing depends on the surface area, how heavy the corrosion is, and how accessible the piece is. Every job starts with a free estimate. Send photos of the piece and we will follow up with pricing, usually within 24 hours.',
+              'Jobs are quoted per piece, per job, or per linear foot for railings, with a $400 minimum. Price depends on the coating, how heavy the rust is and access. Send photos for a free estimate, usually within one business day.',
           },
           {
             q: 'Does laser cleaning remove the metal underneath the rust?',
             a:
-              'No. The pulse is tuned so it lifts the oxide layer and leaves the base metal behind. That is the main difference from sandblasting, which cuts into sound metal along with the rust and thins the piece slightly every time it is done.',
+              'Not when the settings are right. The pulse is set to lift the oxide and stop at the metal, and too much energy can melt or mark steel, which is why every job starts with a test spot. Cleaned metal has a matte texture. Sandblasting cuts into sound metal along with the rust.',
           },
           {
             q: 'Will the rust come back after cleaning?',
             a:
-              'Bare steel in Charleston salt air will begin to flash rust if it is left uncoated, sometimes within days. For exterior and structural pieces we time the work so a protective coating can go on promptly, and we can refer you to a local painting contractor to handle it.',
+              'Yes, if bare steel is left uncoated. In Charleston humidity it flash-rusts overnight, so primer has to go on the same day. We schedule the work around that and can refer you to a local painter.',
           },
           {
             q: 'Can you remove paint as well as rust?',
             a:
-              'Yes. The same process lifts old coatings, and it can often be dialed in to take one layer at a time. That is useful when you want to remove a failed topcoat without stripping sound primer, or when you need to see what is under old paint before deciding how to proceed.',
+              'Yes, on steel and iron after a test spot. Sometimes a failed topcoat lifts and leaves sound primer, but that depends on the paint system, and the test spot shows it before we quote. On galvanized steel, stripping takes some of the zinc layer too, so we recommend a zinc-rich primer before repainting.',
           },
           {
             q: 'Can you remove lead paint?',
             a:
-              'Not on our own. We do not hold certification under the EPA Renovation, Repair and Painting rule, so lead paint is not work we take on by ourselves. A lot of Charleston housing stock predates 1978, so any surface that might have lead paint is assessed before work starts. Where lead is present or suspected, the job is coordinated with an RRP certified contractor or referred out entirely. That call is made before a quote, not after the work has started.',
+              'No. CSR is not RRP certified and does not laser paint on pre-1978 homes or child-occupied buildings unless a lead test comes back negative. A lot of Charleston housing predates 1978, so we ask about the build year first. If lead is present or suspected, we refer the job to an EPA RRP certified firm before any quote.',
           },
           {
             q: 'Do you have to take the piece to a shop?',
             a:
-              'No. The system is portable, so gates, railings, trailers, and hardware are cleaned where they sit. That matters most for anything mounted, structural, or too heavy to move without a crew.',
+              'No. The system is portable, so we clean gates, railings, trailers and hardware where they sit. That matters most for anything mounted, structural, or too heavy to move without a crew.',
           },
         ]}
       />
@@ -361,17 +362,17 @@ export default function RustRemovalPage() {
         items={[
           {
             title: 'Historic Ironwork Restoration',
-            desc: 'Wrought iron gates and railings on Charleston historic properties, cleaned without erasing forged detail.',
+            desc: "Gates and railings in Charleston's historic neighborhoods, set to lift rust and paint and keep the forged detail.",
             href: '/services/historic-ironwork-restoration-charleston',
           },
           {
             title: 'Marine Cleaning',
-            desc: 'Boat trailers, dock hardware, and marine fittings cleaned dockside with no runoff.',
+            desc: 'Stainless and bronze boat hardware and steel trailer parts, cleaned on land or on the hard.',
             href: '/services/marine-cleaning-charleston',
           },
           {
             title: 'Antique and Hardware Restoration',
-            desc: 'Heirloom pieces cleaned with a controlled hand that preserves patina.',
+            desc: 'Heirloom hardware and tools, with a test area first to decide how much patina stays.',
             href: '/services/antique-restoration-charleston',
           },
         ]}
@@ -381,10 +382,10 @@ export default function RustRemovalPage() {
       <section className="py-8 lg:py-12 bg-[#1a3958] border-t border-[#397774]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
-            Get the rust gone without the damage
+            Get the rust off, test spot first
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Free estimates for all jobs. Send us a photo and we will assess it and follow up within 24 hours.
+            Free estimates for all jobs. Send us a photo and we will assess it and follow up within one business day.
           </p>
           <Link
             href="/quote"

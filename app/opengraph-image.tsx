@@ -70,7 +70,7 @@ export default function OpengraphImage() {
               lineHeight: 1.05,
             }}
           >
-            Zero Damage.
+            Test Spot First.
           </div>
           <div
             style={{
@@ -81,7 +81,7 @@ export default function OpengraphImage() {
               maxWidth: 820,
             }}
           >
-            Mobile laser cleaning for historic, marine, and property restoration.
+            Rust and paint off iron, steel and marine hardware, on site.
           </div>
         </div>
 
@@ -98,7 +98,7 @@ export default function OpengraphImage() {
             COASTAL&nbsp;<span style={{ color: '#397774' }}>SURFACE RESTORATION</span>
           </div>
           <div style={{ display: 'flex', fontSize: 26, color: '#9ca3af' }}>
-            No chemicals · No abrasives · No mess
+            No chemicals · No blast media
           </div>
         </div>
       </div>

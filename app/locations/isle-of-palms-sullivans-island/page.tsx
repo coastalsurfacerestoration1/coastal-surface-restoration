@@ -9,7 +9,7 @@ import RelatedItemsSection from '@/app/components/RelatedItemsSection';
 export const metadata = pageMetadata({
   title: "Laser Cleaning on Isle of Palms & Sullivan's Island, SC",
   description:
-    "Mobile laser cleaning for Isle of Palms and Sullivan's Island properties. Salt corrosion removed from railings, outdoor showers, shutters, and hardware. Rental turnover scheduling available. Free estimates.",
+    "Mobile laser cleaning for Isle of Palms and Sullivan's Island properties. Rust removed from steel stair rails, stainless railings, gate hardware and light fixtures, scheduled around rental turnover. Free estimates.",
   path: '/locations/isle-of-palms-sullivans-island',
 });
 
@@ -26,7 +26,7 @@ export default function IsleOfPalmsSullivansPage() {
       <JsonLd
         data={serviceSchema({
           name: "Laser Cleaning on Isle of Palms and Sullivan's Island",
-          description: "Mobile laser cleaning for Isle of Palms and Sullivan's Island properties. Salt corrosion removed from railings, outdoor showers, shutters, and hardware. Rental turnover scheduling available. Free estimates.",
+          description: "Mobile laser cleaning for Isle of Palms and Sullivan's Island properties. Rust removed from steel stair rails, stainless railings, gate hardware and light fixtures, scheduled around rental turnover. Free estimates.",
           path: '/locations/isle-of-palms-sullivans-island',
           serviceType: 'Laser cleaning',
           areaServed: ['Isle of Palms', "Sullivan's Island"],
@@ -43,7 +43,7 @@ export default function IsleOfPalmsSullivansPage() {
             Laser Cleaning on Isle of Palms and Sullivan&apos;s Island
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Barrier island property takes the worst corrosion exposure in the Lowcountry. Salt spray carries inland off the Atlantic every single day, and it attacks exterior metal on a timeline that surprises owners who moved here from anywhere else. We remove that corrosion on site, with no chemicals, no abrasives, and no water.
+            Barrier island property takes the worst corrosion exposure in the Lowcountry. Salt spray carries inland off the Atlantic every day, and it attacks exterior metal on a timeline that surprises owners who moved here from anywhere else. We remove that corrosion on site, with no chemicals, no abrasives, and no water.
           </p>
           <Link
             href="/quote"
@@ -64,10 +64,10 @@ export default function IsleOfPalmsSullivansPage() {
             On the islands there is nothing between your house and the ocean to slow the salt down. Airborne chloride settles on every exterior surface, holds moisture against the metal, and starts corrosion under paint and coatings long before anything is visible from the ground. Stainless steel is not immune here either. It pits and tea-stains, particularly the lower grades used on a lot of railing and hardware.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
-            The practical result is that island properties run on a much shorter maintenance cycle than mainland ones. Hardware that would last fifteen years in Summerville starts showing rust bleed in three or four on Palm Boulevard. Owners tend to respond by replacing pieces, which is the expensive path, or by painting over corrosion, which fails within a season because the rust is still active underneath.
+            The practical result is that island properties run on a much shorter maintenance cycle than mainland ones. Hardware that holds up for years in Summerville can show rust bleed within a few seasons on Palm Boulevard. Owners tend to respond by replacing pieces, which is the expensive path, or by painting over corrosion, which fails within a season because the rust is still active underneath.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            Laser cleaning takes the corrosion back to sound base metal without removing the metal itself, so a coating actually has clean substrate to bond to. On Sullivan&apos;s Island in particular, where a lot of the older cottages and the Station street homes still carry original hardware and ironwork, it also means those pieces can be cleaned rather than swapped out for reproductions.
+            Laser cleaning takes the rust back to sound metal, so primer has a clean surface to bond to. On Sullivan&apos;s Island in particular, older cottages on the Station streets still carry original hardware. Bare rust can be cleaned; pre-1978 paint is lead-tested first.
           </p>
         </div>
       </section>
@@ -82,27 +82,27 @@ export default function IsleOfPalmsSullivansPage() {
             {[
               {
                 title: 'Exterior Stairs & Railings',
-                desc: 'Beach access stairs, deck railings, porch rails, and stair stringers. The single most common island job, and the one where surface rust turns into a structural conversation fastest.',
+                desc: 'Beach access stairs, deck railings, porch rails, and stair stringers in steel and stainless. These take the heaviest salt on the property, and surface rust there turns structural fastest.',
               },
               {
                 title: 'Outdoor Shower Hardware',
-                desc: 'Fixtures, valves, brackets, and enclosure hardware that sit wet and salted year round. Cleaned in place without stripping the surrounding cedar or shell finish.',
+                desc: 'Stainless and solid brass shower heads, valves and brackets that sit wet and salted year round, tested first. Chrome and plated fixtures are not taken, and nearby cedar is masked.',
               },
               {
                 title: 'Hurricane Shutters & Tracks',
-                desc: 'Shutter panels, hinges, tracks, and anchor hardware. Corroded track and seized hardware is the reason shutters fail to close when a storm is actually coming.',
+                desc: 'Steel hinges, anchor bolts and hardware on hurricane shutters. Aluminum panels and tracks are tested before any quote, since results on aluminum are not yet proven. Corroded track and seized hardware is the reason shutters fail to close when a storm is actually coming.',
               },
               {
-                title: 'Dock, Boat Lift & Marina Hardware',
-                desc: 'Lift frames, cables hardware, cleats, ladders, and fittings on the creek side and at the Isle of Palms Marina. We work at the dock rather than hauling parts off site.',
+                title: 'Marine Stainless & Bronze on Land',
+                desc: 'Stainless rails, cleats and bronze fittings off the boat or with the boat on the hard. Tea staining and verdigris come off; no work over the water.',
               },
               {
                 title: 'Light Fixtures, Numbers & Trim Metal',
-                desc: 'Coach lights, house numbers, mailboxes, gutters, downspout brackets, and hurricane strapping. Small pieces that streak rust down siding and stucco.',
+                desc: 'Coach lights, steel house numbers, mailboxes and downspout brackets. Small pieces that streak rust down siding and stucco.',
               },
               {
                 title: 'Golf Carts, Bike Racks & Gates',
-                desc: 'Cart frames and hardware, bike racks, pool gates, and fence hardware. Island staples that live outdoors permanently and corrode accordingly.',
+                desc: 'Steel bike racks, pool gate hardware and fence hardware, plus steel golf cart parts brought to the bench. Aluminum cart frames are not promised.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">
@@ -127,15 +127,15 @@ export default function IsleOfPalmsSullivansPage() {
             {[
               {
                 title: 'Turnover Windows',
-                desc: 'Most exterior work fits in a midweek changeover day. Nothing wet is left behind and there is no cure time, so the property is guest-ready the same day.',
+                desc: 'Smaller jobs, like a set of stair rails or gate hardware, can fit a changeover day. Bare steel gets primer the same day, so plan for paint dry time.',
               },
               {
                 title: 'Off-Season Resets',
-                desc: 'The deeper full-property passes are best booked in the winter shoulder season when the calendar is open and the whole exterior can be brought back at once.',
+                desc: 'Off-season is the best time to book several railings or a batch of hardware at once, while the calendar is open.',
               },
               {
-                title: 'Recurring Maintenance',
-                desc: 'For managers with multiple doors on the islands, a scheduled annual or semiannual pass keeps corrosion off the review page and off the capital budget.',
+                title: 'Yearly Checks',
+                desc: 'For managers with several doors on the islands, a yearly check of rails and hardware catches rust while it is still a small job.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6">
@@ -152,7 +152,7 @@ export default function IsleOfPalmsSullivansPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Island Areas We Serve</h2>
           <p className="text-gray-400 leading-relaxed mb-8">
-            Both islands end to end, ocean side and creek side, plus the connector and Marina areas.
+            Both islands end to end, ocean side and creek side, plus the connector area.
           </p>
           <div className="flex flex-wrap gap-3">
             {[
@@ -160,7 +160,6 @@ export default function IsleOfPalmsSullivansPage() {
               'Isle of Palms Front Beach',
               'Palm Boulevard',
               'Ocean Boulevard',
-              'Isle of Palms Marina',
               'Hamlin Beach',
               'Breach Inlet',
               "Sullivan's Island",
@@ -181,13 +180,13 @@ export default function IsleOfPalmsSullivansPage() {
       <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-10">
-            Services Most Requested on the Islands
+            Services for Island Properties
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
               {
                 title: 'Vacation Rental Restoration',
-                desc: 'Exterior resets scheduled around turnover, plus recurring contracts for property managers.',
+                desc: 'Railing and hardware work scheduled around turnover, with yearly checks for property managers.',
                 href: '/services/vacation-rental-cleaning-charleston',
               },
               {
@@ -197,7 +196,7 @@ export default function IsleOfPalmsSullivansPage() {
               },
               {
                 title: 'Marine Cleaning',
-                desc: 'Dock, lift, and marina hardware cleaned on site on the creek side of both islands.',
+                desc: 'Stainless and bronze boat hardware cleaned on land or on the hard.',
                 href: '/services/marine-cleaning-charleston',
               },
             ].map((s) => (
@@ -225,27 +224,27 @@ export default function IsleOfPalmsSullivansPage() {
           {
             q: 'Why does hardware corrode so much faster on the islands?',
             a:
-              'There is nothing between the property and the Atlantic to slow the salt down. Airborne chloride settles on exterior surfaces and holds moisture against the metal, so corrosion starts under coatings before anything is visible. Hardware that lasts fifteen years inland can show rust bleed in three or four here.',
+              'There is nothing between the property and the Atlantic to slow the salt down. Airborne chloride settles on exterior surfaces and holds moisture against the metal, so corrosion starts under coatings before anything is visible. Hardware that holds up for years inland can show rust bleed within a few seasons here.',
           },
           {
             q: 'Does stainless steel really rust out here?',
             a:
-              'Yes. The lower stainless grades used on a lot of railing and marine hardware pit and tea-stain in front-line salt exposure. It is not a sign of a defective part, it is the grade meeting an environment it was not specified for.',
+              'Yes. The lower stainless grades used on a lot of railing and marine hardware pit and tea-stain in front-line salt exposure. It is not a sign of a defective part, it is the grade meeting an environment it was not specified for. Even 316 tea-stains here. The laser takes the stain off, and a passivation treatment afterward helps slow its return.',
           },
           {
             q: 'Can you schedule around rental turnovers?',
             a:
-              'Yes. There is no cure time and no wet surface afterward, so an area is usable immediately. For rentals we work within turnover windows, and the off-season is usually the most efficient time for larger jobs.',
+              'Yes. Bare steel gets primer the same day, so allow dry time before guests use a rail. For rentals we work within turnover windows, and the off-season is usually the most efficient time for larger jobs.',
           },
           {
-            q: 'Do you work at the marina and on private docks?',
+            q: 'Do you work at the marina or on docks?',
             a:
-              'Yes. Lift frames, cleats, ladders, and fittings are cleaned at the dock. The process is dry, so nothing enters the water.',
+              'No. We do not work on docks, lifts or boats over the water. Hardware that comes off, or a boat on the hard, can be cleaned on land.',
           },
           {
-            q: 'What is the most common island job?',
+            q: 'What island jobs suit laser cleaning best?',
             a:
-              'Exterior stairs and railings. Beach access stairs and deck rails take the heaviest exposure on the property, and surface rust there turns into a structural conversation faster than anywhere else.',
+              'Steel and stainless stair rails, deck rails and gate hardware. These take the heaviest salt, and rust there turns structural fastest.',
           },
         ]}
       />
@@ -256,17 +255,17 @@ export default function IsleOfPalmsSullivansPage() {
         items={[
           {
             title: 'Downtown Charleston',
-            desc: 'Historic ironwork, brick, and stucco on the peninsula, with no runoff into courtyards or storm drains.',
+            desc: 'Iron gates, railings and cast hardware on the peninsula, with no runoff into courtyards or storm drains.',
             href: '/locations/downtown-charleston',
           },
           {
             title: 'Mount Pleasant',
-            desc: 'Salt-driven corrosion on Old Village hardware, Wando dock equipment, and Carolina Park exterior metal.',
+            desc: 'Salt-driven corrosion on Old Village hardware, boat trailers, and Carolina Park exterior metal.',
             href: '/locations/mount-pleasant',
           },
           {
             title: 'James Island & Folly Beach',
-            desc: 'Marsh-front hardware, dock and boat lift metal, and rentals on the tidal creek side of Charleston.',
+            desc: 'Marsh-front railings, trailers and rental homes on the tidal creek side of Charleston.',
             href: '/locations/james-island-folly-beach',
           },
         ]}
@@ -279,7 +278,7 @@ export default function IsleOfPalmsSullivansPage() {
             Serving Isle of Palms and Sullivan&apos;s Island
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Free estimates on every job. Send a photo of the railing, fixture, or hardware and we will tell you what laser cleaning can do for it, usually within 24 hours.
+            Free estimates on every job. Send a photo of the railing, fixture, or hardware and we will tell you what laser cleaning can do for it, usually within one business day.
           </p>
           <Link
             href="/quote"

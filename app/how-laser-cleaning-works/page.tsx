@@ -8,7 +8,7 @@ import Faq from '@/app/components/Faq';
 export const metadata = pageMetadata({
   title: 'How Laser Cleaning Works',
   description:
-    'A plain-language guide to laser cleaning. How the pulsed fiber laser removes rust, paint, and coatings without chemicals, abrasives, or damage to the underlying surface. Diagrams, video, and comparisons.',
+    'A plain-language guide to laser cleaning. How a pulsed fiber laser removes rust and paint without chemicals or blast media, where it stops, and what it cannot do. Diagrams and comparisons.',
   path: '/how-laser-cleaning-works',
 });
 
@@ -21,15 +21,10 @@ const VIDEO_IDS: { id: string; caption: string; credit: string }[] = [
     caption: 'How laser cleaning works',
     credit: 'P-Laser',
   },
-  {
-    id: 'JRzg3i7o-IA',
-    caption: 'Removing decades of rust from a car body',
-    credit: 'Insider Cars',
-  },
 ];
 
 const VIDEO_DISCLAIMER =
-  'Example footage from other laser cleaning equipment, not our machine. Our own before-and-after videos from Charleston jobs will replace these starting late October 2026.';
+  'Example footage from other laser cleaning equipment, not our machine. Our own Charleston footage will replace these as jobs are completed.';
 
 function VideoSlot({ id, caption, credit }: { id: string; caption: string; credit: string }) {
   return (
@@ -152,7 +147,7 @@ function LaserProcessDiagram() {
         step="02"
         title="Ablation"
         caption="The contaminant absorbs the energy and vaporizes off as fine dust. The base metal reflects most of the light and stays put."
-        ariaLabel="Diagram: the laser has removed a section of the rust layer in the middle, and fine particles rise from the cleaned area. The base metal beneath is exposed and undamaged."
+        ariaLabel="Diagram: the laser has removed a section of the rust layer in the middle, and fine particles rise from the cleaned area. The base metal beneath is exposed."
       >
         {layers({ gap: true })}
         {/* Laser beam entering the gap */}
@@ -188,7 +183,7 @@ function LaserProcessDiagram() {
       <ProcessStep
         step="03"
         title="Clean substrate"
-        caption="The contamination is gone, the surface underneath is intact. No sand to clean up, no chemical residue, no water to soak in."
+        caption="The coating is gone and the metal is bare, with a matte texture. The removed coating leaves as dust and fume for the extractor. No sand, chemical residue or water."
         ariaLabel="Diagram: only clean base metal remains, with no contamination on top and no laser beam active."
       >
         {/* Base metal only */}
@@ -237,7 +232,7 @@ export default function HowLaserCleaningWorksPage() {
             How Laser Cleaning Works
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            A short, plain-language explanation of what laser cleaning is, what it removes, and why it does not damage the surface underneath. If you have never seen it before, this is the page to read first.
+            A short, plain-language explanation of what laser cleaning is, what it removes, and how it is set to stop at the surface underneath. If you have never seen it before, this is the page to read first.
           </p>
           <Link
             href="/quote"
@@ -253,10 +248,10 @@ export default function HowLaserCleaningWorksPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">The 30 Second Version</h2>
           <p className="text-gray-400 leading-relaxed mb-4">
-            A laser cleaner fires very short pulses of light at a specific frequency. Rust, paint, and other contaminants absorb that light and vaporize off as fine dust. The material underneath, whether it is metal, brick, stone, or wood, absorbs much less of it and is left intact.
+            A laser cleaner fires very short pulses of light at one wavelength, 1064 nm. Rust and paint absorb that light and leave as fine dust and fume. Bare metal reflects more of it, so with the right settings the beam takes the coating and stops at the metal.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            No sand, no chemicals, no water, no abrasion. It is the same technology used in aerospace, museum conservation, and nuclear decommissioning, packaged into a portable unit we bring to your property.
+            No sand, no chemicals, no water. CSR runs a Chihalo CF-300, a 300 W pulsed fiber laser in a backpack unit, and brings it to your property.
           </p>
         </div>
       </section>
@@ -281,7 +276,7 @@ export default function HowLaserCleaningWorksPage() {
               {
                 step: '01',
                 title: 'Pulsed Light, Not a Steady Beam',
-                desc: 'The laser fires nanosecond pulses, not a continuous beam. Each pulse is very short and very intense, which lets it do the work in a fraction of a second and move on before the surface underneath heats up.',
+                desc: 'The laser fires nanosecond pulses, not a continuous beam. Each pulse is very short and very intense, which limits the heat that reaches the surface underneath when the settings are right.',
               },
               {
                 step: '02',
@@ -290,13 +285,13 @@ export default function HowLaserCleaningWorksPage() {
               },
               {
                 step: '03',
-                title: 'The Substrate Is Left Intact',
-                desc: 'Clean metal, brick, stone, and wood absorb far less of that specific wavelength than the contamination does, so the pulses have little effect on them. As a second margin of safety, the total energy per pulse is set below the level that would start removing the substrate itself. That is why the rust comes off and the surface underneath does not.',
+                title: 'Settings Decide Where It Stops',
+                desc: 'Bare steel and iron reflect much of this wavelength, so a pulse set for the coating does little to the metal. Too much energy will still mark it: steel can melt, brass can darken and brick can gray. That is why every job starts with a test spot and logged settings.',
               },
               {
                 step: '04',
-                title: 'Fume Extraction Handles the Rest',
-                desc: 'The removed material is captured by a HEPA-filtered extractor at the cleaning head, so nothing settles on surrounding surfaces and there is no cleanup afterward. On old paint or coatings that may contain lead or other hazardous binders, that source capture is a safety requirement, not a convenience.',
+                title: 'Fume Extraction and Cleanup',
+                desc: 'Removed coating becomes dust and fume. A HEPA and carbon fume extractor runs beside the work on coated jobs, and the area gets a HEPA vacuum and wipe-down after. We do not laser paint on pre-1978 homes or child-occupied buildings unless a lead test comes back negative; we refer it to an EPA RRP certified firm.',
               },
             ].map((item) => (
               <div key={item.step} className="flex gap-6 items-start">
@@ -319,9 +314,6 @@ export default function HowLaserCleaningWorksPage() {
             A cross-section through the surface as the laser passes over it. Contamination on top, base material underneath.
           </p>
           <LaserProcessDiagram />
-          <p className="mt-10 text-center text-sm italic text-gray-500 max-w-xl mx-auto">
-            Real before-and-after photos from our Charleston jobs coming late October 2026.
-          </p>
         </div>
       </section>
 
@@ -331,12 +323,12 @@ export default function HowLaserCleaningWorksPage() {
           <h2 className="text-3xl font-bold text-white mb-10">What Laser Cleaning Removes</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[
-              { title: 'Rust and Corrosion', desc: 'Surface rust, scale, oxidation, and flash rust from iron, steel, and aluminum. Deep pitting is a separate issue and cannot be reversed by any cleaning method.' },
-              { title: 'Paint and Coatings', desc: 'Old paint, primer, powder coating, varnish, and clear coats. The laser lifts the coating cleanly so a fresh finish has bare, ready-to-coat metal underneath.' },
-              { title: 'Grease, Oil, and Tar', desc: 'Baked-on grease, cutting fluid, road tar, and industrial residue. Common on tools, trailers, and shop equipment.' },
-              { title: 'Graffiti', desc: 'Spray paint and marker on brick, stone, and metal. Removed without the ghost outline that solvents leave behind on porous surfaces.' },
-              { title: 'Marine Growth', desc: 'Salt buildup, calcium deposits, biological staining, and light oxidation on marine hardware, trailers, and dock fittings.' },
-              { title: 'Efflorescence and Soiling', desc: 'Mineral deposits, atmospheric soiling, and biological staining on historic brick, stucco, and stone without opening mortar joints. Heavy or recurring efflorescence often points to a moisture problem in the wall itself, and that has to be addressed separately.' },
+              { title: 'Rust and Corrosion', desc: 'Surface rust, mill scale, fire scale and flash rust from iron and steel. Deep pitting is a separate issue and cannot be reversed by any cleaning method.' },
+              { title: 'Paint and Coatings', desc: 'Paint and primer off steel and iron, with a test spot first. Powder coat is tested before quoting. Bare steel flash-rusts overnight here, so primer goes on the same day.' },
+              { title: 'Grease and Oil', desc: 'Carbonized grease on grill grates and small parts, and cutting oil on machined steel, often paired with a degreaser and tested first.' },
+              { title: 'Graffiti', desc: 'Dark spray paint and marker on hard, non-historic brick, block and stone, tested before quoting. Silver and metallic paint on masonry is not taken, and red or yellow may not fully lift.' },
+              { title: 'Marine Stainless and Bronze', desc: 'Tea staining on 316 and 304 stainless, verdigris on bronze cleats and portlights, and oxide on trailer parts, on land or with the boat on the hard.' },
+              { title: 'Soot and Smoke Film', desc: 'Soot and smoke film on hard brick or stone fireplace surrounds, tested first. Historic soft brick, lime mortar, stucco and algae on masonry are not offered. Efflorescence is a moisture problem in the wall, so CSR does not clean it.' },
             ].map((item) => (
               <div key={item.title} className="bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6">
                 <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
@@ -350,24 +342,21 @@ export default function HowLaserCleaningWorksPage() {
       {/* Safe surfaces */}
       <section className="py-8 lg:py-12 bg-[#1a3958]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-white mb-6">Surfaces It Is Safe On</h2>
+          <h2 className="text-3xl font-bold text-white mb-6">Surfaces We Work On, After a Test Spot</h2>
           <p className="text-gray-400 leading-relaxed mb-8 max-w-2xl">
-            Because the laser targets the contaminant rather than grinding across the surface, it works on materials that other methods have to avoid.
+            Because the laser does not grind across the surface, it suits detailed metal that blasting would wear down.
           </p>
           <div className="flex flex-wrap gap-3">
             {[
-              'Iron',
-              'Steel',
-              'Aluminum',
-              'Brass and bronze',
+              'Mild steel',
               'Cast iron',
-              'Brick',
-              'Stone',
-              'Stucco',
-              'Concrete',
-              'Wood',
-              'Marine hardware',
-              'Antique and heirloom metal',
+              'Pre-1900 wrought iron (test first)',
+              'Stainless steel',
+              'Bronze hardware',
+              'Solid brass fixtures (test first)',
+              'Vintage tools and hardware',
+              'Unsealed concrete (small areas)',
+              'Hard-fired brick (test first)',
             ].map((surface) => (
               <span key={surface} className="bg-[#0e273e] border border-[#397774]/20 text-gray-300 px-4 py-2 rounded text-sm">
                 {surface}
@@ -375,7 +364,7 @@ export default function HowLaserCleaningWorksPage() {
             ))}
           </div>
           <p className="text-gray-500 text-sm leading-relaxed mt-6 max-w-2xl">
-            On anything historic or irreplaceable we still run a small test area first before working the full piece, and dial in the settings to match the material.
+            Every job starts with a small test spot, and the settings are dialed in for that material before the full piece.
           </p>
         </div>
       </section>
@@ -393,22 +382,22 @@ export default function HowLaserCleaningWorksPage() {
             {[
               {
                 method: 'Sandblasting',
-                problem: 'Erodes the surface it is cleaning. On historic brick, wrought iron, and antique metal the abrasive removes maker marks, tooling, and surface detail along with the rust. Creates dust and media cleanup.',
+                problem: 'Erodes the surface it is cleaning. On ironwork and antique metal the abrasive removes maker marks, tooling, and surface detail along with the rust. Creates dust and media cleanup.',
                 safe: false,
               },
               {
                 method: 'Chemical Stripping',
-                problem: 'Strips everything uniformly and produces liquid runoff that has to be contained or discharged. On old alloys and lime mortar it can react in ways that damage the surface long after the job is done.',
+                problem: 'Strips everything uniformly and produces liquid runoff that has to be contained or discharged. On old alloys it can react in ways that damage the surface long after the job is done.',
                 safe: false,
               },
               {
                 method: 'Pressure Washing',
-                problem: 'Drives water into masonry joints and behind stucco, causing problems that appear a year later. Loosens paint and biological growth but does not touch rust or coatings, so it is a partial fix at best.',
+                problem: 'Drives water into masonry joints, causing problems that appear a year later. Loosens paint and biological growth but does not touch rust or coatings, so it is a partial fix at best.',
                 safe: false,
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'Non-contact, dry, and controllable. Removes the contamination while leaving original material intact. No abrasive to clean up, no chemicals to contain, no water to drive into a wall.',
+                problem: 'Non-contact and dry, set to stop at the metal after a test spot. No blast media or chemicals to contain, and no water. Removed coating still needs extraction and cleanup.',
                 safe: true,
               },
             ].map((item) => (
@@ -458,11 +447,10 @@ export default function HowLaserCleaningWorksPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { title: 'Historic Ironwork', desc: 'Charleston gates, railings, and antique iron.', href: '/services/historic-ironwork-restoration-charleston' },
-              { title: 'Rust and Paint Removal', desc: 'Iron, steel, and aluminum stripped clean.', href: '/services/rust-removal-charleston' },
-              { title: 'Marine Cleaning', desc: 'Boat trailers, dock hardware, and fittings.', href: '/services/marine-cleaning-charleston' },
-              { title: 'Brick and Masonry', desc: 'Efflorescence and soiling on historic surfaces.', href: '/services/brick-cleaning-charleston' },
-              { title: 'Graffiti Removal', desc: 'Tag removal without ghost outlines on masonry.', href: '/services/graffiti-removal-charleston' },
-              { title: 'Antiques and Hardware', desc: 'Heirloom pieces where the patina must survive.', href: '/services/antique-restoration-charleston' },
+              { title: 'Rust and Paint Removal', desc: 'Rust and paint off iron and steel, primed the same day.', href: '/services/rust-removal-charleston' },
+              { title: 'Marine Cleaning', desc: 'Boat trailers, stainless rails and bronze fittings, on land.', href: '/services/marine-cleaning-charleston' },
+              { title: 'Graffiti Removal', desc: 'Dark tags on hard, non-historic masonry, with a test patch before any quote.', href: '/services/graffiti-removal-charleston' },
+              { title: 'Antiques and Hardware', desc: 'Vintage tools, hinges, shutter dogs and cast hardware, cleaned on the bench.', href: '/services/antique-restoration-charleston' },
             ].map((s) => (
               <Link
                 key={s.title}
@@ -493,7 +481,7 @@ export default function HowLaserCleaningWorksPage() {
             {[
               { title: 'It cannot restore metal that is already gone.', desc: 'Deep pitting, holes, and structural loss are permanent. Cleaning reveals them, it does not fill them.' },
               { title: 'Some surfaces are not candidates.', desc: 'Very thin plating, painted surfaces you want to keep, and materials that absorb laser light the same way the contamination does. On anything questionable we run a small test area first.' },
-              { title: 'It is not the fastest method for every job.', desc: 'On a large flat wall with soft paint, hand scraping can be faster. Laser wins on detail, delicate substrates, and jobs where cleanup and containment would otherwise be the main cost.' },
+              { title: 'It is not the fastest method for every job.', desc: 'Whole walls, floors and siding are not quoted; other methods are faster there. Laser fits railings, castings and hardware, where detail matters and blast cleanup would cost more.' },
             ].map((item) => (
               <div key={item.title} className="bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6">
                 <h3 className="text-white font-bold text-base mb-2">{item.title}</h3>
@@ -507,12 +495,12 @@ export default function HowLaserCleaningWorksPage() {
       {/* Safety */}
       <section className="py-8 lg:py-12 bg-[#1a3958]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-white mb-6">Safety and Certification</h2>
+          <h2 className="text-3xl font-bold text-white mb-6">Safety and Training</h2>
           <p className="text-gray-400 leading-relaxed mb-4">
             A 300W pulsed fiber laser is a Class 4 device operating at a near-infrared wavelength that is invisible to the human eye. Running one on a residential or commercial property means wavelength-rated eye protection for everyone in the work area, a controlled boundary around the job while the laser is firing, a fire watch for combustibles nearby, and documented safety procedures.
           </p>
           <p className="text-gray-400 leading-relaxed mb-4">
-            Coastal Surface Restoration is run by a Laser Safety Officer trained to ANSI Z136.1 through the Laser Institute of America, and every job follows a written safety plan. On older paint and coatings, the same fume extraction that keeps the site clean also keeps hazardous binders like lead out of the air.
+            Coastal Surface Restoration is run by a Laser Safety Officer trained to ANSI Z136.1 through the Laser Institute of America, and every job follows a written safety plan. We do not laser paint on pre-1978 homes or child-occupied buildings unless a lead test comes back negative; we refer it to an EPA RRP certified firm.
           </p>
           <p className="text-gray-400 leading-relaxed">
             The business carries Commercial General Liability coverage. Full details on the About page.
@@ -526,32 +514,32 @@ export default function HowLaserCleaningWorksPage() {
           {
             q: 'Is laser cleaning safe for the surface being cleaned?',
             a:
-              'For the substrates it is used on, yes. The laser is tuned so that the contamination absorbs the energy and the base material reflects it, which is the whole reason the method exists. On anything historic or irreplaceable we still run a test area first before working the full surface.',
+              'When the settings match the material, yes. Too much energy can melt steel, darken brass or gray brick, so every job starts with a test spot. A cleaned area can look matte next to the metal around it.',
           },
           {
             q: 'Is it loud?',
             a:
-              'Much quieter than sandblasting and roughly in line with a pressure washer. The generator that powers the unit is usually the loudest thing on the job site. The cleaning itself makes a light popping or crackling sound as the contamination lifts off.',
+              'Quieter than sandblasting. The generator and air compressor are the loudest things on site, and the beam makes a light crackle as the coating lifts.',
           },
           {
             q: 'Does it use any chemicals or water?',
             a:
-              'No. It is a completely dry, non-contact process. Nothing runs off into landscaping, gutters, or storm drains, which is why it is a fit for downtown Charleston and waterfront properties.',
+              'No. It is a dry, non-contact process with no runoff into landscaping, gutters or storm drains. Removed coating leaves as dust and fume, so it is extracted and vacuumed, not rinsed.',
           },
           {
             q: 'How long does a typical job take?',
             a:
-              'It depends on the piece and the layer being removed. A single antique gate might take a few hours. A boat trailer is usually a half day. Larger commercial work is quoted with a time estimate before it starts.',
+              'It depends on the piece, the coating and how thick it is. We time a test spot on your piece and quote from that, so the scope is set before work starts.',
           },
           {
             q: 'Can you show me on my specific piece before committing?',
             a:
-              'Yes. Send a few photos through the quote form and we will follow up with an estimate and a plan. On historic or irreplaceable pieces we run a small, discreet test area on site before working the rest.',
+              'Yes. Send a few photos through the quote form and we will follow up with an estimate and a plan. We run a small test spot on site, under a signed test authorization, before working the rest.',
           },
           {
             q: 'How much does it cost?',
             a:
-              'Every job is quoted individually. Send photos of what you want cleaned and we come back with a price, usually within 24 hours. Estimates are free.',
+              'Jobs are quoted per piece, per job, or per linear foot for railings, with a $400 minimum. Send photos and we reply with a price, usually within one business day. Estimates are free.',
           },
         ]}
       />
@@ -563,7 +551,7 @@ export default function HowLaserCleaningWorksPage() {
             Have a piece you are curious about?
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-            Send a photo and a short description. We will tell you what laser cleaning can do for it, usually within 24 hours. Free estimates, no obligation.
+            Send a photo and a short description. We will tell you what laser cleaning can do for it, usually within one business day. Free estimates, no obligation.
           </p>
           <Link
             href="/quote"

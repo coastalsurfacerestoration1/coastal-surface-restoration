@@ -39,7 +39,7 @@ const barlowCondensed = Barlow_Condensed({
 });
 
 const DESCRIPTION =
-  "Charleston's mobile laser cleaning specialist for historic, marine, and property restoration. No chemicals, no damage, no mess.";
+  "Charleston's laser cleaning specialists for rust and paint on iron and steel, stainless and marine hardware. No chemicals, no blast media. Free estimates.";
 
 // Search Console and Bing verification are handled via DNS TXT record at
 // Porkbun (Bing imports from the verified GSC property), not via meta tags.

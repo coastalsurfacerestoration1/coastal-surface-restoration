@@ -55,7 +55,7 @@ export default function Footer() {
               </h3>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Charleston&apos;s mobile laser cleaning specialist for historic, marine, and property restoration.
+              Charleston&apos;s laser cleaning specialists. Rust and paint off iron and steel, stainless and marine hardware, on site.
             </p>
             <div className="flex items-center gap-4 mt-4">
               {socials.map((s) => (
@@ -80,13 +80,13 @@ export default function Footer() {
             <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-4">Services</h4>
             <ul className="space-y-2">
               <li><Link href="/services/rust-removal-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Rust Removal</Link></li>
-              <li><Link href="/services/historic-ironwork-restoration-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Historic Restoration</Link></li>
-              <li><Link href="/services/marine-cleaning-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Marine Cleaning</Link></li>
-              <li><Link href="/services/brick-cleaning-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Brick Cleaning</Link></li>
-              <li><Link href="/services/graffiti-removal-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Graffiti Removal</Link></li>
-              <li><Link href="/services/vacation-rental-cleaning-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Vacation Rental Restoration</Link></li>
-              <li><Link href="/services/antique-restoration-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Antique Restoration</Link></li>
-              <li><Link href="/services/commercial-exterior-cleaning-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Commercial Exteriors</Link></li>
+              <li><Link href="/services/rust-removal-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Stainless Steel</Link></li>
+              <li><Link href="/services/historic-ironwork-restoration-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Ironwork and Railings</Link></li>
+              <li><Link href="/services/marine-cleaning-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Marine Hardware (on land)</Link></li>
+              <li><Link href="/services/graffiti-removal-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Graffiti Removal (test first)</Link></li>
+              <li><Link href="/services/vacation-rental-cleaning-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Rental Property Railings</Link></li>
+              <li><Link href="/services/antique-restoration-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Antiques, Tools and Car Parts</Link></li>
+              <li><Link href="/services/commercial-exterior-cleaning-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Commercial Metalwork</Link></li>
             </ul>
           </div>
 
@@ -153,7 +153,7 @@ export default function Footer() {
               Terms of Service
             </Link>
             <span aria-hidden="true">·</span>
-            <span>Licensed &amp; Insured</span>
+            <span>Insured · Business licensed in Charleston</span>
             <span aria-hidden="true">·</span>
             <span>Charleston, SC</span>
           </div>
