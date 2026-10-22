@@ -9,7 +9,7 @@ import RelatedItemsSection from '@/app/components/RelatedItemsSection';
 export const metadata = pageMetadata({
   title: 'Laser Cleaning in Downtown Charleston, SC',
   description:
-    'Mobile surface restoration on the Charleston peninsula. Rust and failed paint removed from iron gates, railings and cast iron hardware with no chemicals or blast media, test spot first. Free estimates.',
+    'Mobile surface restoration on the Charleston peninsula. Rust and failed paint removed from iron gates, railings and cast iron hardware with no sandblasting or chemical strippers, test spot first. Free estimates.',
   path: '/locations/downtown-charleston',
 });
 
@@ -26,7 +26,7 @@ export default function DowntownCharlestonPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Cleaning in Downtown Charleston',
-          description: 'Mobile surface restoration on the Charleston peninsula. Rust and failed paint removed from iron gates, railings and cast iron hardware with no chemicals or blast media, test spot first. Free estimates.',
+          description: 'Mobile surface restoration on the Charleston peninsula. Rust and failed paint removed from iron gates, railings and cast iron hardware with no sandblasting or chemical strippers, test spot first. Free estimates.',
           path: '/locations/downtown-charleston',
           serviceType: 'Laser cleaning',
           areaServed: ['Charleston'],
@@ -43,7 +43,7 @@ export default function DowntownCharlestonPage() {
             Laser Cleaning in Downtown Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            The peninsula&apos;s gates and railings run from pre-1900 wrought iron to mid-century mild steel, and harbor air rusts both fast. We take the rust off with a laser set to stop at the metal, after a test spot. Soft handmade brick, stucco and pre-1978 painted wood are not part of the work.
+            The peninsula&apos;s gates and railings run from pre-1900 wrought iron to mid-century mild steel, and harbor air rusts both fast. The rust comes off with a laser dialed in on a test spot to keep as much of the original iron as possible. Soft handmade brick, stucco and pre-1978 painted wood are not part of the work.
           </p>
           <Link
             href="/quote"
@@ -67,7 +67,7 @@ export default function DowntownCharlestonPage() {
             Sandblasting erodes the fine detail of decorative iron. Chemical stripping produces runoff that goes straight into storm drains that empty into the harbor, and it can react badly with antique alloys. Pressure washing drives water into masonry joints, where it causes far more expensive problems a year later.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            Laser cleaning helps with all three. It is a dry process with no chemicals, no sand and no water, so nothing runs into a neighbor&apos;s courtyard or a storm drain. Dust and fume are extracted and vacuumed up before we leave.
+            Laser cleaning helps with all three. It is a dry process with no chemical strippers, no sand and no water, so nothing runs into a neighbor&apos;s courtyard or a storm drain. Dust and fume are extracted and vacuumed up before we leave.
           </p>
         </div>
       </section>

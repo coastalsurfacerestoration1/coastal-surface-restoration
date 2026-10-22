@@ -64,7 +64,7 @@ export default function VacationRentalPage() {
             A vacation rental lives and dies by its curb appeal and its photos. Rusted railings, corroded light fixtures, stained entryways, and a weathered exterior cost you bookings and show up in guest reviews. On a coastal property, that decline is constant, and touching it up between every guest is not realistic.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
-            This page is for individual owners and for property managers with several units. A laser cleans metal with no chemicals or water, so the work fits around your calendar.
+            This page is for individual owners and for property managers with several units. A laser cleans metal with no chemical strippers or water, so the work fits around your calendar.
           </p>
           <p className="text-gray-400 leading-relaxed">
             For managers with a portfolio, we can set up a recurring maintenance schedule so railings, fixtures, and entryways are handled on a regular cadence instead of only when they have already gotten bad.
@@ -94,7 +94,7 @@ export default function VacationRentalPage() {
               },
               {
                 title: 'Outdoor Furniture & Fixtures',
-                desc: 'Steel and iron patio furniture, grill grates and gates cleaned with no chemicals near the pool.',
+                desc: 'Steel and iron patio furniture, grill grates and gates cleaned with no chemical strippers near the pool.',
               },
               {
                 title: 'Stainless Rails & Fixtures',
@@ -201,7 +201,7 @@ export default function VacationRentalPage() {
           {
             q: 'Do you work with property management companies?',
             a:
-              'Yes. We can cover multiple properties on one schedule and coordinate access with your turnover crew so the owner does not need to be there. We need a signed work authorization before the first visit.',
+              'Yes. We can cover multiple properties on one schedule and coordinate access with your turnover crew so the owner does not need to be there. A signed work authorization is needed before the first visit.',
           },
         ]}
       />

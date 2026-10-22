@@ -33,13 +33,13 @@ const workTypes = [
     title: 'Classic Car & Vintage Parts',
     href: '/services/antique-restoration-charleston',
     shows:
-      'Brackets, hubs, manifolds and old hand tools taken back to bare metal on the bench. Look at casting marks and stamped numbers, which survive.',
+      'Brackets, hubs, manifolds and old hand tools taken back to bare metal on the bench. Look at the casting marks and stamped numbers after cleaning.',
   },
   {
     title: 'Rust & Failed Coatings',
     href: '/services/rust-removal-charleston',
     shows:
-      'Heavy scale removed down to sound metal, ready for coating. Worth watching the depth of pitting before and after, since the laser is set to stop at sound metal, not cut into it.',
+      'Heavy scale removed down to sound metal, ready for coating. Worth comparing the depth of pitting before and after.',
   },
   {
     title: 'Stainless Heat Tint & Tea Staining',

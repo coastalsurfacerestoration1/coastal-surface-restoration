@@ -27,6 +27,18 @@ const socials = [
   // },
 ];
 
+// Mirrors the six "What comes off" cards on the home page, same order and
+// same destinations, so the footer and the home page describe the business
+// the same way.
+const services = [
+  { label: 'Rust', href: '/services/rust-removal-charleston' },
+  { label: 'Paint and coatings', href: '/services/rust-removal-charleston#paint-removal' },
+  { label: 'Graffiti', href: '/services/graffiti-removal-charleston' },
+  { label: 'Grease and carbon', href: '/quote' },
+  { label: 'Oxidation', href: '/services/marine-cleaning-charleston' },
+  { label: 'Stains', href: '/quote' },
+];
+
 const locations = [
   { label: 'Downtown Charleston', href: '/locations/downtown-charleston' },
   { label: 'Mount Pleasant', href: '/locations/mount-pleasant' },
@@ -79,14 +91,13 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-4">Services</h4>
             <ul className="space-y-2">
-              <li><Link href="/services/rust-removal-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Rust Removal</Link></li>
-              <li><Link href="/services/rust-removal-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Stainless Steel</Link></li>
-              <li><Link href="/services/historic-ironwork-restoration-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Ironwork and Railings</Link></li>
-              <li><Link href="/services/marine-cleaning-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Marine Hardware (on land)</Link></li>
-              <li><Link href="/services/graffiti-removal-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Graffiti Removal (test first)</Link></li>
-              <li><Link href="/services/vacation-rental-cleaning-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Rental Property Railings</Link></li>
-              <li><Link href="/services/antique-restoration-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Antiques, Tools and Car Parts</Link></li>
-              <li><Link href="/services/commercial-exterior-cleaning-charleston" className="text-gray-400 hover:text-[#397774] text-sm transition-colors">Commercial Metalwork</Link></li>
+              {services.map((s) => (
+                <li key={s.label}>
+                  <Link href={s.href} className="text-gray-400 hover:text-[#397774] text-sm transition-colors">
+                    {s.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

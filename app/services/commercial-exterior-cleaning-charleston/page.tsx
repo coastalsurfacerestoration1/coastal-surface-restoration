@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Commercial Exterior Laser Cleaning in Charleston, SC',
   description:
-    'Laser cleaning for commercial exteriors in Charleston, SC. Rust and paint off storefront railings and gates, heat tint and tea staining off stainless handrails, and solid brass pulls cleaned, with no chemicals or water. Free estimates for businesses and property managers.',
+    'Laser cleaning for commercial exteriors in Charleston, SC. Rust and paint off storefront railings and gates, heat tint and tea staining off stainless handrails, and solid brass pulls cleaned, with no chemical strippers or water. Free estimates for businesses and property managers.',
   path: '/services/commercial-exterior-cleaning-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function CommercialExteriorPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Commercial Exterior Laser Cleaning',
-          description: 'Laser cleaning for commercial exteriors in Charleston, SC. Rust and paint off storefront railings and gates, heat tint and tea staining off stainless handrails, and solid brass pulls cleaned, with no chemicals or water. Free estimates for businesses and property managers.',
+          description: 'Laser cleaning for commercial exteriors in Charleston, SC. Rust and paint off storefront railings and gates, heat tint and tea staining off stainless handrails, and solid brass pulls cleaned, with no chemical strippers or water. Free estimates for businesses and property managers.',
           path: '/services/commercial-exterior-cleaning-charleston',
           serviceType: 'Commercial exterior cleaning',
         })}
@@ -43,7 +43,7 @@ export default function CommercialExteriorPage() {
             Commercial Exterior Laser Cleaning in Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Your storefront is the first thing customers see. Rusted railings, corroded fixtures, and a weathered facade quietly cost you foot traffic. A laser takes rust and old paint off steel railings and gates, and stain off stainless handrails, with no chemicals or water. We rope off a small work area and keep the rest of the entrance open.
+            Your storefront is the first thing customers see. Rusted railings, corroded fixtures, and a weathered facade quietly cost you foot traffic. A laser takes rust and old paint off steel railings and gates, and stain off stainless handrails, with no chemical strippers or water. We rope off a small work area and keep the rest of the entrance open.
           </p>
           <Link
             href="/quote"

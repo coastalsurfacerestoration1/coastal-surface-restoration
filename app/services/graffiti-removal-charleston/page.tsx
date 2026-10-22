@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Laser Graffiti Removal in Charleston, SC',
   description:
-    'Laser graffiti removal in Charleston, SC. Dark spray paint lifted from painted steel, hard modern brick, block and unsealed concrete, with no chemicals. A test patch comes first, before any quote. Free estimates.',
+    'Laser graffiti removal in Charleston, SC. Dark spray paint lifted from painted steel, hard modern brick, block and unsealed concrete, with no chemical strippers. A test patch comes first, before any quote. Free estimates.',
   path: '/services/graffiti-removal-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function GraffitiRemovalPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Graffiti Removal',
-          description: 'Laser graffiti removal in Charleston, SC. Dark spray paint lifted from painted steel, hard modern brick, block and unsealed concrete, with no chemicals. A test patch comes first, before any quote. Free estimates.',
+          description: 'Laser graffiti removal in Charleston, SC. Dark spray paint lifted from painted steel, hard modern brick, block and unsealed concrete, with no chemical strippers. A test patch comes first, before any quote. Free estimates.',
           path: '/services/graffiti-removal-charleston',
           serviceType: 'Graffiti removal',
         })}
@@ -134,7 +134,7 @@ export default function GraffitiRemovalPage() {
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'No chemicals and no water. The removed paint becomes dust and fume that we extract and clean up.',
+                problem: 'No chemical strippers and no water. The removed paint becomes dust and fume that we extract and clean up.',
                 safe: true,
               },
             ].map((item) => (

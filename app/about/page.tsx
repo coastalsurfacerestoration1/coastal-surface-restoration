@@ -35,7 +35,7 @@ export default function AboutPage() {
             <span className="text-[#397774]">Built to Last.</span>
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            Coastal Surface Restoration is Charleston&apos;s surface restoration specialist, serving Charleston and the Lowcountry. We take rust and old paint off metal, wood, masonry, concrete and boat parts on land. The laser is how we do it, with no chemicals or blast media and a test spot before every job.
+            Coastal Surface Restoration is Charleston&apos;s surface restoration specialist, serving Charleston and the Lowcountry. We take rust and old paint off metal, wood, masonry, concrete and boat parts on land. The laser is how we do it, with no sandblasting or chemical strippers and a test spot before every job.
           </p>
         </div>
       </section>
@@ -51,7 +51,7 @@ export default function AboutPage() {
                   Charleston&apos;s salt air and humidity are hard on iron and steel, and rust, oxidation and failing paint follow. Traditional cleaning methods like sandblasting, chemical stripping, and pressure washing often cause more damage than they fix on the iron gates, railings and cast hardware that define this city&apos;s streets.
                 </p>
                 <p>
-                  Laser cleaning changes that equation entirely. A pulsed fiber laser breaks up rust and paint and lifts them off as dust and fume, set to stop at the metal. No blast media to sweep. No chemicals near Charleston&apos;s waterways. Glass, sealant and siding nearby get masked.
+                  Laser cleaning changes that equation entirely. A pulsed fiber laser breaks up rust and paint and lifts them off as dust and fume, dialed in on a test spot to take the coating and keep as much of the original metal as possible. No blast media to sweep, and no chemical strippers near Charleston&apos;s waterways. Glass, sealant and siding nearby get masked.
                 </p>
                 <p>
                   Tyler Scherzer started Coastal Surface Restoration to bring this method to Charleston&apos;s iron, steel and marine hardware.
@@ -61,7 +61,7 @@ export default function AboutPage() {
             <div className="space-y-4">
               {[
                 { number: '300W', label: 'JPT MOPA Pulsed Fiber Laser', desc: 'Chihalo CF-300 backpack unit with a JPT 300 W MOPA source, 1064 nm, Class 4.' },
-                { number: '0', label: 'Chemicals Used', desc: 'The laser itself uses no chemical solvents, acids, or blast media.' },
+                { number: '0', label: 'Chemical Strippers', desc: 'The laser does the stripping. Solid brass may get a polish and an alcohol wipe after.' },
                 { number: 'On site', label: 'Mobile Service', desc: 'We come to your property. Small parts and hardware can also go to our bench.' },
               ].map((stat) => (
                 <div key={stat.label} className="bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6">

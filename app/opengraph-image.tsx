@@ -98,7 +98,7 @@ export default function OpengraphImage() {
             COASTAL&nbsp;<span style={{ color: '#397774' }}>SURFACE RESTORATION</span>
           </div>
           <div style={{ display: 'flex', fontSize: 26, color: '#9ca3af' }}>
-            No chemicals · No blast media
+            No sandblasting · No chemical strippers
           </div>
         </div>
       </div>

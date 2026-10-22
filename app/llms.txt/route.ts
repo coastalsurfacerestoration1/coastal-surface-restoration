@@ -8,7 +8,7 @@ const SERVICES: [string, string, string][] = [
   [
     'Rust & Paint Removal',
     '/services/rust-removal-charleston',
-    'Rust and failed paint removed from iron and steel after a test spot, with no blast media or chemicals',
+    'Rust and failed paint removed from iron and steel after a test spot, with no sandblasting or chemical strippers',
   ],
   [
     'Ironwork and Railings',
@@ -63,9 +63,9 @@ const LOCATIONS: [string, string][] = [
 export function GET() {
   const body = `# Coastal Surface Restoration
 
-> Charleston's surface restoration specialists, serving Charleston, South Carolina and the surrounding Lowcountry. The business takes off rust and old paint, along with graffiti, grease and carbon, oxidation and stains, from metal, wood, brick and masonry, stone, concrete and boat parts on land. The work is done on site with a pulsed fiber laser, with no chemicals or abrasive blasting media.
+> Charleston's surface restoration specialists, serving Charleston, South Carolina and the surrounding Lowcountry. The business takes off rust and old paint, along with graffiti, grease and carbon, oxidation and stains, from metal, wood, brick and masonry, stone, concrete and boat parts on land. The work is done on site with a pulsed fiber laser, with no sandblasting or chemical strippers.
 
-The laser is how the work gets done, not what the business is. It is set to remove the coating and stop at the base material, and every job starts with a test spot. It works best on rust and paint on iron and steel, stainless weld tint, and marine hardware on land. Other materials are taken case by case after a test spot. Historic soft brick, lime mortar, stucco and pre-1978 paint are declined. The equipment is portable, so work happens at the property or in the driveway, never over water.
+The laser is the tool the business uses. Every job starts with a test spot, which dials in the settings to remove the coating and keep as much of the original material as possible. Results vary by surface, and too much energy can melt or etch metal, so no result is promised before the test. It works best on rust and paint on iron and steel, stainless weld tint, and marine hardware on land. Other materials are taken case by case after a test spot. Historic soft brick, lime mortar, stucco and pre-1978 paint are declined. The equipment is portable, so work happens at the property or in the driveway, never over water.
 
 ## Key facts
 
