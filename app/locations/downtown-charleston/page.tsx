@@ -260,7 +260,7 @@ export default function DowntownCharlestonPage() {
           {
             q: 'How much does a job downtown cost?',
             a:
-              'Every job starts with a free estimate and has a $400 minimum. Send photos of the gate or railing and we follow up with pricing, usually within one business day.',
+              'Every job starts with a free estimate. Send photos of the gate or railing and we follow up with a quote, usually within one business day.',
           },
         ]}
       />
