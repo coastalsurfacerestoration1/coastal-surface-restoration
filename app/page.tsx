@@ -268,7 +268,7 @@ export default function Home() {
       <section className="bg-[#0e273e] py-8 lg:py-12">
         <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl">
-            Send a photo. Get a number.
+            Send a photo. Get an answer.
           </h2>
           <p className="mx-auto mt-5 mb-10 max-w-xl leading-relaxed text-gray-400">
             Not sure if we can help? Send it anyway. If it is work we do, you
