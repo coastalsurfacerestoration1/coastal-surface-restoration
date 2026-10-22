@@ -63,7 +63,7 @@ const LOCATIONS: [string, string][] = [
 export function GET() {
   const body = `# Coastal Surface Restoration
 
-> Charleston's surface restoration specialists, serving Charleston, South Carolina and the surrounding Lowcountry. Rust and paint come off first, along with graffiti, grease and carbon, oxidation and stains, on metal, wood, brick and masonry, stone, concrete and boat parts on land. The work is done on site with a pulsed fiber laser, with no chemicals or abrasive blasting media.
+> Charleston's surface restoration specialists, serving Charleston, South Carolina and the surrounding Lowcountry. The business takes off rust and old paint, along with graffiti, grease and carbon, oxidation and stains, from metal, wood, brick and masonry, stone, concrete and boat parts on land. The work is done on site with a pulsed fiber laser, with no chemicals or abrasive blasting media.
 
 The laser is how the work gets done, not what the business is. It is set to remove the coating and stop at the base material, and every job starts with a test spot. It works best on rust and paint on iron and steel, stainless weld tint, and marine hardware on land. Other materials are taken case by case after a test spot. Historic soft brick, lime mortar, stucco and pre-1978 paint are declined. The equipment is portable, so work happens at the property or in the driveway, never over water.
 

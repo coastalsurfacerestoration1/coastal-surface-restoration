@@ -35,7 +35,7 @@ export default function AboutPage() {
             <span className="text-[#397774]">Built to Last.</span>
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            Coastal Surface Restoration is Charleston&apos;s surface restoration specialist, serving Charleston and the Lowcountry. Rust and paint come off first, on metal, wood, masonry, concrete and boat parts on land. The laser is how we do it, with no chemicals or blast media and a test spot before every job.
+            Coastal Surface Restoration is Charleston&apos;s surface restoration specialist, serving Charleston and the Lowcountry. We take rust and old paint off metal, wood, masonry, concrete and boat parts on land. The laser is how we do it, with no chemicals or blast media and a test spot before every job.
           </p>
         </div>
       </section>
