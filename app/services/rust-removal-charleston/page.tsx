@@ -331,7 +331,7 @@ export default function RustRemovalPage() {
           {
             q: 'Does laser cleaning remove the metal underneath the rust?',
             a:
-              'It can if the settings are wrong. Too much energy can melt or mark steel, which is why every job starts with a test spot, dialed in to take the oxide and keep as much of the metal as possible. Cleaned metal has a matte texture. Sandblasting cuts into sound metal along with the rust.',
+              "The test spot is there so it doesn't. Too much energy can melt or mark steel, so every job starts with a small test area at the lowest setting that works. Cleaned metal has a matte texture. Sandblasting cuts into sound metal along with the rust.",
           },
           {
             q: 'Will the rust come back after cleaning?',
