@@ -539,7 +539,7 @@ export default function HowLaserCleaningWorksPage() {
           {
             q: 'How much does it cost?',
             a:
-              'Every job is quoted from photos, and estimates are free. Send photos and we reply with a quote, usually within one business day.',
+              'Jobs are quoted per piece, per job, or per linear foot for railings, with a $400 minimum. Send photos and we reply with a price, usually within one business day. Estimates are free.',
           },
         ]}
       />
