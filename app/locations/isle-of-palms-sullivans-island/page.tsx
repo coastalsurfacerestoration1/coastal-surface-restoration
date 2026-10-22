@@ -9,7 +9,7 @@ import RelatedItemsSection from '@/app/components/RelatedItemsSection';
 export const metadata = pageMetadata({
   title: "Laser Cleaning on Isle of Palms & Sullivan's Island, SC",
   description:
-    "Mobile laser cleaning for Isle of Palms and Sullivan's Island properties. Rust removed from steel stair rails, stainless railings, gate hardware and light fixtures, scheduled around rental turnover. Free estimates.",
+    "Mobile surface restoration for Isle of Palms and Sullivan's Island properties. Rust removed from steel stair rails, stainless railings, gate hardware and light fixtures, scheduled around rental turnover. Free estimates.",
   path: '/locations/isle-of-palms-sullivans-island',
 });
 
@@ -26,7 +26,7 @@ export default function IsleOfPalmsSullivansPage() {
       <JsonLd
         data={serviceSchema({
           name: "Laser Cleaning on Isle of Palms and Sullivan's Island",
-          description: "Mobile laser cleaning for Isle of Palms and Sullivan's Island properties. Rust removed from steel stair rails, stainless railings, gate hardware and light fixtures, scheduled around rental turnover. Free estimates.",
+          description: "Mobile surface restoration for Isle of Palms and Sullivan's Island properties. Rust removed from steel stair rails, stainless railings, gate hardware and light fixtures, scheduled around rental turnover. Free estimates.",
           path: '/locations/isle-of-palms-sullivans-island',
           serviceType: 'Laser cleaning',
           areaServed: ['Isle of Palms', "Sullivan's Island"],

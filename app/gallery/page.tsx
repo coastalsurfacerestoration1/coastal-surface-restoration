@@ -5,7 +5,7 @@ import Breadcrumbs from '@/app/components/Breadcrumbs';
 export const metadata = pageMetadata({
   title: 'Before & After Gallery',
   description:
-    'Before and after photos from Charleston laser cleaning jobs will post here as jobs finish: railings, stainless and bronze marine hardware, and classic car parts. Free estimates.',
+    'Before and after photos from Charleston surface restoration jobs will post here as jobs finish, from railings and marine hardware to classic car parts. Free estimates.',
   path: '/gallery',
 });
 

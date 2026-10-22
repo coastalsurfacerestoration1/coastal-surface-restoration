@@ -3,7 +3,7 @@ import { ImageResponse } from 'next/og';
 // Applies to every route via the file convention — a page-level
 // opengraph-image would override it for that route only.
 export const alt =
-  'Coastal Surface Restoration, mobile laser cleaning in Charleston, SC';
+  "Coastal Surface Restoration, Charleston's surface restoration specialists";
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -47,7 +47,7 @@ export default function OpengraphImage() {
               fontWeight: 600,
             }}
           >
-            CHARLESTON, SC &amp; THE LOWCOUNTRY
+            CHARLESTON&apos;S SURFACE RESTORATION SPECIALISTS
           </div>
           <div
             style={{
@@ -59,7 +59,7 @@ export default function OpengraphImage() {
               lineHeight: 1.05,
             }}
           >
-            Laser Precision.
+            We remove the rust,
           </div>
           <div
             style={{
@@ -70,7 +70,7 @@ export default function OpengraphImage() {
               lineHeight: 1.05,
             }}
           >
-            Test Spot First.
+            not the iron.
           </div>
           <div
             style={{
@@ -81,7 +81,7 @@ export default function OpengraphImage() {
               maxWidth: 820,
             }}
           >
-            Rust and paint off iron, steel and marine hardware, on site.
+            Rust and paint off metal, wood, masonry and concrete. Test spot first.
           </div>
         </div>
 

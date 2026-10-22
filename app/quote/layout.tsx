@@ -6,7 +6,7 @@ import Breadcrumbs from '@/app/components/Breadcrumbs';
 export const metadata = pageMetadata({
   title: 'Request a Free Quote',
   description:
-    'Request a free estimate for mobile laser cleaning in Charleston, SC. Send photos of the piece and we will follow up with pricing within one business day.',
+    "Request a free estimate from Charleston's surface restoration specialists. Send photos of the piece, even if you are not sure it is a fit, and hear back within one business day.",
   path: '/quote',
 });
 

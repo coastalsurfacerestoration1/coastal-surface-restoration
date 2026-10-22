@@ -39,7 +39,10 @@ const barlowCondensed = Barlow_Condensed({
 });
 
 const DESCRIPTION =
-  "Charleston's laser cleaning specialists for rust and paint on iron and steel, stainless and marine hardware. No chemicals, no blast media. Free estimates.";
+  "Charleston's surface restoration specialists. Rust and paint off metal, wood, masonry and concrete with a laser, no chemicals or blast media. Test spot first, free estimates.";
+
+const DEFAULT_TITLE =
+  'Coastal Surface Restoration | Surface Restoration and Laser Cleaning in Charleston, SC';
 
 // Search Console and Bing verification are handled via DNS TXT record at
 // Porkbun (Bing imports from the verified GSC property), not via meta tags.
@@ -47,7 +50,7 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Coastal Surface Restoration | Mobile Laser Cleaning Charleston SC",
+    default: DEFAULT_TITLE,
     template: `%s | ${SITE_NAME}`,
   },
   description: DESCRIPTION,
@@ -57,12 +60,12 @@ export const metadata: Metadata = {
     locale: "en_US",
     siteName: SITE_NAME,
     url: "/",
-    title: "Coastal Surface Restoration | Mobile Laser Cleaning Charleston SC",
+    title: DEFAULT_TITLE,
     description: DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Coastal Surface Restoration | Mobile Laser Cleaning Charleston SC",
+    title: DEFAULT_TITLE,
     description: DESCRIPTION,
   },
 };

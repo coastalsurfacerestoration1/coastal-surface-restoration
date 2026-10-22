@@ -9,7 +9,7 @@ import RelatedItemsSection from '@/app/components/RelatedItemsSection';
 export const metadata = pageMetadata({
   title: 'Laser Cleaning on James Island & Folly Beach, SC',
   description:
-    'Mobile laser cleaning for James Island and Folly Beach. Boat trailers, marsh-front railings, gate hardware and removed marine parts cleaned on land with no chemicals or blast media. Free estimates.',
+    'Mobile surface restoration for James Island and Folly Beach. Boat trailers, marsh-front railings, gate hardware and removed marine parts cleaned on land with no chemicals or blast media. Free estimates.',
   path: '/locations/james-island-folly-beach',
 });
 
@@ -26,7 +26,7 @@ export default function JamesIslandFollyBeachPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Cleaning on James Island and Folly Beach',
-          description: 'Mobile laser cleaning for James Island and Folly Beach. Boat trailers, marsh-front railings, gate hardware and removed marine parts cleaned on land with no chemicals or blast media. Free estimates.',
+          description: 'Mobile surface restoration for James Island and Folly Beach. Boat trailers, marsh-front railings, gate hardware and removed marine parts cleaned on land with no chemicals or blast media. Free estimates.',
           path: '/locations/james-island-folly-beach',
           serviceType: 'Laser cleaning',
           areaServed: ['James Island', 'Folly Beach'],

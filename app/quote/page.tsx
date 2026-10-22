@@ -128,14 +128,17 @@ const HEARD_OPTIONS = [
 const LOCAL_ZIP_PREFIX = '294';
 
 const services = [
-  'Rust removal: railings, gates, furniture',
-  'Paint removal from steel and iron (test spot first)',
+  'Rust removal on metal',
+  'Paint and coating removal (test spot first)',
+  'Paint or coatings on wood (test spot first)',
   'Stainless steel: weld tint and tea staining',
   'Marine hardware on land (stainless and bronze)',
-  'Classic car parts, cast iron and vintage tools',
+  'Vintage tools and car parts',
   'Solid brass fixtures (test first)',
   'Graffiti on hard masonry (test first)',
-  'Other / Not sure',
+  'Grease and carbon (test spot first)',
+  'Stains on masonry or concrete (test spot first)',
+  'Something else, or not sure',
 ];
 
 export default function QuotePage() {
@@ -349,7 +352,9 @@ export default function QuotePage() {
             Request a Quote
           </h1>
           <p className="text-gray-400 text-lg">
-            Tell us about your project and we will get back to you within one business day.
+            Not sure if we can help? Send it anyway. You will hear back within one business
+            day, and if it is not a fit, Tyler still looks at it and, where possible, points
+            you to the right person.
           </p>
         </div>
 

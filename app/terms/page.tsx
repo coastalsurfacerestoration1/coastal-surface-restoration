@@ -45,7 +45,7 @@ export default function TermsPage() {
 
           <Section title="Who we are">
             <p>
-              Coastal Surface Restoration LLC is a mobile laser cleaning company based in Charleston, South Carolina, serving Charleston and the surrounding Lowcountry. On this page, &quot;we,&quot; &quot;us,&quot; and &quot;our&quot; mean Coastal Surface Restoration LLC, and &quot;you&quot; means the person or business requesting a quote or hiring us.
+              Coastal Surface Restoration LLC is a mobile surface restoration company based in Charleston, South Carolina, serving Charleston and the surrounding Lowcountry. On this page, &quot;we,&quot; &quot;us,&quot; and &quot;our&quot; mean Coastal Surface Restoration LLC, and &quot;you&quot; means the person or business requesting a quote or hiring us.
             </p>
           </Section>
 

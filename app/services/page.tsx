@@ -14,7 +14,7 @@ import Breadcrumbs from '@/app/components/Breadcrumbs';
 export const metadata = pageMetadata({
   title: 'Services',
   description:
-    'Mobile laser cleaning in Charleston, SC: rust and paint off iron and steel, stainless and bronze boat hardware, antique tools and parts, and test-first graffiti removal.',
+    "Surface restoration in Charleston, SC. Rust and paint off metal, wood, masonry and concrete, plus graffiti, oxidation and stains, with a laser and a test spot first.",
   path: '/services',
 });
 
@@ -27,6 +27,13 @@ type Service = {
 };
 
 const services: Service[] = [
+  {
+    Icon: BoltIcon,
+    title: 'Rust & Paint Removal',
+    desc: 'Rust, old paint and coatings off iron and steel, plus weld tint and tea staining on stainless. No blast media or chemicals, test spot first.',
+    href: '/services/rust-removal-charleston',
+    live: true,
+  },
   {
     Icon: IronScrollIcon,
     title: 'Historic Restoration',
@@ -46,13 +53,6 @@ const services: Service[] = [
     title: 'Vacation Rental Restoration',
     desc: "Salt-rusted railings, gates and outdoor furniture at Isle of Palms, Sullivan's Island and Folly Beach rentals, scheduled between guests. Recurring service for property managers.",
     href: '/services/vacation-rental-cleaning-charleston',
-    live: true,
-  },
-  {
-    Icon: BoltIcon,
-    title: 'Rust & Paint Removal',
-    desc: 'Rust, old paint and coatings off iron and steel, plus weld tint and tea staining on stainless. No blast media or chemicals, test spot first.',
-    href: '/services/rust-removal-charleston',
     live: true,
   },
   {
@@ -101,7 +101,7 @@ export default function ServicesPage() {
             Our Services
           </h1>
           <p className="text-gray-400 text-lg max-w-xl mx-auto">
-            Mobile laser cleaning for iron, steel, boat hardware and antiques across Charleston and the Lowcountry. No chemicals, no blast media, and the dust gets captured and cleaned up.
+            Rust and paint come off first, and graffiti, grease, oxidation and stains come off the same way, on metal, wood, masonry, concrete and boat parts on land. No chemicals or blast media, and the dust gets captured and cleaned up.
           </p>
         </div>
       </section>
@@ -156,9 +156,9 @@ export default function ServicesPage() {
       {/* CTA */}
       <section className="py-8 lg:py-12 bg-[#1a3958] border-t border-[#397774]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">Not sure what you need?</h2>
+          <h2 className="text-3xl font-bold text-white mb-4">Not sure if we can help? Send it anyway.</h2>
           <p className="text-gray-400 mb-8">
-            Send us a photo and description and we will tell you exactly what we can do. Free estimates, no obligation.
+            Send a photo and a short description. If it is work we do, you get a free estimate. If it is not a fit, Tyler still looks at it and, where possible, points you to the right person.
           </p>
           <Link
             href="/quote"

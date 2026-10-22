@@ -1,28 +1,100 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import LaserReveal from './components/LaserReveal';
 import SurfaceCrossSection from './components/SurfaceCrossSection';
-import { CleatIcon, IronScrollIcon, RailingIcon } from './components/icons';
+import {
+  BoltIcon,
+  BrickIcon,
+  CleatIcon,
+  IronScrollIcon,
+  SprayIcon,
+  UrnIcon,
+} from './components/icons';
 
-const specialties = [
+/**
+ * Services described by what comes off and what it comes off of, rather than
+ * by the tool. Rust and paint lead together on purpose. Anything not yet
+ * proven on a material carries "test spot first", and the lead and listed
+ * landmark gates stay in the copy wherever paint on a building comes up.
+ */
+const whatComesOff = [
   {
     Icon: IronScrollIcon,
-    title: 'Ironwork and Railings',
-    desc: 'Rust and failed paint off iron gates, steel railings, and cast iron caps and hardware, with a test spot first. Paint on pre-1978 homes needs a negative lead test first, and listed landmarks are not taken.',
-    href: '/services/historic-ironwork-restoration-charleston',
+    title: 'Rust',
+    desc: 'Off iron gates, steel railings, cast iron, trailers and car parts, set to stop at sound metal so the profile and edges survive.',
+    href: '/services/rust-removal-charleston',
+  },
+  {
+    Icon: BoltIcon,
+    title: 'Paint and coatings',
+    desc: 'Old and failing paint off iron and steel, with wood taken case by case after a test spot. Paint on pre-1978 homes needs a negative lead test first, and listed landmarks are not taken.',
+    href: '/services/rust-removal-charleston#paint-removal',
+  },
+  {
+    Icon: SprayIcon,
+    title: 'Graffiti',
+    desc: 'Spray paint tags on hard brick, block, unsealed concrete and painted steel. A test patch comes first, before any quote.',
+    href: '/services/graffiti-removal-charleston',
+  },
+  {
+    Icon: UrnIcon,
+    title: 'Grease and carbon',
+    desc: 'Baked-on buildup on grill grates and engine brackets brought to the bench. Test spot first.',
+    href: '/quote',
   },
   {
     Icon: CleatIcon,
-    title: 'Marine Cleaning',
-    desc: 'Stainless rails, cleats, bronze deck hardware and trailer parts, on land or with the boat on the hard. Props and shafts are removed and tested first. No work over the water.',
+    title: 'Oxidation',
+    desc: 'Tea staining and weld tint on stainless, and the green crust on bronze boat hardware, cleaned on land or with the boat on the hard.',
     href: '/services/marine-cleaning-charleston',
   },
   {
-    Icon: RailingIcon,
-    title: 'Vacation Rental Restoration',
-    desc: "Rusted stair rails, gate latches and light fixtures on rental homes in Isle of Palms, Sullivan's Island and Folly Beach, booked around turnover days.",
-    href: '/services/vacation-rental-cleaning-charleston',
+    Icon: BrickIcon,
+    title: 'Stains',
+    desc: 'Overspray and soot on hard brick, block, stone and unsealed concrete, small areas only. Test spot first.',
+    href: '/quote',
   },
 ];
+
+/**
+ * Before and after pairs from the first jobs. Each slot renders a labeled
+ * placeholder until its photos exist; fill in src and alt for both halves
+ * (files under /public) and the frame switches to the real image. Captions
+ * describe the surface and the work only, never the customer or the address.
+ */
+type PhotoSlot = { src: string | null; alt: string };
+type BeforeAfterPair = { before: PhotoSlot; after: PhotoSlot; caption: string };
+
+const EMPTY_SLOT: PhotoSlot = { src: null, alt: '' };
+
+const beforeAfterPairs: BeforeAfterPair[] = [
+  { before: EMPTY_SLOT, after: EMPTY_SLOT, caption: '' },
+  { before: EMPTY_SLOT, after: EMPTY_SLOT, caption: '' },
+  { before: EMPTY_SLOT, after: EMPTY_SLOT, caption: '' },
+];
+
+function PhotoFrame({ slot, label }: { slot: PhotoSlot; label: string }) {
+  return (
+    <figure className="relative aspect-[4/3] overflow-hidden rounded-md bg-[#0e273e]">
+      {slot.src ? (
+        <Image
+          src={slot.src}
+          alt={slot.alt}
+          fill
+          sizes="(min-width: 1024px) 18rem, (min-width: 768px) 45vw, 90vw"
+          className="object-cover"
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center border-2 border-dashed border-[#397774]/40 text-sm text-gray-500">
+          {label} photo
+        </div>
+      )}
+      <figcaption className="absolute left-2 top-2 rounded bg-[#0e273e]/85 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-white">
+        {label}
+      </figcaption>
+    </figure>
+  );
+}
 
 const credentials = [
   // Trained, never certified. Naming the standard is what carries the
@@ -48,16 +120,18 @@ export default function Home() {
               <p className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-[#397774]">
                 Charleston, SC &amp; the Lowcountry
               </p>
-              <h1 className="font-display text-6xl font-bold leading-[0.95] tracking-tight text-white sm:text-7xl">
-                Laser precision.
+              <h1 className="font-display text-5xl font-bold leading-[0.95] tracking-tight text-white sm:text-6xl">
+                Charleston&apos;s surface restoration specialists.
                 <br />
                 <span className="text-[#397774]">We remove the rust, not the iron.</span>
               </h1>
               <p className="mt-7 max-w-xl text-lg leading-relaxed text-gray-300">
-                We remove rust and old paint from iron gates, steel railings,
-                cast iron, and marine stainless and bronze, set to stop at the
-                metal. A test spot comes first. No chemicals, no blast media, no
-                water.
+                Rust and paint come off first, and graffiti, grease, oxidation
+                and stains come off the same way. We work on metal, wood, brick
+                and masonry, stone, concrete and boat parts on land, with a
+                laser set to stop at the surface underneath. Anything we have
+                not done before gets a test spot first. No chemicals and no
+                blast media.
               </p>
               <div className="mt-9 flex flex-col gap-4 sm:flex-row">
                 <Link
@@ -74,7 +148,8 @@ export default function Home() {
                 </Link>
               </div>
               <p className="mt-4 text-sm text-gray-400">
-                Free estimates. No obligation. Reply within one business day.
+                Not sure if we can help? Send it anyway. Free estimates, with a
+                reply within one business day.
               </p>
             </div>
 
@@ -115,17 +190,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Specialties */}
+      {/* What comes off */}
       <section className="bg-[#0e273e] py-8 lg:py-12">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#397774]">
             What we do
           </p>
           <h2 className="font-display mb-14 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-            Three specialties. One laser.
+            What comes off, and what it comes off of.
           </h2>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {specialties.map(({ Icon, title, desc, href }) => (
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {whatComesOff.map(({ Icon, title, desc, href }) => (
               <Link
                 key={title}
                 href={href}
@@ -137,9 +212,35 @@ export default function Home() {
                 </h3>
                 <p className="mb-4 text-sm leading-relaxed text-gray-400">{desc}</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#397774] transition-all group-hover:gap-2">
-                  Learn more <span aria-hidden="true">&rarr;</span>
+                  {href === '/quote' ? 'Send a photo' : 'Learn more'}{' '}
+                  <span aria-hidden="true">&rarr;</span>
                 </span>
               </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Before and after */}
+      <section className="border-t border-[#397774]/20 bg-[#1a3958] py-8 lg:py-12">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#397774]">
+            Before and after
+          </p>
+          <h2 className="font-display mb-10 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            The same surface, before and after.
+          </h2>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {beforeAfterPairs.map((pair, i) => (
+              <div key={i} className="rounded-lg border border-[#397774]/30 bg-[#0e273e] p-3">
+                <div className="grid grid-cols-2 gap-3">
+                  <PhotoFrame slot={pair.before} label="Before" />
+                  <PhotoFrame slot={pair.after} label="After" />
+                </div>
+                {pair.caption && (
+                  <p className="mt-3 text-sm leading-relaxed text-gray-400">{pair.caption}</p>
+                )}
+              </div>
             ))}
           </div>
         </div>
@@ -170,10 +271,12 @@ export default function Home() {
             Send a photo. Get a number.
           </h2>
           <p className="mx-auto mt-5 mb-10 max-w-xl leading-relaxed text-gray-400">
-            Tell us what needs work and we will tell you what laser cleaning can
-            do for it, usually within one business day. Free estimates on every
-            job. Serving Charleston, Mount Pleasant, North Charleston, Daniel
-            Island, West Ashley, James Island, and the islands.
+            Not sure if we can help? Send it anyway. If it is work we do, you
+            get a free estimate, usually within one business day. If it is not
+            a fit, Tyler still looks at it and, where possible, points you to
+            the right person. Serving Charleston, Mount Pleasant, North
+            Charleston, Daniel Island, West Ashley, James Island, and the
+            islands.
           </p>
           <Link
             href="/quote"

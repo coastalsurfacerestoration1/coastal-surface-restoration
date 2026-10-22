@@ -5,7 +5,7 @@ import Breadcrumbs from '@/app/components/Breadcrumbs';
 export const metadata = pageMetadata({
   title: 'Service Areas in Charleston & the Lowcountry',
   description:
-    'Coastal Surface Restoration serves downtown Charleston, Mount Pleasant, Isle of Palms, Sullivan\'s Island, James Island, and Folly Beach with mobile laser cleaning. Work is done on site, with small parts cleaned on our bench.',
+    'Coastal Surface Restoration serves downtown Charleston, Mount Pleasant, Isle of Palms, Sullivan\'s Island, James Island, and Folly Beach with mobile surface restoration. Work is done on site, with small parts cleaned on our bench.',
   path: '/locations',
 });
 

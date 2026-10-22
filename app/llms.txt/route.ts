@@ -63,9 +63,9 @@ const LOCATIONS: [string, string][] = [
 export function GET() {
   const body = `# Coastal Surface Restoration
 
-> Mobile laser cleaning and surface restoration serving Charleston, South Carolina and the surrounding Lowcountry. Rust, paint, graffiti, and corrosion are removed on site using a pulsed fiber laser, with no chemicals, no abrasive blasting media, and no water runoff.
+> Charleston's surface restoration specialists, serving Charleston, South Carolina and the surrounding Lowcountry. Rust and paint come off first, along with graffiti, grease and carbon, oxidation and stains, on metal, wood, brick and masonry, stone, concrete and boat parts on land. The work is done on site with a pulsed fiber laser, with no chemicals or abrasive blasting media.
 
-The laser is set to remove the coating and stop at the base material, and every job starts with a test spot. It works best on rust and paint on iron and steel, stainless weld tint, and marine hardware on land. Historic soft brick, lime mortar, stucco and pre-1978 paint are declined. The equipment is portable, so work happens at the property or in the driveway, never over water.
+The laser is how the work gets done, not what the business is. It is set to remove the coating and stop at the base material, and every job starts with a test spot. It works best on rust and paint on iron and steel, stainless weld tint, and marine hardware on land. Other materials are taken case by case after a test spot. Historic soft brick, lime mortar, stucco and pre-1978 paint are declined. The equipment is portable, so work happens at the property or in the driveway, never over water.
 
 ## Key facts
 
@@ -75,7 +75,7 @@ The laser is set to remove the coating and stop at the base material, and every 
 - Hours: Saturday and Sunday 8:00 AM to 9:00 PM, Monday to Friday 4:00 PM to 9:00 PM
 - Service model: mobile, service-area business with no walk-in storefront
 - Pricing: free estimates, quoted per object, per job or per linear foot for railings, $400 minimum
-- Estimates: send photos of the piece and pricing follows within one business day
+- Estimates: send photos of the piece and a reply follows within one business day. Not sure it is a fit? Send it anyway. If it is not work we do, the owner still looks at it and, where possible, points you to the right person
 - Credentials: general liability insured; business licensed in Charleston, Mount Pleasant and North Charleston; owner trained to ANSI Z136.1 through the Laser Institute of America and acts as Laser Safety Officer
 - Service areas: ${SERVICE_AREAS.join(', ')}
 
@@ -85,7 +85,7 @@ ${SERVICES.map(([name, path, desc]) => `- [${name}](${SITE_URL}${path}): ${desc}
 
 ## Service areas
 
-${LOCATIONS.map(([name, path]) => `- [${name}](${SITE_URL}${path}): laser cleaning services in ${name}`).join('\n')}
+${LOCATIONS.map(([name, path]) => `- [${name}](${SITE_URL}${path}): surface restoration and laser cleaning in ${name}`).join('\n')}
 
 ## Learn
 
