@@ -326,7 +326,7 @@ export default function RustRemovalPage() {
           {
             q: 'How much does laser rust removal cost in Charleston?',
             a:
-              'Price depends mostly on the coating and how heavy the rust is. Send photos for a free estimate, usually within one business day.',
+              'Jobs are quoted per piece, per job, or per linear foot for railings, with a $400 minimum. Price depends on the coating, how heavy the rust is and access. Send photos for a free estimate, usually within one business day.',
           },
           {
             q: 'Does laser cleaning remove the metal underneath the rust?',

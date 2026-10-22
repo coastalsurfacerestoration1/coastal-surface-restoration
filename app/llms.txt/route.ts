@@ -13,7 +13,7 @@ const SERVICES: [string, string, string][] = [
   [
     'Ironwork and Railings',
     '/services/historic-ironwork-restoration-charleston',
-    'Steel and iron railings, gates and fences cleaned after a test spot. Pre-1978 paint and individually listed properties are declined',
+    'Steel and iron railings, gates and fences cleaned after a test spot, priced per linear foot. Pre-1978 paint and individually listed properties are declined',
   ],
   [
     'Marine Cleaning',
@@ -74,7 +74,7 @@ The laser is the tool the business uses. Every job starts with a test spot, whic
 - Email: ${BUSINESS.email}
 - Hours: Saturday and Sunday 8:00 AM to 9:00 PM, Monday to Friday 4:00 PM to 9:00 PM
 - Service model: mobile, service-area business with no walk-in storefront
-- Pricing: free estimates from photos; no prices are published
+- Pricing: free estimates, quoted per object, per job or per linear foot for railings, $400 minimum
 - Estimates: send photos of the piece and a reply follows within one business day. Not sure it is a fit? Send it anyway. If it is not work we do, the owner still looks at it and, where possible, points you to the right person
 - Credentials: general liability insured; business licensed in Charleston, Mount Pleasant and North Charleston; owner trained to ANSI Z136.1 through the Laser Institute of America and acts as Laser Safety Officer
 - Service areas: ${SERVICE_AREAS.join(', ')}
@@ -102,6 +102,7 @@ ${LOCATIONS.map(([name, path]) => `- [${name}](${SITE_URL}${path}): surface rest
 
 - Laser cleaning is not pressure washing, sandblasting, or chemical stripping. It is a dry, non-contact process with no blast media to clean up. Removed coating becomes dust and fume, which is extracted and HEPA cleaned.
 - Not offered: efflorescence, boat hulls and gelcoat, any work over water, interior wood, pre-1978 paint unless lead tested, individually listed historic properties, soft historic brick and lime mortar, car body panels, sealed or epoxy floors.
+- Pricing: quoted per object, per job, or per linear foot for railings, with a $400 minimum. Never per square foot.
 - Bare steel left uncoated in coastal salt air will begin to flash rust, so exterior work is timed so a protective coating can follow.
 `;
 
