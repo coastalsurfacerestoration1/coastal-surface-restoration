@@ -68,10 +68,10 @@ export default function BrickCleaningPage() {
             Brick on the peninsula&apos;s older homes was fired in the 1700s and 1800s with a hard skin over a soft core. Once that skin is gone the brick soaks up water and spalls. Laser heat can gray or glaze it too, so we send that work to a masonry conservator.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
-            Efflorescence, the white crystalline haze on brick and stucco, is salt carried to the surface by water moving through the wall. It is a moisture problem first. Acid scrubbing etches the masonry and the salt comes back, and it would come back after a laser cleaning too, because neither one stops the water. We do not take efflorescence jobs. We can dry brush a spot and point out where the water is likely getting in, so you can call a mason.
+            Efflorescence, the white crystalline haze on brick and stucco, is salt carried to the surface by water moving through the wall. It is a moisture problem first. Acid scrubbing etches the masonry and the salt comes back, and it would come back after a laser cleaning too, because neither one stops the water. We do not take efflorescence jobs. A dry brushed spot can still show where the water is likely getting in, so you know what to tell a mason.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            Laser cleaning removes surface contamination without water, chemicals, or abrasion. On hard-fired brick the laser can lift soot and some paint, but too much energy grays or glazes the face. We test a 6 by 6 inch patch first and stop at the first color shift.
+            Laser cleaning removes surface contamination without water, chemical strippers or abrasion. On hard-fired brick the laser can lift soot and some paint, but too much energy grays or glazes the face. We test a 6 by 6 inch patch first and stop at the first color shift.
           </p>
         </div>
       </section>

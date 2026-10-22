@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Laser Rust & Paint Removal in Charleston, SC',
   description:
-    'Laser rust and paint removal in Charleston, SC. Chemical-free laser cleaning for iron and steel railings, gates and parts, plus stainless and bronze boat hardware. No blast media, test spot first. Free estimates.',
+    'Laser rust and paint removal in Charleston, SC. Laser cleaning with no chemical strippers for iron and steel railings, gates and parts, plus stainless and bronze boat hardware. No blast media, test spot first. Free estimates.',
   path: '/services/rust-removal-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function RustRemovalPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Rust and Paint Removal',
-          description: 'Laser rust and paint removal in Charleston, SC. Chemical-free laser cleaning for iron and steel railings, gates and parts, plus stainless and bronze boat hardware. No blast media, test spot first. Free estimates.',
+          description: 'Laser rust and paint removal in Charleston, SC. Laser cleaning with no chemical strippers for iron and steel railings, gates and parts, plus stainless and bronze boat hardware. No blast media, test spot first. Free estimates.',
           path: '/services/rust-removal-charleston',
           serviceType: 'Rust removal',
         })}
@@ -43,7 +43,7 @@ export default function RustRemovalPage() {
             Laser Rust and Paint Removal in Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Charleston&apos;s salt air and humidity are hard on metal. Rust, flaking paint, and oxidation show up fast on iron, steel, and marine hardware. Laser cleaning lifts it without abrasives or chemicals, set to stop at the metal, and leaves a clean surface that needs primer the same day.
+            Charleston&apos;s salt air and humidity are hard on metal. Rust, flaking paint, and oxidation show up fast on iron, steel, and marine hardware. Laser cleaning lifts it without sandblasting or chemical strippers, dialed in on a test spot to keep as much of the metal as possible. The clean surface needs primer the same day.
           </p>
           <Link
             href="/quote"
@@ -58,13 +58,13 @@ export default function RustRemovalPage() {
       <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
-            Rust Removal Without Blast Media or Chemicals
+            Rust Removal Without Sandblasting or Chemical Strippers
           </h2>
           <p className="text-gray-400 leading-relaxed mb-6">
             Traditional rust removal forces a tradeoff. Sandblasting cuts into the metal and warps thin material. Chemical strippers create hazardous runoff and can pit the surface. Wire wheels and grinders leave gouges and struggle in tight detail. For anything detailed, thin, or valuable, those methods do as much harm as good.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
-            The laser is set to vaporize the contaminant and stop at the metal, and a test spot confirms the setting first. There is no grit, no chemical bath and no water. The removed coating turns to dust and fume, which we capture with extraction and clean up with a HEPA vacuum.
+            The laser is dialed in on a test spot to vaporize the contaminant and keep as much of the metal as possible. There is no grit, no chemical bath and no water. The removed coating turns to dust and fume, which we capture with extraction and clean up with a HEPA vacuum.
           </p>
           <p className="text-gray-400 leading-relaxed">
             The result is clean metal with its original profile. On bare steel and iron that surface is ready for primer, and it needs it the same day, because bare steel flash-rusts overnight in Charleston humidity. Laser prep is the step before the coating.
@@ -166,7 +166,7 @@ export default function RustRemovalPage() {
           </div>
 
           <p className="text-gray-400 leading-relaxed mb-6">
-            The same control is what makes the process suited to detailed work. Paint sitting in the crevices of a forged railing, in threads, or in the recesses of a casting is exactly where blasting either fails to reach or erodes the detail trying. Laser cleaning follows the shape of the piece, so ornamental ironwork, hardware, and fabricated assemblies come out with their profile intact.
+            The same control is what makes the process suited to detailed work. Paint sitting in the crevices of a forged railing, in threads, or in the recesses of a casting is exactly where blasting either fails to reach or erodes the detail trying. Laser cleaning follows the shape of the piece, so ornamental ironwork, hardware, and fabricated assemblies keep more of their profile.
           </p>
           <p className="text-gray-400 leading-relaxed mb-6">
             Galvanized steel needs one more step. Stripping paint from a galvanized railing or gate takes zinc with it, so a zinc-rich primer goes on before paint. If you need the galvanizing kept intact, laser stripping is not the right method. That applies to the galvanized railings common on Daniel Island and in newer Mount Pleasant construction.
@@ -221,7 +221,7 @@ export default function RustRemovalPage() {
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'Set to lift the rust, paint or oxidation and stop at the metal, with a test spot first. No grit, no chemicals, no water. Dust and fume are captured and HEPA-cleaned.',
+                problem: 'Dialed in on a test spot to lift the rust, paint or oxidation and keep as much of the metal as possible. No grit, no chemical strippers, no water. Dust and fume are captured and HEPA-cleaned.',
                 safe: true,
               },
             ].map((item) => (
@@ -331,7 +331,7 @@ export default function RustRemovalPage() {
           {
             q: 'Does laser cleaning remove the metal underneath the rust?',
             a:
-              'Not when the settings are right. The pulse is set to lift the oxide and stop at the metal, and too much energy can melt or mark steel, which is why every job starts with a test spot. Cleaned metal has a matte texture. Sandblasting cuts into sound metal along with the rust.',
+              'It can if the settings are wrong. Too much energy can melt or mark steel, which is why every job starts with a test spot, dialed in to take the oxide and keep as much of the metal as possible. Cleaned metal has a matte texture. Sandblasting cuts into sound metal along with the rust.',
           },
           {
             q: 'Will the rust come back after cleaning?',

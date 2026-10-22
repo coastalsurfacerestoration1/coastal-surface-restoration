@@ -134,7 +134,7 @@ export default function AntiqueRestorationPage() {
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'Adjustable pass by pass. Removes rust and old paint, with a test area first to set how much patina stays. No abrasion, no chemicals.',
+                problem: 'Adjustable pass by pass. Removes rust and old paint, with a test area first to set how much patina stays. No abrasion, no chemical strippers.',
                 safe: true,
               },
             ].map((item) => (
@@ -252,7 +252,7 @@ export default function AntiqueRestorationPage() {
         items={[
           {
             title: 'Rust and Paint Removal',
-            desc: 'Corrosion and failed coatings lifted from iron and steel without abrasives or chemicals.',
+            desc: 'Corrosion and failed coatings lifted from iron and steel without sandblasting or chemical strippers.',
             href: '/services/rust-removal-charleston',
           },
           {

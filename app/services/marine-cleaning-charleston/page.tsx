@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Laser Marine Cleaning in Charleston, SC',
   description:
-    'Laser cleaning for marine metal hardware in Charleston, SC. Stainless and bronze boat hardware cleaned on land or on the hard: tea staining, weld tint, verdigris and rust, with no chemicals or blast media. Free estimates.',
+    'Laser cleaning for marine metal hardware in Charleston, SC. Stainless and bronze boat hardware cleaned on land or on the hard: tea staining, weld tint, verdigris and rust, with no sandblasting or chemical strippers. Free estimates.',
   path: '/services/marine-cleaning-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function MarineCleaningPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Marine Cleaning',
-          description: 'Laser cleaning for marine metal hardware in Charleston, SC. Stainless and bronze boat hardware cleaned on land or on the hard: tea staining, weld tint, verdigris and rust, with no chemicals or blast media. Free estimates.',
+          description: 'Laser cleaning for marine metal hardware in Charleston, SC. Stainless and bronze boat hardware cleaned on land or on the hard: tea staining, weld tint, verdigris and rust, with no sandblasting or chemical strippers. Free estimates.',
           path: '/services/marine-cleaning-charleston',
           serviceType: 'Marine cleaning',
         })}
@@ -43,7 +43,7 @@ export default function MarineCleaningPage() {
             Laser Marine Cleaning in Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Salt water and Lowcountry humidity are hard on marine metal. Tea staining on stainless rails, verdigris on bronze cleats and rust on steel brackets build up fast. Laser cleaning takes that back to clean metal without chemicals or blast media. The work happens on land, with parts off the boat or the boat on the hard. Hulls, gelcoat, and antifouling paint on fiberglass are outside what we do.
+            Salt water and Lowcountry humidity are hard on marine metal. Tea staining on stainless rails, verdigris on bronze cleats and rust on steel brackets build up fast. Laser cleaning takes that back to clean metal without sandblasting or chemical strippers. The work happens on land, with parts off the boat or the boat on the hard. Hulls, gelcoat, and antifouling paint on fiberglass are outside what we do.
           </p>
           <Link
             href="/quote"
@@ -67,7 +67,7 @@ export default function MarineCleaningPage() {
             Sandblasting warps thin stainless and aluminum and leaves grit in every crevice. Chemical strippers create runoff that has no place near the water. Wire wheels only reach flat surfaces and miss the pitted areas where corrosion hides.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            Laser cleaning is set to remove the rust, corrosion, and oxidation layer and stop at the clean metal underneath. There is no grit, no chemical bath and no water, so nothing washes into the harbor. The removed corrosion turns to dust and fume, which we capture with extraction and HEPA-vacuum.
+            Laser cleaning is dialed in on a test spot to remove the rust, corrosion and oxidation layer and keep as much of the metal underneath as possible. There is no grit, no chemical bath and no water, so nothing washes into the harbor. The removed corrosion turns to dust and fume, which we capture with extraction and HEPA-vacuum.
           </p>
         </div>
       </section>
@@ -138,7 +138,7 @@ export default function MarineCleaningPage() {
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'Set to lift rust, tea staining and oxide and stop at the metal. No grit, no chemicals, no water, and nothing washed into the harbor.',
+                problem: 'Dialed in on a test spot to lift rust, tea staining and oxide and keep as much of the metal as possible. No grit, no chemical strippers, no water, and nothing washed into the harbor.',
                 safe: true,
               },
             ].map((item) => (
@@ -255,7 +255,7 @@ export default function MarineCleaningPage() {
           {
             q: 'Is it safe on aluminum and stainless?',
             a:
-              'On stainless, yes, with a test spot first; tea staining and weld tint are some of the best work this laser does. Aluminum is still unproven for us, so we will not promise a result on it. On 316 stainless we also recommend re-passivation afterward, which restores the passive layer that resists salt corrosion.',
+              'On stainless it usually works well, after a test spot; tea staining and weld tint are some of the best work this laser does. Aluminum is still unproven for us, so we will not promise a result on it. On 316 stainless we also recommend re-passivation afterward, which restores the passive layer that resists salt corrosion.',
           },
           {
             q: 'What about corrosion in hard to reach fittings?',

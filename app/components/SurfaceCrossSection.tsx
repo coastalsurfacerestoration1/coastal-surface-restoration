@@ -18,7 +18,7 @@ const METHODS = [
     line: 72,
     label: 78,
     solid: true,
-    note: 'Set to remove the coating and stop at the metal. A test spot confirms the setting, and cleaned metal shows a matte finish.',
+    note: 'Dialed in on a test spot to take the coating and keep as much of the original metal as possible. Cleaned metal shows a matte finish.',
   },
   {
     name: 'Chemical stripping',
@@ -44,7 +44,7 @@ export default function SurfaceCrossSection() {
       <div
         className="relative h-[210px] w-full overflow-hidden rounded-lg"
         role="img"
-        aria-label="Cross-section of a corroded surface. Paint and grime sit on top, rust and oxide below that, then the base metal. Laser cleaning is set to stop at the top of the base metal. Chemical stripping can leave residue in the surface, and sandblasting can cut into the metal."
+        aria-label="Cross-section of a corroded surface. Paint and grime sit on top, rust and oxide below that, then the base metal. Laser cleaning is dialed in on a test spot to take the coating and keep as much of the base metal as possible. Chemical stripping can leave residue in the surface, and sandblasting can cut into the metal."
       >
         {/* Layers */}
         <div className="absolute inset-x-0 top-0 h-[34px] bg-gradient-to-b from-[#4b5563] to-[#374151]" />

@@ -21,7 +21,7 @@ const whatComesOff = [
   {
     Icon: IronScrollIcon,
     title: 'Rust',
-    desc: 'Off iron gates, steel railings, cast iron, trailers and car parts, set to stop at sound metal so the profile and edges survive.',
+    desc: 'Off iron gates, steel railings, cast iron, trailers and car parts, dialed in on a test spot to take the rust and keep as much of the original metal as possible.',
     href: '/services/rust-removal-charleston',
   },
   {
@@ -45,7 +45,7 @@ const whatComesOff = [
   {
     Icon: CleatIcon,
     title: 'Oxidation',
-    desc: 'Tea staining and weld tint on stainless, and the green crust on bronze boat hardware, cleaned on land or with the boat on the hard.',
+    desc: 'Tea staining and weld tint on stainless, and the green crust on bronze boat hardware, cleaned on land or with the boat on the hard. Test spot first.',
     href: '/services/marine-cleaning-charleston',
   },
   {
@@ -130,10 +130,10 @@ export default function Home() {
               </h1>
               <p className="mt-7 max-w-xl text-lg leading-relaxed text-gray-300">
                 We take off rust and old paint, along with graffiti, grease,
-                oxidation and stains. We work on metal, wood, brick, stone,
-                concrete and boat parts on land, using a laser set to stop at
-                the original surface. Anything new to us gets a test spot
-                first, and we never use chemicals or blast media.
+                oxidation and stains. Metal, wood, brick, stone, concrete and
+                boat parts on land all work with the laser. Each job is dialed
+                in on a test spot to take the coating and keep as much of the
+                original as possible. No sandblasting, no chemical strippers.
               </p>
               <div className="mt-9 flex flex-col gap-4 sm:flex-row">
                 <Link
@@ -255,12 +255,11 @@ export default function Home() {
             The difference
           </p>
           <h2 className="font-display mb-5 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-            Every method removes the rust. The laser is set to stop at the metal.
+            Taking the rust off is the easy part. Keeping the metal is the hard part.
           </h2>
           <p className="mb-12 max-w-2xl leading-relaxed text-gray-400">
-            Rust sits on top of the metal you are trying to keep. The question
-            is not whether a method can take the corrosion off, it is what else
-            comes off with it.
+            Rust sits on top of the metal you are trying to keep. Any method
+            takes rust off. What matters is what else it takes with it.
           </p>
           <SurfaceCrossSection />
         </div>
@@ -277,8 +276,8 @@ export default function Home() {
             get a free estimate, usually within one business day. If it is not
             a fit, Tyler still looks at it and, where possible, points you to
             the right person. Serving Charleston, Mount Pleasant, North
-            Charleston, Daniel Island, West Ashley, James Island, and the
-            islands.
+            Charleston, Daniel Island, West Ashley, James Island, Summerville,
+            Isle of Palms, Sullivan&apos;s Island and Folly Beach.
           </p>
           <Link
             href="/quote"

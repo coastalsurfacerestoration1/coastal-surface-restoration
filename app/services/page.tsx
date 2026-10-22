@@ -30,7 +30,7 @@ const services: Service[] = [
   {
     Icon: BoltIcon,
     title: 'Rust & Paint Removal',
-    desc: 'Rust, old paint and coatings off iron and steel, plus weld tint and tea staining on stainless. No blast media or chemicals, test spot first.',
+    desc: 'Rust, old paint and coatings off iron and steel, plus weld tint and tea staining on stainless. No sandblasting or chemical strippers, test spot first.',
     href: '/services/rust-removal-charleston',
     live: true,
   },
@@ -101,7 +101,7 @@ export default function ServicesPage() {
             Our Services
           </h1>
           <p className="text-gray-400 text-lg max-w-xl mx-auto">
-            We take off rust and old paint, along with graffiti, grease, oxidation and stains, from metal, wood, masonry, concrete and boat parts on land. We never use chemicals or blast media, and the dust gets captured and cleaned up.
+            We take off rust and old paint, along with graffiti, grease, oxidation and stains, from metal, wood, masonry, concrete and boat parts on land. No sandblasting or chemical strippers are used, and the dust gets captured and cleaned up.
           </p>
         </div>
       </section>

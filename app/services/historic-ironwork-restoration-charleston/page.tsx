@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Historic Ironwork Restoration in Charleston, SC',
   description:
-    'Laser rust and paint removal for iron and steel gates and railings in Charleston, SC. No blast media, no chemicals, test spot first. Pre-1978 paint needs a negative lead test. Free estimates.',
+    'Laser rust and paint removal for iron and steel gates and railings in Charleston, SC. No sandblasting or chemical strippers, test spot first. Pre-1978 paint needs a negative lead test. Free estimates.',
   path: '/services/historic-ironwork-restoration-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function HistoricIronworkPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Historic Ironwork Restoration',
-          description: 'Laser rust and paint removal for iron and steel gates and railings in Charleston, SC. No blast media, no chemicals, test spot first. Pre-1978 paint needs a negative lead test. Free estimates.',
+          description: 'Laser rust and paint removal for iron and steel gates and railings in Charleston, SC. No sandblasting or chemical strippers, test spot first. Pre-1978 paint needs a negative lead test. Free estimates.',
           path: '/services/historic-ironwork-restoration-charleston',
           serviceType: 'Historic restoration',
         })}
@@ -43,7 +43,7 @@ export default function HistoricIronworkPage() {
             Laser Restoration for Charleston&apos;s Historic Ironwork
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Charleston has one of the best collections of historic ironwork in the Southeast, and salt air is hard on all of it. Laser cleaning lifts rust and failed paint without blast media or chemicals, set to stop at the metal, with a test spot first. True pre-1900 wrought iron gets extra testing.
+            Charleston has one of the best collections of historic ironwork in the Southeast, and salt air is hard on all of it. Laser cleaning lifts rust and failed paint without sandblasting or chemical strippers, dialed in on a test spot to keep as much of the original iron as possible. True pre-1900 wrought iron gets extra testing.
           </p>
           <Link
             href="/quote"
@@ -67,7 +67,7 @@ export default function HistoricIronworkPage() {
             The challenge with restoring historic ironwork is that traditional cleaning methods all risk damaging or destroying the original surface. Sandblasting, chemical stripping, and wire brushing each take something off the piece that cannot be put back. On a gate that has stood since the 1800s, that risk is too high.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            A pulsed fiber laser can be set to lift rust and paint and stop at the iron, and a test spot shows how the surface responds before we quote. Cleaned iron looks matte and a little different. It also flash-rusts overnight here, so primer or a stable finish goes on the same day.
+            A pulsed fiber laser is dialed in on a test spot to lift rust and paint and keep as much of the original iron as possible, and that spot shows how the surface responds before we quote. Cleaned iron looks matte and a little different. It also flash-rusts overnight here, so primer or a stable finish goes on the same day.
           </p>
         </div>
       </section>
@@ -134,7 +134,7 @@ export default function HistoricIronworkPage() {
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'Set to lift the coating and stop at the iron. No chemicals, no abrasion. Brick, glass and sealant next to the iron are shielded, since the beam can mark them.',
+                problem: 'Dialed in on a test spot to lift the coating and keep as much of the iron as possible. No chemical strippers, no abrasion. Brick, glass and sealant next to the iron are shielded, since the beam can mark them.',
                 safe: true,
               },
             ].map((item) => (

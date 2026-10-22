@@ -43,7 +43,7 @@ export default function IsleOfPalmsSullivansPage() {
             Laser Cleaning on Isle of Palms and Sullivan&apos;s Island
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Barrier island property takes the worst corrosion exposure in the Lowcountry. Salt spray carries inland off the Atlantic every day, and it attacks exterior metal on a timeline that surprises owners who moved here from anywhere else. We remove that corrosion on site, with no chemicals, no abrasives, and no water.
+            Barrier island property takes the worst corrosion exposure in the Lowcountry. Salt spray carries inland off the Atlantic every day, and it attacks exterior metal on a timeline that surprises owners who moved here from anywhere else. That corrosion comes off on site, with no sandblasting and no chemical strippers.
           </p>
           <Link
             href="/quote"
@@ -229,7 +229,7 @@ export default function IsleOfPalmsSullivansPage() {
           {
             q: 'Does stainless steel really rust out here?',
             a:
-              'Yes. The lower stainless grades used on a lot of railing and marine hardware pit and tea-stain in front-line salt exposure. It is not a sign of a defective part, it is the grade meeting an environment it was not specified for. Even 316 tea-stains here. The laser takes the stain off, and a passivation treatment afterward helps slow its return.',
+              'Yes. The lower stainless grades used on a lot of railing and marine hardware pit and tea-stain in front-line salt exposure. That does not mean the part is defective. The grade is meeting an environment it was not specified for. Even 316 tea-stains here. The laser takes the stain off, and a passivation treatment afterward helps slow its return.',
           },
           {
             q: 'Can you schedule around rental turnovers?',

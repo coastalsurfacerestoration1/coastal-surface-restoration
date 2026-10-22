@@ -8,7 +8,7 @@ import Faq from '@/app/components/Faq';
 export const metadata = pageMetadata({
   title: 'How Laser Cleaning Works',
   description:
-    'A plain-language guide to laser cleaning. How a pulsed fiber laser removes rust and paint without chemicals or blast media, where it stops, and what it cannot do. Diagrams and comparisons.',
+    'A plain-language guide to laser cleaning. How a pulsed fiber laser removes rust and paint without sandblasting or chemical strippers, how a test spot sets it up, and what it cannot do. Diagrams and comparisons.',
   path: '/how-laser-cleaning-works',
 });
 
@@ -216,7 +216,7 @@ export default function HowLaserCleaningWorksPage() {
         data={serviceSchema({
           name: 'Laser Cleaning',
           description:
-            'Mobile laser cleaning services in Charleston, SC. A pulsed fiber laser lifts rust, paint, and coatings without chemicals, abrasives, or water runoff.',
+            'Mobile laser cleaning services in Charleston, SC. A pulsed fiber laser lifts rust, paint, and coatings with no sandblasting or chemical strippers.',
           path: '/how-laser-cleaning-works',
           serviceType: 'Laser cleaning',
         })}
@@ -232,7 +232,7 @@ export default function HowLaserCleaningWorksPage() {
             How Laser Cleaning Works
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            A short, plain-language explanation of what laser cleaning is, what it removes, and how it is set to stop at the surface underneath. If you have never seen it before, this is the page to read first.
+            A short, plain-language explanation of what laser cleaning is, what it removes, and how a test spot sets it up for each surface. If you have never seen it before, this is the page to read first.
           </p>
           <Link
             href="/quote"
@@ -248,10 +248,10 @@ export default function HowLaserCleaningWorksPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">The 30 Second Version</h2>
           <p className="text-gray-400 leading-relaxed mb-4">
-            A laser cleaner fires very short pulses of light at one wavelength, 1064 nm. Rust and paint absorb that light and leave as fine dust and fume. Bare metal reflects more of it, so with the right settings the beam takes the coating and stops at the metal.
+            A laser cleaner fires very short pulses of light at one wavelength, 1064 nm. Rust and paint absorb that light and leave as fine dust and fume. Bare metal reflects more of it, so settings dialed in on a test spot take the coating and keep as much of the metal as possible. Too much energy can still melt or etch the surface, which is why the test spot comes first.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            No sand, no chemicals, no water. CSR runs a Chihalo CF-300, a 300 W pulsed fiber laser in a backpack unit, and brings it to your property.
+            No sandblasting and no chemical strippers. CSR runs a Chihalo CF-300, a 300 W pulsed fiber laser in a backpack unit, and brings it to your property.
           </p>
         </div>
       </section>
@@ -397,7 +397,7 @@ export default function HowLaserCleaningWorksPage() {
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'Non-contact and dry, set to stop at the metal after a test spot. No blast media or chemicals to contain, and no water. Removed coating still needs extraction and cleanup.',
+                problem: 'Non-contact and dry, dialed in on a test spot to keep as much of the metal as possible. No blast media or chemical strippers to contain, and no water. Removed coating still needs extraction and cleanup.',
                 safe: true,
               },
             ].map((item) => (
@@ -524,7 +524,7 @@ export default function HowLaserCleaningWorksPage() {
           {
             q: 'Does it use any chemicals or water?',
             a:
-              'No. It is a dry, non-contact process with no runoff into landscaping, gutters or storm drains. Removed coating leaves as dust and fume, so it is extracted and vacuumed, not rinsed.',
+              'Not for the stripping. It is a dry, non-contact process with no runoff into landscaping, gutters or storm drains. Removed coating leaves as dust and fume, so it is extracted and vacuumed, not rinsed. Solid brass may get a polish and an alcohol wipe afterward.',
           },
           {
             q: 'How long does a typical job take?',

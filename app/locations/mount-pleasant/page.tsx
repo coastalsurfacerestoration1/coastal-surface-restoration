@@ -9,7 +9,7 @@ import RelatedItemsSection from '@/app/components/RelatedItemsSection';
 export const metadata = pageMetadata({
   title: 'Laser Cleaning & Rust Removal in Mount Pleasant, SC',
   description:
-    'Mobile surface restoration and rust removal in Mount Pleasant, SC. Boat trailers, marine stainless and bronze on land, gates, railings, and outdoor steel cleaned on site with no chemicals or blast media. Free estimates.',
+    'Mobile surface restoration and rust removal in Mount Pleasant, SC. Boat trailers, marine stainless and bronze on land, gates, railings, and outdoor steel cleaned on site with no sandblasting or chemical strippers. Free estimates.',
   path: '/locations/mount-pleasant',
 });
 
@@ -26,7 +26,7 @@ export default function MountPleasantPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Cleaning and Rust Removal in Mount Pleasant',
-          description: 'Mobile surface restoration and rust removal in Mount Pleasant, SC. Boat trailers, marine stainless and bronze on land, gates, railings, and outdoor steel cleaned on site with no chemicals or blast media. Free estimates.',
+          description: 'Mobile surface restoration and rust removal in Mount Pleasant, SC. Boat trailers, marine stainless and bronze on land, gates, railings, and outdoor steel cleaned on site with no sandblasting or chemical strippers. Free estimates.',
           path: '/locations/mount-pleasant',
           serviceType: 'Laser cleaning',
           areaServed: ['Mount Pleasant'],
@@ -43,7 +43,7 @@ export default function MountPleasantPage() {
             Laser Rust Removal in Mount Pleasant
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Mount Pleasant sits between the harbor, the Wando, and the Intracoastal, and salt air moves through all of it. It does not matter whether your house is in the Old Village or went up in 2019 in Carolina Park. Exterior metal here corrodes, and it starts sooner than most people expect. We remove that corrosion on site, without chemicals, sand, or water.
+            Mount Pleasant sits between the harbor, the Wando, and the Intracoastal, and salt air moves through all of it. It does not matter whether your house is in the Old Village or went up in 2019 in Carolina Park. Exterior metal here corrodes, and it starts sooner than most people expect. We remove that corrosion on site, without sandblasting or chemical strippers.
           </p>
           <Link
             href="/quote"
@@ -118,7 +118,7 @@ export default function MountPleasantPage() {
       <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
-            Why Laser Instead of Blasting or Chemicals
+            Why Laser Instead of Blasting or Chemical Strippers
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
@@ -134,7 +134,7 @@ export default function MountPleasantPage() {
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'On site, dry, and no water. Dust and fume are extracted and vacuumed up. Set to stop at the metal after a test spot, ready for primer the same day.',
+                problem: 'On site, dry, and no water. Dust and fume are extracted and vacuumed up. Dialed in on a test spot to keep as much of the metal as possible, ready for primer the same day.',
                 safe: true,
               },
             ].map((item) => (
