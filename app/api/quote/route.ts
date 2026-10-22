@@ -703,7 +703,7 @@ function acknowledgementText(
     '',
     `Thanks for reaching out to ${SITE_NAME}. We have your request and will follow up within one business day.`,
     '',
-    'One thing to know up front: we are booking our first Charleston jobs now, starting in late October 2026. We will get you a price now and put you on the schedule.',
+    'Now booking jobs across the Charleston area. We will get you a price now and put you on the schedule.',
     '',
     'Here is what you sent us:',
     '',
@@ -783,8 +783,8 @@ function acknowledgementHtml(
                      style="background: #f4f7f8; border-left: 3px solid #397774; margin: 0 0 24px;">
                 <tr>
                   <td style="padding: 14px 16px; font-size: 14px; line-height: 1.6; color: #4b5563;">
-                    One thing to know up front: we are booking our first Charleston jobs now, starting
-                    in late October 2026. We will get you a price now and put you on the schedule.
+                    Now booking jobs across the Charleston area. We will get you a price now and put
+                    you on the schedule.
                   </td>
                 </tr>
               </table>
