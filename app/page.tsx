@@ -123,7 +123,7 @@ export default function Home() {
               {/* "restoration specialists." is kept on one line. The size
                   scales with the viewport on phones so that line fits down
                   to a 320px screen instead of breaking after "restoration". */}
-              <h1 className="font-display text-[clamp(2.25rem,10.5vw,3rem)] font-bold leading-[0.95] tracking-tight text-white sm:text-6xl">
+              <h1 className="font-display text-[clamp(2.125rem,10.5vw,3rem)] font-bold leading-[0.95] tracking-tight text-white sm:text-6xl">
                 <span className="block">Charleston&apos;s surface</span>
                 <span className="block whitespace-nowrap">restoration specialists.</span>
                 <span className="block text-[#397774]">We remove the rust, not the iron.</span>
