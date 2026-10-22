@@ -37,7 +37,7 @@ const OG_IMAGE = {
   url: '/opengraph-image',
   width: 1200,
   height: 630,
-  alt: 'Coastal Surface Restoration, mobile laser cleaning in Charleston, SC',
+  alt: "Coastal Surface Restoration, Charleston's surface restoration specialists",
 };
 
 /**

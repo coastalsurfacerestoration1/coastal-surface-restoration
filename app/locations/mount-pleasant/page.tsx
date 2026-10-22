@@ -9,7 +9,7 @@ import RelatedItemsSection from '@/app/components/RelatedItemsSection';
 export const metadata = pageMetadata({
   title: 'Laser Cleaning & Rust Removal in Mount Pleasant, SC',
   description:
-    'Mobile laser rust removal and surface restoration in Mount Pleasant, SC. Boat trailers, marine stainless and bronze on land, gates, railings, and outdoor steel cleaned on site with no chemicals or blast media. Free estimates.',
+    'Mobile surface restoration and rust removal in Mount Pleasant, SC. Boat trailers, marine stainless and bronze on land, gates, railings, and outdoor steel cleaned on site with no chemicals or blast media. Free estimates.',
   path: '/locations/mount-pleasant',
 });
 
@@ -26,7 +26,7 @@ export default function MountPleasantPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Cleaning and Rust Removal in Mount Pleasant',
-          description: 'Mobile laser rust removal and surface restoration in Mount Pleasant, SC. Boat trailers, marine stainless and bronze on land, gates, railings, and outdoor steel cleaned on site with no chemicals or blast media. Free estimates.',
+          description: 'Mobile surface restoration and rust removal in Mount Pleasant, SC. Boat trailers, marine stainless and bronze on land, gates, railings, and outdoor steel cleaned on site with no chemicals or blast media. Free estimates.',
           path: '/locations/mount-pleasant',
           serviceType: 'Laser cleaning',
           areaServed: ['Mount Pleasant'],

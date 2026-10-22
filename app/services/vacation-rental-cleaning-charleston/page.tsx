@@ -102,7 +102,7 @@ export default function VacationRentalPage() {
               },
               {
                 title: 'Brick & Masonry',
-                desc: 'Paint overspray on hard brick and unsealed concrete, small areas, test first. Mildew and stucco we do not quote yet.',
+                desc: 'Paint overspray on hard brick and unsealed concrete, small areas, test first. Stucco we do not quote yet.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">

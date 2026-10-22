@@ -7,7 +7,7 @@ import Faq from '@/app/components/Faq';
 export const metadata = pageMetadata({
   title: 'Contact',
   description:
-    'Contact Coastal Surface Restoration for mobile laser cleaning in Charleston, SC. Call, email, or request a free quote online.',
+    "Contact Coastal Surface Restoration, Charleston's surface restoration specialists. Request a free quote online or call 854-222-7790.",
   path: '/contact',
 });
 

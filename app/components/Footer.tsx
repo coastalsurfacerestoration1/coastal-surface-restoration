@@ -55,7 +55,7 @@ export default function Footer() {
               </h3>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Charleston&apos;s laser cleaning specialists. Rust and paint off iron and steel, stainless and marine hardware, on site.
+              Charleston&apos;s surface restoration specialists. Rust and paint off metal, wood, masonry and concrete, on site. Not sure if we can help? Send it anyway.
             </p>
             <div className="flex items-center gap-4 mt-4">
               {socials.map((s) => (

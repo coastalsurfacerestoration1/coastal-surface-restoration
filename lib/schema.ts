@@ -45,7 +45,7 @@ export function localBusinessSchema() {
     logo: `${SITE_URL}/logo-icon.png`,
     image: `${SITE_URL}/opengraph-image`,
     description:
-      "Charleston's laser cleaning specialists. Rust and paint removed from iron and steel, weld tint from stainless, and corrosion from marine hardware on land. No chemicals, no blast media, test spot first.",
+      "Charleston's surface restoration specialists. Rust and paint come off metal, wood, masonry, stone and concrete, along with graffiti, grease and carbon, oxidation and stains, using a laser set to stop at the surface underneath. No chemicals or blast media. Test spot first.",
     telephone: '+1-854-222-7790',
     email: BUSINESS.email,
     priceRange: '$$',
@@ -103,9 +103,11 @@ export function localBusinessSchema() {
       jobTitle: 'Founder & Laser Safety Officer',
     },
     knowsAbout: [
-      'Laser cleaning',
+      'Surface restoration',
       'Rust removal',
-      'Paint removal from steel',
+      'Paint and coating removal',
+      'Graffiti removal',
+      'Laser cleaning',
       'Stainless steel weld tint removal',
       'Marine hardware cleaning',
       'Cast iron and vintage tool restoration',

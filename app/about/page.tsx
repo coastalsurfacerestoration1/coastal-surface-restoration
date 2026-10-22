@@ -10,7 +10,7 @@ export const metadata = pageMetadata({
     // The body of this page has always had it right, so the description was
     // the only place on the site still claiming certification rather than
     // training, and it is the copy that shows in search snippets.
-    "Coastal Surface Restoration is Charleston's mobile laser cleaning specialist. Founder Tyler Scherzer is a Laser Safety Officer trained to ANSI Z136.1 through the LIA.",
+    "Coastal Surface Restoration is Charleston's surface restoration specialist. Founder Tyler Scherzer is a Laser Safety Officer trained to ANSI Z136.1 through the LIA.",
   path: '/about',
 });
 
@@ -35,7 +35,7 @@ export default function AboutPage() {
             <span className="text-[#397774]">Built to Last.</span>
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            Coastal Surface Restoration is a mobile laser cleaning company serving Charleston and the Lowcountry. We remove rust and old paint from iron, steel and marine hardware, with no chemicals or blast media and a test spot before every job.
+            Coastal Surface Restoration is Charleston&apos;s surface restoration specialist, serving Charleston and the Lowcountry. Rust and paint come off first, on metal, wood, masonry, concrete and boat parts on land. The laser is how we do it, with no chemicals or blast media and a test spot before every job.
           </p>
         </div>
       </section>

@@ -9,7 +9,7 @@ import RelatedItemsSection from '@/app/components/RelatedItemsSection';
 export const metadata = pageMetadata({
   title: 'Laser Cleaning in Downtown Charleston, SC',
   description:
-    'Mobile laser cleaning on the Charleston peninsula. Rust and failed paint removed from iron gates, railings and cast iron hardware with no chemicals or blast media, test spot first. Free estimates.',
+    'Mobile surface restoration on the Charleston peninsula. Rust and failed paint removed from iron gates, railings and cast iron hardware with no chemicals or blast media, test spot first. Free estimates.',
   path: '/locations/downtown-charleston',
 });
 
@@ -26,7 +26,7 @@ export default function DowntownCharlestonPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Cleaning in Downtown Charleston',
-          description: 'Mobile laser cleaning on the Charleston peninsula. Rust and failed paint removed from iron gates, railings and cast iron hardware with no chemicals or blast media, test spot first. Free estimates.',
+          description: 'Mobile surface restoration on the Charleston peninsula. Rust and failed paint removed from iron gates, railings and cast iron hardware with no chemicals or blast media, test spot first. Free estimates.',
           path: '/locations/downtown-charleston',
           serviceType: 'Laser cleaning',
           areaServed: ['Charleston'],
