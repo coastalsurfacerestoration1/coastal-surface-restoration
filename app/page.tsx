@@ -120,18 +120,20 @@ export default function Home() {
               <p className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-[#397774]">
                 Charleston, SC &amp; the Lowcountry
               </p>
-              <h1 className="font-display text-5xl font-bold leading-[0.95] tracking-tight text-white sm:text-6xl">
-                Charleston&apos;s surface restoration specialists.
-                <br />
-                <span className="text-[#397774]">We remove the rust, not the iron.</span>
+              {/* "restoration specialists." is kept on one line. The size
+                  scales with the viewport on phones so that line fits down
+                  to a 320px screen instead of breaking after "restoration". */}
+              <h1 className="font-display text-[clamp(2.25rem,10.5vw,3rem)] font-bold leading-[0.95] tracking-tight text-white sm:text-6xl">
+                <span className="block">Charleston&apos;s surface</span>
+                <span className="block whitespace-nowrap">restoration specialists.</span>
+                <span className="block text-[#397774]">We remove the rust, not the iron.</span>
               </h1>
               <p className="mt-7 max-w-xl text-lg leading-relaxed text-gray-300">
-                Rust and paint come off first, and graffiti, grease, oxidation
-                and stains come off the same way. We work on metal, wood, brick
-                and masonry, stone, concrete and boat parts on land, with a
-                laser set to stop at the surface underneath. Anything we have
-                not done before gets a test spot first. No chemicals and no
-                blast media.
+                We take off rust and old paint, along with graffiti, grease,
+                oxidation and stains. We work on metal, wood, brick, stone,
+                concrete and boat parts on land, using a laser set to stop at
+                the original surface. Anything new to us gets a test spot
+                first, and we never use chemicals or blast media.
               </p>
               <div className="mt-9 flex flex-col gap-4 sm:flex-row">
                 <Link

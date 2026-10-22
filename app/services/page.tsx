@@ -101,7 +101,7 @@ export default function ServicesPage() {
             Our Services
           </h1>
           <p className="text-gray-400 text-lg max-w-xl mx-auto">
-            Rust and paint come off first, and graffiti, grease, oxidation and stains come off the same way, on metal, wood, masonry, concrete and boat parts on land. No chemicals or blast media, and the dust gets captured and cleaned up.
+            We take off rust and old paint, along with graffiti, grease, oxidation and stains, from metal, wood, masonry, concrete and boat parts on land. We never use chemicals or blast media, and the dust gets captured and cleaned up.
           </p>
         </div>
       </section>
