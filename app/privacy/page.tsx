@@ -98,6 +98,9 @@ export default function PrivacyPage() {
               <li>
                 <span className="text-white">Google Workspace</span> stores quote requests in a spreadsheet and job photos in a Google Drive folder. Google Maps suggests addresses as you type, so the street you enter is sent to Google.
               </li>
+              <li>
+                <span className="text-white">Supabase</span> stores our quote requests and job records in a private database that only we can access.
+              </li>
             </ul>
             <p>
               We may also share information if we are legally required to, for example in response to a court order, or if it is necessary to protect the rights or safety of the business or another person.
