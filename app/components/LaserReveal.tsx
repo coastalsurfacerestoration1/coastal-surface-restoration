@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import {
   useEffect,
   useRef,
@@ -9,103 +10,26 @@ import {
 } from 'react';
 
 /**
- * A wrought iron gate detail that the visitor can run a laser across.
+ * A rusted cast iron skillet that the visitor can run a laser across.
  *
- * Everything left of the scan line is clean metal, everything right of it is
- * still corroded, which is literally what the tool does. Drawn entirely in SVG
- * because there are no project photos yet. When real before and after shots
- * exist, the two <Ironwork> layers become two <img> layers and the mechanics
- * here do not change.
+ * Everything left of the scan line is the after photo, everything right of it
+ * is still the before, which is literally what the tool does. It is a test
+ * piece, not a customer job, and the caption says so. The two photos must keep
+ * exactly the same size and crop or the scan line will not line up; both are
+ * 960x1265 in public/images.
  */
+const PHOTO = { width: 960, height: 1265 };
+const BEFORE = {
+  src: '/images/skillet-before.jpg',
+  alt: 'Cast iron skillet covered in heavy rust before laser cleaning',
+};
+const AFTER = {
+  src: '/images/skillet-after.jpg',
+  alt: 'Same cast iron skillet after laser cleaning, bare gray iron',
+};
 
-/** Charleston gate motif: rails, pickets, and an S-scroll centerpiece. */
-function Ironwork({ corroded }: { corroded: boolean }) {
-  const id = corroded ? 'rust' : 'clean';
-  return (
-    <svg
-      viewBox="0 0 200 200"
-      className="absolute inset-0 h-full w-full"
-      aria-hidden="true"
-    >
-      <defs>
-        {/* userSpaceOnUse is required, not stylistic: the default
-            objectBoundingBox units collapse on the straight rails and pickets,
-            whose bounding boxes have zero height or width, and those elements
-            then fail to paint at all. */}
-        <linearGradient
-          id={`${id}-stroke`}
-          gradientUnits="userSpaceOnUse"
-          x1="0"
-          y1="0"
-          x2="0"
-          y2="200"
-        >
-          {corroded ? (
-            <>
-              <stop offset="0%" stopColor="#7c4a2a" />
-              <stop offset="45%" stopColor="#a85c25" />
-              <stop offset="100%" stopColor="#5d3320" />
-            </>
-          ) : (
-            <>
-              <stop offset="0%" stopColor="#eef4fa" />
-              <stop offset="50%" stopColor="#9fb3c8" />
-              <stop offset="100%" stopColor="#d6e2ee" />
-            </>
-          )}
-        </linearGradient>
-        {corroded && (
-          // Roughens every edge so the corroded pass reads as pitted metal
-          // rather than as the clean pass in a different colour.
-          <filter id="pitting">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.5"
-              numOctaves="3"
-              seed="7"
-              result="noise"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="noise"
-              scale="3.2"
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
-          </filter>
-        )}
-      </defs>
-
-      <g
-        fill="none"
-        stroke={`url(#${id}-stroke)`}
-        strokeLinecap="round"
-        filter={corroded ? 'url(#pitting)' : undefined}
-      >
-        {/* Frame */}
-        <path d="M22 30 H178" strokeWidth="9" />
-        <path d="M22 172 H178" strokeWidth="9" />
-        <path d="M22 30 V172" strokeWidth="8" />
-        <path d="M178 30 V172" strokeWidth="8" />
-        {/* Pickets */}
-        <path d="M61 30 V172" strokeWidth="5" />
-        <path d="M139 30 V172" strokeWidth="5" />
-        <path d="M100 30 V172" strokeWidth="6" />
-        {/* Scrollwork */}
-        <path
-          d="M100 66 C 134 66, 134 100, 100 100 C 66 100, 66 134, 100 134"
-          strokeWidth="6"
-        />
-        <path d="M78 50 C 78 60, 86 66, 96 66" strokeWidth="4" />
-        <path d="M122 150 C 122 140, 114 134, 104 134" strokeWidth="4" />
-        {/* Finials */}
-        <circle cx="61" cy="22" r="4.5" strokeWidth="3.5" />
-        <circle cx="100" cy="19" r="5.5" strokeWidth="3.5" />
-        <circle cx="139" cy="22" r="4.5" strokeWidth="3.5" />
-      </g>
-    </svg>
-  );
-}
+/** The frame is capped at 28rem wide (max-w-md) and is full width below that. */
+const SIZES = '(min-width: 640px) 28rem, 100vw';
 
 const START = 6;
 const SETTLE = 62;
@@ -213,7 +137,7 @@ export default function LaserReveal() {
   };
 
   return (
-    <figure className="m-0">
+    <figure className="m-0 mx-auto w-full max-w-md">
       <div
         ref={boxRef}
         role="slider"
@@ -222,7 +146,7 @@ export default function LaserReveal() {
         aria-valuemax={100}
         aria-valuenow={Math.round(pct)}
         aria-valuetext={`${Math.round(pct)} percent cleaned`}
-        aria-label="Run the laser across the ironwork to compare corroded and cleaned metal"
+        aria-label="Run the laser across the cast iron skillet to compare it before and after cleaning"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
@@ -231,18 +155,32 @@ export default function LaserReveal() {
         // pan-y keeps vertical page scrolling working while horizontal drags
         // stay with us instead of being swallowed by the browser.
         style={{ touchAction: 'pan-y' }}
-        className="relative aspect-square w-full cursor-ew-resize touch-pan-y select-none overflow-hidden rounded-lg border border-[#397774]/30 bg-[#1a3958] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#397774] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0e273e]"
+        className="relative aspect-[960/1265] w-full cursor-ew-resize touch-pan-y select-none overflow-hidden rounded-lg border border-[#397774]/30 bg-[#1a3958] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#397774] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0e273e]"
       >
-        {/* Corroded state underneath */}
-        <Ironwork corroded />
+        {/* Before photo underneath. Preloaded: it is the hero's largest image. */}
+        <Image
+          src={BEFORE.src}
+          alt={BEFORE.alt}
+          {...PHOTO}
+          sizes={SIZES}
+          preload
+          draggable={false}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
 
-        {/* Cleaned state, revealed from the left as the pass advances */}
+        {/* After photo, revealed from the left as the pass advances */}
         <div
           className="absolute inset-0"
           style={{ clipPath: `inset(0 ${100 - pct}% 0 0)` }}
         >
-          <div className="absolute inset-0 bg-[#0e273e]" />
-          <Ironwork corroded={false} />
+          <Image
+            src={AFTER.src}
+            alt={AFTER.alt}
+            {...PHOTO}
+            sizes={SIZES}
+            draggable={false}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
         </div>
 
         {/* The beam */}
@@ -317,14 +255,14 @@ export default function LaserReveal() {
         </div>
 
         <span className="pointer-events-none absolute bottom-3 left-3 rounded bg-[#0e273e]/80 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-[#397774]">
-          Cleaned
+          After
         </span>
         <span className="pointer-events-none absolute right-3 bottom-3 rounded bg-[#0e273e]/80 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-400">
-          Corroded
+          Before
         </span>
       </div>
       <figcaption className="mt-3 text-center text-xs text-gray-500">
-        Illustration, not a photograph. Project photos replace it once the first jobs are done.
+        Cast iron skillet, test piece. Heavy rust removed with the laser, no sandblasting or chemical strippers.
       </figcaption>
     </figure>
   );
