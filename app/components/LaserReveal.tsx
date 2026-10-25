@@ -254,10 +254,10 @@ export default function LaserReveal() {
           </span>
         </div>
 
-        <span className="pointer-events-none absolute bottom-3 left-3 rounded bg-[#0e273e]/80 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-[#397774]">
+        <span className="pointer-events-none absolute bottom-3 left-3 rounded bg-[#0e273e]/90 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-[#8fd3cd]">
           After
         </span>
-        <span className="pointer-events-none absolute right-3 bottom-3 rounded bg-[#0e273e]/80 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-400">
+        <span className="pointer-events-none absolute right-3 bottom-3 rounded bg-[#0e273e]/90 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-400">
           Before
         </span>
       </div>
