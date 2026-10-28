@@ -32,7 +32,7 @@ owner: tyler                           # REQUIRED, from Tyler: tyler, or the cli
 permission: own piece                  # REQUIRED, from Tyler: own piece (owner tyler) or
                                        #   client approved photos and video: yes, YYYY-MM-DD
 permission_source: email from owner    # REQUIRED for client jobs, from Tyler: who approved and how
-coating: none                          # REQUIRED: none or paint
+coating: none                          # REQUIRED, from Tyler: none or paint
 lead: negative swab 2026-10-27         # REQUIRED when coating is paint, from Tyler
 after_state: bare                      # REQUIRED: bare, primed or painted
 numbers: ok                            # only when Tyler OKs a number in a caption, in chat
@@ -49,11 +49,12 @@ photo45: width=1026 crop_top=40        # optional (4:5)
    - run `python recipes/csr-short/render.py propose jobs/<job>`. It picks three 7.5 s windows with the most laser action, writes `short.draft.txt` and a review sheet.
    - Look at the review sheet, adjust the windows if needed, and draft 3 captions that follow the rules below.
    - **Stop.** Show Tyler the windows and captions and wait for his OK. Only then rename the draft to `short.txt`.
-2. **Never write the `owner`, `permission`, `permission_source`, `lead` or `numbers` lines yourself.**
-   - Ask Tyler in chat and copy exactly what he says.
-   - Ask even when it seems obvious, and every time a job is new.
+2. **Never write the `owner`, `permission`, `permission_source`, `coating`, `lead` or `numbers` lines yourself.**
+   - Ask Tyler in chat every time and copy exactly what he says.
+   - Ask even when it seems obvious, and even when an earlier run of the same job had the line.
    - If any file name, folder name, subject or caption suggests a client (Avison Young, William Allen, or anyone else), say so when you ask.
-   - `coating` and `after_state` you may fill from what the photos show, but tell Tyler what you put.
+   - If any clip frame or photo looks painted and Tyler says `coating: none`, **stop.** Show him the frame and ask again before rendering. Pre-1978 paint is lead until a negative swab.
+   - `after_state` you may fill from what the after photo shows, but tell Tyler what you put.
 3. `python recipes/csr-short/render.py check jobs/<job>`: copy rules, permission, clip length, caption width and asset hashes. On any refusal, stop and tell Tyler why.
 4. `python recipes/csr-short/render.py review jobs/<job>` makes `brag-output/<job>/_review/review-sheet.jpg` (a frame every second of each window, plus the photos). **Look at it.**
    - Refuse, and tell Tyler why, if:
