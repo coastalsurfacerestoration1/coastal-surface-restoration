@@ -32,10 +32,15 @@ SIZES = {
 }
 AI_WORDS = ["elevate", "seamless", "unleash", "unlock", "transform", "revolution", "cutting-edge",
             "game-changer", "game changer", "effortless", "journey", "delve", "testament", "meticulous",
-            "state-of-the-art", "next-level", "next level", "innovative", "magic", "stunning", "breathtaking"]
+            "state-of-the-art", "next-level", "next level", "innovative", "magic", "stunning", "breathtaking",
+            "breathe new life", "former glory"]
 BANNED = ["certified", "certification", "eco-friendly", "eco friendly", "non-toxic", "nontoxic",
-          "only", "first", "price", "prices", "pricing", "rate", "rates", "cheap", "cheapest", "discount"]
+          "only", "first", "price", "prices", "pricing", "rate", "rates", "cheap", "cheapest", "discount",
+          "guaranteed", "guarantee", "best", "no damage", "permanent", "rust-proof", "rustproof",
+          "like new", "brand new", "removes lead", "safe for"]
+BARE_WORDS = ["bare", "clean iron", "bare metal"]
 TOOL_WORDS = ["laser", "heat gun", "torch", "blast"]
+LOG = HERE / "captions-log.csv"
 
 
 class Refuse(Exception):
@@ -98,6 +103,54 @@ def even(x):
     return int(round(x / 2)) * 2
 
 
+def future(iso):
+    try:
+        return date.fromisoformat(iso) > date.today()
+    except ValueError:
+        return True
+
+
+def shot_time(jpg):
+    """EXIF DateTimeOriginal (or DateTime) as 'YYYY:MM:DD HH:MM:SS', or None if the photo has no metadata."""
+    d = Path(jpg).read_bytes()
+    i = d.find(b"Exif\x00\x00")
+    if i < 0:
+        return None
+    t = d[i + 6:]
+    le = t[:2] == b"II"
+    u = lambda b: int.from_bytes(b, "little" if le else "big")
+
+    def ifd(off):
+        out = {}
+        if off + 2 > len(t):
+            return out
+        for k in range(u(t[off:off + 2])):
+            e = off + 2 + 12 * k
+            tag, typ, cnt, val = u(t[e:e + 2]), u(t[e + 2:e + 4]), u(t[e + 4:e + 8]), t[e + 8:e + 12]
+            if typ == 2:  # ASCII
+                p = u(val) if cnt > 4 else e + 8
+                out[tag] = t[p:p + cnt].rstrip(b"\x00").decode("ascii", "replace")
+            elif tag == 0x8769:
+                out[tag] = u(val)
+        return out
+
+    ifd0 = ifd(u(t[4:8]))
+    sub = ifd(ifd0[0x8769]) if 0x8769 in ifd0 else {}
+    return sub.get(0x9003) or ifd0.get(0x0132)
+
+
+def log_rows():
+    if not LOG.exists():
+        return []
+    import csv
+    with open(LOG, newline="", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+
+def names_tool(captions):
+    return any(t in c.lower() for c in captions for t in TOOL_WORDS)
+
+
 # ---------- job file ----------
 
 def parse_job(job):
@@ -123,7 +176,8 @@ def parse_job(job):
             spec["clips"].append((m.group(1), float(m.group(2)), float(m.group(3))))
         elif key == "speed":
             spec["speed"] = float(val.rstrip("x"))
-        elif key in ("music", "method", "permission", "subject"):
+        elif key in ("music", "method", "permission", "subject", "owner", "coating", "after_state", "lead",
+                     "permission_source", "numbers"):
             spec[key] = val
         elif key in ("frame916", "frame45"):
             name, *opts = val.split()
@@ -177,8 +231,14 @@ def check(job, spec):
             errors.append(f"caption{i} has a dash; no em dashes")
         if "!" in c:
             errors.append(f"caption{i} has an exclamation point")
-        if re.search(r"\d|\$|%", c):
-            errors.append(f"caption{i} has a number or symbol; no prices, rates, house numbers or plates")
+        if re.search(r"[$%]", c):
+            errors.append(f"caption{i} has a $ or %; no prices or rates")
+        if re.search(r"\d", c) and spec.get("numbers", "").lower() != "ok":
+            errors.append(f"caption{i} has a number; numbers need 'numbers: ok', which Tyler confirms in chat")
+        if spec.get("after_state", "").lower() != "bare":
+            for w in BARE_WORDS:
+                if re.search(rf"\b{re.escape(w)}\b", low):
+                    errors.append(f"caption{i} says '{w}' but after_state is '{spec.get('after_state', '')}', not bare")
         for w in BANNED:
             if re.search(rf"\b{re.escape(w)}\b", low):
                 errors.append(f"caption{i} uses '{w}'")
@@ -195,16 +255,39 @@ def check(job, spec):
     if tool_hits > 1:
         errors.append(f"{tool_hits} captions name the tool; restoration first, the tool can be named once at most")
 
+    # owner, permission, coating, lead: Tyler supplies these lines; Claude never writes them
+    for key in ("owner", "permission", "coating", "after_state"):
+        if not spec.get(key):
+            errors.append(f"missing required line '{key}:'")
+    owner = spec.get("owner", "").strip().lower()
     perm = spec.get("permission", "").strip().lower()
+    coating = spec.get("coating", "").strip().lower()
+    after_state = spec.get("after_state", "").strip().lower()
     haystack = " ".join([job.name, spec["raw"], *[p.name for p in job.iterdir()]]).lower()
     client = next((c for c in CFG["clients"] if re.search(rf"\b{re.escape(c)}\b", haystack)), None)
-    approved = re.fullmatch(r"client approved photos: yes, \d{4}-\d{2}-\d{2}", perm)
-    if not perm:
-        errors.append("no permission line; add 'permission: own piece' or 'permission: client approved photos: yes, YYYY-MM-DD'")
-    elif client and not approved:
-        errors.append(f"this looks like a client job ('{client}'); Tyler must confirm permission and the line must read 'client approved photos: yes, YYYY-MM-DD'")
-    elif perm != "own piece" and not approved:
-        errors.append(f"permission line not understood: '{spec['permission']}'")
+    approved = re.fullmatch(r"client approved photos and video: yes, (\d{4}-\d{2}-\d{2})", perm)
+    if owner == "tyler":
+        if perm and perm != "own piece":
+            errors.append(f"owner is tyler, so permission must be 'own piece', not '{spec['permission']}'")
+        if client:
+            errors.append(f"owner is tyler but this looks like a client job ('{client}'); Tyler must confirm the owner in chat")
+    elif owner:
+        if not approved:
+            errors.append(f"owner is '{spec['owner']}', so permission must read 'client approved photos and video: yes, YYYY-MM-DD'")
+        if not spec.get("permission_source"):
+            errors.append("client job needs a 'permission_source:' line (who approved, and how)")
+    if approved and future(approved.group(1)):
+        errors.append(f"permission date {approved.group(1)} is later than today")
+    if coating not in ("", "none", "paint"):
+        errors.append(f"coating must be 'none' or 'paint', not '{spec['coating']}'")
+    if after_state not in ("", "bare", "primed", "painted"):
+        errors.append(f"after_state must be 'bare', 'primed' or 'painted', not '{spec['after_state']}'")
+    if coating == "paint":
+        lead = re.fullmatch(r"negative swab (\d{4}-\d{2}-\d{2})", spec.get("lead", "").strip().lower())
+        if not lead:
+            errors.append("coating is paint, so a 'lead: negative swab YYYY-MM-DD' line is required")
+        elif future(lead.group(1)):
+            errors.append(f"lead swab date {lead.group(1)} is later than today")
 
     if spec.get("music", "B") not in CFG["music"]:
         errors.append(f"music '{spec['music']}' is not in config.json; add the Pixabay track there first (page URL, hash, start)")
@@ -220,6 +303,22 @@ def check(job, spec):
         errors.append(f"clip section is {clip_len:.1f} s at {spec['speed']}x; it must be 15 to 18 s")
     if not pairs(job):
         errors.append("no before.jpg / after.jpg pair")
+    for b, a in pairs(job):
+        (bw, bh), (aw, ah) = size(b), size(a)
+        # both photos go through one filter chain; different shapes would stretch one of them
+        if abs(bw / bh - aw / ah) > 0.01:
+            errors.append(f"{b.name} is {bw}x{bh} and {a.name} is {aw}x{ah}; they need the same shape for identical processing")
+        elif (bw, bh) != (aw, ah):
+            warnings.append(f"{b.name} and {a.name} differ in size ({bw}x{bh} vs {aw}x{ah}); both are scaled the same way")
+        tb, ta = shot_time(b), shot_time(a)
+        if tb and ta and ta < tb:
+            warnings.append(f"{a.name} metadata says it was taken {ta}, before {b.name} ({tb}); check the photos are not swapped")
+        elif not (tb and ta):
+            warnings.append(f"{b.name}/{a.name}: no capture time in the metadata, so the order could not be checked")
+    if names_tool(caps):
+        prev = [r for r in log_rows() if r["job"] != job.name]
+        if prev and prev[-1]["tool_named"] == "yes":
+            warnings.append(f"the previous short ({prev[-1]['job']}) also named the tool; restoration first, consider leading with the result")
 
     for key in ("fiverr", "font"):
         a = CFG["assets"][key]
@@ -524,6 +623,17 @@ def review_sheet(job, spec, dest):
     return dest / "review-sheet.jpg"
 
 
+def append_log(job, spec):
+    import csv
+    new = not LOG.exists()
+    with open(LOG, "a", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        if new:
+            w.writerow(["rendered", "job", "caption1", "caption2", "caption3", "tool_named"])
+        w.writerow([date.today().isoformat(), job.name, *[c.upper() for c in spec["captions"]],
+                    "yes" if names_tool(spec["captions"]) else "no"])
+
+
 def report(job, spec, res, out, notes):
     m = CFG["music"][spec.get("music", "B")]
     (out / "music-license.txt").write_text(
@@ -544,6 +654,12 @@ def report(job, spec, res, out, notes):
               "", "## Captions", ""] + [f"{n}. {c.upper()}" for n, c in enumerate(spec["captions"], 1)]
     lines += ["", "## Frames", "", "- `frames/` per-section grabs and contact sheets for both sizes",
               "- 9:16 safe-zone frames: `frames/safezone-9x16-clip-mid.jpg`, `frames/safezone-9x16-before.jpg`, `frames/safezone-9x16-after.jpg`",
+              "- Review sheet (eyewear, faces, plates): `_review/review-sheet.jpg`, send it to Tyler with this report",
+              "", "## Job facts (from short.txt, supplied by Tyler)", "",
+              f"- owner: {spec.get('owner')}; permission: {spec.get('permission')}"
+              + (f"; source: {spec['permission_source']}" if spec.get("permission_source") else ""),
+              f"- coating: {spec.get('coating')}; after_state: {spec.get('after_state')}"
+              + (f"; lead: {spec['lead']}" if spec.get("lead") else ""),
               "", "## Picked automatically or worth checking", ""] + ([f"- {n}" for n in notes] or ["- nothing"])
     (out / "report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     return "\n".join(lines)
@@ -615,9 +731,13 @@ def main():
             ok = job / "review-ok.txt"
             if not ok.exists() or ok.read_text().split()[0] != input_hash(job, spec):
                 raise Refuse("the eyewear/faces/plates review is missing or the inputs changed since it; run 'review', check the sheet, then 'approve'")
-            notes = []
+            notes = [f"warning: {w}" for w in warnings]
+            sheet = out / "_review" / "review-sheet.jpg"
+            if not sheet.exists():
+                review_sheet(job, spec, out / "_review")
             res = render(job, spec, out, notes)
             frames(job, res, out)
+            append_log(job, spec)
             print(report(job, spec, res, out, notes))
     except Refuse as e:
         print(e)

@@ -14,7 +14,7 @@ Renderer: `recipes/csr-short/render.py` (Python + ffmpeg, no extra packages). Sa
 | `before.jpg`, `after.jpg` | yes | same framing; extra pairs `before2.jpg`/`after2.jpg` play in order |
 | `short.txt` | yes before rendering | see below |
 
-`jobs/` and `assets/` each hold an untracked `.gitignore` of `*`, so job media and shared media never reach git.
+`jobs/`, `assets/` and `brag-output/` each hold an untracked `.gitignore` of `*`, so job media, shared media and renders never reach git. Check with `git ls-files brag-output jobs assets`; it should print nothing.
 
 ### short.txt
 
@@ -28,7 +28,14 @@ clip: clip.mp4 32.0-39.5
 speed: 1.25                            # default 1.25; windows must total 15 to 18 s after speed
 music: B                               # key in config.json; default B
 method: laser                          # laser or heat gun; "no chemicals" needs laser
-permission: own piece                  # or: client approved photos: yes, YYYY-MM-DD
+owner: tyler                           # REQUIRED, from Tyler: tyler, or the client's name
+permission: own piece                  # REQUIRED, from Tyler: own piece (owner tyler) or
+                                       #   client approved photos and video: yes, YYYY-MM-DD
+permission_source: email from owner    # REQUIRED for client jobs, from Tyler: who approved and how
+coating: none                          # REQUIRED: none or paint
+lead: negative swab 2026-10-27         # REQUIRED when coating is paint, from Tyler
+after_state: bare                      # REQUIRED: bare, primed or painted
+numbers: ok                            # only when Tyler OKs a number in a caption, in chat
 subject: cast iron skillet             # optional, for the report
 frame916: clip.mp4 zoom=1.3 x=31 y=660 # optional: hand framing per clip file (9:16)
 frame45: clip.mp4 y=700                # optional: hand framing per clip file (4:5)
@@ -42,7 +49,11 @@ photo45: width=1026 crop_top=40        # optional (4:5)
    - run `python recipes/csr-short/render.py propose jobs/<job>`. It picks three 7.5 s windows with the most laser action, writes `short.draft.txt` and a review sheet.
    - Look at the review sheet, adjust the windows if needed, and draft 3 captions that follow the rules below.
    - **Stop.** Show Tyler the windows and captions and wait for his OK. Only then rename the draft to `short.txt`.
-2. If any file name, folder name, subject or caption suggests a client (Avison Young, William Allen, or any other client), **ask Tyler in chat to confirm permission before rendering.** Never write the `client approved photos` line yourself unless he has confirmed it in this session.
+2. **Never write the `owner`, `permission`, `permission_source`, `lead` or `numbers` lines yourself.**
+   - Ask Tyler in chat and copy exactly what he says.
+   - Ask even when it seems obvious, and every time a job is new.
+   - If any file name, folder name, subject or caption suggests a client (Avison Young, William Allen, or anyone else), say so when you ask.
+   - `coating` and `after_state` you may fill from what the photos show, but tell Tyler what you put.
 3. `python recipes/csr-short/render.py check jobs/<job>`: copy rules, permission, clip length, caption width and asset hashes. On any refusal, stop and tell Tyler why.
 4. `python recipes/csr-short/render.py review jobs/<job>` makes `brag-output/<job>/_review/review-sheet.jpg` (a frame every second of each window, plus the photos). **Look at it.**
    - Refuse, and tell Tyler why, if:
@@ -52,7 +63,9 @@ photo45: width=1026 crop_top=40        # optional (4:5)
    - If it is clean, run `python recipes/csr-short/render.py approve jobs/<job>`. That records a hash of the inputs, so any later change to the clips, photos or `short.txt` forces a new review.
 5. `python recipes/csr-short/render.py render jobs/<job>`. It takes about 2 minutes, writes everything to `brag-output/<job>/`, and prints the report (also saved as `report.md`).
 6. Open the three 9:16 safe-zone frames and the contact sheets and check them yourself, especially when framing was picked automatically. Automatic framing centers on the work point and can crop the object (for example, the top of a skillet handle). If so, set `frame916`/`frame45` by hand and render again.
-7. Reply to Tyler using the report format in section 6, and send him the safe-zone frames and the 9:16 video.
+7. Reply to Tyler using the report format in section 6. Send him the review sheet, the safe-zone frames and the 9:16 video.
+
+Each render appends its captions to `recipes/csr-short/captions-log.csv` (date, job, captions, whether the tool is named). `check` warns when this short names the tool and the previous short did too.
 
 ## 3. Locked spec
 
@@ -83,10 +96,26 @@ photo45: width=1026 crop_top=40        # optional (4:5)
 
 The script enforces what it can; the rest is your job at steps 2, 4 and 6.
 
-- **Copy:** no prices or rates, no numbers, never "certified", no em dashes, no exclamation points, no AI-sounding words, no customer names, addresses, house numbers or license plates. No faces of anyone but Tyler.
+- **Copy:**
+  - no prices or rates ($ and % always refused)
+  - no numbers unless Tyler OKs `numbers: ok` in chat
+  - never "certified"
+  - no em dashes, no exclamation points
+  - no customer names, addresses, house numbers or license plates
+  - no faces of anyone but Tyler
+- **Banned words:** guaranteed, guarantee, best, no damage, permanent, rust-proof, rustproof, like new, brand new, removes lead, safe for, only, first, eco-friendly, non-toxic.
+- **AI-sounding words:** elevate, seamless, transform, breathe new life, former glory, and the rest of the list in `render.py`.
 - **Claims stay true to the clip:**
   - "No chemicals" only when the clip is the laser step (`method: laser`).
-  - Never "eco-friendly", "non-toxic", "only" or "first".
+  - "Bare", "bare metal" and "clean iron" only when `after_state: bare`.
+- **Ownership and permission:**
+  - Every job needs an `owner`.
+  - If the owner isn't tyler: `permission: client approved photos and video: yes, YYYY-MM-DD` plus a `permission_source` line.
+  - The permission date can't be later than today.
+- **Paint:** `coating: paint` needs `lead: negative swab YYYY-MM-DD`, dated today or earlier.
+- **Before/after:**
+  - Both photos go through exactly the same scale, crop and pad, and must have the same shape.
+  - `check` warns if the photo metadata shows the after shot was taken before the before shot.
 - **Restoration first:** captions describe the result. The tool (laser, heat gun) is named in one caption at most and should not be the headline every time; vary it across shorts.
 - **Client property** needs `permission: client approved photos: yes, YYYY-MM-DD`. Avison Young and William Allen are client jobs: no render until Tyler confirms permission in chat.
 - **Eyewear:** no footage of the beam on while anyone in frame lacks eyewear.
@@ -108,6 +137,7 @@ The script enforces what it can; the rest is your job at steps 2, 4 and 6.
 
 ## 6. Report every run
 
+- The review sheet (`_review/review-sheet.jpg`), sent every time
 - File paths and lengths, loudness and true peak (from `report.md`)
 - The 9:16 safe-zone frames (top 220, bottom 380, right 120 drawn on) for mid-clip, BEFORE and AFTER
 - The captions used
