@@ -1,0 +1,30 @@
+{
+  "assets": {
+    "fiverr": {
+      "path": "assets/anima_CSR_V2_with_tag_coastalsurface1_VERTICAL.mp4",
+      "sha256": "eb4a1fcd47d48348a0a1890bf91b89936eba243e2dc54d6d0dcd15448b10cb96",
+      "intro_start": 2.3,
+      "gain_db": -3.2,
+      "note": "1080x1920, 5.28 s. Beams converge 2.0-2.4 s, tagline finishes 3.9 s, logo settled 4.1 s. Tagline sits at y 1193-1271, x 339-740. Gain keeps its +0.9 dBFS true peak under -1 dBTP."
+    },
+    "font": {
+      "path": "assets/fonts/jost-400.ttf",
+      "sha256": "5a09eddfebdcf40d19608700a2411ed2a7a2d534352af7ca023c8ab636e58e89",
+      "note": "Jost Regular, the tagline font (measured against the Fiverr frame, 2026-10-28). OFL, from fontsource."
+    }
+  },
+  "music": {
+    "B": {
+      "title": "Upbeat Funk",
+      "artist": "Kulakovka",
+      "page": "https://pixabay.com/music/funk-upbeat-funk-614901/",
+      "path": "assets/music/kulakovka-upbeat-funk-614901.mp3",
+      "sha256": "977b92d74b77a857a7bfa58cb4f7121b3f1ecaf1dc7e6541c017fab6d8f9f2ce",
+      "start": 3.13,
+      "note": "start is 0.4 s before the downbeat at 3.53 s",
+      "checked": "2026-10-28: page showed no Content ID Registered badge and no AI generated label"
+    }
+  },
+  "clients": ["avison", "william allen", "allen"],
+  "brand": {"navy": "0x0E273E", "aqua": "0x1B9AAA", "wipe_line": "0x7FE3DC"}
+}
