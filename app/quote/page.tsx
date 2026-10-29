@@ -130,7 +130,7 @@ const LOCAL_ZIP_PREFIX = '294';
 const services = [
   'Rust removal on metal',
   'Paint and coating removal (test spot first)',
-  'Paint or coatings on wood (test spot first)',
+  'Paint or stain on wood (restored by hand)',
   'Stainless steel: weld tint and tea staining',
   'Marine hardware on land (stainless and bronze)',
   'Vintage tools and car parts',

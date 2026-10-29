@@ -67,7 +67,7 @@ export default function Footer() {
               </h3>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Charleston&apos;s surface restoration specialists. Rust and paint off metal, wood, masonry and concrete, on site. Not sure if we can help? Send it anyway.
+              Charleston&apos;s surface restoration specialists. Rust and paint off metal, masonry and concrete on site, and wood restored by hand. Not sure if we can help? Send it anyway.
             </p>
             <div className="flex items-center gap-4 mt-4">
               {socials.map((s) => (

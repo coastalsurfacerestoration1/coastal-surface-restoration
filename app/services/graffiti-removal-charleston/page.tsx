@@ -102,7 +102,7 @@ export default function GraffitiRemovalPage() {
               },
               {
                 title: 'Painted Wood Trim',
-                desc: 'Exterior trim on homes built after 1978, or lead-tested, with a test patch first. Older painted wood we decline.',
+                desc: 'Tags on exterior wood trim are sanded off by hand and spot-primed, since the laser is too slow on painted wood. Older painted wood needs a negative lead test first.',
               },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">

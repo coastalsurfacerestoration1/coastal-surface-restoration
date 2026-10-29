@@ -481,6 +481,7 @@ export default function HowLaserCleaningWorksPage() {
             {[
               { title: 'It cannot restore metal that is already gone.', desc: 'Deep pitting, holes, and structural loss are permanent. Cleaning reveals them, it does not fill them.' },
               { title: 'Some surfaces are not candidates.', desc: 'Very thin plating, painted surfaces you want to keep, and materials that absorb laser light the same way the contamination does. On anything questionable we run a small test area first.' },
+              { title: 'Wood is restored by hand.', desc: 'Clear coat and stain scorch under the laser, and painted wood strips too slowly to be worth the cost. Doors, cabinets, decks, shutters, trim and furniture get sanders and scrapers instead, with the laser kept to small detail spots.' },
               { title: 'It is not the fastest method for every job.', desc: 'Whole walls, floors and siding are not quoted; other methods are faster there. Laser fits railings, castings and hardware, where detail matters and blast cleanup would cost more.' },
             ].map((item) => (
               <div key={item.title} className="bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6">
