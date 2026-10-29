@@ -7,6 +7,7 @@ const mocks = vi.hoisted(() => ({
   sendSms: vi.fn(),
   customerSms: false,
   afterCallbacks: [] as (() => Promise<void>)[],
+  recorded: [] as { submissionId: string; timestamp: string; area: string }[],
 }));
 
 vi.mock('resend', () => ({
@@ -20,6 +21,17 @@ vi.mock('@/lib/notify', () => ({
   saveJobPhotos: mocks.saveJobPhotos,
   sendSms: mocks.sendSms,
   quoteConfirmationSmsEnabled: () => mocks.customerSms,
+}));
+
+// The Supabase copy has its own tests (quote-record.test.ts). Here it is a
+// pass-through to the sheet mock that remembers what it was given, so every
+// case keeps asserting on appendQuoteRow exactly as before.
+vi.mock('@/lib/quote-record', () => ({
+  recordQuote: (record: { submissionId: string; timestamp: string }, area: string) => {
+    const { submissionId, ...row } = record;
+    mocks.recorded.push({ submissionId, timestamp: record.timestamp, area });
+    return mocks.appendQuoteRow(row);
+  },
 }));
 
 // No real DNS in unit tests. The check itself is covered in email.test.ts.
@@ -78,6 +90,7 @@ beforeEach(() => {
     jobFolder: { created: true, url: 'https://drive/job', photosFolderId: 'PHOTOS' },
   });
   mocks.afterCallbacks.length = 0;
+  mocks.recorded.length = 0;
   vi.spyOn(console, 'log').mockImplementation(() => {});
   vi.spyOn(console, 'warn').mockImplementation(() => {});
   vi.spyOn(console, 'info').mockImplementation(() => {});
@@ -91,6 +104,32 @@ afterEach(() => {
 });
 
 describe('POST /api/quote', () => {
+  it.each([
+    ['normal', {}, 'in', 200],
+    ['20 to 50 miles', { zip: '29438', city: 'Edisto Island' }, 'near', 400],
+    ['over 50 miles', { zip: '29118' }, 'far', 400],
+  ])('records a %s quote once, with a fresh id and the area', async (_label, extra, area, status) => {
+    const { POST } = await loadRoute();
+    const res = await POST(quote(extra as Record<string, string>));
+
+    expect(res.status).toBe(status);
+    expect(mocks.recorded).toHaveLength(1);
+    const [rec] = mocks.recorded;
+    expect(rec.area).toBe(area);
+    expect(rec.submissionId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+    // The sheet gets the same timestamp and never sees the id.
+    const row = mocks.appendQuoteRow.mock.calls[0][0];
+    expect(row.timestamp).toBe(rec.timestamp);
+    expect(row).not.toHaveProperty('submissionId');
+  });
+
+  it('gives every submission its own id', async () => {
+    const { POST } = await loadRoute();
+    await POST(quote());
+    await POST(quote());
+    expect(new Set(mocks.recorded.map((r) => r.submissionId)).size).toBe(2);
+  });
+
   it('passes the optional answers to the sheet', async () => {
     const { POST } = await loadRoute();
     const res = await POST(quote({ howHeard: 'Other: Chamber mixer', referredBy: '  Bob Smith ' }));

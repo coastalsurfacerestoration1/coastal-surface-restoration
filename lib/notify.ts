@@ -150,7 +150,7 @@ export type JobFolder =
   | { created: true; url: string; photosFolderId: string }
   | { created: false; reason: string };
 
-type SheetResult = { sent: boolean; reason?: string; jobFolder?: JobFolder };
+export type SheetResult = { sent: boolean; reason?: string; jobFolder?: JobFolder };
 
 /**
  * Appends a quote to the Google Sheet.

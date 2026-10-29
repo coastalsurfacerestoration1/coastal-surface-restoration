@@ -1,7 +1,9 @@
 import { Resend } from 'resend';
 import { NextResponse, after } from 'next/server';
 import { BUSINESS, SITE_NAME, SITE_URL } from '@/lib/seo';
-import { appendQuoteRow, quoteConfirmationSmsEnabled, saveJobPhotos, sendSms } from '@/lib/notify';
+import { randomUUID } from 'node:crypto';
+import { quoteConfirmationSmsEnabled, saveJobPhotos, sendSms } from '@/lib/notify';
+import { recordQuote } from '@/lib/quote-record';
 import { domainAcceptsMail } from '@/lib/email-domain';
 import { FAR_TABLE_MILES, OUT_OF_AREA_MESSAGE, SERVICE_RADIUS_MILES, checkServiceArea } from '@/lib/service-area';
 
@@ -416,11 +418,14 @@ export async function POST(req: Request) {
   // read. After the rate limit, so a bot cannot use it to flood the sheet.
   if (area.verdict === 'far') {
     const distance = area.miles ? `${area.miles} mi` : `more than ${FAR_TABLE_MILES} mi`;
-    const logged = await appendQuoteRow({
-      ...sheetRow(values, form.getAll('photos').length, smsConsent, howHeard, referredBy, suspectedSpam),
-      outOfArea: `dropped, ${distance}`,
-      blocked: true,
-    });
+    const logged = await recordQuote(
+      {
+        ...sheetRow(values, form.getAll('photos').length, smsConsent, howHeard, referredBy, suspectedSpam),
+        outOfArea: `dropped, ${distance}`,
+        blocked: true,
+      },
+      area.verdict,
+    );
     if (!logged.sent) console.warn(`Dropped quote not written to the sheet: ${logged.reason}`);
     console.warn(`Quote dropped, out of area: ZIP ${values.zip}, ${distance}.`);
     return NextResponse.json({ error: OUT_OF_AREA_MESSAGE }, { status: 400 });
@@ -533,11 +538,14 @@ export async function POST(req: Request) {
   // and nothing else. No alert text, no 2 day reminder, and nothing to the
   // customer beyond the message on the form.
   if (blocked) {
-    const logged = await appendQuoteRow({
-      ...sheetRow(values, photos.length, smsConsent, howHeard, referredBy, suspectedSpam),
-      outOfArea: `blocked, ${area.miles} mi from ${area.town}`,
-      blocked: true,
-    });
+    const logged = await recordQuote(
+      {
+        ...sheetRow(values, photos.length, smsConsent, howHeard, referredBy, suspectedSpam),
+        outOfArea: `blocked, ${area.miles} mi from ${area.town}`,
+        blocked: true,
+      },
+      area.verdict,
+    );
     if (!logged.sent) console.warn(`Refused quote not written to the sheet: ${logged.reason}`);
     console.warn(`Quote refused but logged, out of area: ZIP ${values.zip}, ${area.miles} mi from ${area.town}.`);
     return NextResponse.json({ error: OUT_OF_AREA_MESSAGE }, { status: 400 });
@@ -566,10 +574,10 @@ export async function POST(req: Request) {
   // Log to the spreadsheet. Flagged and out of area submissions are logged too,
   // so the sheet stays a complete record of what came through the form rather
   // than only the ones that looked clean.
-  const logged = await appendQuoteRow({
-    ...sheetRow(values, photos.length, smsConsent, howHeard, referredBy, suspectedSpam),
-    outOfArea,
-  });
+  const logged = await recordQuote(
+    { ...sheetRow(values, photos.length, smsConsent, howHeard, referredBy, suspectedSpam), outOfArea },
+    area.verdict,
+  );
   if (!logged.sent) console.warn(`Quote not written to the sheet: ${logged.reason}`);
 
   // The script makes the job folder in Drive right after the row. It is a
@@ -649,7 +657,11 @@ export async function POST(req: Request) {
   return NextResponse.json({ success: true });
 }
 
-/** The sheet row, apart from Out of Area, which depends on how the quote went. */
+/**
+ * The sheet row, apart from Out of Area, which depends on how the quote went,
+ * plus the submission id. The timestamp and the id are made together here so
+ * the Supabase copy carries exactly the column A text the sheet gets.
+ */
 function sheetRow(
   values: Record<Field, string>,
   photos: number,
@@ -659,6 +671,7 @@ function sheetRow(
   spamFlag: boolean,
 ) {
   return {
+    submissionId: randomUUID(),
     timestamp: new Date().toISOString(),
     name: values.name,
     email: values.email,
