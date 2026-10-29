@@ -8,6 +8,7 @@
 --   quote_requests.source        public.quote_source (form, phone, email, manual)
 --   role csr_site_ingest         NOLOGIN here. Its password is set by hand afterwards, never in a file.
 --                                Can EXECUTE public.ingest_quote_request(jsonb) and nothing else in the app schemas.
+--                                Statements capped at 2 s, under the site's 2.5 s wait.
 --   role csr_site_reconcile      Same idea, for the nightly reconcile. Can EXECUTE public.reconcile_quote_requests
 --                                and nothing else. It returns timestamps and hashes, never names or numbers.
 --
@@ -50,7 +51,7 @@ do $$ begin
     create role csr_site_reconcile nologin noinherit nocreatedb nocreaterole nobypassrls connection limit 2;
   end if;
 end $$;
-alter role csr_site_ingest set statement_timeout = '3s';
+alter role csr_site_ingest set statement_timeout = '2s';
 alter role csr_site_ingest set search_path = '';
 alter role csr_site_reconcile set statement_timeout = '10s';
 alter role csr_site_reconcile set search_path = '';
@@ -105,11 +106,13 @@ declare
   v_id uuid;
   v_first text;
   v_last text;
+  v_store_ts text;
+  attempt int;
 begin
   if payload is null or jsonb_typeof(payload) <> 'object' then
     raise exception 'payload must be a JSON object' using errcode = '22023';
   end if;
-  if octet_length(payload::text) > 16000 then
+  if octet_length(payload::text) > 64000 then
     raise exception 'payload too large' using errcode = '22023';
   end if;
   for k in select jsonb_object_keys(payload) loop
@@ -194,41 +197,37 @@ begin
     nullif(btrim(concat_ws(' ', nullif(btrim(coalesce(payload->>'state', '')), ''),
                                 nullif(btrim(coalesce(payload->>'zip', '')), ''))), '')), 240);
 
-  -- Contact: not for spam, and not for quotes past 50 miles (never served, only kept on the record).
-  -- Matched by phone, then by email. Existing contacts only get blanks filled; type, notes and every
-  -- consent column are left alone.
-  if not v_spam and v_area <> 'out' then
-    if v_phone is not null then
-      select id into v_contact from public.contacts where phone = v_phone;
+  -- Contact: not for spam, not for quotes past 50 miles (never served, only kept on the record), and not
+  -- when the name had to be scrubbed. The form is public, so it never changes an existing contact:
+  --   both phone and email match one contact  -> link to it
+  --   neither matches anyone                  -> a new lead
+  --   anything else (a partial match)         -> no link; Tyler merges by hand in the app
+  if not v_spam and v_area <> 'out' and not private.has_forbidden_pii(v_name) then
+    if v_phone is not null and v_email is not null then
+      select id into v_contact from public.contacts where phone = v_phone and lower(email) = v_email;
     end if;
-    if v_contact is null and v_email is not null then
-      select id into v_contact from public.contacts where lower(email) = v_email order by created_at limit 1;
-    end if;
-
-    if v_contact is null then
+    if v_contact is null
+       and not exists (select 1 from public.contacts where v_phone is not null and phone = v_phone)
+       and not exists (select 1 from public.contacts where v_email is not null and lower(email) = v_email) then
       v_first := left(split_part(v_name, ' ', 1), 80);
       v_last := nullif(left(btrim(substr(v_name, length(split_part(v_name, ' ', 1)) + 1)), 80), '');
+      -- A concurrent quote can take the phone first; then this one is simply left unlinked.
       insert into public.contacts (first_name, last_name, phone, email, address, type, source)
       values (v_first, v_last, v_phone, v_email, v_address, 'lead', 'website')
       on conflict do nothing
       returning id into v_contact;
-      if v_contact is null and v_phone is not null then
-        -- Lost a race on the phone index; use the winner.
-        select id into v_contact from public.contacts where phone = v_phone;
-      end if;
-    else
-      update public.contacts c set
-        email = coalesce(c.email, v_email),
-        phone = coalesce(c.phone, case when v_phone is not null
-          and not exists (select 1 from public.contacts o where o.phone = v_phone) then v_phone end),
-        address = coalesce(c.address, v_address)
-      where c.id = v_contact
-        and (c.email is null and v_email is not null
-          or c.phone is null and v_phone is not null
-          or c.address is null and v_address is not null);
     end if;
   end if;
 
+  -- Two submissions in the same millisecond share a column A text, and sheet_timestamp is unique. The second
+  -- is kept under a tagged copy (never dropped), and the reconcile flags the shared timestamp for a look.
+  v_store_ts := v_ts;
+  if exists (select 1 from public.quote_requests where sheet_timestamp = v_ts) then
+    v_store_ts := v_ts || '#' || left(v_sub::text, 8);
+  end if;
+
+  for attempt in 1..2 loop
+  begin
   insert into public.quote_requests (
     received_at, name, email, phone, address, service, description, service_area_result, raw_payload,
     status, contact_id, sheet_timestamp, submission_id, source)
@@ -253,17 +252,22 @@ begin
       'sheet', private.ingest_scrub(payload->>'sheet', 200))),
     case when v_spam then 'spam' else 'new' end,
     v_contact,
-    v_ts,
+    v_store_ts,
     v_sub,
     'form')
-  on conflict (submission_id) do nothing
   returning id into v_id;
-
-  if v_id is null then
-    -- A concurrent retry won the insert.
+  exit;
+  exception when unique_violation then
+    -- A concurrent retry of this submission won: return its row.
     select id into v_id from public.quote_requests where submission_id = v_sub;
-    return jsonb_build_object('ok', true, 'id', v_id, 'duplicate', true);
-  end if;
+    if v_id is not null then
+      return jsonb_build_object('ok', true, 'id', v_id, 'duplicate', true);
+    end if;
+    -- Otherwise another submission took this timestamp a moment ago: tag and try once more.
+    if attempt = 2 then raise; end if;
+    v_store_ts := v_ts || '#' || left(v_sub::text, 8);
+  end;
+  end loop;
   return jsonb_build_object('ok', true, 'id', v_id, 'duplicate', false);
 end
 $$;

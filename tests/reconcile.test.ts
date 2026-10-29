@@ -52,9 +52,24 @@ describe('compare', () => {
     expect(r).toMatchObject({ sheetRows: 0, supabaseRows: 0, missingInSupabase: [], missingInSheet: [] });
   });
 
+  it('flags a timestamp shared by two sheet rows', () => {
+    const a = row('2026-10-28T10:00:00.000Z');
+    const r = compare([a, { ...a, name: 'Other Person' }], [db(a)], since, until);
+    expect(r.duplicateTimestamps).toEqual([a.timestamp]);
+    expect(hasProblems(r)).toBe(true);
+    expect(reportEmail(r, '').text).toContain('share one timestamp');
+  });
+
+  it('a bad reader key fails without echoing it', async () => {
+    await expect(real.readSheet({ QUOTE_SHEET_ID: 'S', GOOGLE_SHEETS_READER_KEY: Buffer.from('{"private_key":"-----BEGIN secret').toString('base64') }))
+      .rejects.toThrow(/^GOOGLE_SHEETS_READER_KEY is not valid base64 JSON$/);
+  });
+
   it('fingerprints ignore case, spacing and phone punctuation, but not the service', () => {
     const base = fingerprint(row('x'));
     expect(fingerprint(row('x', { name: ' JANE customer ', email: 'Jane@Example.com', phone: '+1 (843) 555-2345' }))).toBe(base);
+    // Like Postgres btrim(): only spaces are trimmed.
+    expect(fingerprint(row('x', { name: '\tJane Customer' }))).not.toBe(base);
     expect(fingerprint(row('x', { service: 'Graffiti on hard masonry (test first)' }))).not.toBe(base);
   });
 

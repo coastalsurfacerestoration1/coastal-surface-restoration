@@ -86,7 +86,7 @@ describe('recordQuote', () => {
     const result = await recordQuote({ ...ROW, submissionId: ID }, 'in');
     await expect(mocks.afterCallbacks[0]()).resolves.toBeUndefined();
     expect(result).toEqual({ sent: true });
-    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining(`Quote not copied to Supabase (${ID}): down`));
+    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining(`Quote copy to Supabase not confirmed (${ID}): down`));
   });
 
   it('still copies when the sheet write failed, and says so in the copy', async () => {
@@ -133,6 +133,10 @@ describe('ingestTarget', () => {
 
   it.each(['preview', 'development', undefined])('refuses csr-field outside Production (%s)', (env) => {
     expect(ingestTarget({ VERCEL_ENV: env, SUPABASE_INGEST_URL: liveUrl })).toHaveProperty('refused');
+  });
+
+  it('refuses csr-field outside Production whatever the case of the URL', () => {
+    expect(ingestTarget({ VERCEL_ENV: 'preview', SUPABASE_INGEST_URL: liveUrl.toUpperCase() })).toHaveProperty('refused');
   });
 
   it('lets Production write to csr-field and previews to csr-test', () => {

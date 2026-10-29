@@ -82,7 +82,7 @@ const url = (port: number) => `postgresql://csr_site_ingest.testref:wrong@127.0.
 
 describe.each([
   ['down (connection refused)', () => url(closedPort), /ECONNREFUSED/],
-  ['slow (never answers)', () => url(silentPort), /timed out after 2500 ms/],
+  ['slow (never answers)', () => url(silentPort), /CONNECT_TIMEOUT|timed out after 2500 ms/],
   ['refusing TLS (never falls back to plain text)', () => url(refusingPort), /TLS|SSL/],
 ])('Supabase %s', (_label, target, reason) => {
   it.each([
@@ -111,8 +111,8 @@ describe.each([
     const copies = Date.now();
     for (const cb of mocks.afterCallbacks) await expect(cb()).resolves.toBeUndefined();
     expect(Date.now() - copies).toBeLessThan(3500);
-    expect(console.warn).toHaveBeenCalledWith(expect.stringMatching(/^Quote not copied to Supabase/));
-    const line = vi.mocked(console.warn).mock.calls.map((c) => String(c[0])).find((l) => l.startsWith('Quote not copied'))!;
+    expect(console.warn).toHaveBeenCalledWith(expect.stringMatching(/^Quote copy to Supabase not confirmed/));
+    const line = vi.mocked(console.warn).mock.calls.map((c) => String(c[0])).find((l) => l.startsWith('Quote copy to Supabase not confirmed'))!;
     expect(line).toMatch(reason);
   }, 15_000);
 });

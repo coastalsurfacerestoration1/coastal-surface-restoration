@@ -18,13 +18,16 @@ export const FORM_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 export type SheetRow = { timestamp: string; name: string; email: string; phone: string; service: string };
 export type DbRow = { sheet_timestamp: string; submission_id: string | null; fingerprint: string };
 
+/** Postgres btrim(): spaces only, unlike String.trim(). */
+const btrim = (s: string) => s.replace(/^ +| +$/g, '');
+
 /** Same formula as public.reconcile_quote_requests. */
 export function fingerprint(r: { name: string; email: string; phone: string; service: string }): string {
   const parts = [
-    r.name.trim().toLowerCase(),
-    r.email.trim().toLowerCase(),
+    btrim(r.name.toLowerCase()),
+    btrim(r.email.toLowerCase()),
     r.phone.replace(/\D/g, '').slice(-10),
-    r.service.trim(),
+    btrim(r.service),
   ];
   return createHash('sha256').update(parts.join('|'), 'utf8').digest('hex');
 }
@@ -39,6 +42,8 @@ export type Report = {
   missingInSheet: DbRow[];
   /** In both, but the fields differ. */
   mismatched: { timestamp: string; name: string }[];
+  /** Column A text used by more than one sheet row. Rare (same millisecond); checked by hand. */
+  duplicateTimestamps: string[];
 };
 
 export function compare(sheet: SheetRow[], db: DbRow[], since: Date, until: Date): Report {
@@ -50,6 +55,9 @@ export function compare(sheet: SheetRow[], db: DbRow[], since: Date, until: Date
   const dbRows = db.filter((r) => inWindow(r.sheet_timestamp));
   const byTs = new Map(dbRows.map((r) => [r.sheet_timestamp, r]));
   const sheetTs = new Set(sheetRows.map((r) => r.timestamp));
+  const seen = new Set<string>();
+  const duplicateTimestamps = new Set<string>();
+  for (const r of sheetRows) (seen.has(r.timestamp) ? duplicateTimestamps : seen).add(r.timestamp);
 
   const missingInSupabase: SheetRow[] = [];
   const mismatched: Report['mismatched'] = [];
@@ -65,16 +73,21 @@ export function compare(sheet: SheetRow[], db: DbRow[], since: Date, until: Date
     missingInSupabase,
     missingInSheet: dbRows.filter((r) => !sheetTs.has(r.sheet_timestamp)),
     mismatched,
+    duplicateTimestamps: [...duplicateTimestamps],
   };
 }
 
+function problemCount(r: Report): number {
+  return r.missingInSupabase.length + r.missingInSheet.length + r.mismatched.length + r.duplicateTimestamps.length;
+}
+
 export function hasProblems(r: Report): boolean {
-  return r.missingInSupabase.length + r.missingInSheet.length + r.mismatched.length > 0;
+  return problemCount(r) > 0;
 }
 
 /** The alert to Tyler. Only sent when hasProblems(). */
 export function reportEmail(r: Report, testTag: string): { subject: string; text: string } {
-  const count = r.missingInSupabase.length + r.missingInSheet.length + r.mismatched.length;
+  const count = problemCount(r);
   const lines = [
     `The nightly check compared the Quote Requests Log with Supabase for ${r.window.since} to ${r.window.until} (UTC).`,
     `Sheet rows from the form: ${r.sheetRows}. Supabase rows: ${r.supabaseRows}.`,
@@ -95,6 +108,11 @@ export function reportEmail(r: Report, testTag: string): { subject: string; text
     for (const m of r.mismatched) lines.push(`  ${m.timestamp}  ${m.name}`);
     lines.push('');
   }
+  if (r.duplicateTimestamps.length) {
+    lines.push('Two sheet rows share one timestamp (sent in the same millisecond); Supabase keeps the second under a tagged copy:');
+    for (const ts of r.duplicateTimestamps) lines.push(`  ${ts}`);
+    lines.push('');
+  }
   lines.push('Nothing was changed. The sheet is still the record of truth until cutover.');
   return { subject: `${testTag}Quote log check: ${count} row${count === 1 ? '' : 's'} to look at`, text: lines.join('\n') };
 }
@@ -112,7 +130,13 @@ export async function readSheet(env: Record<string, string | undefined> = proces
   const sheetId = env.QUOTE_SHEET_ID;
   const keyB64 = env.GOOGLE_SHEETS_READER_KEY;
   if (!sheetId || !keyB64) throw new Error('QUOTE_SHEET_ID or GOOGLE_SHEETS_READER_KEY is not set');
-  const key = JSON.parse(Buffer.from(keyB64, 'base64').toString('utf8')) as { client_email: string; private_key: string };
+  let key: { client_email: string; private_key: string };
+  try {
+    key = JSON.parse(Buffer.from(keyB64, 'base64').toString('utf8'));
+  } catch {
+    // Never echo any part of the key into a log.
+    throw new Error('GOOGLE_SHEETS_READER_KEY is not valid base64 JSON');
+  }
 
   const now = Math.floor(Date.now() / 1000);
   const b64url = (o: object) => Buffer.from(JSON.stringify(o)).toString('base64url');

@@ -80,6 +80,7 @@ export async function GET(req: Request) {
     missingInSupabase: report.missingInSupabase.map((r) => r.timestamp),
     missingInSheet: report.missingInSheet.map((r) => r.sheet_timestamp),
     mismatched: report.mismatched.map((r) => r.timestamp),
+    duplicateTimestamps: report.duplicateTimestamps,
     emailed,
   });
 }

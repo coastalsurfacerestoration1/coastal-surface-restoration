@@ -157,7 +157,7 @@ describe('ingest_quote_request', () => {
     ['photos as text', { photos: '2' }],
     ['photos too many', { photos: 99 }],
     ['description as number', { description: 5 }],
-    ['oversized', { description: 'x'.repeat(17000) }],
+    ['oversized', { description: 'x'.repeat(70000) }],
   ])('refuses malformed input: %s', async (_label, over) => {
     const p = Array.isArray(over) || over === null ? over : payload(over as Record<string, unknown>);
     await expect(ingest(p)).rejects.toThrow();
@@ -192,30 +192,73 @@ describe('ingest_quote_request', () => {
     expect(row).toEqual({ service_area_result: 'out', contact_id: null });
   });
 
-  it('reuses a contact by phone, then by email, and never touches consent, type or notes', async () => {
+  const contactOf = (id: string) =>
+    as<{ contact_id: string | null }>('postgres', 'select contact_id from public.quote_requests where id = $1', [id])
+      .then((r) => r[0].contact_id);
+
+  it('links to an existing contact only when phone and email both match, and changes nothing on it', async () => {
     await as('postgres', `insert into public.contacts (first_name, phone, email, type, sms_opt_in, sms_opt_in_at,
-        sms_opt_in_proof, email_ok, notes)
-      values ('Known', '+18435559000', null, 'client', true, now(), 'texted first', true, 'keep me')`);
-    const byPhone = await ingest(payload({ phone: '(843) 555-9000', email: 'known@example.com' }));
-    const byEmail = await ingest(payload({ phone: '843-555-9111', email: 'KNOWN@example.com' }));
-    const rows = await as<{ contact_id: string }>(
-      'postgres', 'select contact_id from public.quote_requests where id = any($1::uuid[])', [[byPhone.id, byEmail.id]]);
-    const [c] = await as<Record<string, unknown>>(
-      'postgres', `select * from public.contacts where phone = '+18435559000'`);
-    expect(rows.every((r) => r.contact_id === c.id)).toBe(true);
-    // Blank email filled; phone kept (already set); consent, type and notes untouched.
-    expect(c).toMatchObject({ email: 'known@example.com', type: 'client', sms_opt_in: true, email_ok: true, notes: 'keep me' });
+        sms_opt_in_proof, email_ok, notes, address)
+      values ('Known', '+18435559000', 'known@example.com', 'client', true, now(), 'texted first', true, 'keep me', null)`);
+    const before = await as<Record<string, unknown>>('postgres', `select * from public.contacts where phone = '+18435559000'`);
+    const r = await ingest(payload({ phone: '(843) 555-9000', email: 'KNOWN@example.com' }));
+    const after = await as<Record<string, unknown>>('postgres', `select * from public.contacts where phone = '+18435559000'`);
+    expect(await contactOf(r.id)).toBe(before[0].id);
+    // Not even the blank address is filled in.
+    expect(after[0]).toEqual(before[0]);
   });
 
-  it('a phone that belongs to someone else is never copied onto another contact', async () => {
-    await as('postgres', `insert into public.contacts (first_name, phone) values ('Owner of number', '+18435558000')`);
-    await as('postgres', `insert into public.contacts (first_name, email) values ('Email only', 'emailonly@example.com')`);
-    // Phone matches the first contact, so it links there and the email-only contact is untouched.
-    await ingest(payload({ phone: '843-555-8000', email: 'emailonly@example.com' }));
-    const [c] = await as<{ phone: string | null }>(
-      'postgres', `select phone from public.contacts where email = 'emailonly@example.com'`);
-    expect(c.phone).toBeNull();
+  it('a stranger cannot attach their email to a customer found by phone', async () => {
+    await as('postgres', `insert into public.contacts (first_name, phone) values ('Customer', '+18435558100')`);
+    const r = await ingest(payload({ phone: '843-555-8100', email: 'attacker@example.com' }));
+    const [c] = await as<{ email: string | null }>('postgres', `select email from public.contacts where phone = '+18435558100'`);
+    expect(c.email).toBeNull();
+    expect(await contactOf(r.id)).toBeNull();
+    // And no second contact was made for the attacker either.
+    const [n] = await as<{ n: number }>('postgres', `select count(*)::int as n from public.contacts where email = 'attacker@example.com'`);
+    expect(n.n).toBe(0);
   });
+
+  it('a stranger cannot attach their phone to a customer found by email', async () => {
+    await as('postgres', `insert into public.contacts (first_name, email, type) values ('Vendor', 'vendor@example.com', 'vendor')`);
+    const r = await ingest(payload({ phone: '843-555-8200', email: 'vendor@example.com' }));
+    const [c] = await as<{ phone: string | null; type: string }>('postgres', `select phone, type from public.contacts where email = 'vendor@example.com'`);
+    expect(c).toEqual({ phone: null, type: 'vendor' });
+    expect(await contactOf(r.id)).toBeNull();
+  });
+
+  it('a quote with only a known phone, or only a known email, is stored but not linked', async () => {
+    await as('postgres', `insert into public.contacts (first_name, phone, email) values ('Both', '+18435558300', 'both@example.com')`);
+    const phoneOnly = await ingest(payload({ phone: '843-555-8300', email: '' }));
+    const emailOnly = await ingest(payload({ phone: '', email: 'both@example.com' }));
+    expect(await contactOf(phoneOnly.id)).toBeNull();
+    expect(await contactOf(emailOnly.id)).toBeNull();
+  });
+
+  it('a name that looks like an ID number never reaches contacts', async () => {
+    const r = await ingest(payload({ name: '123-45-6789', email: 'idname@example.com', phone: '843-555-8400' }));
+    expect(await contactOf(r.id)).toBeNull();
+    const [q] = await as<{ name: string }>('postgres', 'select name from public.quote_requests where id = $1', [r.id]);
+    expect(q.name).toMatch(/^\[removed/);
+    const [n] = await as<{ n: number }>('postgres', `select count(*)::int as n from public.contacts where email = 'idname@example.com'`);
+    expect(n.n).toBe(0);
+  });
+
+  it('two quotes in the same millisecond are both kept; the second under a tagged copy', async () => {
+    const a = payload();
+    const b = payload({ sheet_timestamp: a.sheet_timestamp });
+    const ra = await ingest(a);
+    const rb = await ingest(b);
+    expect(rb).toMatchObject({ ok: true, duplicate: false });
+    const rows = await as<{ id: string; sheet_timestamp: string }>(
+      'postgres', 'select id, sheet_timestamp from public.quote_requests where id = any($1::uuid[]) order by sheet_timestamp', [[ra.id, rb.id]]);
+    expect(rows.map((r) => r.sheet_timestamp)).toEqual([a.sheet_timestamp, `${a.sheet_timestamp}#${b.submission_id.slice(0, 8)}`]);
+  });
+
+  it('accepts a full-length description in a multi-byte script', async () => {
+    await expect(ingest(payload({ description: '\u{1F527}'.repeat(4000) }))).resolves.toMatchObject({ ok: true });
+  });
+
 
   it('no consent column is ever set by an ingest', async () => {
     const [c] = await as<{ n: number }>('postgres', `select count(*)::int as n from public.contacts

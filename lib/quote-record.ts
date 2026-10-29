@@ -27,7 +27,7 @@ export async function recordQuote(record: QuoteRecord, area: AreaVerdict): Promi
     if (result.sent) {
       console.log(`Quote copied to Supabase: ${submissionId}${result.duplicate ? ' (already there)' : ''}`);
     } else {
-      console.warn(`Quote not copied to Supabase (${submissionId}): ${result.reason}`);
+      console.warn(`Quote copy to Supabase not confirmed (${submissionId}): ${result.reason}`);
     }
   };
 

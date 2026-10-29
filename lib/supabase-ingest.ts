@@ -76,7 +76,8 @@ export function buildIngestPayload(
     zip: row.zip,
     service: row.service,
     description: row.description,
-    photos: row.photos,
+    // The far path counts files before the 4 photo cap; the count is all that is kept.
+    photos: Math.min(Math.max(row.photos, 0), 20),
     area: AREA[area],
     out_of_area: typeof row.outOfArea === 'string' ? row.outOfArea : row.outOfArea ? 'yes' : '',
     spam: row.spamFlag,
@@ -102,7 +103,7 @@ export function ingestTarget(
 ): { url: string } | { refused: string } {
   const url = env.SUPABASE_INGEST_URL;
   if (!url) return { refused: 'SUPABASE_INGEST_URL is not set' };
-  if (env.VERCEL_ENV !== 'production' && url.includes(CSR_FIELD_PROJECT_REF)) {
+  if (env.VERCEL_ENV !== 'production' && url.toLowerCase().includes(CSR_FIELD_PROJECT_REF)) {
     return { refused: 'csr-field is Production only; previews and dev write to csr-test' };
   }
   return { url };
@@ -117,42 +118,33 @@ export function supabaseTls() {
   return { ca: SUPABASE_ROOT_CA, rejectUnauthorized: true };
 }
 
-let client: postgres.Sql | null = null;
-let clientUrl = '';
-
-function sqlFor(url: string): postgres.Sql {
-  if (client && clientUrl === url) return client;
-  client?.end({ timeout: 1 }).catch(() => {});
-  // One connection per function instance, through the transaction pooler, so
-  // no prepared statements. Short timeouts on purpose: the role also caps any
-  // statement at 3 s on the database side.
-  client = postgres(url, {
-    max: 1,
-    prepare: false,
-    ssl: supabaseTls(),
-    connect_timeout: 3,
-    idle_timeout: 20,
-    max_lifetime: 60 * 5,
-    onnotice: () => {},
-    connection: { application_name: 'csr-site-ingest' },
-  });
-  clientUrl = url;
-  return client;
-}
-
-function dropClient() {
-  client?.end({ timeout: 1 }).catch(() => {});
-  client = null;
-  clientUrl = '';
-}
-
+/**
+ * One short-lived connection per copy, closed when the copy is done or given
+ * up. Quotes are a few a day, so the extra handshake costs nothing, and a
+ * slow or failed copy can never break another request's connection on the
+ * same function instance.
+ */
 const defaultRunner =
   (url: string): Runner =>
   async (payload) => {
-    const sql = sqlFor(url);
-    const rows = await sql<{ r: { id: string; duplicate: boolean } }[]>`
-      select public.ingest_quote_request(${sql.json(payload)}) as r`;
-    return rows[0].r;
+    // Transaction pooler, so no prepared statements. The role caps any
+    // statement at 2 s on the database side, under the 2.5 s wait here.
+    const sql = postgres(url, {
+      max: 1,
+      prepare: false,
+      ssl: supabaseTls(),
+      connect_timeout: 2,
+      idle_timeout: 1,
+      onnotice: () => {},
+      connection: { application_name: 'csr-site-ingest' },
+    });
+    try {
+      const rows = await sql<{ r: { id: string; duplicate: boolean } }[]>`
+        select public.ingest_quote_request(${sql.json(payload)}) as r`;
+      return rows[0].r;
+    } finally {
+      sql.end({ timeout: 1 }).catch(() => {});
+    }
   };
 
 /** Never throws. Resolves within timeoutMs whatever the database does. */
@@ -180,16 +172,12 @@ export async function ingestQuote(
       const r = await run(payload);
       return { sent: true, id: r.id, duplicate: r.duplicate };
     } catch (error) {
-      // A broken connection is not reused by the next quote on this instance.
-      if (!opts.run) dropClient();
       return { sent: false, reason: describe(error) };
     }
   })();
 
   try {
-    const result = await Promise.race([attempt, timeout]);
-    if (!result.sent && result.reason.startsWith('timed out') && !opts.run) dropClient();
-    return result;
+    return await Promise.race([attempt, timeout]);
   } finally {
     clearTimeout(timer);
   }
