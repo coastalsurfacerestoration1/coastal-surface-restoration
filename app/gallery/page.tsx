@@ -88,13 +88,11 @@ export default function GalleryPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-[#1a3958] border border-[#397774]/30 rounded-lg p-10">
             <h2 className="text-white font-bold text-2xl mb-4">
-              First Photos Post This Fall
+              Project Photos
             </h2>
             <p className="text-gray-400 leading-relaxed mb-4">
-              Bench testing is under way and we expect to finish our first
-              Charleston jobs in late October 2026. Photos will go up here as
-              those jobs are completed, with the neighborhood, the material, and
-              what was actually done to it.
+              Project photos post here as jobs wrap up, with the neighborhood,
+              the material, and what was actually done to it.
             </p>
             <p className="text-gray-400 leading-relaxed mb-8">
               If you have a piece you want documented, early jobs are the ones we

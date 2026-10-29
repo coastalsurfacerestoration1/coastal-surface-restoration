@@ -295,13 +295,15 @@ describe('POST /api/quote', () => {
     expect(statuses.every((status) => status === 200)).toBe(true);
   });
 
-  it('tells the customer late October', async () => {
+  it('tells the customer we are booking now', async () => {
     const { POST } = await loadRoute();
     await POST(quote());
 
     const ack = mocks.send.mock.calls.find(([email]) => email.to === 'jane@example.com')?.[0];
-    expect(ack.text).toContain('late October 2026');
-    expect(ack.html).toContain('late October 2026');
+    expect(ack.text).toContain('Now booking jobs across the Charleston area.');
+    expect(ack.html).toContain('Now booking jobs across the Charleston area.');
+    expect(ack.text).not.toContain('late October');
+    expect(ack.html).not.toContain('late October');
   });
 
   describe('customer confirmation text', () => {

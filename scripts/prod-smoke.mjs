@@ -36,10 +36,10 @@ async function page(path, mustContain = []) {
   return html;
 }
 
-await page('/', ['late October 2026']);
+await page('/', ['Now booking jobs across the Charleston area.']);
 await page('/quote', ['How did you hear about us?', 'Referred by', 'Drove by/saw the truck']);
-await page('/gallery', ['late October 2026']);
-await page('/how-laser-cleaning-works', ['late October 2026']);
+await page('/gallery', ['Now booking jobs across the Charleston area.']);
+await page('/how-laser-cleaning-works', ['Now booking jobs across the Charleston area.']);
 await page('/thank-you');
 
 // A JSON body is not multipart, so the route answers 400 before validation,

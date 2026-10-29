@@ -11,7 +11,7 @@ export const metadata = pageMetadata({
 
 // Last meaningful change to this policy. Update this when the content changes,
 // not on cosmetic edits.
-const LAST_UPDATED = 'September 3, 2026';
+const LAST_UPDATED = 'October 22, 2026';
 
 export default function PrivacyPage() {
   return (
@@ -98,6 +98,9 @@ export default function PrivacyPage() {
               <li>
                 <span className="text-white">Google Workspace</span> stores quote requests in a spreadsheet and job photos in a Google Drive folder. Google Maps suggests addresses as you type, so the street you enter is sent to Google.
               </li>
+              <li>
+                <span className="text-white">Supabase</span> stores our quote requests and job records in a private database that only we can access.
+              </li>
             </ul>
             <p>
               We may also share information if we are legally required to, for example in response to a court order, or if it is necessary to protect the rights or safety of the business or another person.
@@ -138,7 +141,7 @@ export default function PrivacyPage() {
 
           <Section title="How long we keep it">
             <p>
-              Quote requests are kept in our email, a Google spreadsheet and a Google Drive job folder for as long as they are useful for following up or supporting your job. Analytics data is retained according to the default settings of the analytics providers listed above. You can ask us to delete your information at any time using the contact details below, and we will do so unless we are required to keep it for legal or accounting reasons.
+              Quote requests are kept in our email, a Google spreadsheet and a Google Drive job folder for as long as they are useful for following up or supporting your job. We also keep quote requests and job records in a private database hosted by Supabase that only we can access. Analytics data is retained according to the default settings of the analytics providers listed above. You can ask us to delete your information at any time using the contact details below, and we will do so unless we are required to keep it for legal or accounting reasons.
             </p>
           </Section>
 
