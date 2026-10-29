@@ -105,3 +105,18 @@ differs.
 Outside Production the site refuses a csr-field URL, so a pasted mistake
 cannot send test quotes to the live table. Unset `SUPABASE_INGEST_URL` turns
 the copy off without touching the sheet path.
+
+## G1b catch-up (after G1, on Tyler's go)
+
+Form quotes that reached the sheet after the 10/22 backfill snapshot are not in
+csr-field, and the nightly check only looks back 48 hours. `npm run catch-up --
+--env <file>` reads the sheet (view-only service account) and asks Supabase
+which column A timestamps it already has, then writes a dry-run report outside
+the repo (default `C:\Code\csr-import-out`): what would be inserted, rows older
+than the snapshot that are missing (listed, never inserted), and rows the
+database would refuse. The console shows counts only.
+
+`--apply --confirm <n>` sends the planned rows through
+`public.ingest_quote_request`, the website's own path, and refuses if `<n>` no
+longer matches the plan. Submission ids are derived from column A, so a second
+run inserts nothing new.

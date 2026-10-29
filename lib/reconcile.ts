@@ -121,12 +121,32 @@ export function reportEmail(r: Report, testTag: string): { subject: string; text
 /* Readers                                                                   */
 /* ------------------------------------------------------------------------ */
 
-/**
- * Reads columns A to I of the sheet's first tab with the Sheets API, as a
- * service account that has view-only access to that one sheet. Read only:
- * the scope is spreadsheets.readonly, and nothing here can write.
- */
+/** A sheet cell as text; empty for blanks. */
+export const cellText = (v: unknown) => (typeof v === 'string' ? v : v == null ? '' : String(v));
+
+/** Reads columns A to I of the sheet's first tab: what the reconcile compares. */
 export async function readSheet(env: Record<string, string | undefined> = process.env): Promise<SheetRow[]> {
+  const values = await readSheetValues('A2:I', env);
+  // A Timestamp, B Name, C Email, D Phone, I Service. A hand-typed date comes
+  // back as a number and is left blank, so it never counts as a form row.
+  return values.map((r) => ({
+    timestamp: typeof r[0] === 'string' ? r[0] : '',
+    name: cellText(r[1]),
+    email: cellText(r[2]),
+    phone: cellText(r[3]),
+    service: cellText(r[8]),
+  }));
+}
+
+/**
+ * Reads a range of the sheet's first tab with the Sheets API, as a service
+ * account that has view-only access to that one sheet. Read only: the scope
+ * is spreadsheets.readonly, and nothing here can write.
+ */
+export async function readSheetValues(
+  range: string,
+  env: Record<string, string | undefined> = process.env,
+): Promise<unknown[][]> {
   const sheetId = env.QUOTE_SHEET_ID;
   const keyB64 = env.GOOGLE_SHEETS_READER_KEY;
   if (!sheetId || !keyB64) throw new Error('QUOTE_SHEET_ID or GOOGLE_SHEETS_READER_KEY is not set');
@@ -163,20 +183,12 @@ export async function readSheet(env: Record<string, string | undefined> = proces
 
   // No tab name, so this is the first tab, the same one the Apps Script writes.
   const res = await fetch(
-    `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(sheetId)}/values/A2:I?valueRenderOption=UNFORMATTED_VALUE`,
+    `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(sheetId)}/values/${range}?valueRenderOption=UNFORMATTED_VALUE`,
     { headers: { Authorization: `Bearer ${access_token}` }, signal: AbortSignal.timeout(15_000) },
   );
   if (!res.ok) throw new Error(`Sheets API ${res.status}`);
   const { values = [] } = (await res.json()) as { values?: unknown[][] };
-  const s = (v: unknown) => (typeof v === 'string' ? v : v == null ? '' : String(v));
-  // A Timestamp, B Name, C Email, D Phone, I Service.
-  return values.map((r) => ({
-    timestamp: typeof r[0] === 'string' ? r[0] : '',
-    name: s(r[1]),
-    email: s(r[2]),
-    phone: s(r[3]),
-    service: s(r[8]),
-  }));
+  return values;
 }
 
 /** Supabase side, as csr_site_reconcile: timestamps and fingerprints only. */
