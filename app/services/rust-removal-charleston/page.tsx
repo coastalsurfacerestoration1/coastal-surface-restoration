@@ -171,6 +171,9 @@ export default function RustRemovalPage() {
           <p className="text-gray-400 leading-relaxed mb-6">
             Galvanized steel needs one more step. Stripping paint from a galvanized railing or gate takes zinc with it, so a zinc-rich primer goes on before paint. If you need the galvanizing kept intact, laser stripping is not the right method. That applies to the galvanized railings common on Daniel Island and in newer Mount Pleasant construction.
           </p>
+          <p className="text-gray-400 leading-relaxed mb-6">
+            Painted and stained wood is a different job. Clear coat and stain scorch under the laser, and painted wood strips too slowly for the laser to make sense, so wood is restored by hand. Sanders and scrapers do most of it. A heat gun lifts thick or delicate paint, and clear finishes come off with a chemical stripper. On wood the laser is kept to small detail spots.
+          </p>
           <p className="text-gray-400 leading-relaxed mb-8">
             There is no solvent runoff, which matters on any property near Charleston&apos;s tidal creeks, and no spent abrasive to haul away. The paint comes off as dust and fume, so we run extraction and HEPA-vacuum the area before leaving. Bare steel flash-rusts overnight in this humidity, so primer goes on the same day the metal is cleaned.
           </p>
@@ -188,7 +191,7 @@ export default function RustRemovalPage() {
               Lead paint on older surfaces
             </h3>
             <p className="text-gray-400 text-sm leading-relaxed">
-              A lot of Charleston housing stock predates 1978, which means the coating on a shutter, a railing, or a door may contain lead. We do not laser paint on pre-1978 homes or child-occupied buildings unless a lead test on that paint comes back negative. If lead is present or suspected, the job goes to a firm certified under the EPA Renovation, Repair and Painting rule. That call happens before a quote, not after work starts.
+              A lot of Charleston housing stock predates 1978, which means the coating on a railing or a wood door may contain lead. We do not remove paint on pre-1978 homes or child-occupied buildings, by laser or by hand, unless a lead test on that paint comes back negative. If lead is present or suspected, the job goes to a firm certified under the EPA Renovation, Repair and Painting rule. That call happens before a quote, not after work starts.
             </p>
           </div>
 

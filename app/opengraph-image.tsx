@@ -81,7 +81,7 @@ export default function OpengraphImage() {
               maxWidth: 820,
             }}
           >
-            Rust and paint off metal, wood, masonry and concrete. Test spot first.
+            Rust and paint off metal, masonry and concrete. Test spot first.
           </div>
         </div>
 

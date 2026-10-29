@@ -196,7 +196,7 @@ export default function VacationRentalPage() {
           {
             q: 'What about older painted railings and trim?',
             a:
-              'Painted surfaces on homes built before 1978 need a lead test before we start. We do not laser paint on pre-1978 homes or child-occupied buildings unless a lead test comes back negative; we refer it to an EPA RRP certified firm.',
+              'Painted surfaces on homes built before 1978 need a lead test before we start. We do not laser paint on pre-1978 homes or child-occupied buildings unless a lead test comes back negative; we refer it to an EPA RRP certified firm. Wood trim is restored by hand with sanders and scrapers, and the same lead test comes before any sanding or heat.',
           },
           {
             q: 'Do you work with property management companies?',

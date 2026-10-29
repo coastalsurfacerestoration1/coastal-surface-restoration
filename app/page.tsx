@@ -27,7 +27,7 @@ const whatComesOff = [
   {
     Icon: BoltIcon,
     title: 'Paint and coatings',
-    desc: 'Old and failing paint off iron and steel, with wood taken case by case after a test spot. Paint on pre-1978 homes needs a negative lead test first, and listed landmarks are not taken.',
+    desc: 'Old and failing paint off iron and steel with the laser. Painted and stained wood is restored by hand. Paint on pre-1978 homes needs a negative lead test first, and listed landmarks are not taken.',
     href: '/services/rust-removal-charleston#paint-removal',
   },
   {
@@ -130,10 +130,11 @@ export default function Home() {
               </h1>
               <p className="mt-7 max-w-xl text-lg leading-relaxed text-gray-300">
                 We take off rust and old paint, along with graffiti, grease,
-                oxidation and stains. Metal, wood, brick, stone, concrete and
-                boat parts on land all work with the laser. Each job is dialed
-                in on a test spot to take the coating and keep as much of the
-                original as possible. No sandblasting, no chemical strippers.
+                oxidation and stains. Metal, brick, stone, concrete and boat
+                parts on land all work with the laser, with no sandblasting and
+                no chemical strippers. Each job is dialed in on a test spot to
+                take the coating and keep as much of the original as possible.
+                Painted and stained wood is restored by hand.
               </p>
               <div className="mt-9 flex flex-col gap-4 sm:flex-row">
                 <Link

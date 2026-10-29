@@ -14,7 +14,7 @@ import Breadcrumbs from '@/app/components/Breadcrumbs';
 export const metadata = pageMetadata({
   title: 'Services',
   description:
-    "Surface restoration in Charleston, SC. Rust and paint off metal, wood, masonry and concrete, plus graffiti, oxidation and stains, with a laser and a test spot first.",
+    "Surface restoration in Charleston, SC. Rust and paint off metal, masonry and concrete, plus graffiti, oxidation and stains, with a laser and a test spot first. Wood is restored by hand.",
   path: '/services',
 });
 
@@ -101,7 +101,7 @@ export default function ServicesPage() {
             Our Services
           </h1>
           <p className="text-gray-400 text-lg max-w-xl mx-auto">
-            We take off rust and old paint, along with graffiti, grease, oxidation and stains, from metal, wood, masonry, concrete and boat parts on land. No sandblasting or chemical strippers are used, and the dust gets captured and cleaned up.
+            We take off rust and old paint, along with graffiti, grease, oxidation and stains, from metal, masonry, concrete and boat parts on land. The laser does that work with no sandblasting or chemical strippers, and the dust gets captured and cleaned up. Painted and stained wood is restored by hand with sanders and scrapers, the right tools for the surface.
           </p>
         </div>
       </section>

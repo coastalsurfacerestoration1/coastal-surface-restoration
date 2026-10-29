@@ -45,7 +45,7 @@ export function localBusinessSchema() {
     logo: `${SITE_URL}/logo-icon.png`,
     image: `${SITE_URL}/opengraph-image`,
     description:
-      "Charleston's surface restoration specialists. Rust and paint come off metal, wood, masonry, stone and concrete, along with graffiti, grease and carbon, oxidation and stains, using a laser dialed in on a test spot to keep as much of the original surface as possible. No sandblasting or chemical strippers.",
+      "Charleston's surface restoration specialists. Rust and paint come off metal, masonry, stone and concrete, along with graffiti, grease and carbon, oxidation and stains, using a laser dialed in on a test spot to keep as much of the original surface as possible. No sandblasting or chemical strippers. Painted and stained wood is restored by hand with sanders and scrapers, the right tools for the surface.",
     telephone: '+1-854-222-7790',
     email: BUSINESS.email,
     priceRange: '$$',

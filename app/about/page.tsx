@@ -35,7 +35,7 @@ export default function AboutPage() {
             <span className="text-[#397774]">Built to Last.</span>
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            Coastal Surface Restoration is Charleston&apos;s surface restoration specialist, serving Charleston and the Lowcountry. We take rust and old paint off metal, wood, masonry, concrete and boat parts on land. The laser is how we do it, with no sandblasting or chemical strippers and a test spot before every job.
+            Coastal Surface Restoration is Charleston&apos;s surface restoration specialist, serving Charleston and the Lowcountry. We take rust and old paint off metal, masonry, concrete and boat parts on land. The laser handles that work, with no sandblasting or chemical strippers and a test spot before every job. Painted and stained wood is restored by hand with sanders and scrapers, the right tools for the surface.
           </p>
         </div>
       </section>
@@ -61,7 +61,7 @@ export default function AboutPage() {
             <div className="space-y-4">
               {[
                 { number: '300W', label: 'JPT MOPA Pulsed Fiber Laser', desc: 'Chihalo CF-300 backpack unit with a JPT 300 W MOPA source, 1064 nm, Class 4.' },
-                { number: '0', label: 'Chemical Strippers', desc: 'The laser does the stripping. Solid brass may get a polish and an alcohol wipe after.' },
+                { number: '0', label: 'Chemical Strippers on Metal', desc: 'On metal and masonry the laser does the stripping. Solid brass may get a polish and an alcohol wipe after.' },
                 { number: 'On site', label: 'Mobile Service', desc: 'We come to your property. Small parts and hardware can also go to our bench.' },
               ].map((stat) => (
                 <div key={stat.label} className="bg-[#1a3958] border border-[#397774]/20 rounded-lg p-6">
