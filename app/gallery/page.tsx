@@ -88,7 +88,7 @@ export default function GalleryPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-[#1a3958] border border-[#397774]/30 rounded-lg p-10">
             <h2 className="text-white font-bold text-2xl mb-4">
-              Project Photos
+              Recent Work
             </h2>
             <p className="text-gray-400 leading-relaxed mb-4">
               Project photos post here as jobs wrap up, with the neighborhood,
@@ -103,7 +103,7 @@ export default function GalleryPage() {
                 href="/quote"
                 className="bg-[#397774] text-white px-8 py-3 rounded font-bold text-center hover:bg-[#2a5c5a] transition-colors"
               >
-                Be One of Our First Jobs
+                Get a Free Estimate
               </Link>
               <a
                 href="https://www.instagram.com/coastalsurfacerestoration"
