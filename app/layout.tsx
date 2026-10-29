@@ -39,7 +39,7 @@ const barlowCondensed = Barlow_Condensed({
 });
 
 const DESCRIPTION =
-  "Charleston's surface restoration specialists. Rust and paint off metal and masonry with a laser, no sandblasting or chemical strippers. Wood is restored by hand. Test spot first, free estimates.";
+  "Charleston's surface restoration specialists. Rust and paint off metal and masonry with a laser, no sandblasting. Wood restored by hand. Free estimates.";
 
 const DEFAULT_TITLE =
   'Coastal Surface Restoration | Surface Restoration and Laser Cleaning in Charleston, SC';
