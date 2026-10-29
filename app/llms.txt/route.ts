@@ -101,8 +101,8 @@ ${LOCATIONS.map(([name, path]) => `- [${name}](${SITE_URL}${path}): surface rest
 ## Notes
 
 - Laser cleaning is not pressure washing, sandblasting, or chemical stripping. It is a dry, non-contact process with no blast media to clean up. Removed coating becomes dust and fume, which is extracted and HEPA cleaned.
-- Not offered: efflorescence, boat hulls and gelcoat, any work over water, interior wood, pre-1978 paint unless lead tested, individually listed historic properties, soft historic brick and lime mortar, car body panels, sealed or epoxy floors.
-- Wood: painted and stained wood is restored by hand with sanders and scrapers. A heat gun lifts thick or delicate paint, and clear finishes come off with a chemical stripper. The laser is not quoted on wood doors, cabinets, decks, shutters, trim runs or furniture, because clear coat and stain scorch under it and painted wood strips too slowly. It is used on wood for small detail spots. Pre-1978 paint on wood needs a negative lead test before any sanding or heat.
+- Not offered: efflorescence, boat hulls and gelcoat, any work over water, pre-1978 paint unless lead tested, individually listed historic properties, soft historic brick and lime mortar, car body panels, sealed or epoxy floors.
+- Wood: painted and stained wood is restored by hand with sanders and scrapers. A heat gun lifts thick or delicate paint, and clear finishes come off with a chemical stripper. The laser is not quoted on wood doors, cabinets, decks, shutters, trim runs or furniture, because clear coat and stain scorch under it and painted wood strips too slowly. On wood the laser is kept to small detail spots. Pre-1978 paint on wood needs a negative lead test before any sanding or heat.
 - Pricing: quoted per object, per job, or per linear foot for railings, with a $400 minimum. Never per square foot.
 - Bare steel left uncoated in coastal salt air will begin to flash rust, so exterior work is timed so a protective coating can follow.
 `;

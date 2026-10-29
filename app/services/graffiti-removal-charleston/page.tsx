@@ -100,10 +100,6 @@ export default function GraffitiRemovalPage() {
                 title: 'Storefronts & Commercial',
                 desc: 'Storefronts and mixed-use buildings, worked before opening or after close with the area roped off.',
               },
-              {
-                title: 'Painted Wood Trim',
-                desc: 'Tags on exterior wood trim are sanded off by hand and spot-primed, since the laser is too slow on painted wood. Older painted wood needs a negative lead test first.',
-              },
             ].map((item) => (
               <div key={item.title} className="bg-[#0e273e] border border-[#397774]/20 rounded-lg p-6">
                 <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
