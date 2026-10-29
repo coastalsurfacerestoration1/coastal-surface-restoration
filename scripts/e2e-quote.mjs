@@ -13,6 +13,10 @@
  *   VERCEL_AUTOMATION_BYPASS_SECRET   gets past preview deployment protection
  *   TEST_QUOTE_SHEET_WEBHOOK_URL      the TEST sheet's /exec URL
  *   TEST_QUOTE_SHEET_SECRET           its secret
+ *   CSR_TEST_DB_URL                   optional: csr-test as postgres, for the
+ *                                     Phase 3 Supabase readback (never csr-field)
+ *   TEST_CRON_SECRET                  optional: the preview's CRON_SECRET, to run
+ *                                     the reconcile and prove it flags a gap
  *
  * Three submissions, the most the per IP rate limit allows in 10 minutes, so
  * wait that long between runs. Side effects, all marked [TEST]: three
@@ -24,6 +28,7 @@ import { readFileSync } from 'node:fs';
 import { deflateSync } from 'node:zlib';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import postgres from 'postgres';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const env = Object.fromEntries(
@@ -263,6 +268,71 @@ check(
   JSON.stringify(got5.rows),
 );
 check('past 50 miles gets no job folder', got5.folders.length === 0, JSON.stringify(got5.folders));
+
+// Phase 3: every row above also reached csr-test, with the same column A text.
+// Runs only when CSR_TEST_DB_URL is set, and never against csr-field.
+if (env.CSR_TEST_DB_URL) {
+  if (env.CSR_TEST_DB_URL.includes('sdrlozunwhblnchbdngu')) {
+    console.error('CSR_TEST_DB_URL points at csr-field. Refusing.');
+    process.exit(1);
+  }
+  const ca = /`([\s\S]+?)`/.exec(readFileSync(join(root, 'lib/supabase-root-ca.ts'), 'utf8'))[1];
+  const sql = postgres(env.CSR_TEST_DB_URL, { max: 1, prepare: false, ssl: { ca, rejectUnauthorized: true }, onnotice: () => {} });
+  const cases = [
+    { label: 'normal with extras', got: got1, area: 'in', status: 'new', contact: true },
+    { label: 'normal plain', got: got2, area: 'in', status: 'new', contact: true },
+    { label: 'spam', got: got3, area: 'in', status: 'spam', contact: false },
+    { label: '20 to 50 miles', got: got4, area: 'near', status: 'new', contact: true },
+    { label: 'past 50 miles', got: got5, area: 'out', status: 'new', contact: false },
+  ];
+  const stamps = [];
+  for (const c of cases) {
+    const ts = c.got.rows[0]?.Timestamp;
+    stamps.push(ts);
+    let rows = [];
+    for (let i = 0; i < 10 && rows.length === 0; i++) {
+      rows = await sql`select name, submission_id::text as submission_id, sheet_timestamp, service_area_result, status,
+        contact_id, source::text as source from public.quote_requests where sheet_timestamp = ${ts}`;
+      if (!rows.length) await new Promise((r) => setTimeout(r, 2000));
+    }
+    const r = rows[0] ?? {};
+    check(`csr-test has the ${c.label} row with the same column A text`, rows.length === 1 && r.name === c.got.rows[0].Name, JSON.stringify({ ts, rows: rows.length }));
+    check(`csr-test ${c.label}: submission id, source form, area ${c.area}, status ${c.status}`,
+      /^[0-9a-f-]{36}$/.test(r.submission_id ?? '') && r.source === 'form' && r.service_area_result === c.area && r.status === c.status,
+      JSON.stringify(r));
+    check(`csr-test ${c.label}: ${c.contact ? 'linked to a contact' : 'no contact'}`, Boolean(r.contact_id) === c.contact);
+  }
+  const consent = await sql`select count(*)::int as n from public.contacts where source = 'website'
+    and (sms_opt_in or email_ok or sms_opt_in_at is not null or texted_first_at is not null)`;
+  check('no consent written to any website contact', consent[0].n === 0, JSON.stringify(consent[0]));
+
+  if (env.TEST_CRON_SECRET) {
+    const reconcile = async () => {
+      const res = await fetch(`${base}/api/cron/reconcile?hours=1&lag=0`, {
+        headers: { authorization: `Bearer ${env.TEST_CRON_SECRET}`, 'x-vercel-protection-bypass': env.VERCEL_AUTOMATION_BYPASS_SECRET },
+      });
+      return { status: res.status, body: await res.json().catch(() => ({})) };
+    };
+    const clean = await reconcile();
+    const flagged = (b) => [...(b.missingInSupabase ?? []), ...(b.missingInSheet ?? []), ...(b.mismatched ?? [])];
+    check('reconcile runs on the preview', clean.status === 200 && clean.body.ok === true, JSON.stringify(clean));
+    check('reconcile finds no gap for this run', stamps.every((s) => !flagged(clean.body).includes(s)), JSON.stringify(clean.body));
+
+    // Take one row out of csr-test; the next reconcile must flag exactly it.
+    await sql`delete from public.quote_requests where sheet_timestamp = ${stamps[1]}`;
+    const gap = await reconcile();
+    check('reconcile flags the deleted row as missing in Supabase',
+      gap.status === 200 && gap.body.missingInSupabase?.includes(stamps[1]) && gap.body.emailed === true,
+      JSON.stringify(gap.body));
+    check('reconcile flags nothing else from this run',
+      stamps.filter((s, i) => i !== 1).every((s) => !flagged(gap.body).includes(s)), JSON.stringify(gap.body));
+  } else {
+    console.log('SKIP  reconcile (TEST_CRON_SECRET not set)');
+  }
+  await sql.end({ timeout: 2 });
+} else {
+  console.log('SKIP  Supabase readback (CSR_TEST_DB_URL not set)');
+}
 
 const failed = results.filter((ok) => !ok).length;
 console.log(`\n${results.length - failed}/${results.length} checks passed`);
