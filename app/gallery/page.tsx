@@ -65,6 +65,22 @@ const jobs: Job[] = [
       source: 'Google review',
     },
   },
+  {
+    caption: 'Lobby stair post, office building in North Charleston. Polished by hand, no laser.',
+    date: 'November 2026',
+    photos: [
+      {
+        src: '/images/gallery/brass-stair-post-before',
+        alt: 'Brass stair handrail post with a dull, tarnished finish and corrosion at its base on a marble step',
+        label: 'Before',
+      },
+      {
+        src: '/images/gallery/brass-stair-post-after',
+        alt: 'The same brass handrail post polished to a bright shine, with painter's tape protecting the marble at its base',
+        label: 'After',
+      },
+    ],
+  },
 ];
 
 /**

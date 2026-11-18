@@ -309,17 +309,17 @@ export default function LaserReveal() {
           Before
         </span>
       </div>
-      {/* Arrows grey out at either end rather than wrapping, so it is clear
-          when there is nothing further to see. */}
+      {/* Arrows grey out at either end rather than wrapping, and a live arrow is
+          a solid teal disc, so it is clear when there is more to see. */}
       <figcaption className="mt-3 flex items-center justify-between gap-3">
         <button
           type="button"
           onClick={() => goTo(index - 1)}
           disabled={!hasPrev}
           aria-label="Previous before and after"
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#397774] text-[#8fd3cd] transition-colors hover:bg-[#397774]/20 disabled:cursor-not-allowed disabled:border-gray-600 disabled:text-gray-600 disabled:opacity-50 disabled:hover:bg-transparent"
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-[#8fd3cd] bg-[#397774] text-white shadow-[0_0_18px_rgba(0,212,212,0.45)] transition-colors hover:bg-[#2a5c5a] disabled:cursor-not-allowed disabled:border-gray-600 disabled:bg-transparent disabled:text-gray-600 disabled:opacity-50 disabled:shadow-none"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M15 5l-7 7 7 7" />
           </svg>
         </button>
@@ -332,9 +332,9 @@ export default function LaserReveal() {
           onClick={() => goTo(index + 1)}
           disabled={!hasNext}
           aria-label="Next before and after"
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#397774] text-[#8fd3cd] transition-colors hover:bg-[#397774]/20 disabled:cursor-not-allowed disabled:border-gray-600 disabled:text-gray-600 disabled:opacity-50 disabled:hover:bg-transparent"
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-[#8fd3cd] bg-[#397774] text-white shadow-[0_0_18px_rgba(0,212,212,0.45)] transition-colors hover:bg-[#2a5c5a] disabled:cursor-not-allowed disabled:border-gray-600 disabled:bg-transparent disabled:text-gray-600 disabled:opacity-50 disabled:shadow-none"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M9 5l7 7-7 7" />
           </svg>
         </button>

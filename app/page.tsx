@@ -91,6 +91,17 @@ const beforeAfterPairs: BeforeAfterPair[] = [
     },
     caption: 'Balcony railing, Daniel Island. Stripped, primed the same day, two coats of black.',
   },
+  {
+    before: {
+      src: '/images/gallery/brass-stair-post-before',
+      alt: 'Brass stair handrail post with a dull, tarnished finish and corrosion at its base on a marble step',
+    },
+    after: {
+      src: '/images/gallery/brass-stair-post-after',
+      alt: 'The same brass handrail post polished to a bright shine, with painter's tape protecting the marble at its base',
+    },
+    caption: 'Lobby stair post, office building in North Charleston. Polished by hand, no laser.',
+  },
 ];
 
 function PhotoFrame({ slot, label }: { slot: PhotoSlot; label: string }) {
@@ -251,7 +262,7 @@ export default function Home() {
           <h2 className="font-display mb-10 text-4xl font-bold tracking-tight text-white sm:text-5xl">
             The same surface, before and after.
           </h2>
-          <div className="grid max-w-3xl grid-cols-1 gap-8">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
             {beforeAfterPairs.map((pair, i) => (
               <div key={i} className="rounded-lg border border-[#397774]/30 bg-[#0e273e] p-3">
                 <div className="grid grid-cols-2 gap-3">
