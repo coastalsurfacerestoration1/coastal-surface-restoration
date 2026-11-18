@@ -15,9 +15,12 @@ import {
  *
  * Everything left of the scan line is the after photo, everything right of it
  * is still the before. Within a slide the two photos must keep exactly the
- * same size or the scan line will not line up. The frame keeps the skillet's
- * 960x1265 shape; the railing photos are 3:4 and object-cover trims a sliver.
- * Captions describe the surface and the work, never the customer or address.
+ * same size or the scan line will not line up, and the frame keeps the
+ * skillet's 960x1265 shape. Only pairs shot from the same spot belong here;
+ * the balcony railing pair was taken from two angles, so it lives in the home
+ * page's before and after section instead. With a single slide both arrows
+ * stay greyed out. Captions describe the surface and the work, never the
+ * customer or the address.
  */
 type Slide = {
   id: string;
@@ -33,22 +36,6 @@ type Slide = {
 };
 
 const SLIDES: Slide[] = [
-  {
-    id: 'railing',
-    width: 1200,
-    height: 1600,
-    before: {
-      src: '/images/gallery/railing-balcony-before.jpg',
-      alt: 'Curved wrought iron balcony railing with faded, peeling blue-green paint and rust',
-    },
-    after: {
-      src: '/images/gallery/railing-balcony-after-wide.jpg',
-      alt: 'The same curved balcony railing refinished in black, looking out over the marsh',
-    },
-    prompt: 'Drag to compare',
-    label: 'Drag across the balcony railing to compare it before and after restoration',
-    caption: 'Balcony railing, Daniel Island. Stripped, primed the same day, two coats of black.',
-  },
   {
     id: 'skillet',
     width: 960,
