@@ -16,11 +16,11 @@ import {
  * Everything left of the scan line is the after photo, everything right of it
  * is still the before. Within a slide the two photos must keep exactly the
  * same size or the scan line will not line up, and the frame keeps the
- * skillet's 960x1265 shape. Only pairs shot from the same spot belong here;
- * the balcony railing pair was taken from two angles, so it lives in the home
- * page's before and after section instead. With a single slide both arrows
- * stay greyed out. Captions describe the surface and the work, never the
- * customer or the address.
+ * skillet's 960x1265 shape; the job photos are 3:4 and object-cover trims a
+ * sliver. The skillet leads because its two photos line up exactly. The job
+ * pairs were shot from different angles, so they read as a comparison rather
+ * than one surface changing. Captions describe the surface and the work,
+ * never the customer or the address.
  */
 type Slide = {
   id: string;
@@ -51,6 +51,38 @@ const SLIDES: Slide[] = [
     prompt: 'Drag to run the laser',
     label: 'Run the laser across the cast iron skillet to compare it before and after cleaning',
     caption: 'Cast iron skillet, test piece. Heavy rust removed with the laser, no sandblasting.',
+  },
+  {
+    id: 'railing',
+    width: 1200,
+    height: 1600,
+    before: {
+      src: '/images/gallery/railing-balcony-before.jpg',
+      alt: 'Curved wrought iron balcony railing with faded, peeling blue-green paint and rust',
+    },
+    after: {
+      src: '/images/gallery/railing-balcony-after-wide.jpg',
+      alt: 'The same curved balcony railing refinished in black, looking out over the marsh',
+    },
+    prompt: 'Drag to compare',
+    label: 'Drag across the balcony railing to compare it before and after restoration',
+    caption: 'Balcony railing, Daniel Island. Stripped, primed the same day, two coats of black.',
+  },
+  {
+    id: 'brass-post',
+    width: 900,
+    height: 1200,
+    before: {
+      src: '/images/gallery/brass-stair-post-before.jpg',
+      alt: 'Brass stair handrail post with a dull, tarnished finish and corrosion at its base on a marble step',
+    },
+    after: {
+      src: '/images/gallery/brass-stair-post-after.jpg',
+      alt: 'The same brass handrail post polished to a bright shine, with blue tape protecting the marble at its base',
+    },
+    prompt: 'Drag to compare',
+    label: 'Drag across the brass stair post to compare it before and after polishing',
+    caption: 'Lobby stair post, office building in North Charleston. Polished by hand, no laser.',
   },
 ];
 
