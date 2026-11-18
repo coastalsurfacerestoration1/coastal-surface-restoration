@@ -18,9 +18,11 @@ import {
  * same size or the scan line will not line up, and the frame keeps the
  * skillet's 960x1265 shape; the job photos are 3:4 and object-cover trims a
  * sliver. The skillet leads because its two photos line up exactly. The job
- * pairs were shot from different angles, so they read as a comparison rather
- * than one surface changing. Captions describe the surface and the work,
- * never the customer or the address.
+ * pairs were shot from different angles, so each has a slide-only copy of one
+ * photo (the *-slide-* files) scaled, rotated and shifted from the original so
+ * the rail or post lands on top of its counterpart. The gallery keeps the
+ * untouched framing. Captions describe the surface and the work, never the
+ * customer or the address.
  */
 type Slide = {
   id: string;
@@ -61,7 +63,7 @@ const SLIDES: Slide[] = [
       alt: 'Curved wrought iron balcony railing with faded, peeling blue-green paint and rust',
     },
     after: {
-      src: '/images/gallery/railing-balcony-after-wide.jpg',
+      src: '/images/gallery/railing-slide-after.jpg',
       alt: 'The same curved balcony railing refinished in black, looking out over the marsh',
     },
     prompt: 'Drag to compare',
@@ -73,7 +75,7 @@ const SLIDES: Slide[] = [
     width: 900,
     height: 1200,
     before: {
-      src: '/images/gallery/brass-stair-post-before.jpg',
+      src: '/images/gallery/brass-post-slide-before.jpg',
       alt: 'Brass stair handrail post with a dull, tarnished finish and corrosion at its base on a marble step',
     },
     after: {
