@@ -76,7 +76,7 @@ const jobs: Job[] = [
       },
       {
         src: '/images/gallery/brass-stair-post-after',
-        alt: 'The same brass handrail post polished to a bright shine, with painter's tape protecting the marble at its base',
+        alt: 'The same brass handrail post polished to a bright shine, with blue tape protecting the marble at its base',
         label: 'After',
       },
     ],
