@@ -262,7 +262,7 @@ export default function LaserReveal() {
         </span>
       </div>
       <figcaption className="mt-3 text-center text-xs text-gray-500">
-        Cast iron skillet, test piece. Heavy rust removed with the laser, no sandblasting or chemical strippers.
+        Cast iron skillet, test piece. Heavy rust removed with the laser, no sandblasting.
       </figcaption>
     </figure>
   );

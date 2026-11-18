@@ -10,11 +10,66 @@ export const metadata = pageMetadata({
 });
 
 /**
- * The categories of work that will be documented here.
- *
- * Deliberately framed as what the gallery will show rather than as finished
- * jobs: the business has not taken its first job yet, and cards captioned with
- * a place and a service read as a completed portfolio even under a placeholder.
+ * Finished jobs, newest first. Photos live under /public/images/gallery as a
+ * WebP with a JPEG fallback of the same name, with all camera metadata
+ * stripped. File names and alt text describe the surface only, never the
+ * customer or the address. A testimonial is only quoted word for word, with
+ * the customer's OK, and attributed by first name and last initial.
+ */
+type JobPhoto = { src: string; alt: string; label: string };
+type Job = {
+  caption: string;
+  date: string;
+  photos: JobPhoto[];
+  testimonial?: { paragraphs: string[]; attribution: string; source: string };
+};
+
+const jobs: Job[] = [
+  {
+    caption: 'Balcony railing, Daniel Island. Stripped, primed the same day, two coats of black.',
+    date: 'November 2026',
+    photos: [
+      {
+        src: '/images/gallery/railing-balcony-before',
+        alt: 'Curved wrought iron balcony railing with faded, peeling blue-green paint and rust',
+        label: 'Before',
+      },
+      {
+        src: '/images/gallery/railing-before-closeup',
+        alt: 'Close-up of the top rail laid on a drop cloth, with old paint flaking off the metal',
+        label: 'Before',
+      },
+      {
+        src: '/images/gallery/railing-primed',
+        alt: 'The railing laid out on drop cloths after stripping, coated in white primer',
+        label: 'Primed',
+      },
+      {
+        src: '/images/gallery/railing-balcony-after',
+        alt: 'The balcony railing refinished in black above the brick balcony floor',
+        label: 'After',
+      },
+      {
+        src: '/images/gallery/railing-balcony-after-wide',
+        alt: 'The same curved balcony railing refinished in black, looking out over the marsh',
+        label: 'After',
+      },
+    ],
+    testimonial: {
+      paragraphs: [
+        'Tyler Scherzer of Coastal Restoration is the best contractor I have ever worked with. Every aspect of the estimate, preparation, restoration, and cleanup was very professional, and the process was seamless. The results were unbelievable.',
+        'I had an ugly peeling, rusted wrought-iron balcony railing that badly needed restoration. Tyler used a laser rust remover/paint stripper that removed all the rust and old paint, leaving the surface bare metal. He primed and applied two coats of rust-preventing enamel, and it looks brand new and way beyond my expectations. What a transformation, and all at a very reasonable price!',
+        'I would highly recommend Coastal Restoration to everyone.',
+      ],
+      attribution: 'William A., Daniel Island',
+      source: 'Google review',
+    },
+  },
+];
+
+/**
+ * The categories of work that will be documented here, and what to look for
+ * in each comparison.
  */
 const workTypes = [
   {
@@ -87,9 +142,48 @@ export default function GalleryPage() {
       <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-[#1a3958] border border-[#397774]/30 rounded-lg p-10">
-            <h2 className="text-white font-bold text-2xl mb-4">
+            <h2 className="text-white font-bold text-2xl mb-6">
               Recent Work
             </h2>
+            {jobs.map((job) => (
+              <article key={job.caption} className="mb-10 border-b border-[#397774]/20 pb-10">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {job.photos.map((photo) => (
+                    <figure key={photo.src} className="relative aspect-[3/4] overflow-hidden rounded-md bg-[#0e273e]">
+                      <picture>
+                        <source srcSet={`${photo.src}.webp`} type="image/webp" />
+                        <img
+                          src={`${photo.src}.jpg`}
+                          alt={photo.alt}
+                          loading="lazy"
+                          decoding="async"
+                          className="absolute inset-0 h-full w-full object-cover"
+                        />
+                      </picture>
+                      <figcaption className="absolute left-2 top-2 rounded bg-[#0e273e]/85 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-white">
+                        {photo.label}
+                      </figcaption>
+                    </figure>
+                  ))}
+                </div>
+                <p className="mt-4 text-white leading-relaxed">{job.caption}</p>
+                <p className="mt-1 text-sm text-gray-500">{job.date}</p>
+                {job.testimonial && (
+                  <figure className="mt-6 border-l-2 border-[#397774] pl-5">
+                    <blockquote className="space-y-3 text-gray-300 leading-relaxed">
+                      {job.testimonial.paragraphs.map((p) => (
+                        <p key={p.slice(0, 24)}>{p}</p>
+                      ))}
+                    </blockquote>
+                    <figcaption className="mt-4 text-sm text-gray-400">
+                      <span className="font-semibold text-white">{job.testimonial.attribution}</span>
+                      {', '}
+                      {job.testimonial.source}
+                    </figcaption>
+                  </figure>
+                )}
+              </article>
+            ))}
             <p className="text-gray-400 leading-relaxed mb-4">
               Project photos post here as jobs wrap up, with the neighborhood,
               the material, and what was actually done to it.

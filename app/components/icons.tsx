@@ -100,6 +100,30 @@ export function UrnIcon({ className }: IconProps) {
   );
 }
 
+/** Door pull on its backplate, for brass and fixtures. */
+export function DoorPullIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <path d="M14 6h20v36H14z" />
+      <path d="M22 13h4a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4h-4" />
+      <path d="M22 13v22" />
+    </svg>
+  );
+}
+
+/** Door casing with a corner rosette, for wood trim. */
+export function TrimIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <path d="M8 44V14h32v30" />
+      <path d="M8 6h32v8H8z" />
+      <circle cx="12" cy="10" r="2" />
+      <circle cx="36" cy="10" r="2" />
+      <path d="M16 44V22h16v22" />
+    </svg>
+  );
+}
+
 /** Storefront, for commercial exteriors. */
 export function StorefrontIcon({ className }: IconProps) {
   return (

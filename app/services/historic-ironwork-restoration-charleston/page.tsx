@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Historic Ironwork Restoration in Charleston, SC',
   description:
-    'Laser rust and paint removal for iron and steel gates and railings in Charleston, SC. No sandblasting or chemical strippers, test spot first. Pre-1978 paint needs a negative lead test. Free estimates.',
+    'Laser rust and paint removal for iron and steel gates and railings in Charleston, SC. No sandblasting, test spot first. Pre-1978 paint needs a negative lead test. Free estimates.',
   path: '/services/historic-ironwork-restoration-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function HistoricIronworkPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Historic Ironwork Restoration',
-          description: 'Laser rust and paint removal for iron and steel gates and railings in Charleston, SC. No sandblasting or chemical strippers, test spot first. Pre-1978 paint needs a negative lead test. Free estimates.',
+          description: 'Laser rust and paint removal for iron and steel gates and railings in Charleston, SC. No sandblasting, test spot first. Pre-1978 paint needs a negative lead test. Free estimates.',
           path: '/services/historic-ironwork-restoration-charleston',
           serviceType: 'Historic restoration',
         })}
@@ -43,7 +43,7 @@ export default function HistoricIronworkPage() {
             Laser Restoration for Charleston&apos;s Historic Ironwork
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Charleston has one of the best collections of historic ironwork in the Southeast, and salt air is hard on all of it. Laser cleaning lifts rust and failed paint without sandblasting or chemical strippers, dialed in on a test spot to keep as much of the original iron as possible. True pre-1900 wrought iron gets extra testing.
+            Charleston has one of the best collections of historic ironwork in the Southeast, and salt air is hard on all of it. Laser cleaning lifts rust and failed paint without sandblasting, dialed in on a test spot to keep as much of the original iron as possible. True pre-1900 wrought iron gets extra testing.
           </p>
           <Link
             href="/quote"
@@ -134,7 +134,7 @@ export default function HistoricIronworkPage() {
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'Dialed in on a test spot to lift the coating and keep as much of the iron as possible. No chemical strippers, no abrasion. Brick, glass and sealant next to the iron are shielded, since the beam can mark them.',
+                problem: 'Dialed in on a test spot to lift the coating and keep as much of the iron as possible. No sandblasting or abrasion. Brick, glass and sealant next to the iron are shielded, since the beam can mark them.',
                 safe: true,
               },
             ].map((item) => (

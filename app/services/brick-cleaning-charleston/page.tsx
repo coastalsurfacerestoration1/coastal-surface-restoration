@@ -71,7 +71,7 @@ export default function BrickCleaningPage() {
             Efflorescence, the white crystalline haze on brick and stucco, is salt carried to the surface by water moving through the wall. It is a moisture problem first. Acid scrubbing etches the masonry and the salt comes back, and it would come back after a laser cleaning too, because neither one stops the water. We do not take efflorescence jobs. A dry brushed spot can still show where the water is likely getting in, so you know what to tell a mason.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            Laser cleaning removes surface contamination without water, chemical strippers or abrasion. On hard-fired brick the laser can lift soot and some paint, but too much energy grays or glazes the face. We test a 6 by 6 inch patch first and stop at the first color shift.
+            Laser cleaning removes surface contamination without water or sandblasting. On hard-fired brick the laser can lift soot and some paint, but too much energy grays or glazes the face. We test a 6 by 6 inch patch first and stop at the first color shift.
           </p>
         </div>
       </section>

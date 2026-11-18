@@ -8,7 +8,7 @@ import Faq from '@/app/components/Faq';
 export const metadata = pageMetadata({
   title: 'How Laser Cleaning Works',
   description:
-    'A plain-language guide to laser cleaning. How a pulsed fiber laser removes rust and paint without sandblasting or chemical strippers, how a test spot sets it up, and what it cannot do. Diagrams and comparisons.',
+    'A plain-language guide to laser cleaning. How a pulsed fiber laser removes rust and paint without sandblasting, how a test spot sets it up, and what it cannot do. Diagrams and comparisons.',
   path: '/how-laser-cleaning-works',
 });
 
@@ -216,7 +216,7 @@ export default function HowLaserCleaningWorksPage() {
         data={serviceSchema({
           name: 'Laser Cleaning',
           description:
-            'Mobile laser cleaning services in Charleston, SC. A pulsed fiber laser lifts rust, paint, and coatings with no sandblasting or chemical strippers.',
+            'Mobile laser cleaning services in Charleston, SC. A pulsed fiber laser lifts rust, paint, and coatings with no sandblasting.',
           path: '/how-laser-cleaning-works',
           serviceType: 'Laser cleaning',
         })}
@@ -251,7 +251,7 @@ export default function HowLaserCleaningWorksPage() {
             A laser cleaner fires very short pulses of light at one wavelength, 1064 nm. Rust and paint absorb that light and leave as fine dust and fume. Bare metal reflects more of it, so settings dialed in on a test spot take the coating and keep as much of the metal as possible. Too much energy can still melt or etch the surface, which is why the test spot comes first.
           </p>
           <p className="text-gray-400 leading-relaxed">
-            No sandblasting and no chemical strippers. CSR runs a Chihalo CF-300, a 300 W pulsed fiber laser in a backpack unit, and brings it to your property.
+            No sandblasting. CSR runs a Chihalo CF-300, a 300 W pulsed fiber laser in a backpack unit, and brings it to your property.
           </p>
         </div>
       </section>
@@ -397,7 +397,7 @@ export default function HowLaserCleaningWorksPage() {
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'Non-contact and dry, dialed in on a test spot to keep as much of the metal as possible. No blast media or chemical strippers to contain, and no water. Removed coating still needs extraction and cleanup.',
+                problem: 'Non-contact and dry, dialed in on a test spot to keep as much of the metal as possible. No blast media to contain, and no water. Removed coating still needs extraction and cleanup.',
                 safe: true,
               },
             ].map((item) => (

@@ -246,6 +246,14 @@ export default function QuotePage() {
     formState: { errors, touchedFields },
   } = useForm<QuoteFormValues>({ defaultValues: { state: 'SC' } });
 
+  // Links elsewhere on the site can preselect a service with ?service=. Only
+  // an exact match to an option is used, so a hand edited URL cannot put
+  // arbitrary text into the field; anything else leaves the select blank.
+  useEffect(() => {
+    const wanted = new URLSearchParams(window.location.search).get('service');
+    if (wanted && services.includes(wanted)) setValue('serviceType', wanted);
+  }, [setValue]);
+
   const selectedCity = useWatch({ control, name: 'city' });
   const selectedHeard = useWatch({ control, name: 'howHeard' });
   const zip = useWatch({ control, name: 'zip' }) ?? '';

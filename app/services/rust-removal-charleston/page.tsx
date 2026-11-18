@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Laser Rust & Paint Removal in Charleston, SC',
   description:
-    'Laser rust and paint removal in Charleston, SC. Laser cleaning with no chemical strippers for iron and steel railings, gates and parts, plus stainless and bronze boat hardware. No blast media, test spot first. Free estimates.',
+    'Laser rust and paint removal in Charleston, SC. Laser cleaning with no sandblasting for iron and steel railings, gates and parts, plus stainless and bronze boat hardware. Test spot first. Free estimates.',
   path: '/services/rust-removal-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function RustRemovalPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Rust and Paint Removal',
-          description: 'Laser rust and paint removal in Charleston, SC. Laser cleaning with no chemical strippers for iron and steel railings, gates and parts, plus stainless and bronze boat hardware. No blast media, test spot first. Free estimates.',
+          description: 'Laser rust and paint removal in Charleston, SC. Laser cleaning with no sandblasting for iron and steel railings, gates and parts, plus stainless and bronze boat hardware. Test spot first. Free estimates.',
           path: '/services/rust-removal-charleston',
           serviceType: 'Rust removal',
         })}
@@ -43,7 +43,7 @@ export default function RustRemovalPage() {
             Laser Rust and Paint Removal in Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Charleston&apos;s salt air and humidity are hard on metal. Rust, flaking paint, and oxidation show up fast on iron, steel, and marine hardware. Laser cleaning lifts it without sandblasting or chemical strippers, dialed in on a test spot to keep as much of the metal as possible. The clean surface needs primer the same day.
+            Charleston&apos;s salt air and humidity are hard on metal. Rust, flaking paint, and oxidation show up fast on iron, steel, and marine hardware. Laser cleaning lifts it without sandblasting, dialed in on a test spot to keep as much of the metal as possible. The clean surface needs primer the same day.
           </p>
           <Link
             href="/quote"
@@ -58,7 +58,7 @@ export default function RustRemovalPage() {
       <section className="py-8 lg:py-12 bg-[#0e273e]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">
-            Rust Removal Without Sandblasting or Chemical Strippers
+            Rust Removal Without Sandblasting
           </h2>
           <p className="text-gray-400 leading-relaxed mb-6">
             Traditional rust removal forces a tradeoff. Sandblasting cuts into the metal and warps thin material. Chemical strippers create hazardous runoff and can pit the surface. Wire wheels and grinders leave gouges and struggle in tight detail. For anything detailed, thin, or valuable, those methods do as much harm as good.
@@ -224,7 +224,7 @@ export default function RustRemovalPage() {
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'Dialed in on a test spot to lift the rust, paint or oxidation and keep as much of the metal as possible. No grit, no chemical strippers, no water. Dust and fume are captured and HEPA-cleaned.',
+                problem: 'Dialed in on a test spot to lift the rust, paint or oxidation and keep as much of the metal as possible. No grit and no water. Dust and fume are captured and HEPA-cleaned.',
                 safe: true,
               },
             ].map((item) => (

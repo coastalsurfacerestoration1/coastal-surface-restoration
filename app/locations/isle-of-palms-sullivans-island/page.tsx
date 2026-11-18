@@ -43,7 +43,7 @@ export default function IsleOfPalmsSullivansPage() {
             Laser Cleaning on Isle of Palms and Sullivan&apos;s Island
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Barrier island property takes the worst corrosion exposure in the Lowcountry. Salt spray carries inland off the Atlantic every day, and it attacks exterior metal on a timeline that surprises owners who moved here from anywhere else. That corrosion comes off on site, with no sandblasting and no chemical strippers.
+            Barrier island property takes the worst corrosion exposure in the Lowcountry. Salt spray carries inland off the Atlantic every day, and it attacks exterior metal on a timeline that surprises owners who moved here from anywhere else. That corrosion comes off on site, with no sandblasting.
           </p>
           <Link
             href="/quote"

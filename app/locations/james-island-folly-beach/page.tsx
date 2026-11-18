@@ -9,7 +9,7 @@ import RelatedItemsSection from '@/app/components/RelatedItemsSection';
 export const metadata = pageMetadata({
   title: 'Laser Cleaning on James Island & Folly Beach, SC',
   description:
-    'Mobile surface restoration for James Island and Folly Beach. Boat trailers, marsh-front railings, gate hardware and removed marine parts cleaned on land with no sandblasting or chemical strippers. Free estimates.',
+    'Mobile surface restoration for James Island and Folly Beach. Boat trailers, marsh-front railings, gate hardware and removed marine parts cleaned on land with no sandblasting. Free estimates.',
   path: '/locations/james-island-folly-beach',
 });
 
@@ -26,7 +26,7 @@ export default function JamesIslandFollyBeachPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Cleaning on James Island and Folly Beach',
-          description: 'Mobile surface restoration for James Island and Folly Beach. Boat trailers, marsh-front railings, gate hardware and removed marine parts cleaned on land with no sandblasting or chemical strippers. Free estimates.',
+          description: 'Mobile surface restoration for James Island and Folly Beach. Boat trailers, marsh-front railings, gate hardware and removed marine parts cleaned on land with no sandblasting. Free estimates.',
           path: '/locations/james-island-folly-beach',
           serviceType: 'Laser cleaning',
           areaServed: ['James Island', 'Folly Beach'],
@@ -43,7 +43,7 @@ export default function JamesIslandFollyBeachPage() {
             Laser Cleaning on James Island and Folly Beach
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            This is the tidal creek side of Charleston. Trailers, railings and marsh-front hardware sit in brackish air and get used hard year round. We remove the rust on land, with no sandblasting and no chemical strippers.
+            This is the tidal creek side of Charleston. Trailers, railings and marsh-front hardware sit in brackish air and get used hard year round. We remove the rust on land, with no sandblasting.
           </p>
           <Link
             href="/quote"
@@ -140,7 +140,7 @@ export default function JamesIslandFollyBeachPage() {
               {
                 step: '04',
                 title: 'No Runoff',
-                desc: 'Dry process, no chemical strippers, no sandblasting, no rinse water. Dust and fume are extracted and vacuumed up on land, away from the marsh.',
+                desc: 'Dry process, with no sandblasting and no rinse water. Dust and fume are extracted and vacuumed up on land, away from the marsh.',
               },
               {
                 step: '05',
@@ -245,7 +245,7 @@ export default function JamesIslandFollyBeachPage() {
           {
             q: 'Does anything get into the water?',
             a:
-              'No liquids. The process is dry, with no sandblasting or chemical strippers, and all work is done on land. Dust and fume are extracted and vacuumed up.',
+              'No liquids. The process is dry, with no sandblasting, and all work is done on land. Dust and fume are extracted and vacuumed up.',
           },
           {
             q: 'Do you work in the rain?',

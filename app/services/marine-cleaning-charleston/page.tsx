@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Laser Marine Cleaning in Charleston, SC',
   description:
-    'Laser cleaning for marine metal hardware in Charleston, SC. Stainless and bronze boat hardware cleaned on land or on the hard: tea staining, weld tint, verdigris and rust, with no sandblasting or chemical strippers. Free estimates.',
+    'Laser cleaning for marine metal hardware in Charleston, SC. Stainless and bronze boat hardware cleaned on land or on the hard: tea staining, weld tint, verdigris and rust, with no sandblasting. Free estimates.',
   path: '/services/marine-cleaning-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function MarineCleaningPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Laser Marine Cleaning',
-          description: 'Laser cleaning for marine metal hardware in Charleston, SC. Stainless and bronze boat hardware cleaned on land or on the hard: tea staining, weld tint, verdigris and rust, with no sandblasting or chemical strippers. Free estimates.',
+          description: 'Laser cleaning for marine metal hardware in Charleston, SC. Stainless and bronze boat hardware cleaned on land or on the hard: tea staining, weld tint, verdigris and rust, with no sandblasting. Free estimates.',
           path: '/services/marine-cleaning-charleston',
           serviceType: 'Marine cleaning',
         })}
@@ -43,7 +43,7 @@ export default function MarineCleaningPage() {
             Laser Marine Cleaning in Charleston
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
-            Salt water and Lowcountry humidity are hard on marine metal. Tea staining on stainless rails, verdigris on bronze cleats and rust on steel brackets build up fast. Laser cleaning takes that back to clean metal without sandblasting or chemical strippers. The work happens on land, with parts off the boat or the boat on the hard. Hulls, gelcoat, and antifouling paint on fiberglass are outside what we do.
+            Salt water and Lowcountry humidity are hard on marine metal. Tea staining on stainless rails, verdigris on bronze cleats and rust on steel brackets build up fast. Laser cleaning takes that back to clean metal without sandblasting. The work happens on land, with parts off the boat or the boat on the hard. Hulls, gelcoat, and antifouling paint on fiberglass are outside what we do.
           </p>
           <Link
             href="/quote"
@@ -138,7 +138,7 @@ export default function MarineCleaningPage() {
               },
               {
                 method: 'Laser Cleaning',
-                problem: 'Dialed in on a test spot to lift rust, tea staining and oxide and keep as much of the metal as possible. No grit, no chemical strippers, no water, and nothing washed into the harbor.',
+                problem: 'Dialed in on a test spot to lift rust, tea staining and oxide and keep as much of the metal as possible. No grit and no water, so nothing washes into the harbor.',
                 safe: true,
               },
             ].map((item) => (

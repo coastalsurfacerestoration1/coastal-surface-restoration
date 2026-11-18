@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import LaserReveal from './components/LaserReveal';
 import SurfaceCrossSection from './components/SurfaceCrossSection';
@@ -6,14 +5,17 @@ import {
   BoltIcon,
   BrickIcon,
   CleatIcon,
+  DoorPullIcon,
   IronScrollIcon,
   SprayIcon,
+  TrimIcon,
   UrnIcon,
 } from './components/icons';
 
 /**
  * Services described by what comes off and what it comes off of, rather than
- * by the tool. Rust and paint lead together on purpose. Anything not yet
+ * by the tool. Rust and paint lead together on purpose, with brass and wood
+ * trim next so the list reads as surface restoration rather than metal only. Anything not yet
  * proven on a material carries "test spot first", and the lead and listed
  * landmark gates stay in the copy wherever paint on a building comes up.
  */
@@ -31,22 +33,34 @@ const whatComesOff = [
     href: '/services/rust-removal-charleston#paint-removal',
   },
   {
+    Icon: DoorPullIcon,
+    title: 'Brass and fixtures',
+    desc: 'Door pulls, handrails and lobby trim on solid brass, polished by hand first, with the laser kept as a backup for heavy oxide. Plated and lacquered pieces get hand cleaning only.',
+    href: `/quote?service=${encodeURIComponent('Solid brass fixtures (polish first)')}`,
+  },
+  {
+    Icon: TrimIcon,
+    title: 'Wood trim',
+    desc: 'Painted casings, rosettes and door trim stripped by hand with heat and sanding, ready for stain or paint. Paint on pre-1978 homes needs a negative lead test first.',
+    href: '/quote',
+  },
+  {
     Icon: SprayIcon,
     title: 'Graffiti',
     desc: 'Spray paint tags on hard brick, block, unsealed concrete and painted steel. A test patch comes first, before any quote.',
     href: '/services/graffiti-removal-charleston',
   },
   {
-    Icon: UrnIcon,
-    title: 'Grease and carbon',
-    desc: 'Baked-on buildup on grill grates and engine brackets brought to the bench. Test spot first.',
-    href: '/quote',
-  },
-  {
     Icon: CleatIcon,
     title: 'Oxidation',
     desc: 'Tea staining and weld tint on stainless, and the green crust on bronze boat hardware, cleaned on land or with the boat on the hard. Test spot first.',
     href: '/services/marine-cleaning-charleston',
+  },
+  {
+    Icon: UrnIcon,
+    title: 'Grease and carbon',
+    desc: 'Baked-on buildup on grill grates and engine brackets brought to the bench. Test spot first.',
+    href: '/quote',
   },
   {
     Icon: BrickIcon,
@@ -57,38 +71,41 @@ const whatComesOff = [
 ];
 
 /**
- * Before and after pairs from the first jobs. Each slot renders a labeled
- * placeholder until its photos exist; fill in src and alt for both halves
- * (files under /public) and the frame switches to the real image. Captions
- * describe the surface and the work only, never the customer or the address.
+ * Before and after pairs from finished jobs. Each photo lives under
+ * /public/images/gallery as a WebP with a JPEG fallback of the same name, with
+ * all camera metadata stripped. Captions and file names describe the surface
+ * and the work only, never the customer or the address.
  */
-type PhotoSlot = { src: string | null; alt: string };
+type PhotoSlot = { src: string; alt: string };
 type BeforeAfterPair = { before: PhotoSlot; after: PhotoSlot; caption: string };
 
-const EMPTY_SLOT: PhotoSlot = { src: null, alt: '' };
-
 const beforeAfterPairs: BeforeAfterPair[] = [
-  { before: EMPTY_SLOT, after: EMPTY_SLOT, caption: '' },
-  { before: EMPTY_SLOT, after: EMPTY_SLOT, caption: '' },
-  { before: EMPTY_SLOT, after: EMPTY_SLOT, caption: '' },
+  {
+    before: {
+      src: '/images/gallery/railing-balcony-before',
+      alt: 'Curved wrought iron balcony railing with faded, peeling blue-green paint and rust',
+    },
+    after: {
+      src: '/images/gallery/railing-balcony-after-wide',
+      alt: 'The same curved balcony railing refinished in black, looking out over the marsh',
+    },
+    caption: 'Balcony railing, Daniel Island. Stripped, primed the same day, two coats of black.',
+  },
 ];
 
 function PhotoFrame({ slot, label }: { slot: PhotoSlot; label: string }) {
   return (
-    <figure className="relative aspect-[4/3] overflow-hidden rounded-md bg-[#0e273e]">
-      {slot.src ? (
-        <Image
-          src={slot.src}
+    <figure className="relative aspect-[3/4] overflow-hidden rounded-md bg-[#0e273e]">
+      <picture>
+        <source srcSet={`${slot.src}.webp`} type="image/webp" />
+        <img
+          src={`${slot.src}.jpg`}
           alt={slot.alt}
-          fill
-          sizes="(min-width: 1024px) 18rem, (min-width: 768px) 45vw, 90vw"
-          className="object-cover"
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover"
         />
-      ) : (
-        <div className="flex h-full w-full items-center justify-center border-2 border-dashed border-[#397774]/40 text-sm text-gray-500">
-          {label} photo
-        </div>
-      )}
+      </picture>
       <figcaption className="absolute left-2 top-2 rounded bg-[#0e273e]/85 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-white">
         {label}
       </figcaption>
@@ -130,9 +147,10 @@ export default function Home() {
               </h1>
               <p className="mt-7 max-w-xl text-lg leading-relaxed text-gray-300">
                 We take off rust and old paint, along with graffiti, grease,
-                oxidation and stains. Metal, brick, stone, concrete and boat
-                parts on land all work with the laser, with no sandblasting and
-                no chemical strippers. Each job is dialed in on a test spot to
+                oxidation and stains. Iron and steel, solid brass, brick, stone,
+                concrete, wood trim and boat parts on land. Depending on the
+                surface that means the laser, hand polishing, heat or sanding,
+                and never sandblasting. Each job is dialed in on a test spot to
                 take the coating and keep as much of the original as possible.
                 Painted and stained wood is restored by hand.
               </p>
@@ -215,7 +233,7 @@ export default function Home() {
                 </h3>
                 <p className="mb-4 text-sm leading-relaxed text-gray-400">{desc}</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#397774] transition-all group-hover:gap-2">
-                  {href === '/quote' ? 'Send a photo' : 'Learn more'}{' '}
+                  {href.startsWith('/quote') ? 'Send a photo' : 'Learn more'}{' '}
                   <span aria-hidden="true">&rarr;</span>
                 </span>
               </Link>
@@ -233,7 +251,7 @@ export default function Home() {
           <h2 className="font-display mb-10 text-4xl font-bold tracking-tight text-white sm:text-5xl">
             The same surface, before and after.
           </h2>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid max-w-3xl grid-cols-1 gap-8">
             {beforeAfterPairs.map((pair, i) => (
               <div key={i} className="rounded-lg border border-[#397774]/30 bg-[#0e273e] p-3">
                 <div className="grid grid-cols-2 gap-3">
@@ -256,11 +274,11 @@ export default function Home() {
             The difference
           </p>
           <h2 className="font-display mb-5 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-            Taking the rust off is the easy part. Keeping the metal is the hard part.
+            Taking the coating off is the easy part. Keeping the original is the hard part.
           </h2>
           <p className="mb-12 max-w-2xl leading-relaxed text-gray-400">
-            Rust sits on top of the metal you are trying to keep. Any method
-            takes rust off. What matters is what else it takes with it.
+            Rust and old paint sit on top of the surface you&apos;re trying to
+            keep. Any method takes rust off. What matters is what else it takes with it.
           </p>
           <SurfaceCrossSection />
         </div>
