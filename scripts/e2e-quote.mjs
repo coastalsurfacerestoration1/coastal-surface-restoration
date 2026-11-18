@@ -158,6 +158,7 @@ const sent1 = await submit(
     name: name1,
     street: '  100   Test Lane ',
     street2: ' Unit   2 ',
+    serviceType: 'Solid brass fixtures (polish first)',
     description: 'Automated end to end test. Ignore.',
     howHeard: 'Other: e2e test',
     referredBy: 'E2E Referrer',
@@ -191,6 +192,7 @@ check(
 const row1 = got1.rows[0] ?? {};
 check('exactly one sheet row', got1.rows.length === 1, `found ${got1.rows.length}`);
 check('row Job Folder (Q) links to the folder', row1['Job Folder'] === folder1?.url, `${row1['Job Folder']} vs ${folder1?.url}`);
+check('row Service (I) is the polish first option', row1.Service === 'Solid brass fixtures (polish first)', JSON.stringify(row1.Service));
 check('row How They Heard (R)', row1['How They Heard'] === 'Other: e2e test', JSON.stringify(row1['How They Heard']));
 check('row Referred By (S)', row1['Referred By'] === 'E2E Referrer', JSON.stringify(row1['Referred By']));
 check(

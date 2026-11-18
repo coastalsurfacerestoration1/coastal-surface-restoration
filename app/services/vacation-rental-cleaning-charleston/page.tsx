@@ -86,7 +86,7 @@ export default function VacationRentalPage() {
               },
               {
                 title: 'Exterior Light Fixtures & Hardware',
-                desc: 'Stainless fixtures, house numbers and door hardware cleaned after a hidden test spot. Solid brass and bronze are polished by hand first, with the laser only as a backup on bare solid brass. Plated, lacquered and aluminum pieces we decline.',
+                desc: 'Stainless fixtures, house numbers and door hardware cleaned after a hidden test spot. Solid brass and bronze are polished by hand first, with the laser only as a backup on bare solid brass. Aluminum and plated or lacquered brass we decline.',
               },
               {
                 title: 'Entryways & Steps',

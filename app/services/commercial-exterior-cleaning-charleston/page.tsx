@@ -90,7 +90,7 @@ export default function CommercialExteriorPage() {
               },
               {
                 title: 'Signage & Fixtures',
-                desc: 'Steel brackets cleaned after a hidden test spot. Solid brass and bronze plaques, pulls and house numbers are polished by hand first, with the laser only as a backup on bare solid brass. Brass-plated, lacquered and aluminum pieces we decline.',
+                desc: 'Steel brackets cleaned after a hidden test spot. Solid brass and bronze plaques, pulls and house numbers are polished by hand first, with the laser only as a backup on bare solid brass. Aluminum and plated or lacquered brass we decline.',
               },
               {
                 title: 'Patio & Outdoor Furniture',
@@ -237,7 +237,7 @@ export default function CommercialExteriorPage() {
           {
             q: 'What commercial surfaces does this work on?',
             a:
-              'Steel railings and gates, stainless handrails, steel patio furniture and grill grates, plus solid brass pulls and plaques, which are polished first. Aluminum, plated or lacquered finishes and whole facades we do not take.',
+              'Steel railings and gates, stainless handrails, steel patio furniture and grill grates, plus solid brass pulls and plaques, which are polished first. Aluminum and whole facades we do not take, and plated or lacquered brass is declined.',
           },
           {
             q: 'Do you provide documentation for property records?',

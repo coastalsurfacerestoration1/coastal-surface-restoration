@@ -134,7 +134,7 @@ const services = [
   'Stainless steel: weld tint and tea staining',
   'Marine hardware on land (stainless and bronze)',
   'Vintage tools and car parts',
-  'Solid brass fixtures (test first)',
+  'Solid brass fixtures (polish first)',
   'Graffiti on hard masonry (test first)',
   'Grease and carbon (test spot first)',
   'Stains on masonry or concrete (test spot first)',
