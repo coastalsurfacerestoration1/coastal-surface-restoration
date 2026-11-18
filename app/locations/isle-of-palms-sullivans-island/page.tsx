@@ -86,7 +86,7 @@ export default function IsleOfPalmsSullivansPage() {
               },
               {
                 title: 'Outdoor Shower Hardware',
-                desc: 'Stainless and solid brass shower heads, valves and brackets that sit wet and salted year round, tested first. Chrome and plated fixtures are not taken, and nearby cedar is masked.',
+                desc: 'Stainless shower heads, valves and brackets that sit wet and salted year round, tested first. Solid brass is polished by hand, with the laser only as a backup. Chrome and plated fixtures are not taken, and nearby cedar is masked.',
               },
               {
                 title: 'Hurricane Shutters & Tracks',

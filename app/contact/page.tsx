@@ -125,7 +125,7 @@ export default function ContactPage() {
           },
           {
             q: 'Is laser cleaning safe for historic materials?',
-            a: 'It depends on the material. Iron, steel and solid brass get a test spot first. Soft handmade brick, lime mortar, pre-1978 paint and individually listed properties are declined.',
+            a: 'It depends on the material. Iron and steel get a test spot first, and solid brass is polished by hand before any laser. Soft handmade brick, lime mortar, pre-1978 paint and individually listed properties are declined.',
           },
         ]}
       />

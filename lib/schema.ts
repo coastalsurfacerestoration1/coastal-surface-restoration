@@ -37,7 +37,11 @@ export const SERVICE_AREAS = [
 export function localBusinessSchema() {
   return {
     '@context': 'https://schema.org',
-    '@type': 'ProfessionalService',
+    // Matches the Google Business Profile primary category, Metal finisher.
+    // schema.org has no metal finishing type, so the closest generic type
+    // carries it through additionalType.
+    '@type': 'LocalBusiness',
+    additionalType: 'https://www.productontology.org/id/Metal_finishing',
     '@id': BUSINESS_ID,
     name: BUSINESS.name,
     alternateName: SITE_NAME,
@@ -103,6 +107,7 @@ export function localBusinessSchema() {
       jobTitle: 'Founder & Laser Safety Officer',
     },
     knowsAbout: [
+      'Metal finishing',
       'Surface restoration',
       'Rust removal',
       'Paint and coating removal',

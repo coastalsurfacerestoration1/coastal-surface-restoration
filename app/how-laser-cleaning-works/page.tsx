@@ -353,7 +353,7 @@ export default function HowLaserCleaningWorksPage() {
               'Pre-1900 wrought iron (test first)',
               'Stainless steel',
               'Bronze hardware',
-              'Solid brass fixtures (test first)',
+              'Solid brass fixtures (polished first, laser as a backup)',
               'Vintage tools and hardware',
               'Unsealed concrete (small areas)',
               'Hard-fired brick (test first)',

@@ -82,7 +82,7 @@ export default function AntiqueRestorationPage() {
             {[
               {
                 title: 'Antique Hardware',
-                desc: 'Iron and solid brass hinges, knockers, locks and pulls. Brass gets a test first and hand finishing after; plated hardware is not a fit.',
+                desc: 'Iron and solid brass hinges, knockers, locks and pulls. Brass is polished by hand first, with the laser only as a backup on solid brass; plated or lacquered hardware is not a fit.',
               },
               {
                 title: 'Vintage Tools',
@@ -90,11 +90,11 @@ export default function AntiqueRestorationPage() {
               },
               {
                 title: 'Decorative Metalwork',
-                desc: 'Andirons, fireplace tools, iron frames and sconces. Solid brass pieces are test first with hand finishing; plated or brass-tone pieces are not a fit.',
+                desc: 'Andirons, fireplace tools, iron frames and sconces. Solid brass is polished by hand first, with the laser only as a backup; plated or brass-tone pieces are not a fit.',
               },
               {
                 title: 'Light Fixtures & Lamps',
-                desc: 'Solid brass lamp bases and iron or copper lanterns, test first. Lamp parts plated over steel or zinc are not a fit, and a magnet check comes first.',
+                desc: 'Iron or copper lanterns, test first, and solid brass lamp bases polished by hand first. Lamp parts plated over steel or zinc are not a fit, and a magnet check comes first.',
               },
               {
                 title: 'Cast Iron',
@@ -231,7 +231,7 @@ export default function AntiqueRestorationPage() {
           {
             q: 'What kinds of pieces do you work on?',
             a:
-              'Iron and steel hardware, vintage tools, cast iron, classic car brackets and castings, and small solid brass pieces after a test. Not plated hardware, chrome or car body panels.',
+              'Iron and steel hardware, vintage tools, cast iron, classic car brackets and castings, and small solid brass pieces, polished by hand first with the laser as a backup. Not plated hardware, chrome or car body panels.',
           },
           {
             q: 'Do I need to bring the piece to you?',

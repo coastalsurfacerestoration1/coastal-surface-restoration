@@ -10,7 +10,7 @@ import ServiceAreaChips from '@/app/components/ServiceAreaChips';
 export const metadata = pageMetadata({
   title: 'Commercial Exterior Laser Cleaning in Charleston, SC',
   description:
-    'Laser cleaning for commercial exteriors in Charleston, SC. Rust and paint off storefront railings and gates, heat tint and tea staining off stainless handrails, and solid brass pulls cleaned, with no chemical strippers or water. Free estimates for businesses and property managers.',
+    'Laser cleaning for commercial exteriors in Charleston, SC. Rust and paint off storefront railings and gates, heat tint and tea staining off stainless handrails, and solid brass pulls polished, with no chemical strippers or water. Free estimates for businesses and property managers.',
   path: '/services/commercial-exterior-cleaning-charleston',
 });
 
@@ -27,7 +27,7 @@ export default function CommercialExteriorPage() {
       <JsonLd
         data={serviceSchema({
           name: 'Commercial Exterior Laser Cleaning',
-          description: 'Laser cleaning for commercial exteriors in Charleston, SC. Rust and paint off storefront railings and gates, heat tint and tea staining off stainless handrails, and solid brass pulls cleaned, with no chemical strippers or water. Free estimates for businesses and property managers.',
+          description: 'Laser cleaning for commercial exteriors in Charleston, SC. Rust and paint off storefront railings and gates, heat tint and tea staining off stainless handrails, and solid brass pulls polished, with no chemical strippers or water. Free estimates for businesses and property managers.',
           path: '/services/commercial-exterior-cleaning-charleston',
           serviceType: 'Commercial exterior cleaning',
         })}
@@ -90,7 +90,7 @@ export default function CommercialExteriorPage() {
               },
               {
                 title: 'Signage & Fixtures',
-                desc: 'Steel brackets, solid brass and bronze plaques, pulls and house numbers, tested on a hidden spot first. Brass-plated and aluminum pieces we decline.',
+                desc: 'Steel brackets cleaned after a hidden test spot. Solid brass and bronze plaques, pulls and house numbers are polished by hand first, with the laser only as a backup on bare solid brass. Brass-plated, lacquered and aluminum pieces we decline.',
               },
               {
                 title: 'Patio & Outdoor Furniture',
@@ -98,7 +98,7 @@ export default function CommercialExteriorPage() {
               },
               {
                 title: 'Stainless & Brass Entrances',
-                desc: 'Heat tint and tea staining off stainless handrails, and failed lacquer and tarnish off solid brass door pulls, tested first.',
+                desc: 'Heat tint and tea staining off stainless handrails, tested first. Solid brass door pulls are polished by hand, with the laser only as a backup on bare solid brass.',
               },
               {
                 title: 'Property Management Portfolios',
@@ -237,7 +237,7 @@ export default function CommercialExteriorPage() {
           {
             q: 'What commercial surfaces does this work on?',
             a:
-              'Steel railings and gates, stainless handrails, solid brass pulls and plaques, steel patio furniture and grill grates. Aluminum, plated finishes and whole facades we do not take.',
+              'Steel railings and gates, stainless handrails, steel patio furniture and grill grates, plus solid brass pulls and plaques, which are polished first. Aluminum, plated or lacquered finishes and whole facades we do not take.',
           },
           {
             q: 'Do you provide documentation for property records?',
