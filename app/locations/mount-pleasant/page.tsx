@@ -94,7 +94,7 @@ export default function MountPleasantPage() {
               },
               {
                 title: 'Exterior Light Fixtures & Hardware',
-                desc: 'Iron sconces, steel mailboxes, shutter dogs and solid brass door hardware. Brass is polished by hand first, with the laser only as a backup on solid brass. Copper lanterns are tested first, and plated pieces are not taken.',
+                desc: 'Iron sconces, steel mailboxes, shutter dogs and solid brass door hardware. Brass is polished by hand first, with the laser only as a backup on solid brass. Copper lanterns are tested first, and plated pieces get hand cleaning only.',
               },
               {
                 title: 'Old Village Historic Ironwork',

@@ -5,7 +5,7 @@ import Breadcrumbs from '@/app/components/Breadcrumbs';
 export const metadata = pageMetadata({
   title: 'Before & After Gallery',
   description:
-    'Before and after photos from Charleston surface restoration jobs will post here as jobs finish, from railings and marine hardware to classic car parts. Free estimates.',
+    'Before and after photos from Charleston surface restoration jobs, starting with a wrought iron balcony railing on Daniel Island. Free estimates.',
   path: '/gallery',
 });
 
@@ -130,18 +130,17 @@ export default function GalleryPage() {
             Before &amp; After
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            We are new, and we would rather show you nothing than show you
-            somebody else&apos;s work. Every photo posted here will be from a real
-            Charleston job, shot before and after, on the same piece and in the
-            same light.
+            Our first finished job is below, a balcony railing on Daniel Island.
+            Every photo here is from a real Charleston job, shot before and
+            after on the same piece and in the same light.
           </p>
         </div>
       </section>
 
       {/* Status */}
       <section className="py-8 lg:py-12 bg-[#0e273e]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-[#1a3958] border border-[#397774]/30 rounded-lg p-10">
+        <div className="max-w-4xl mx-auto px-2 sm:px-6 lg:px-8">
+          <div className="bg-[#1a3958] border border-[#397774]/30 rounded-lg px-3 py-6 sm:p-10">
             <h2 className="text-white font-bold text-2xl mb-6">
               Recent Work
             </h2>
@@ -185,8 +184,8 @@ export default function GalleryPage() {
               </article>
             ))}
             <p className="text-gray-400 leading-relaxed mb-4">
-              Project photos post here as jobs wrap up, with the neighborhood,
-              the material, and what was actually done to it.
+              New jobs post here as they wrap up, with the neighborhood and
+              what was done to the surface.
             </p>
             <p className="text-gray-400 leading-relaxed mb-8">
               If you have a piece you want documented, early jobs are the ones we
@@ -216,12 +215,12 @@ export default function GalleryPage() {
       <section className="py-8 lg:py-12 bg-[#1a3958]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-4">
-            What You Will See Here
+            What to Look For
           </h2>
           <p className="text-gray-400 leading-relaxed mb-10 max-w-2xl">
             A before and after is only useful if you know what to look at. These
-            are the six kinds of work we expect to document most, and what the
-            comparison should tell you in each case.
+            are the kinds of restoration we document, and what each comparison
+            should tell you.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {workTypes.map((item) => (
@@ -249,11 +248,11 @@ export default function GalleryPage() {
       <section className="py-8 lg:py-12 bg-[#0e273e] border-t border-[#397774]/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
-            Have something worth photographing?
+            Have something worth restoring?
           </h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto leading-relaxed">
-            Send a photo of what needs work and we will tell you what laser
-            cleaning can do for it, usually within one business day.
+            Send a photo of what needs work and we will tell you how we would
+            restore it, usually within one business day.
           </p>
           <Link
             href="/quote"

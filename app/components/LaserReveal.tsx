@@ -10,23 +10,62 @@ import {
 } from 'react';
 
 /**
- * A rusted cast iron skillet that the visitor can run a laser across.
+ * Before and after pairs the visitor can run a scan line across, one slide at
+ * a time, with arrows to step between them.
  *
  * Everything left of the scan line is the after photo, everything right of it
- * is still the before, which is literally what the tool does. It is a test
- * piece, not a customer job, and the caption says so. The two photos must keep
- * exactly the same size and crop or the scan line will not line up; both are
- * 960x1265 in public/images.
+ * is still the before. Within a slide the two photos must keep exactly the
+ * same size or the scan line will not line up. The frame keeps the skillet's
+ * 960x1265 shape; the railing photos are 3:4 and object-cover trims a sliver.
+ * Captions describe the surface and the work, never the customer or address.
  */
-const PHOTO = { width: 960, height: 1265 };
-const BEFORE = {
-  src: '/images/skillet-before.jpg',
-  alt: 'Cast iron skillet covered in heavy rust before laser cleaning',
+type Slide = {
+  id: string;
+  width: number;
+  height: number;
+  before: { src: string; alt: string };
+  after: { src: string; alt: string };
+  /** Prompt shown on the photo until the visitor first drags. */
+  prompt: string;
+  /** What the slider is for, read out by screen readers. */
+  label: string;
+  caption: string;
 };
-const AFTER = {
-  src: '/images/skillet-after.jpg',
-  alt: 'Same cast iron skillet after laser cleaning, bare gray iron',
-};
+
+const SLIDES: Slide[] = [
+  {
+    id: 'railing',
+    width: 1200,
+    height: 1600,
+    before: {
+      src: '/images/gallery/railing-balcony-before.jpg',
+      alt: 'Curved wrought iron balcony railing with faded, peeling blue-green paint and rust',
+    },
+    after: {
+      src: '/images/gallery/railing-balcony-after-wide.jpg',
+      alt: 'The same curved balcony railing refinished in black, looking out over the marsh',
+    },
+    prompt: 'Drag to compare',
+    label: 'Drag across the balcony railing to compare it before and after restoration',
+    caption: 'Balcony railing, Daniel Island. Stripped, primed the same day, two coats of black.',
+  },
+  {
+    id: 'skillet',
+    width: 960,
+    height: 1265,
+    before: {
+      src: '/images/skillet-before.jpg',
+      alt: 'Cast iron skillet covered in heavy rust before laser cleaning',
+    },
+    after: {
+      src: '/images/skillet-after.jpg',
+      alt: 'Same cast iron skillet after laser cleaning, bare gray iron',
+    },
+    prompt: 'Drag to run the laser',
+    label: 'Run the laser across the cast iron skillet to compare it before and after cleaning',
+    caption: 'Cast iron skillet, test piece. Heavy rust removed with the laser, no sandblasting.',
+  },
+];
 
 /** The frame is capped at 28rem wide (max-w-md) and is full width below that. */
 const SIZES = '(min-width: 640px) 28rem, 100vw';
@@ -41,6 +80,22 @@ export default function LaserReveal() {
   const dragging = useRef(false);
   // The prompt is only useful until they have worked out what the control is.
   const [used, setUsed] = useState(false);
+  const [index, setIndex] = useState(0);
+  const slide = SLIDES[index];
+  const hasPrev = index > 0;
+  const hasNext = index < SLIDES.length - 1;
+
+  // A new slide opens at the settled position rather than replaying the
+  // intro pass, and any pass still running stops.
+  const goTo = (next: number) => {
+    if (next < 0 || next >= SLIDES.length) return;
+    if (frame.current) {
+      cancelAnimationFrame(frame.current);
+      frame.current = null;
+    }
+    setIndex(next);
+    setPct(SETTLE);
+  };
 
   // One pass on load to show what the control does, then it is the visitor's.
   // All state updates happen inside the frame callback rather than directly in
@@ -146,7 +201,7 @@ export default function LaserReveal() {
         aria-valuemax={100}
         aria-valuenow={Math.round(pct)}
         aria-valuetext={`${Math.round(pct)} percent cleaned`}
-        aria-label="Run the laser across the cast iron skillet to compare it before and after cleaning"
+        aria-label={slide.label}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
@@ -157,13 +212,17 @@ export default function LaserReveal() {
         style={{ touchAction: 'pan-y' }}
         className="relative aspect-[960/1265] w-full cursor-ew-resize touch-pan-y select-none overflow-hidden rounded-lg border border-[#397774]/30 bg-[#1a3958] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#397774] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0e273e]"
       >
-        {/* Before photo underneath. Preloaded: it is the hero's largest image. */}
+        {/* Before photo underneath. The first slide's is preloaded: it is the
+            hero's largest image. Keyed by slide so a change swaps both photos
+            together. */}
         <Image
-          src={BEFORE.src}
-          alt={BEFORE.alt}
-          {...PHOTO}
+          key={`${slide.id}-before`}
+          src={slide.before.src}
+          alt={slide.before.alt}
+          width={slide.width}
+          height={slide.height}
           sizes={SIZES}
-          preload
+          preload={index === 0}
           draggable={false}
           className="absolute inset-0 h-full w-full object-cover"
         />
@@ -174,9 +233,11 @@ export default function LaserReveal() {
           style={{ clipPath: `inset(0 ${100 - pct}% 0 0)` }}
         >
           <Image
-            src={AFTER.src}
-            alt={AFTER.alt}
-            {...PHOTO}
+            key={`${slide.id}-after`}
+            src={slide.after.src}
+            alt={slide.after.alt}
+            width={slide.width}
+            height={slide.height}
             sizes={SIZES}
             draggable={false}
             className="absolute inset-0 h-full w-full object-cover"
@@ -238,7 +299,7 @@ export default function LaserReveal() {
             >
               <path d="M11 5l-6 7 6 7" />
             </svg>
-            Drag to run the laser
+            {slide.prompt}
             <svg
               width="15"
               height="15"
@@ -261,8 +322,35 @@ export default function LaserReveal() {
           Before
         </span>
       </div>
-      <figcaption className="mt-3 text-center text-xs text-gray-500">
-        Cast iron skillet, test piece. Heavy rust removed with the laser, no sandblasting.
+      {/* Arrows grey out at either end rather than wrapping, so it is clear
+          when there is nothing further to see. */}
+      <figcaption className="mt-3 flex items-center justify-between gap-3">
+        <button
+          type="button"
+          onClick={() => goTo(index - 1)}
+          disabled={!hasPrev}
+          aria-label="Previous before and after"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#397774] text-[#8fd3cd] transition-colors hover:bg-[#397774]/20 disabled:cursor-not-allowed disabled:border-gray-600 disabled:text-gray-600 disabled:opacity-50 disabled:hover:bg-transparent"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7" />
+          </svg>
+        </button>
+        <p className="text-center text-xs leading-relaxed text-gray-500" aria-live="polite">
+          {slide.caption}
+          <span className="sr-only"> Photo pair {index + 1} of {SLIDES.length}.</span>
+        </p>
+        <button
+          type="button"
+          onClick={() => goTo(index + 1)}
+          disabled={!hasNext}
+          aria-label="Next before and after"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#397774] text-[#8fd3cd] transition-colors hover:bg-[#397774]/20 disabled:cursor-not-allowed disabled:border-gray-600 disabled:text-gray-600 disabled:opacity-50 disabled:hover:bg-transparent"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
       </figcaption>
     </figure>
   );

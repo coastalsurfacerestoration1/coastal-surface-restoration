@@ -94,7 +94,7 @@ export default function DowntownCharlestonPage() {
               },
               {
                 title: 'Door & Shutter Hardware',
-                desc: 'Iron hinges, shutter dogs, boot scrapers and solid brass knockers, best removed and cleaned on the bench. Brass is polished by hand first, with the laser only as a backup on solid brass, and plated pieces are not taken.',
+                desc: 'Iron hinges, shutter dogs, boot scrapers and solid brass knockers, best removed and cleaned on the bench. Brass is polished by hand first, with the laser only as a backup on solid brass, and plated pieces get hand cleaning only.',
               },
               {
                 title: 'Storefronts & Commercial Metal',

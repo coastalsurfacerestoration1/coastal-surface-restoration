@@ -35,13 +35,13 @@ const whatComesOff = [
   {
     Icon: DoorPullIcon,
     title: 'Brass and fixtures',
-    desc: 'Door pulls, handrails and lobby trim on solid brass, polished by hand first, with the laser kept as a backup for heavy oxide. Plated and lacquered pieces get hand cleaning only.',
+    desc: 'Door pulls and handrails in lobbies and entryways, polished by hand first, with the laser kept as a backup for heavy oxide on solid brass. Plated and lacquered pieces get hand cleaning only.',
     href: `/quote?service=${encodeURIComponent('Solid brass fixtures (polish first)')}`,
   },
   {
     Icon: TrimIcon,
     title: 'Wood trim',
-    desc: 'Painted casings, rosettes and door trim stripped by hand with heat and sanding, ready for stain or paint. Paint on pre-1978 homes needs a negative lead test first.',
+    desc: 'Painted door and window casings stripped by hand with heat and sanding, ready for stain or paint. Paint on pre-1978 homes needs a negative lead test first.',
     href: '/quote',
   },
   {

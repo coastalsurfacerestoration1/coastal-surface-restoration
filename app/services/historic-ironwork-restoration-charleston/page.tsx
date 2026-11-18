@@ -94,7 +94,7 @@ export default function HistoricIronworkPage() {
               },
               {
                 title: 'Decorative Hardware',
-                desc: 'Hinges, knockers, shutter dogs and other iron or steel hardware, best done off the building on the bench. Plated or brass-tone pieces are not a fit.',
+                desc: 'Hinges, knockers, shutter dogs and other iron or steel hardware, best done off the building on the bench. Plated or brass-tone pieces get hand cleaning only.',
               },
               {
                 title: 'Garden Features',
