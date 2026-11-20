@@ -231,12 +231,13 @@ export default function Home() {
           <h2 className="font-display mb-14 text-4xl font-bold tracking-tight text-white sm:text-5xl">
             What comes off, and what it comes off of.
           </h2>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {/* Flex rather than grid so a short last row sits centered. */}
+          <div className="flex flex-wrap justify-center gap-8">
             {whatComesOff.map(({ Icon, title, desc, href }) => (
               <Link
                 key={title}
                 href={href}
-                className="group rounded-lg border border-[#397774]/30 bg-[#1a3958] p-8 transition-colors hover:border-[#397774]/50"
+                className="group w-full rounded-lg border md:w-[calc((100%_-_2rem)/2)] lg:w-[calc((100%_-_4rem)/3)] border-[#397774]/30 bg-[#1a3958] p-8 transition-colors hover:border-[#397774]/50"
               >
                 <Icon className="mb-5 h-14 w-14 text-[#397774]" />
                 <h3 className="font-display mb-3 text-2xl font-bold tracking-wide text-white transition-colors group-hover:text-[#397774]">
