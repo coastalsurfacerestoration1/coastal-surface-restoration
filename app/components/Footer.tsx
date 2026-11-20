@@ -44,6 +44,10 @@ const locations = [
   { label: 'Mount Pleasant', href: '/locations/mount-pleasant' },
   { label: "Isle of Palms & Sullivan's Island", href: '/locations/isle-of-palms-sullivans-island' },
   { label: 'James Island & Folly Beach', href: '/locations/james-island-folly-beach' },
+  { label: 'West Ashley', href: '/locations/west-ashley' },
+  { label: 'Daniel Island', href: '/locations/daniel-island' },
+  { label: 'North Charleston', href: '/locations/north-charleston' },
+  { label: 'Summerville', href: '/locations/summerville' },
 ];
 
 export default function Footer() {

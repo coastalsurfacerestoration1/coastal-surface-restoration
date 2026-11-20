@@ -5,7 +5,7 @@ import Breadcrumbs from '@/app/components/Breadcrumbs';
 export const metadata = pageMetadata({
   title: 'Service Areas in Charleston & the Lowcountry',
   description:
-    'Coastal Surface Restoration serves downtown Charleston, Mount Pleasant, Isle of Palms, Sullivan\'s Island, James Island, and Folly Beach with mobile surface restoration. Work is done on site, with small parts cleaned on our bench.',
+    'Coastal Surface Restoration serves downtown Charleston, Mount Pleasant, Isle of Palms, Sullivan\'s Island, James Island, Folly Beach, West Ashley, Daniel Island, North Charleston and Summerville with mobile surface restoration. Work is done on site, with small parts cleaned on our bench.',
   path: '/locations',
 });
 
@@ -37,6 +37,34 @@ const areas = [
     tagline: 'The tidal creeks',
     desc: 'Marsh-front corrosion on working hardware. Trailers, marsh-front railings and gate hardware, and removed marine parts cleaned on land.',
     spots: ['Riverland Terrace', 'Lighthouse Point', 'Center Street', 'Clark Sound'],
+  },
+  {
+    name: 'West Ashley',
+    href: '/locations/west-ashley',
+    tagline: 'Across the Ashley',
+    desc: 'Mid-century homes with original wrought iron porch railings and steel gates, rusted at the joints and feet. Bare rust comes off after a test spot, and old paint is lead-tested first.',
+    spots: ['Avondale', 'Byrnes Downs', 'Windermere', 'Carolina Bay'],
+  },
+  {
+    name: 'Daniel Island',
+    href: '/locations/daniel-island',
+    tagline: 'Between the Cooper and the Wando',
+    desc: 'Newer homes where balcony and porch railings start rusting at the welds within a few years. Our first finished job was a balcony railing here.',
+    spots: ['Daniel Island Park', 'Smythe Park', 'Barfield Park', 'Seven Farms Drive'],
+  },
+  {
+    name: 'North Charleston',
+    href: '/locations/north-charleston',
+    tagline: 'Commercial and Park Circle',
+    desc: 'Office and shop exteriors scheduled outside business hours, lobby brass polished by hand, graffiti on hard brick and block, and older homes around Park Circle.',
+    spots: ['Park Circle', 'Olde North Charleston', 'Ashley Phosphate', 'Wescott'],
+  },
+  {
+    name: 'Summerville',
+    href: '/locations/summerville',
+    tagline: 'Up the Ashley',
+    desc: 'Less salt than the coast, but the humidity still works under failed paint. Iron fences in the historic district, patio sets, gates and trailers in the newer neighborhoods.',
+    spots: ['Historic District', 'Azalea Park', 'Nexton', 'Cane Bay'],
   },
 ];
 
@@ -105,21 +133,9 @@ export default function LocationsPage() {
       <section className="py-8 lg:py-12 bg-[#1a3958]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-6">Not on the List?</h2>
-          <p className="text-gray-400 leading-relaxed mb-8">
-            We also cover West Ashley, North Charleston, Daniel Island and Summerville. If you are nearby, ask.
+          <p className="text-gray-400 leading-relaxed">
+            If you are somewhere else in the Lowcountry, send a photo and your location and we will tell you whether we can get to you.
           </p>
-          <div className="flex flex-wrap gap-3">
-            {[
-              'Daniel Island',
-              'North Charleston',
-              'West Ashley',
-              'Summerville',
-            ].map((area) => (
-              <span key={area} className="bg-[#0e273e] border border-[#397774]/20 text-gray-300 px-4 py-2 rounded text-sm">
-                {area}
-              </span>
-            ))}
-          </div>
         </div>
       </section>
 

@@ -6,8 +6,8 @@ import Link from 'next/link';
  * the location cluster; names without a page fall through to the `/locations`
  * index rather than being dead spans.
  *
- * A shared source of truth means adding a new location page (say, Daniel
- * Island) is a one-line map addition here, not eight service-page edits.
+ * A shared source of truth means adding a new location page is a one-line
+ * map addition here, not eight service-page edits.
  */
 const AREA_HREF: Record<string, string> = {
   // Downtown / peninsula neighborhoods
@@ -30,6 +30,13 @@ const AREA_HREF: Record<string, string> = {
   // South-side islands
   'James Island': '/locations/james-island-folly-beach',
   'Folly Beach': '/locations/james-island-folly-beach',
+  // Mainland areas with their own pages
+  'West Ashley': '/locations/west-ashley',
+  'Daniel Island': '/locations/daniel-island',
+  'North Charleston': '/locations/north-charleston',
+  'Summerville': '/locations/summerville',
+  'Park Circle': '/locations/north-charleston',
+  'Avondale': '/locations/west-ashley',
 };
 
 /** Default list, used when a page does not pass its own. */

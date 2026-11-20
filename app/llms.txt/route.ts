@@ -52,6 +52,10 @@ const LOCATIONS: [string, string][] = [
   ['Mount Pleasant', '/locations/mount-pleasant'],
   ["Isle of Palms & Sullivan's Island", '/locations/isle-of-palms-sullivans-island'],
   ['James Island & Folly Beach', '/locations/james-island-folly-beach'],
+  ['West Ashley', '/locations/west-ashley'],
+  ['Daniel Island', '/locations/daniel-island'],
+  ['North Charleston', '/locations/north-charleston'],
+  ['Summerville', '/locations/summerville'],
 ];
 
 /**
